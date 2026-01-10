@@ -1,0 +1,10 @@
+# NPM packages and binaries
+node_modules
+
+# built resources
+distribution/**/*
+!distribution/.gitkeep
+
+# Pages
+docs/**/*
+!docs/.gitkeep

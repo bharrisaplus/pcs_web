@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+
+tasks:
+  rear-demo:
+    desc: Demo files
+    cmds:
+      - task: rear-demo-content
+      - task: rear-demo-presentation
+      - task: rear-demo-behavior
+      - echo "Demo ready"
+  sweep-demo:
+    desc: Remove generated files
+    cmds:
+      - task: sweep-demo-content
+      - task: sweep-demo-presentation
+      - task: sweep-demo-behavior
+      - echo "Demo gone"
+
+  rear-demo-presentation:
+    internal: true
+    desc: Stlus to CSS
+    cmds:
+      - pnpm stylus source/presentation/demo.styl -o distribution/demo/demo.css
+  rear-demo-content:
+    internal: true
+    desc: Pug to HTML
+    cmds:
+      - pnpm pug source/content/demo.pug -o distribution/demo/
+      - mv distribution/demo/demo.html distribution/demo/index.html
+  rear-demo-behavior:
+    internal: true
+    desc: JS
+    cmds:
+      - cp source/behavior/demo.js distribution/demo/demo.js
+  sweep-demo-content:
+    internal: true
+    desc: Remove html files
+    cmds:
+      - rm -f distribution/demo/{demo,index}.html
+  sweep-demo-presentation:
+    internal: true
+    desc: Remove css files
+    cmds:
+      - rm -f distribution/demo/{main,demo}.css
+  sweep-demo-behavior:
+    internal: true
+    desc: Remove js files
+    cmds:
+      - rm -f distribution/demo/demo.{js,mjs}
