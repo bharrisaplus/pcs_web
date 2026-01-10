@@ -8,8 +8,8 @@ tasks:
     deps: [rear-demo]
     cmds:
       - cp distribution/demo/demo.html docs/index.html
-      - cp distribution/demo/demo.css docs/main.css
-      - cp distribution/demo/demo.js docs/main.js
+      - cp distribution/demo/main.css docs/main.css
+      - cp distribution/demo/main.js docs/main.js
   rear-demo:
     desc: Demo files
     cmds:
@@ -20,9 +20,7 @@ tasks:
   sweep-demo:
     desc: Remove generated files
     cmds:
-      - task: sweep-demo-content
-      - task: sweep-demo-presentation
-      - task: sweep-demo-behavior
+      - rm -f distribution/demo/demo.html distribution/demo/main.css distribution/demo/main.{js,mjs}
       - echo "Demo gone"
   sweep-pages-demo:
     desc: Clear out pages host directory
@@ -33,7 +31,7 @@ tasks:
     internal: true
     desc: Stlus to CSS
     cmds:
-      - pnpm stylus source/presentation/demo.styl -o distribution/demo/demo.css
+      - pnpm stylus source/presentation/demo.styl -o distribution/demo/main.css
   rear-demo-content:
     internal: true
     desc: Pug to HTML
@@ -43,19 +41,4 @@ tasks:
     internal: true
     desc: JS
     cmds:
-      - cp source/behavior/demo.js distribution/demo/demo.js
-  sweep-demo-content:
-    internal: true
-    desc: Remove html files
-    cmds:
-      - rm -f distribution/demo/demo.html
-  sweep-demo-presentation:
-    internal: true
-    desc: Remove css files
-    cmds:
-      - rm -f distribution/demo/demo.css
-  sweep-demo-behavior:
-    internal: true
-    desc: Remove js files
-    cmds:
-      - rm -f distribution/demo/demo.{js,mjs}
+      - cp source/behavior/demo.js distribution/demo/main.js
