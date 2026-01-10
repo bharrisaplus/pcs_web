@@ -3,6 +3,13 @@
 version: '3'
 
 tasks:
+  pages-demo:
+    desc: Copy demo files into pages host directory
+    deps: [rear-demo]
+    cmds:
+      - cp distribution/demo/demo.html docs/index.html
+      - cp distribution/demo/demo.css docs/main.css
+      - cp distribution/demo/demo.js docs/main.js
   rear-demo:
     desc: Demo files
     cmds:
@@ -17,6 +24,10 @@ tasks:
       - task: sweep-demo-presentation
       - task: sweep-demo-behavior
       - echo "Demo gone"
+  sweep-pages-demo:
+    desc: Clear out pages host directory
+    cmds:
+      - rm docs/index.html docs/main.css docs/main.js
 
   rear-demo-presentation:
     internal: true
@@ -28,7 +39,6 @@ tasks:
     desc: Pug to HTML
     cmds:
       - pnpm pug source/content/demo.pug -o distribution/demo/
-      - mv distribution/demo/demo.html distribution/demo/index.html
   rear-demo-behavior:
     internal: true
     desc: JS
@@ -38,12 +48,12 @@ tasks:
     internal: true
     desc: Remove html files
     cmds:
-      - rm -f distribution/demo/{demo,index}.html
+      - rm -f distribution/demo/demo.html
   sweep-demo-presentation:
     internal: true
     desc: Remove css files
     cmds:
-      - rm -f distribution/demo/{main,demo}.css
+      - rm -f distribution/demo/demo.css
   sweep-demo-behavior:
     internal: true
     desc: Remove js files
