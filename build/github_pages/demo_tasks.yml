@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+# Tasks are expected to be called from the project root or via the main Taskfile
+
+version: '3'
+
+tasks:
+  sweep-pages-demo-content:
+    desc: Clear out pages host directory
+    cmds:
+      - rm -f docs/index.html
+  sweep-pages-demo-presentation:
+    desc: Clear out pages host directory
+    cmds:
+      - rm -f docs/main.css
+  sweep-pages-behavior:
+    desc: Clear out pages host directory
+    cmds:
+      - rm -f docs/main.js

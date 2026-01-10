@@ -2,7 +2,18 @@
 
 version: '3'
 
+includes:
+  demo_build: ./build/demo_tasks.yml
+  pages_demo: ./build/github_pages/demo_tasks.yml
+
 tasks:
+  rear-demo:
+    desc: Demo files
+    cmds:
+      - task: demo_build:rear-demo-content
+      - task: demo_build:rear-demo-presentation
+      - task: demo_build:rear-demo-behavior
+      - echo "Demo ready"
   pages-demo:
     desc: Copy demo files into pages host directory
     deps: [rear-demo]
@@ -10,35 +21,18 @@ tasks:
       - cp distribution/demo/demo.html docs/index.html
       - cp distribution/demo/main.css docs/main.css
       - cp distribution/demo/main.js docs/main.js
-  rear-demo:
-    desc: Demo files
-    cmds:
-      - task: rear-demo-content
-      - task: rear-demo-presentation
-      - task: rear-demo-behavior
-      - echo "Demo ready"
+      - echo "Pages host directory for demo is ready"
   sweep-demo:
     desc: Remove generated files
     cmds:
-      - rm -f distribution/demo/demo.html distribution/demo/main.css distribution/demo/main.{js,mjs}
+      - task: demo_build:sweep-demo-content
+      - task: demo_build:sweep-demo-presentation
+      - task: demo_build:sweep-demo-behavior
       - echo "Demo gone"
   sweep-pages-demo:
     desc: Clear out pages host directory
     cmds:
-      - rm docs/index.html docs/main.css docs/main.js
-
-  rear-demo-presentation:
-    internal: true
-    desc: Stlus to CSS
-    cmds:
-      - pnpm stylus source/presentation/demo.styl -o distribution/demo/main.css
-  rear-demo-content:
-    internal: true
-    desc: Pug to HTML
-    cmds:
-      - pnpm pug source/content/demo.pug -o distribution/demo/
-  rear-demo-behavior:
-    internal: true
-    desc: JS
-    cmds:
-      - cp source/behavior/demo.js distribution/demo/main.js
+      - task: pages_demo:sweep-pages-demo-content
+      - task: pages_demo:sweep-pages-demo-presentation
+      - task: pages_demo:sweep-pages-demo-behavior
+      - echo "Pages host directory cleared"
