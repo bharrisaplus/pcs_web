@@ -10,9 +10,9 @@ tasks:
   rear-demo:
     desc: Demo files
     cmds:
-      - task: demo_build:rear-demo-content
-      - task: demo_build:rear-demo-presentation
-      - task: demo_build:rear-demo-behavior
+      - task: demo_build:rear-content
+      - task: demo_build:rear-presentation
+      - task: demo_build:rear-behavior
       - echo "Demo ready"
   pages-demo:
     desc: Copy demo files into pages host directory
@@ -25,14 +25,14 @@ tasks:
   sweep-demo:
     desc: Remove generated files
     cmds:
-      - task: demo_build:sweep-demo-content
-      - task: demo_build:sweep-demo-presentation
-      - task: demo_build:sweep-demo-behavior
+      - task: demo_build:sweep-content
+      - task: demo_build:sweep-presentation
+      - task: demo_build:sweep-behavior
       - echo "Demo gone"
   sweep-pages-demo:
     desc: Clear out pages host directory
     cmds:
-      - task: pages_demo:sweep-pages-demo-content
-      - task: pages_demo:sweep-pages-demo-presentation
-      - task: pages_demo:sweep-pages-demo-behavior
+      - task: pages_demo:sweep-content
+      - task: pages_demo:sweep-presentation
+      - task: pages_demo:sweep-behavior
       - echo "Pages host directory cleared"

@@ -5,30 +5,30 @@
 version: '3'
 
 tasks:
-  rear-demo-presentation:
+  rear-presentation:
     internal: true
     desc: Stlus to CSS
     cmds:
       - pnpm stylus source/presentation/demo.styl -o distribution/demo/main.css
-  rear-demo-content:
+  rear-content:
     internal: true
     desc: Pug to HTML
     cmds:
       - pnpm pug source/content/demo.pug -o distribution/demo/
-  rear-demo-behavior:
+  rear-behavior:
     internal: true
     desc: JS
     cmds:
       - cp source/behavior/demo.js distribution/demo/main.js
-  sweep-demo-content:
+  sweep-content:
     desc: Remove generated files
     cmds:
       - rm -f distribution/demo/demo.html
-  sweep-demo-presentation:
+  sweep-presentation:
     desc: Remove generated files
     cmds:
       - rm -f distribution/demo/main.css
-  sweep-demo-behavior:
+  sweep-behavior:
     desc: Remove generated files
     cmds:
       - rm -f distribution/demo/main.{js,mjs}

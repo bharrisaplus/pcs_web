@@ -5,15 +5,15 @@
 version: '3'
 
 tasks:
-  sweep-pages-demo-content:
+  sweep-content:
     desc: Clear out pages host directory
     cmds:
       - rm -f docs/index.html
-  sweep-pages-demo-presentation:
+  sweep-presentation:
     desc: Clear out pages host directory
     cmds:
       - rm -f docs/main.css
-  sweep-pages-behavior:
+  sweep-behavior:
     desc: Clear out pages host directory
     cmds:
       - rm -f docs/main.js
