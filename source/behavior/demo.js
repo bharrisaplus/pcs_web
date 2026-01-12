@@ -1,5 +1,5 @@
-(function (demoDoc) {
-  if (Object.hasOwn(HTMLElement.prototype, "popover")) {
+(function (demoWindow, demoDoc) {
+  demoWindow.onload = (_) => {
     const
       $cardPopover = demoDoc.querySelector(".closeup .centerpiece-container"),
       $cardPopoverContent = $cardPopover.querySelector('.centerpiece-content'),
@@ -68,17 +68,19 @@
       }
     }
 
-    demoDoc.querySelectorAll(".closeup .pad li").forEach(($elm) => {
-      decklist.push($elm.textContent);
-      $elm.addEventListener("click", handlePopoverOpen);
-    });
+    if (Object.hasOwn(HTMLElement.prototype, "popover")) {
+      demoDoc.querySelectorAll(".closeup .pad li").forEach(($elm) => {
+        decklist.push($elm.textContent);
+        $elm.addEventListener("click", handlePopoverOpen);
+      });
 
-    $cardPopoverClose.addEventListener("click", handlePopoverClose);
+      $cardPopoverClose.addEventListener("click", handlePopoverClose);
 
-    $cardPopoverPrevious.addEventListener('click', (_evt) => loadCard(_evt, 0));
-    $cardPopoverNext.addEventListener('click', (_evt) => loadCard(_evt, 1));
+      $cardPopoverPrevious.addEventListener('click', (_evt) => loadCard(_evt, 0));
+      $cardPopoverNext.addEventListener('click', (_evt) => loadCard(_evt, 1));
+    }
   }
-})(document);
+})(window, document);
 
 // ◖ -> 9686 
 // ◗ -> 9687
