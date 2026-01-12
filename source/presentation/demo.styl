@@ -1,3 +1,21 @@
+// colors
+$card-table-green = #1c5e3d
+$card-stock = #F7F7F7
+$spade-fam = #191970 // midnightblue
+$diamond-fam = #b22222 // firebrick
+$club-fam = #808000 // olive
+$heart-fam = #ff8c00 // darkorange
+$pcs-black = #333
+
+:root
+  --spade-splash: $spade-fam
+  --diamond-splash: $diamond-fam
+  --club-splash: $club-fam
+  --heart-splash: $heart-fam
+  --turntable-curtain: rgba($pcs-black, 0.75)
+  --card-base: $card-stock
+  --pad-dye: $card-table-green
+
 html
   height: 100%
   width: 100%
@@ -30,6 +48,7 @@ body
     padding: 0
     list-style: none
     width: 100%
+    background-color: var(--pad-dye)
     
     &:has(+ :popover-open)
       pointer-events: none
@@ -37,12 +56,14 @@ body
     & li
       height: fit-content
       cursor: pointer
+
       span
         font-size: 108px
+        background-color: var(--card-base)
 
 .turntable-container
   &::backdrop
-    background-color: rgba(51,51,51, 0.75)
+    background-color: var(--turntable-curtain)
 
 .turntable
   display: flex
@@ -73,3 +94,6 @@ body
   
   & button
     cursor: pointer
+
+.spade
+  color: var(--spade-splash)
