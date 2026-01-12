@@ -19,36 +19,9 @@ html(lang="en")
                 h2 (P)seudo (C)ard (S)huffler
             .closeup
                 ol.pad
-                    li
-                        span 🂡
-                    li
-                        span 🂢 
-                    li
-                        span 🂣 
-                    li
-                        span 🂤
-                    li
-                        span 🂥
-                    li
-                        span 🂦
-                    li
-                        span 🂧
-                    li
-                        span 🂨
-                    li
-                        span 🂩
-                    li
-                        span 🂪
-                    li
-                        span 🂫
-                    li
-                        span 🂭
-                    li
-                        span 🂮
-                    li
-                        span 🂿 
-                    li
-                        span 🃟 
+                    for item in ['🂡','🂢','🂣','🂤','🂥','🂦','🂧','🂨','🂩','🂪','🂫','🂭','🂮','🂿','🃟']
+                        li
+                            span= item
 
                 .centerpiece-container(popover)
                     .centerpiece
