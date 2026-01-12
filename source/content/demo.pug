@@ -21,11 +21,9 @@ html(lang="en")
                 ol.pad
                     for item, idx in ['🂡','🂢','🂣','🂤','🂥','🂦','🂧','🂨','🂩','🂪','🂫','🂭','🂮','🂿','🃟']
                         if idx < 13
-                            li
-                                span.spade= item
+                            li.spade= item
                         else
-                            li
-                                span= item
+                            li= item
 
                 .turntable-container(popover)
                     .turntable
