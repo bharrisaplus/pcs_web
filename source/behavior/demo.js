@@ -11,6 +11,21 @@
       pickup_base_class = $pickup.className,
       $items = demoDoc.querySelectorAll(".closeup .pad li");
 
+
+    const _tilt_item = (_mouseEvt, amount) => {
+      const $item = _mouseEvt.target;
+
+      if ($item) {
+        const
+          _prefix = amount == 0 ? `` : `-`,
+          rotate_amount = `${_prefix}${amount}deg`;
+
+        if ($item.style.rotate != rotate_amount) {
+          $item.style.rotate = rotate_amount;
+        }
+      }
+    };
+
     const _unloadTurntable = () => {
       if ($container.matches(':popover-open')) {
         $pickup.textContent = '';
@@ -85,6 +100,8 @@
     if (Object.hasOwn(HTMLElement.prototype, "popover")) {
       $items.forEach(($elm) => {
         decklist.push($elm.textContent);
+        $elm.addEventListener('mouseenter', (_evt) => _tilt_item(_evt, 9));
+        $elm.addEventListener('mouseleave', (_evt) => _tilt_item(_evt, 0));  
         $elm.addEventListener("click", _loadTurntable);
       });
 
