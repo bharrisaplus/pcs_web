@@ -7,6 +7,14 @@ $club-fam = #808000 // olive
 $heart-fam = #ff8c00 // darkorange
 $pcs-black = #333
 
+// spacing and layout
+card-row-gap()
+  calc(100% / 6) // for 4 row
+
+card-col-gap()
+  calc(100% / 26) // for 13 col
+
+
 :root
   --spade-splash: $spade-fam
   --diamond-splash: $diamond-fam
@@ -51,7 +59,7 @@ body
     background-color: var(--pad-dye)
     margin: 0
     overflow: none scroll
-    gap: calc(100% / 6) calc(100% / 26)
+    gap: card-row-gap() card-col-gap()
     font-size: 108px
 
     &:has(+ :popover-open)
