@@ -2,7 +2,7 @@
   demoWindow.onload = (_) => {
     const
       $container = demoDoc.querySelector(".closeup .turntable-container"),
-      $turntable = $container.querySelector('.turntable')
+      $turntable = $container.querySelector('.turntable'),
       $pickup = $turntable.querySelector('.turntable-pickup'),
       $close = $turntable.querySelector(".turntable-close");
       $cuePrevious = $turntable.querySelector('.turntable-cue-lever-regression'),
@@ -19,19 +19,23 @@
     };
 
     const handlePopoverOpen = (_clickEvt) => {
-      const
-        openCard = _clickEvt.target?.textContent,
-        openCardIdx = decklist.indexOf(openCard);
+      const $item = _clickEvt.target;
 
-      $pickup.textContent = openCard;
+      if ($item && $item.textContent != $pickup.textContent) {
+        const foundIdx = decklist.indexOf($item.textContent);
 
-      if (openCardIdx == 0) {
-        $cuePrevious.disabled = true;
-      } else if (openCardIdx == decklist.length - 1) {
-        $cueNext.disabled = true;
+        if (foundIdx > -1) {
+          $pickup.textContent = $item.textContent;
+
+          if (foundIdx == 0) {
+            $cuePrevious.disabled = true;
+          } else if (foundIdx == decklist.length - 1) {
+            $cueNext.disabled = true;
+          }
+
+          $container.showPopover();
+        } 
       }
-
-      $container.showPopover();
     };
 
     const loadCard = (_clickEvt) => {
