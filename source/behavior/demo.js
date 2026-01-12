@@ -11,7 +11,7 @@
       pickup_base_class = $pickup.className,
       $items = demoDoc.querySelectorAll(".closeup .pad li");
 
-    const handlePopoverClose = () => {
+    const _unloadTurntable = () => {
       if ($container.matches(':popover-open')) {
         $pickup.textContent = '';
         $pickup.className = pickup_base_class;
@@ -23,7 +23,7 @@
       }
     };
 
-    const handlePopoverOpen = (_clickEvt) => {
+    const _loadTurntable = (_clickEvt) => {
       if (!$container.matches(':popover-open')) {
         const $item = _clickEvt.target;
 
@@ -46,7 +46,7 @@
       }
     };
 
-    const loadCard = (_clickEvt) => {
+    const _spinTurntable = (_clickEvt) => {
       const
         currentCardIdx = decklist.indexOf($pickup.textContent),
         loadPrevious = _clickEvt.target === $cuePrevious,
@@ -61,7 +61,7 @@
         newIdx = Math.min(decklist_max, currentCardIdx + 1);
       }
 
-      // Set new card in centerpiece and adjust buttons
+      // Set new card and suite color in centerpiece and adjust buttons
       if (newIdx != currentCardIdx) {
         $pickup.textContent = decklist[newIdx];
         $pickup.className = `${pickup_base_class} ${$items[newIdx].dataset.suite}`;
@@ -85,13 +85,13 @@
     if (Object.hasOwn(HTMLElement.prototype, "popover")) {
       $items.forEach(($elm) => {
         decklist.push($elm.textContent);
-        $elm.addEventListener("click", handlePopoverOpen);
+        $elm.addEventListener("click", _loadTurntable);
       });
 
-      $close.addEventListener("click", handlePopoverClose);
+      $close.addEventListener("click", _unloadTurntable);
 
-      $cuePrevious.addEventListener('click', (_evt) => loadCard(_evt, 0));
-      $cueNext.addEventListener('click', (_evt) => loadCard(_evt, 1));
+      $cuePrevious.addEventListener('click', (_evt) => _spinTurntable(_evt, 0));
+      $cueNext.addEventListener('click', (_evt) => _spinTurntable(_evt, 1));
     }
   }
 })(window, document);
