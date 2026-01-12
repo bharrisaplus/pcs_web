@@ -21,7 +21,7 @@ html(lang="en")
                 ol.pad
                     for item, idx in ['🂡','🂢','🂣','🂤','🂥','🂦','🂧','🂨','🂩','🂪','🂫','🂭','🂮','🂿','🃟']
                         if idx < 13
-                            li.spade= item
+                            li(data-suite='spade').spade= item
                         else
                             li= item
 

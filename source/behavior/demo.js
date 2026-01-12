@@ -7,11 +7,14 @@
       $close = $turntable.querySelector(".turntable-close");
       $cuePrevious = $turntable.querySelector('.turntable-cue-lever-regression'),
       $cueNext = $turntable.querySelector('.turntable-cue-lever-progression'),
-      decklist = [];
+      decklist = [],
+      pickup_base_class = $pickup.className,
+      $items = demoDoc.querySelectorAll(".closeup .pad li");
 
     const handlePopoverClose = () => {
       if ($container.matches(':popover-open')) {
         $pickup.textContent = '';
+        $pickup.className = pickup_base_class;
 
         $container.hidePopover();
 
@@ -29,6 +32,7 @@
 
           if (foundIdx > -1) {
             $pickup.textContent = $item.textContent;
+            $pickup.className = `${pickup_base_class} ${$item.dataset.suite}`;
 
             if (foundIdx == 0) {
               $cuePrevious.disabled = true;
@@ -60,6 +64,7 @@
       // Set new card in centerpiece and adjust buttons
       if (newIdx != currentCardIdx) {
         $pickup.textContent = decklist[newIdx];
+        $pickup.className = `${pickup_base_class} ${$items[newIdx].dataset.suite}`;
 
         // Prevent presses once at ends of list
         if (newIdx == 0) {
@@ -78,7 +83,7 @@
     }
 
     if (Object.hasOwn(HTMLElement.prototype, "popover")) {
-      demoDoc.querySelectorAll(".closeup .pad li").forEach(($elm) => {
+      $items.forEach(($elm) => {
         decklist.push($elm.textContent);
         $elm.addEventListener("click", handlePopoverOpen);
       });
