@@ -21,6 +21,7 @@ card-col-gap()
   --club-splash: $club-fam
   --heart-splash: $heart-fam
   --turntable-curtain: rgba($pcs-black, 0.75)
+  --turntable-curtain-blend: rgba($pcs-black, 0.375)
   --card-base: $card-stock
   --pad-dye: $card-table-green
 
@@ -78,6 +79,9 @@ body
       padding: 4.5px 1.125px 2.25px
 
 .turntable-container
+  background-color: var(--pad-dye)
+  border-color: var(--turntable-curtain-blend)
+  border-width: 0.5px
   &::backdrop
     background-color: var(--turntable-curtain)
 
@@ -88,11 +92,22 @@ body
   padding: 0px 27px 27px
   justify-content: center
   width: fit-content
+  background-color: var(--pad-dye)
+  gap: 18px
 
   &-pickup
     font-size: 216px
     cursor: default
     user-select: none
+    display: inline-flex
+    height: fit-content
+    line-height: 0
+    aspect-ratio: 5/7
+    justify-content: center
+    align-items: center
+    background-color: var(--card-base)
+    border-radius: 4.5%
+    padding: 9px 1.125px 2.25px
   
   &-close
     width: 25%
