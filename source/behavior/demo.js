@@ -1,20 +1,21 @@
 (function (demoWindow, demoDoc) {
   demoWindow.onload = (_) => {
     const
-      $cardPopover = demoDoc.querySelector(".closeup .centerpiece-container"),
-      $cardPopoverContent = $cardPopover.querySelector('.centerpiece-content'),
-      $cardPopoverClose = $cardPopover.querySelector(".centerpiece-close");
-      $cardPopoverPrevious = $cardPopover.querySelector('.centerpiece-controls-previous'),
-      $cardPopoverNext = $cardPopover.querySelector('.centerpiece-controls-next'),
+      $container = demoDoc.querySelector(".closeup .turntable-container"),
+      $turntable = $container.querySelector('.turntable')
+      $pickup = $turntable.querySelector('.turntable-pickup'),
+      $close = $turntable.querySelector(".turntable-close");
+      $cuePrevious = $turntable.querySelector('.turntable-cue-lever-regression'),
+      $cueNext = $turntable.querySelector('.turntable-cue-lever-progression'),
       decklist = [];
 
     const handlePopoverClose = () => {
-      $cardPopoverContent.textContent = '';
+      $pickup.textContent = '';
 
-      $cardPopover.hidePopover();
+      $container.hidePopover();
 
-      $cardPopoverNext.disabled = false;
-      $cardPopoverPrevious.disabled = false;
+      $cueNext.disabled = false;
+      $cuePrevious.disabled = false;
     };
 
     const handlePopoverOpen = (_clickEvt) => {
@@ -22,21 +23,21 @@
         openCard = _clickEvt.target?.textContent,
         openCardIdx = decklist.indexOf(openCard);
 
-      $cardPopoverContent.textContent = openCard;
+      $pickup.textContent = openCard;
 
       if (openCardIdx == 0) {
-        $cardPopoverPrevious.disabled = true;
+        $cuePrevious.disabled = true;
       } else if (openCardIdx == decklist.length - 1) {
-        $cardPopoverNext.disabled = true;
+        $cueNext.disabled = true;
       }
 
-      $cardPopover.showPopover();
+      $container.showPopover();
     };
 
     const loadCard = (_clickEvt) => {
       const
-        currentCardIdx = decklist.indexOf($cardPopoverContent.textContent),
-        loadPrevious = _clickEvt.target === $cardPopoverPrevious,
+        currentCardIdx = decklist.indexOf($pickup.textContent),
+        loadPrevious = _clickEvt.target === $cuePrevious,
         decklist_max = decklist.length - 1;
 
       let newIdx;
@@ -50,20 +51,20 @@
 
       // Set new card in centerpiece and adjust buttons
       if (newIdx != currentCardIdx) {
-        $cardPopoverContent.textContent = decklist[newIdx];
+        $pickup.textContent = decklist[newIdx];
 
         // Prevent presses once at ends of list
         if (newIdx == 0) {
-          $cardPopoverPrevious.disabled = true;
+          $cuePrevious.disabled = true;
         } else if (newIdx == decklist_max) {
-          $cardPopoverNext.disabled = true;
+          $cueNext.disabled = true;
         }
 
         // Allow presses once away from end of list
         if (loadPrevious) {
-          $cardPopoverNext.disabled = false;
+          $cueNext.disabled = false;
         } else {
-          $cardPopoverPrevious.disabled = false;
+          $cuePrevious.disabled = false;
         }
       }
     }
@@ -74,10 +75,10 @@
         $elm.addEventListener("click", handlePopoverOpen);
       });
 
-      $cardPopoverClose.addEventListener("click", handlePopoverClose);
+      $close.addEventListener("click", handlePopoverClose);
 
-      $cardPopoverPrevious.addEventListener('click', (_evt) => loadCard(_evt, 0));
-      $cardPopoverNext.addEventListener('click', (_evt) => loadCard(_evt, 1));
+      $cuePrevious.addEventListener('click', (_evt) => loadCard(_evt, 0));
+      $cueNext.addEventListener('click', (_evt) => loadCard(_evt, 1));
     }
   }
 })(window, document);
