@@ -10,31 +10,35 @@
       decklist = [];
 
     const handlePopoverClose = () => {
-      $pickup.textContent = '';
+      if ($container.matches(':popover-open')) {
+        $pickup.textContent = '';
 
-      $container.hidePopover();
+        $container.hidePopover();
 
-      $cueNext.disabled = false;
-      $cuePrevious.disabled = false;
+        $cueNext.disabled = false;
+        $cuePrevious.disabled = false;
+      }
     };
 
     const handlePopoverOpen = (_clickEvt) => {
-      const $item = _clickEvt.target;
+      if (!$container.matches(':popover-open')) {
+        const $item = _clickEvt.target;
 
-      if ($item && $item.textContent != $pickup.textContent) {
-        const foundIdx = decklist.indexOf($item.textContent);
+        if ($item && $item.textContent != $pickup.textContent) {
+          const foundIdx = decklist.indexOf($item.textContent);
 
-        if (foundIdx > -1) {
-          $pickup.textContent = $item.textContent;
+          if (foundIdx > -1) {
+            $pickup.textContent = $item.textContent;
 
-          if (foundIdx == 0) {
-            $cuePrevious.disabled = true;
-          } else if (foundIdx == decklist.length - 1) {
-            $cueNext.disabled = true;
-          }
+            if (foundIdx == 0) {
+              $cuePrevious.disabled = true;
+            } else if (foundIdx == decklist.length - 1) {
+              $cueNext.disabled = true;
+            }
 
-          $container.showPopover();
-        } 
+            $container.showPopover();
+          } 
+        }
       }
     };
 
