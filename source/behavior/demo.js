@@ -26,7 +26,7 @@
       }
     };
 
-    const _unloadTurntable = () => {
+    const _unloadTurntable = (_) => {
       if ($container.matches(':popover-open')) {
         $pickup.textContent = '';
         $pickup.className = pickup_base_class;
@@ -106,9 +106,8 @@
       });
 
       $close.addEventListener("click", _unloadTurntable);
-
-      $cuePrevious.addEventListener('click', (_evt) => _spinTurntable(_evt, 0));
-      $cueNext.addEventListener('click', (_evt) => _spinTurntable(_evt, 1));
+      $cuePrevious.addEventListener('click', _spinTurntable);
+      $cueNext.addEventListener('click', _spinTurntable);
     }
   }
 })(window, document);
