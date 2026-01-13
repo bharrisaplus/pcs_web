@@ -1,3 +1,30 @@
+// colors
+$card-table-green = #1c5e3d
+$card-stock = #F7F7F7
+$spade-fam = #191970 // midnightblue
+$diamond-fam = #b22222 // firebrick
+$club-fam = #808000 // olive
+$heart-fam = #ff8c00 // darkorange
+$pcs-black = #333
+
+// spacing and layout
+card-row-gap()
+  calc(100% / 8) // for 4 row
+
+card-col-gap()
+  calc(100% / 26) // for 13 col
+
+
+:root
+  --spade-splash: $spade-fam
+  --diamond-splash: $diamond-fam
+  --club-splash: $club-fam
+  --heart-splash: $heart-fam
+  --turntable-curtain: rgba($pcs-black, 0.75)
+  --turntable-curtain-blend: rgba($pcs-black, 0.375)
+  --card-base: $card-stock
+  --pad-dye: $card-table-green
+
 html
   height: 100%
   width: 100%
@@ -23,40 +50,71 @@ body
 
 .closeup
   & .pad
+    padding: 9px
+    height: calc(100% - 18px)
+    width: calc(100% - 18px)
     display: flex
-    height: 100%
     flex-flow: row wrap
     justify-content: space-evenly
-    padding: 0
     list-style: none
-    width: 100%
+    background-color: var(--pad-dye)
+    margin: 0
+    overflow: hidden scroll
+    gap: card-row-gap() card-col-gap()
+    font-size: 108px
+
+    &:has(+ :popover-open)
+      pointer-events: none
   
     & li
+      display: inline-flex
       height: fit-content
-      span
-        font-size: 108px
+      line-height: 0
+      aspect-ratio: 5/7
+      justify-content: center
+      align-items: center
+      cursor: pointer
+      background-color: var(--card-base)
+      border-radius: 4.5%
+      padding: 4.5px 1.125px 2.25px
 
-.centerpiece-container
+.turntable-container
+  background-color: var(--pad-dye)
+  border-color: var(--turntable-curtain-blend)
+  border-width: 0.5px
   &::backdrop
-    background-color: rgba(51,51,51, 0.75)
+    background-color: var(--turntable-curtain)
 
-.centerpiece
+.turntable
   display: flex
   flex-flow: column wrap
   height: fit-content
   padding: 0px 27px 27px
   justify-content: center
   width: fit-content
-  
-  & &-content
+  background-color: var(--pad-dye)
+  gap: 18px
+
+  &-pickup
     font-size: 216px
+    cursor: default
+    user-select: none
+    display: inline-flex
+    height: fit-content
+    line-height: 0
+    aspect-ratio: 5/7
+    justify-content: center
+    align-items: center
+    background-color: var(--card-base)
+    border-radius: 4.5%
+    padding: 9px 1.125px 2.25px
   
-  & &-close
+  &-close
     width: 25%
     align-self: flex-end
     margin-right: -25px
   
-  & &-controls
+  &-cue-lever
     width: 100%
     display: flex
     flex-flow: row nowrap
@@ -64,3 +122,15 @@ body
 
     & button
       width: 25%
+  
+  & button
+    cursor: pointer
+
+.spade
+  color: var(--spade-splash)
+.diamond
+  color: var(--diamond-splash)
+.club
+  color: var(--club-splash)
+.heart
+  color: var(--heart-splash)

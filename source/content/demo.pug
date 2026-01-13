@@ -19,46 +19,27 @@ html(lang="en")
                 h2 (P)seudo (C)ard (S)huffler
             .closeup
                 ol.pad
-                    li
-                        span 🂡
-                    li
-                        span 🂢 
-                    li
-                        span 🂣 
-                    li
-                        span 🂤
-                    li
-                        span 🂥
-                    li
-                        span 🂦
-                    li
-                        span 🂧
-                    li
-                        span 🂨
-                    li
-                        span 🂩
-                    li
-                        span 🂪
-                    li
-                        span 🂫
-                    li
-                        span 🂭
-                    li
-                        span 🂮
-                    li
-                        span 🂿 
-                    li
-                        span 🃟 
+                    for item, idx in ['🂡','🂢','🂣','🂤','🂥','🂦','🂧','🂨','🂩','🂪','🂫','🂭','🂮','🃁','🃂','🃃','🃄','🃅','🃆','🃇','🃈','🃉','🃊','🃋','🃍','🃎', '🃞','🃝','🃛','🃚','🃙','🃘','🃗','🃖','🃕','🃔','🃓','🃒','🃑', '🂾','🂽','🂻','🂺','🂹','🂸','🂷','🂶','🂵','🂴','🂳','🂲','🂱']
+                        if idx < 13
+                            li(data-suite='spade').spade= item
+                        else if idx < 26
+                            li(data-suite="diamond").diamond= item
+                        else if idx < 39
+                            li(data-suite="club").club= item
+                        else if idx < 52
+                            li(data-suite="heart").heart= item
+                        else
+                            li= item
 
-                .centerpiece-container(popover)
-                    .centerpiece
-                        button.centerpiece-close
+                .turntable-container(popover)
+                    .turntable
+                        button.turntable-close
                             | x
-                        span.centerpiece-content
-                        div.centerpiece-controls
-                            button.centerpiece-controls-previous
+                        span.turntable-pickup
+                        div.turntable-cue-lever
+                            button.turntable-cue-lever-regression
                                 | ◄
-                            button.centerpiece-controls-next
+                            button.turntable-cue-lever-progression
                                 | ►
 
         footer

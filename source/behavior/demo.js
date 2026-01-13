@@ -1,42 +1,70 @@
-(function (demoDoc) {
-  if (Object.hasOwn(HTMLElement.prototype, "popover")) {
+(function (demoWindow, demoDoc) {
+  demoWindow.onload = (_) => {
     const
-      $cardPopover = demoDoc.querySelector(".closeup .centerpiece-container"),
-      $cardPopoverContent = $cardPopover.querySelector('.centerpiece-content'),
-      $cardPopoverClose = $cardPopover.querySelector(".centerpiece-close");
-      $cardPopoverPrevious = $cardPopover.querySelector('.centerpiece-controls-previous'),
-      $cardPopoverNext = $cardPopover.querySelector('.centerpiece-controls-next'),
-      decklist = [];
+      $container = demoDoc.querySelector(".closeup .turntable-container"),
+      $turntable = $container.querySelector('.turntable'),
+      $pickup = $turntable.querySelector('.turntable-pickup'),
+      $close = $turntable.querySelector(".turntable-close");
+      $cuePrevious = $turntable.querySelector('.turntable-cue-lever-regression'),
+      $cueNext = $turntable.querySelector('.turntable-cue-lever-progression'),
+      decklist = [],
+      pickup_base_class = $pickup.className,
+      $items = demoDoc.querySelectorAll(".closeup .pad li");
 
-    const handlePopoverClose = () => {
-      $cardPopoverContent.textContent = '';
 
-      $cardPopover.hidePopover();
+    const _tilt_item = (_mouseEvt, amount) => {
+      const $item = _mouseEvt.target;
 
-      $cardPopoverNext.disabled = false;
-      $cardPopoverPrevious.disabled = false;
-    };
+      if ($item) {
+        const
+          _prefix = amount == 0 ? `` : `-`,
+          rotate_amount = `${_prefix}${amount}deg`;
 
-    const handlePopoverOpen = (_clickEvt) => {
-      const
-        openCard = _clickEvt.target?.textContent,
-        openCardIdx = decklist.indexOf(openCard);
-
-      $cardPopoverContent.textContent = openCard;
-
-      if (openCardIdx == 0) {
-        $cardPopoverPrevious.disabled = true;
-      } else if (openCardIdx == decklist.length - 1) {
-        $cardPopoverNext.disabled = true;
+        if ($item.style.rotate != rotate_amount) {
+          $item.style.rotate = rotate_amount;
+        }
       }
-
-      $cardPopover.showPopover();
     };
 
-    const loadCard = (_clickEvt) => {
+    const _unloadTurntable = (_) => {
+      if ($container.matches(':popover-open')) {
+        $pickup.textContent = '';
+        $pickup.className = pickup_base_class;
+
+        $container.hidePopover();
+
+        $cueNext.disabled = false;
+        $cuePrevious.disabled = false;
+      }
+    };
+
+    const _loadTurntable = (_clickEvt) => {
+      if (!$container.matches(':popover-open')) {
+        const $item = _clickEvt.target;
+
+        if ($item && $item.textContent != $pickup.textContent) {
+          const foundIdx = decklist.indexOf($item.textContent);
+
+          if (foundIdx > -1) {
+            $pickup.textContent = $item.textContent;
+            $pickup.className = `${pickup_base_class} ${$item.dataset.suite}`;
+
+            if (foundIdx == 0) {
+              $cuePrevious.disabled = true;
+            } else if (foundIdx == decklist.length - 1) {
+              $cueNext.disabled = true;
+            }
+
+            $container.showPopover();
+          } 
+        }
+      }
+    };
+
+    const _spinTurntable = (_clickEvt) => {
       const
-        currentCardIdx = decklist.indexOf($cardPopoverContent.textContent),
-        loadPrevious = _clickEvt.target === $cardPopoverPrevious,
+        currentCardIdx = decklist.indexOf($pickup.textContent),
+        loadPrevious = _clickEvt.target === $cuePrevious,
         decklist_max = decklist.length - 1;
 
       let newIdx;
@@ -48,37 +76,41 @@
         newIdx = Math.min(decklist_max, currentCardIdx + 1);
       }
 
-      // Set new card in centerpiece and adjust buttons
+      // Set new card and suite color in centerpiece and adjust buttons
       if (newIdx != currentCardIdx) {
-        $cardPopoverContent.textContent = decklist[newIdx];
+        $pickup.textContent = decklist[newIdx];
+        $pickup.className = `${pickup_base_class} ${$items[newIdx].dataset.suite}`;
 
         // Prevent presses once at ends of list
         if (newIdx == 0) {
-          $cardPopoverPrevious.disabled = true;
+          $cuePrevious.disabled = true;
         } else if (newIdx == decklist_max) {
-          $cardPopoverNext.disabled = true;
+          $cueNext.disabled = true;
         }
 
         // Allow presses once away from end of list
         if (loadPrevious) {
-          $cardPopoverNext.disabled = false;
+          $cueNext.disabled = false;
         } else {
-          $cardPopoverPrevious.disabled = false;
+          $cuePrevious.disabled = false;
         }
       }
     }
 
-    demoDoc.querySelectorAll(".closeup .pad li").forEach(($elm) => {
-      decklist.push($elm.textContent);
-      $elm.addEventListener("click", handlePopoverOpen);
-    });
+    if (Object.hasOwn(HTMLElement.prototype, "popover")) {
+      $items.forEach(($elm) => {
+        decklist.push($elm.textContent);
+        $elm.addEventListener('mouseenter', (_evt) => _tilt_item(_evt, 9));
+        $elm.addEventListener('mouseleave', (_evt) => _tilt_item(_evt, 0));  
+        $elm.addEventListener("click", _loadTurntable);
+      });
 
-    $cardPopoverClose.addEventListener("click", handlePopoverClose);
-
-    $cardPopoverPrevious.addEventListener('click', (_evt) => loadCard(_evt, 0));
-    $cardPopoverNext.addEventListener('click', (_evt) => loadCard(_evt, 1));
+      $close.addEventListener("click", _unloadTurntable);
+      $cuePrevious.addEventListener('click', _spinTurntable);
+      $cueNext.addEventListener('click', _spinTurntable);
+    }
   }
-})(document);
+})(window, document);
 
 // ◖ -> 9686 
 // ◗ -> 9687
