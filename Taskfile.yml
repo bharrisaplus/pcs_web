@@ -1,3 +1,6 @@
+# Be sure to have direnv allow the .envrc file before running this
+#   OR load the variables from .envrc yourself
+
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 
 version: '3'
@@ -7,6 +10,10 @@ includes:
   pages_demo: ./build/github_pages/demo_tasks.yml
 
 tasks:
+  check_env:
+    cmds:
+      - echo $PROJECT_DIR
+      - echo $BEHAVIOR_DIR
   rear-demo:
     desc: Demo files
     cmds:
@@ -18,9 +25,9 @@ tasks:
     desc: Copy demo files into pages host directory
     deps: [rear-demo]
     cmds:
-      - cp distribution/demo/demo.html docs/index.html
-      - cp distribution/demo/main.css docs/main.css
-      - cp distribution/demo/main.js docs/main.js
+      - cp {{.DIST_DIR}}/demo/demo.html {{.PAGES_HOST_DIR}}/index.html
+      - cp {{.DIST_DIR}}/demo/main.css {{.PAGES_HOST_DIR}}/main.css
+      - cp {{.DIST_DIR}}/demo/main.js {{.PAGES_HOST_DIR}}/main.js
       - echo "Pages host directory for demo is ready"
   sweep-demo:
     desc: Remove generated files

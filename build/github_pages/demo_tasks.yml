@@ -8,12 +8,12 @@ tasks:
   sweep-content:
     desc: Clear out pages host directory
     cmds:
-      - rm -f docs/index.html
+      - rm -f {{.PAGES_HOST_DIR}}/index.html
   sweep-presentation:
     desc: Clear out pages host directory
     cmds:
-      - rm -f docs/main.css
+      - rm -f {{.PAGES_HOST_DIR}}/main.css
   sweep-behavior:
     desc: Clear out pages host directory
     cmds:
-      - rm -f docs/main.js
+      - rm -f {{.PAGES_HOST_DIR}}/main.js
