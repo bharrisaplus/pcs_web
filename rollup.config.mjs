@@ -23,7 +23,7 @@ const pagesDemoConfig = {
   output: [{
 		file: NodePath.resolve(buildInfo.demo.dist_path, 'main.js'),
 		format: 'iife',
-		name: 'Parked',
+		name: 'PCS',
 		plugins: [ RollupTerser() ],
 		sourcemap: true,
 		sourcemapBaseUrl: new NodeURL(buildInfo.demo.url_host).toString()
