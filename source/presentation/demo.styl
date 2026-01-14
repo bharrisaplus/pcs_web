@@ -39,14 +39,23 @@ body
     width: 100%
 
     & .title-marqee
+        display: flex
         height: 10%
         width: 100%
-
+        flex-flow row nowrap
+        justify-content: space-between
+        align-items: center
+        
         & h2
             margin: 0
             font-size: 24px
             font-weight: bold
             line-height: normal
+            align-self: flex-start
+
+        & .export
+            & button
+                margin-left: 4.5px
 
     & .closeup
         height: 85%
