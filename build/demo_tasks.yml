@@ -22,6 +22,10 @@ tasks:
     desc: JS
     cmds:
       -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
+  nit-behavior:
+    desc: Keeping consistent
+    cmds:
+      - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs
   # Moving things around
   put-vendor:
     desc: Copy 3rd party scripts/stylesheets/etc
