@@ -2,7 +2,7 @@
 node_modules
 
 # built resources
-distribution/**/*
+distribution/demo
 !distribution/.gitkeep
 
 # Pages
