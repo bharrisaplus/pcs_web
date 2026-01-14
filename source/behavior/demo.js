@@ -4,7 +4,7 @@
       $container = demoDoc.querySelector(".closeup .turntable-container"),
       $turntable = $container.querySelector('.turntable'),
       $pickup = $turntable.querySelector('.turntable-pickup'),
-      $close = $turntable.querySelector(".turntable-close");
+      $close = $turntable.querySelector(".turntable-close"),
       $cuePrevious = $turntable.querySelector('.turntable-cue-lever-regression'),
       $cueNext = $turntable.querySelector('.turntable-cue-lever-progression'),
       decklist = [],

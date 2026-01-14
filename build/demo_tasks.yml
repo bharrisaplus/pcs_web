@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 
-# Tasks are expected to be called from the project root or via the main Taskfile 
+# Tasks are expected to be called from the project root or via the main Taskfile
 
 version: '3'
 
@@ -9,26 +9,29 @@ tasks:
     internal: true
     desc: Stlus to CSS
     cmds:
-      - pnpm stylus source/presentation/demo.styl -o distribution/demo/main.css
+      - pnpm stylus {{.PRESENTATION_DIR}}/demo.styl -m --sourcemap-base {{.DEMO_FILE_HOST}} -o {{.DEMO_DIR}}/main.css
+      - pnpm postcss {{.DEMO_DIR}}/main.css -o {{.DEMO_DIR}}/main.css
   rear-content:
     internal: true
     desc: Pug to HTML
     cmds:
-      - pnpm pug source/content/demo.pug -o distribution/demo/
+      - pnpm pug {{.CONTENT_DIR}}/demo.pug -o {{.DEMO_DIR}}
   rear-behavior:
     internal: true
     desc: JS
     cmds:
-      - cp source/behavior/demo.js distribution/demo/main.js
+      -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
   sweep-content:
     desc: Remove generated files
     cmds:
-      - rm -f distribution/demo/demo.html
+      - rm -f {{.DEMO_DIR}}/demo.html
   sweep-presentation:
+    internal: true
     desc: Remove generated files
     cmds:
-      - rm -f distribution/demo/main.css
+      - rm -f {{.DEMO_DIR}}/main.{css,css.map}
   sweep-behavior:
+    internal: true
     desc: Remove generated files
     cmds:
-      - rm -f distribution/demo/main.{js,mjs}
+      - rm -f {{.DEMO_DIR}}/main.{js,js.map,mjs}
