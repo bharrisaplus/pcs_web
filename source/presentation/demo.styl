@@ -32,6 +32,7 @@ html
 body
   height: calc(100% - 16px)
   width: calc(100% - 16px)
+  margin: 8px
 
 .pcs-container
   height: 100%
@@ -40,88 +41,92 @@ body
   & .title-marqee
     height: 10%
     width: 100%
-    
+
     & h2
       margin: 0
-    
+      font-size: 24px
+      font-weight: bold
+      line-height: normal
+
   & .closeup
     height: 85%
     width: 100%
+    overflow-y: scroll
+    background-color: var(--pad-dye)
 
 .closeup
   & .pad
-    padding: 9px
+    display: flex
     height: calc(100% - 18px)
     width: calc(100% - 18px)
-    display: flex
+    padding: 9px
+    margin: 0
+    font-size: 108px
+    background-color: var(--pad-dye)
+    list-style: none
     flex-flow: row wrap
     justify-content: space-evenly
-    list-style: none
-    background-color: var(--pad-dye)
-    margin: 0
-    overflow: hidden scroll
     gap: card-row-gap() card-col-gap()
-    font-size: 108px
 
     &:has(+ :popover-open)
       pointer-events: none
-  
+
     & li
-      display: inline-flex
-      height: fit-content
-      line-height: 0
-      aspect-ratio: 5/7
-      justify-content: center
-      align-items: center
       cursor: pointer
-      background-color: var(--card-base)
-      border-radius: 4.5%
-      padding: 4.5px 1.125px 2.25px
 
 .turntable-container
+  margin: auto
+  border: 3.5px
+  border-radius: 4.5%
+  padding: 4.5px
   background-color: var(--pad-dye)
   border-color: var(--turntable-curtain-blend)
+
   &::backdrop
     background-color: var(--turntable-curtain)
+    backdrop-filter: blur(3px)
 
 .turntable
   display: flex
-  flex-flow: column wrap
   height: fit-content
-  padding: 0px 27px 27px
-  justify-content: center
   width: fit-content
+  padding: 0px 27px 27px
   background-color: var(--pad-dye)
+  flex-flow: column wrap
+  justify-content: center
   gap: 18px
 
-  &-pickup
+  & &-pickup
+    padding-top: 9px
     font-size: 216px
     cursor: default
     user-select: none
-    display: inline-flex
-    height: fit-content
-    line-height: 0
-    aspect-ratio: 5/7
-    justify-content: center
-    align-items: center
-    background-color: var(--card-base)
-    border-radius: 4.5%
-    padding: 9px 1.125px 2.25px
-  
-  &-close
+
+  & &-close
     width: 25%
-    align-self: flex-end
     margin-right: -25px
-  
-  &-cue-lever
-    width: 100%
+    margin-bottom: 9px
+    color: var(--card-base)
+    background-color: transparent
+    border-color: transparent
+    align-self: flex-end
+    
+    &:hover
+      border-color: var(--diamond-splash)
+
+  & &-cue-lever
     display: flex
+    width: 100%
+    margin-top: 9px
     flex-flow: row nowrap
     justify-content: space-around
 
     & button
+      display: flex
       width: 25%
-  
+      justify-content: center
+      align-items: center
+
   & button
     cursor: pointer
 
@@ -133,3 +138,16 @@ body
   color: var(--club-splash)
 .heart
   color: var(--heart-splash)
+
+.playing-card
+  display: inline-flex
+  height: fit-content
+  aspect-ratio: 5/7
+  border-radius: 4.5%
+  padding: 4.5px 1.125px 2.25px
+  line-height: 0
+  background-color: var(--card-base)
+  border-color: transparent
+  justify-content: center
+  align-items: center
+  
