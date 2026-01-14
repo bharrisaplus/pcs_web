@@ -21,15 +21,15 @@ html(lang="en")
                 ol.pad
                     for item, idx in ['🂡','🂢','🂣','🂤','🂥','🂦','🂧','🂨','🂩','🂪','🂫','🂭','🂮','🃁','🃂','🃃','🃄','🃅','🃆','🃇','🃈','🃉','🃊','🃋','🃍','🃎', '🃞','🃝','🃛','🃚','🃙','🃘','🃗','🃖','🃕','🃔','🃓','🃒','🃑', '🂾','🂽','🂻','🂺','🂹','🂸','🂷','🂶','🂵','🂴','🂳','🂲','🂱']
                         if idx < 13
-                            li(data-suite='spade').spade= item
+                            li(data-suite='spade').spade.playing-card= item
                         else if idx < 26
-                            li(data-suite="diamond").diamond= item
+                            li(data-suite="diamond").diamond.playing-card= item
                         else if idx < 39
-                            li(data-suite="club").club= item
+                            li(data-suite="club").club.playing-card= item
                         else if idx < 52
-                            li(data-suite="heart").heart= item
+                            li(data-suite="heart").heart.playing-card= item
                         else
-                            li= item
+                            li.playing-card= item
 
                 .turntable-container(popover)
                     .turntable

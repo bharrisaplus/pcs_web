@@ -47,7 +47,7 @@
 
           if (foundIdx > -1) {
             $pickup.textContent = $item.textContent;
-            $pickup.className = `${pickup_base_class} ${$item.dataset.suite}`;
+            $pickup.className = `${pickup_base_class} ${$item.dataset.suite} playing-card`;
 
             if (foundIdx == 0) {
               $cuePrevious.disabled = true;
@@ -79,7 +79,7 @@
       // Set new card and suite color in centerpiece and adjust buttons
       if (newIdx != currentCardIdx) {
         $pickup.textContent = decklist[newIdx];
-        $pickup.className = `${pickup_base_class} ${$items[newIdx].dataset.suite}`;
+        $pickup.className = `${pickup_base_class} ${$items[newIdx].dataset.suite} playing-card`;
 
         // Prevent presses once at ends of list
         if (newIdx == 0) {

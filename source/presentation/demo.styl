@@ -68,16 +68,7 @@ body
       pointer-events: none
 
     & li
-      display: inline-flex
-      height: fit-content
-      aspect-ratio: 5/7
-      border-radius: 4.5%
-      padding: 4.5px 1.125px 2.25px
-      line-height: 0
-      background-color: var(--card-base)
       cursor: pointer
-      justify-content: center
-      align-items: center
 
 .turntable-container
   background-color: var(--pad-dye)
@@ -98,18 +89,10 @@ body
   gap: 18px
 
   &-pickup
-    display: inline-flex
-    height: fit-content
-    aspect-ratio: 5/7
-    border-radius: 4.5%
-    padding: 9px 1.125px 2.25px
-    line-height: 0
+    padding-top: 9px
     font-size: 216px
-    background-color: var(--card-base)
     cursor: default
     user-select: none
-    justify-content: center
-    align-items: center
 
   &-close
     width: 25%
@@ -138,3 +121,15 @@ body
   color: var(--club-splash)
 .heart
   color: var(--heart-splash)
+
+.playing-card
+  display: inline-flex
+  height: fit-content
+  aspect-ratio: 5/7
+  border-radius: 4.5%
+  padding: 4.5px 1.125px 2.25px
+  line-height: 0
+  background-color: var(--card-base)
+  justify-content: center
+  align-items: center
+  
