@@ -20,6 +20,7 @@ tasks:
       - task: demo_build:rear-content
       - task: demo_build:rear-presentation
       - task: demo_build:rear-behavior
+      - task: demo_build:put-vendor
       - echo "Demo ready"
   pages-demo:
     desc: Copy demo files into pages host directory
