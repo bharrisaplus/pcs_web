@@ -13,7 +13,7 @@ const
 		},
 		demo: {
 			url_host: NodeProcess.env.DEMO_FILE_HOST || new NodeURL('./distribution/demo}', import.meta.url),
-			dist_path: NodeProcess.env.DEMO_DIR || NodePath.resolve(_dir, `./distribution/demo`)
+			demo_path: NodeProcess.env.DEMO_DIR || NodePath.resolve(_dir, `./distribution/demo`)
 		}
 	};
 
@@ -21,7 +21,7 @@ const
 const pagesDemoConfig = {
   input: NodePath.resolve(buildInfo.common.behavior_path, 'demo.js'),
   output: [{
-		file: NodePath.resolve(buildInfo.demo.dist_path, 'main.js'),
+		file: NodePath.resolve(buildInfo.demo.demo_path, 'main.js'),
 		format: 'iife',
 		name: 'PCS',
 		plugins: [ RollupTerser() ],
