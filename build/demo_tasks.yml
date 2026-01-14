@@ -26,6 +26,10 @@ tasks:
     desc: Keeping consistent
     cmds:
       - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs
+  nit-presentation:
+    desc: Keeping consistent
+    cmds:
+      - pnpm stylelint -c {{.PROJECT_DIR}}/stylelint.config.mjs {{.PRESENTATION_DIR}}/demo.styl
   # Moving things around
   put-vendor:
     desc: Copy 3rd party scripts/stylesheets/etc
