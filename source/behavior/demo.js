@@ -26,6 +26,7 @@
       }
     };
 
+
     const _unloadTurntable = (_) => {
       if ($container.matches(':popover-open')) {
         $pickup.textContent = '';
@@ -37,6 +38,7 @@
         $cuePrevious.disabled = false;
       }
     };
+
 
     const _loadTurntable = (_clickEvt) => {
       if (!$container.matches(':popover-open')) {
@@ -60,6 +62,7 @@
         }
       }
     };
+
 
     const _spinTurntable = (_clickEvt) => {
       const
@@ -95,7 +98,8 @@
           $cuePrevious.disabled = false;
         }
       }
-    }
+    };
+
 
     if (Object.hasOwn(HTMLElement.prototype, "popover")) {
       $items.forEach(($elm) => {
