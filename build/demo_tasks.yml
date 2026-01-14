@@ -43,7 +43,9 @@ tasks:
     desc: Remove generated files
     cmds:
       - rm -f {{.DEMO_DIR}}/main.{css,css.map}
+      - rm -f {{.DEMO_DIR}}/reset.css
   sweep-behavior:
     desc: Remove generated files
     cmds:
       - rm -f {{.DEMO_DIR}}/main.{js,js.map,mjs}
+      - rm -f {{.DEMO_DIR}}/html2canvas.js
