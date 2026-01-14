@@ -1,4 +1,4 @@
-(function (demoWindow, demoDoc) {
+(function (demoWindow, demoDoc, demoCanvasConvert) {
   demoWindow.onload = (_) => {
     const
       $container = demoDoc.querySelector(".closeup .turntable-container"),
@@ -9,7 +9,8 @@
       $cueNext = $turntable.querySelector('.turntable-cue-lever-progression'),
       decklist = [],
       pickup_base_class = $pickup.className,
-      $items = demoDoc.querySelectorAll(".closeup .pad li");
+      $items = demoDoc.querySelectorAll(".closeup .pad li"),
+      $exportTrigger = document.querySelector('.export button');
 
 
     const _tilt_item = (_mouseEvt, amount) => {
@@ -26,6 +27,7 @@
       }
     };
 
+
     const _unloadTurntable = (_) => {
       if ($container.matches(':popover-open')) {
         $pickup.textContent = '';
@@ -35,8 +37,10 @@
 
         $cueNext.disabled = false;
         $cuePrevious.disabled = false;
+        $exportTrigger.disabled = false;
       }
     };
+
 
     const _loadTurntable = (_clickEvt) => {
       if (!$container.matches(':popover-open')) {
@@ -55,11 +59,13 @@
               $cueNext.disabled = true;
             }
 
+            $exportTrigger.disabled = true;
             $container.showPopover();
           } 
         }
       }
     };
+
 
     const _spinTurntable = (_clickEvt) => {
       const
@@ -95,7 +101,43 @@
           $cuePrevious.disabled = false;
         }
       }
-    }
+    };
+
+
+    const _canvasyze_rasterize_ = async (_clickEvt, captureQS, dumpQS) => {
+      const
+        $clickTarget = _clickEvt.target,
+        $capture = demoDoc.querySelector(captureQS),
+        $captureStyle = (demoWindow.getComputedStyle($capture)),
+        $dump = demoDoc.querySelector(dumpQS);
+
+      let $maybeCanvas, canvas_data;
+
+      $clickTarget.disabled = true;
+
+      $maybeCanvas = await demoCanvasConvert($capture, {
+        height: $capture.scrollHeight,
+        width: $capture.getBoundingClientRect().width
+      });
+
+      canvas_data = $maybeCanvas.toDataURL('image/png');
+
+      $dump.href = canvas_data;
+      $dump.download = 'pcs_demo_ndo.png';
+      $dump.textContent = '>redownload here<';
+
+      $dump.click();
+
+      setTimeout(() => {
+        $dump.href = '';
+        $dump.download = '';
+        $dump.textContent = '';
+
+        $exportTrigger.disabled = false;
+        
+      }, 5000);
+    };
+
 
     if (Object.hasOwn(HTMLElement.prototype, "popover")) {
       $items.forEach(($elm) => {
@@ -108,9 +150,13 @@
       $close.addEventListener("click", _unloadTurntable);
       $cuePrevious.addEventListener('click', _spinTurntable);
       $cueNext.addEventListener('click', _spinTurntable);
+
+      $exportTrigger.addEventListener("click", (_evt) => {
+        _canvasyze_rasterize_(_evt, '.closeup', '.export a')
+      });
     }
   }
-})(window, document);
+})(window, document, html2canvas);
 
 // ◖ -> 9686 
 // ◗ -> 9687

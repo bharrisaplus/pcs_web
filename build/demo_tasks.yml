@@ -7,21 +7,26 @@ version: '3'
 tasks:
   # Building/Transpiling/etc
   rear-presentation:
-    internal: true
     desc: Stlus to CSS
     cmds:
       - pnpm stylus {{.PRESENTATION_DIR}}/demo.styl -m --sourcemap-base {{.DEMO_FILE_HOST}} -o {{.DEMO_DIR}}/main.css
       - pnpm postcss {{.DEMO_DIR}}/main.css -o {{.DEMO_DIR}}/main.css
   rear-content:
-    internal: true
     desc: Pug to HTML
     cmds:
       - pnpm pug {{.CONTENT_DIR}}/demo.pug -o {{.DEMO_DIR}}
   rear-behavior:
-    internal: true
     desc: JS
     cmds:
       -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
+  nit-behavior:
+    desc: Keeping consistent
+    cmds:
+      - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs
+  nit-presentation:
+    desc: Keeping consistent
+    cmds:
+      - pnpm stylelint -c {{.PROJECT_DIR}}/stylelint.config.mjs {{.PRESENTATION_DIR}}/demo.styl
   # Moving things around
   put-vendor:
     desc: Copy 3rd party scripts/stylesheets/etc
@@ -35,12 +40,12 @@ tasks:
     cmds:
       - rm -f {{.DEMO_DIR}}/demo.html
   sweep-presentation:
-    internal: true
     desc: Remove generated files
     cmds:
       - rm -f {{.DEMO_DIR}}/main.{css,css.map}
+      - rm -f {{.DEMO_DIR}}/reset.css
   sweep-behavior:
-    internal: true
     desc: Remove generated files
     cmds:
       - rm -f {{.DEMO_DIR}}/main.{js,js.map,mjs}
+      - rm -f {{.DEMO_DIR}}/html2canvas.js
