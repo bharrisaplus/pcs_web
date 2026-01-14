@@ -9,7 +9,8 @@ tasks:
     internal: true
     desc: Stlus to CSS
     cmds:
-      - pnpm stylus {{.PRESENTATION_DIR}}/demo.styl -o {{.DEMO_DIR}}/main.css
+      - pnpm stylus {{.PRESENTATION_DIR}}/demo.styl -m --sourcemap-base {{.DEMO_FILE_HOST}} -o {{.DEMO_DIR}}/main.css
+      - pnpm postcss {{.DEMO_DIR}}/main.css -o {{.DEMO_DIR}}/main.css
   rear-content:
     internal: true
     desc: Pug to HTML
@@ -28,7 +29,7 @@ tasks:
     internal: true
     desc: Remove generated files
     cmds:
-      - rm -f {{.DEMO_DIR}}/main.css
+      - rm -f {{.DEMO_DIR}}/main.{css,css.map}
   sweep-behavior:
     internal: true
     desc: Remove generated files
