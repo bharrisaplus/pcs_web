@@ -16,6 +16,8 @@
       suites = ['spade', 'diamond', 'club', 'heart'],
       pickup_base_class = $pickup.className;
 
+    let
+      decklist = [];
 
     const _get_suite = (ndo_idx) => suites[Math.floor(ndo_idx / 13)];
 
@@ -76,22 +78,26 @@
 
     const _spinTurntable = (_clickEvt) => {
       const
-        current_idx = ndo.indexOf($pickup.textContent),
+        current_idx = decklist.indexOf($pickup.textContent),
         loadPrevious = _clickEvt.target === $cuePrevious;
 
-      let new_idx;
+      let
+        new_idx,
+        ndo_idx = ndo.indexOf($pickup.textContent);
 
       // Get previous or next card within list
       if (loadPrevious) {
         new_idx = Math.max(0, current_idx - 1);
+        ndo_idx = Math.max(0, ndo_idx - 1)
       } else {
         new_idx = Math.min(ndo_max, current_idx + 1);
+        ndo_idx = Math.min(ndo_max, ndo_idx + 1);
       }
 
       // Set new card and suite color in centerpiece and adjust buttons
       if (new_idx != current_idx) {
         $pickup.textContent = ndo[new_idx];
-        $pickup.className = `${pickup_base_class} ${_get_suite(new_idx)} playing-card`;
+        $pickup.className = `${pickup_base_class} ${_get_suite(ndo_idx)} playing-card`;
 
         // Prevent presses once at ends of list
         if (new_idx == 0) {
@@ -152,6 +158,8 @@
         $elm.addEventListener('mouseleave', (_evt) => _tilt_item(_evt, 0));  
         $elm.addEventListener("click", _loadTurntable);
       });
+
+      decklist = Array.from(ndo);
 
       $close.addEventListener("click", _unloadTurntable);
       $cuePrevious.addEventListener('click', _spinTurntable);
