@@ -62,7 +62,7 @@
 
             if (found_idx == 0) {
               $cuePrevious.disabled = true;
-            } else if (found_idx == ndo.length - 1) {
+            } else if (found_idx == ndo_max) {
               $cueNext.disabled = true;
             }
 
@@ -77,8 +77,7 @@
     const _spinTurntable = (_clickEvt) => {
       const
         current_idx = ndo.indexOf($pickup.textContent),
-        loadPrevious = _clickEvt.target === $cuePrevious,
-        ndo_max = ndo.length - 1;
+        loadPrevious = _clickEvt.target === $cuePrevious;
 
       let new_idx;
 
