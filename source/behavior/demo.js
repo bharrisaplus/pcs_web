@@ -13,7 +13,11 @@
     const
       ndo = [],
       ndo_max = 51,
+      suites = ['spade', 'diamond', 'club', 'heart'],
       pickup_base_class = $pickup.className;
+
+
+    const _get_suite = (ndo_idx) => suites[Math.floor(ndo_idx / 13)];
 
 
     const _tilt_item = (_mouseEvt, amount) => {
@@ -50,15 +54,15 @@
         const $item = _clickEvt.target;
 
         if ($item && $item.textContent != $pickup.textContent) {
-          const foundIdx = ndo.indexOf($item.textContent);
+          const found_idx = ndo.indexOf($item.textContent);
 
-          if (foundIdx > -1) {
+          if (found_idx > -1) {
             $pickup.textContent = $item.textContent;
-            $pickup.className = `${pickup_base_class} ${$item.dataset.suite} playing-card`;
+            $pickup.className = `${pickup_base_class} ${_get_suite(found_idx)} playing-card`;
 
-            if (foundIdx == 0) {
+            if (found_idx == 0) {
               $cuePrevious.disabled = true;
-            } else if (foundIdx == ndo.length - 1) {
+            } else if (found_idx == ndo.length - 1) {
               $cueNext.disabled = true;
             }
 
@@ -72,28 +76,28 @@
 
     const _spinTurntable = (_clickEvt) => {
       const
-        currentCardIdx = ndo.indexOf($pickup.textContent),
+        current_idx = ndo.indexOf($pickup.textContent),
         loadPrevious = _clickEvt.target === $cuePrevious,
         ndo_max = ndo.length - 1;
 
-      let newIdx;
+      let new_idx;
 
       // Get previous or next card within list
       if (loadPrevious) {
-        newIdx = Math.max(0, currentCardIdx - 1);
+        new_idx = Math.max(0, current_idx - 1);
       } else {
-        newIdx = Math.min(ndo_max, currentCardIdx + 1);
+        new_idx = Math.min(ndo_max, current_idx + 1);
       }
 
       // Set new card and suite color in centerpiece and adjust buttons
-      if (newIdx != currentCardIdx) {
-        $pickup.textContent = ndo[newIdx];
-        $pickup.className = `${pickup_base_class} ${$items[newIdx].dataset.suite} playing-card`;
+      if (new_idx != current_idx) {
+        $pickup.textContent = ndo[new_idx];
+        $pickup.className = `${pickup_base_class} ${_get_suite(new_idx)} playing-card`;
 
         // Prevent presses once at ends of list
-        if (newIdx == 0) {
+        if (new_idx == 0) {
           $cuePrevious.disabled = true;
-        } else if (newIdx == ndo_max) {
+        } else if (new_idx == ndo_max) {
           $cueNext.disabled = true;
         }
 
