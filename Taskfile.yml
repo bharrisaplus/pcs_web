@@ -31,6 +31,7 @@ tasks:
       - cp {{.DIST_DIR}}/demo/main.css {{.PAGES_HOST_DIR}}/main.css
       - cp {{.DIST_DIR}}/demo/main.js {{.PAGES_HOST_DIR}}/main.js
       - cp {{.DIST_DIR}}/demo/html2canvas.js {{.PAGES_HOST_DIR}}/html2canvas.js
+      - cp {{.DIST_DIR}}/demo/chance.js {{.PAGES_HOST_DIR}}/chance.js
       - echo "Pages host directory for demo is ready"
   sweep-demo:
     desc: Remove generated files

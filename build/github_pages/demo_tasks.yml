@@ -19,3 +19,4 @@ tasks:
     cmds:
       - rm -f {{.PAGES_HOST_DIR}}/main.js
       - rm -f {{.PAGES_HOST_DIR}}/html2canvas.js
+      - rm -f {{.PAGES_HOST_DIR}}/chance.js
