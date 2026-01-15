@@ -52,10 +52,20 @@ body
             font-weight: bold
             line-height: normal
             align-self: flex-start
+        
+        & .controls
+            display: flex
+            margin-right: 18px
+            flex-flow: row nowrap
+            gap: 4.5px
 
-        & .export
-            & button
-                margin-left: 4.5px
+            & .export
+                & button
+                    margin-left: 4.5px
+                & a
+                    display: inline-block
+                    width: 126px
+
 
     & .closeup
         height: 85%

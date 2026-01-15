@@ -1,4 +1,4 @@
-(function (demoWindow, demoDoc, demoCanvasConvert) {
+(function (demoWindow, demoDoc, demoCanvasConvert, demoRand) {
   demoWindow.onload = (_) => {
     const
       $container = demoDoc.querySelector(".closeup .turntable-container"),
@@ -7,7 +7,8 @@
       $close = $turntable.querySelector(".turntable-close"),
       $cuePrevious = $turntable.querySelector('.turntable-cue-lever-regression'),
       $cueNext = $turntable.querySelector('.turntable-cue-lever-progression'),
-      $exportTrigger = document.querySelector('.export button');
+      $exportTrigger = document.querySelector('.export button'),
+      $shuffleTrigger = demoDoc.querySelector('.shuffle button');
 
     const
       ndo = [],
@@ -18,7 +19,25 @@
     let
       decklist = [];
 
+
     const _get_suite = (ndo_idx) => suites[Math.floor(ndo_idx / 13)];
+
+
+    const _shuffle_items = () => {
+      $shuffleTrigger.disabled = true;
+      // do shuffle
+      const mixed_up = demoRand.shuffle(Array.from(demoDoc.querySelectorAll('.closeup .pad li')))
+      //
+      // update current decklist
+      decklist = mixed_up.map(($elm) => $elm.textContent);
+      //
+      //
+      demoDoc.querySelector('.closeup .pad').replaceChildren(...mixed_up);
+
+      demoWindow.setTimeout(() => {
+        $shuffleTrigger.disabled = false;
+      }, 5000);
+    };
 
 
     const _tilt_item = (_mouseEvt, amount) => {
@@ -46,6 +65,7 @@
         $cueNext.disabled = false;
         $cuePrevious.disabled = false;
         $exportTrigger.disabled = false;
+        $shuffleTrigger.disabled = false;
       }
     };
 
@@ -68,6 +88,7 @@
             }
 
             $exportTrigger.disabled = true;
+            $shuffleTrigger.disabled = true;
             $container.showPopover();
           } 
         }
@@ -154,7 +175,7 @@
       demoDoc.querySelectorAll(".closeup .pad li").forEach(($elm) => {
         ndo.push($elm.textContent);
         $elm.addEventListener('mouseenter', (_evt) => _tilt_item(_evt, 9));
-        $elm.addEventListener('mouseleave', (_evt) => _tilt_item(_evt, 0));  
+        $elm.addEventListener('mouseleave', (_evt) => _tilt_item(_evt, 0));
         $elm.addEventListener("click", _loadTurntable);
       });
 
@@ -167,9 +188,11 @@
       $exportTrigger.addEventListener("click", (_evt) => {
         _canvasyze_rasterize_(_evt, '.closeup', '.export a')
       });
+
+      $shuffleTrigger.addEventListener('click', _shuffle_items);
     }
   }
-})(window, document, html2canvas);
+})(window, document, html2canvas, chance);
 
 // ◖ -> 9686 
 // ◗ -> 9687
