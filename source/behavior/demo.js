@@ -7,10 +7,13 @@
       $close = $turntable.querySelector(".turntable-close"),
       $cuePrevious = $turntable.querySelector('.turntable-cue-lever-regression'),
       $cueNext = $turntable.querySelector('.turntable-cue-lever-progression'),
-      decklist = [],
-      pickup_base_class = $pickup.className,
       $items = demoDoc.querySelectorAll(".closeup .pad li"),
       $exportTrigger = document.querySelector('.export button');
+
+    const
+      ndo = [],
+      ndo_max = 51,
+      pickup_base_class = $pickup.className;
 
 
     const _tilt_item = (_mouseEvt, amount) => {
@@ -47,7 +50,7 @@
         const $item = _clickEvt.target;
 
         if ($item && $item.textContent != $pickup.textContent) {
-          const foundIdx = decklist.indexOf($item.textContent);
+          const foundIdx = ndo.indexOf($item.textContent);
 
           if (foundIdx > -1) {
             $pickup.textContent = $item.textContent;
@@ -55,7 +58,7 @@
 
             if (foundIdx == 0) {
               $cuePrevious.disabled = true;
-            } else if (foundIdx == decklist.length - 1) {
+            } else if (foundIdx == ndo.length - 1) {
               $cueNext.disabled = true;
             }
 
@@ -69,9 +72,9 @@
 
     const _spinTurntable = (_clickEvt) => {
       const
-        currentCardIdx = decklist.indexOf($pickup.textContent),
+        currentCardIdx = ndo.indexOf($pickup.textContent),
         loadPrevious = _clickEvt.target === $cuePrevious,
-        decklist_max = decklist.length - 1;
+        ndo_max = ndo.length - 1;
 
       let newIdx;
 
@@ -79,18 +82,18 @@
       if (loadPrevious) {
         newIdx = Math.max(0, currentCardIdx - 1);
       } else {
-        newIdx = Math.min(decklist_max, currentCardIdx + 1);
+        newIdx = Math.min(ndo_max, currentCardIdx + 1);
       }
 
       // Set new card and suite color in centerpiece and adjust buttons
       if (newIdx != currentCardIdx) {
-        $pickup.textContent = decklist[newIdx];
+        $pickup.textContent = ndo[newIdx];
         $pickup.className = `${pickup_base_class} ${$items[newIdx].dataset.suite} playing-card`;
 
         // Prevent presses once at ends of list
         if (newIdx == 0) {
           $cuePrevious.disabled = true;
-        } else if (newIdx == decklist_max) {
+        } else if (newIdx == ndo_max) {
           $cueNext.disabled = true;
         }
 
@@ -141,7 +144,7 @@
 
     if (Object.hasOwn(HTMLElement.prototype, "popover")) {
       $items.forEach(($elm) => {
-        decklist.push($elm.textContent);
+        ndo.push($elm.textContent);
         $elm.addEventListener('mouseenter', (_evt) => _tilt_item(_evt, 9));
         $elm.addEventListener('mouseleave', (_evt) => _tilt_item(_evt, 0));  
         $elm.addEventListener("click", _loadTurntable);
