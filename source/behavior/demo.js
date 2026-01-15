@@ -80,28 +80,28 @@
         current_idx = decklist.indexOf($pickup.textContent),
         loadPrevious = _clickEvt.target === $cuePrevious;
 
-      let
-        new_idx,
-        ndo_idx = ndo.indexOf($pickup.textContent);
+      let spun_idx;
 
       // Get previous or next card within list
       if (loadPrevious) {
-        new_idx = Math.max(0, current_idx - 1);
-        ndo_idx = Math.max(0, ndo_idx - 1)
+        spun_idx = Math.max(0, current_idx - 1);
       } else {
-        new_idx = Math.min(ndo_max, current_idx + 1);
-        ndo_idx = Math.min(ndo_max, ndo_idx + 1);
+        spun_idx = Math.min(ndo_max, current_idx + 1);
       }
 
       // Set new card and suite color in centerpiece and adjust buttons
-      if (new_idx != current_idx) {
-        $pickup.textContent = ndo[new_idx];
-        $pickup.className = `${pickup_base_class} ${_get_suite(ndo_idx)} playing-card`;
+      if (spun_idx != current_idx) {
+        const
+          spun_item = decklist[spun_idx],
+          spun_suite = _get_suite((ndo.indexOf(spun_item)));
+
+        $pickup.textContent = spun_item;
+        $pickup.className = `${pickup_base_class} ${spun_suite} playing-card`;
 
         // Prevent presses once at ends of list
-        if (new_idx == 0) {
+        if (spun_idx == 0) {
           $cuePrevious.disabled = true;
-        } else if (new_idx == ndo_max) {
+        } else if (spun_idx == ndo_max) {
           $cueNext.disabled = true;
         }
 
