@@ -7,7 +7,6 @@
       $close = $turntable.querySelector(".turntable-close"),
       $cuePrevious = $turntable.querySelector('.turntable-cue-lever-regression'),
       $cueNext = $turntable.querySelector('.turntable-cue-lever-progression'),
-      $items = demoDoc.querySelectorAll(".closeup .pad li"),
       $exportTrigger = document.querySelector('.export button');
 
     const
@@ -152,7 +151,7 @@
 
 
     if (Object.hasOwn(HTMLElement.prototype, "popover")) {
-      $items.forEach(($elm) => {
+      demoDoc.querySelectorAll(".closeup .pad li").forEach(($elm) => {
         ndo.push($elm.textContent);
         $elm.addEventListener('mouseenter', (_evt) => _tilt_item(_evt, 9));
         $elm.addEventListener('mouseleave', (_evt) => _tilt_item(_evt, 0));  
