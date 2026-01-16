@@ -5,7 +5,7 @@ import { URL as NodeURL } from 'node:url';
 import { default as buildShared } from '../../manifest.mjs';
 
 
-const pagesDemoConfig = {
+const buildConfig = {
 	cwd: buildShared.project_path,
 	map: NodeProcess.env.NODE_ENV == 'production' ? false : true,
 	plugins: {
@@ -16,4 +16,4 @@ const pagesDemoConfig = {
 };
 
 
-export default pagesDemoConfig;
+export default buildConfig;
