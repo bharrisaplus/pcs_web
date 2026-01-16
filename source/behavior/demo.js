@@ -1,5 +1,5 @@
 (function (demoWindow, demoDoc, demoCanvasConvert, demoRand) {
-  demoWindow.onload = (_) => {
+  demoWindow.onload = () => {
     const
       $container = demoDoc.querySelector(".closeup .turntable-container"),
       $turntable = $container.querySelector('.turntable'),
@@ -55,7 +55,7 @@
     };
 
 
-    const _unloadTurntable = (_) => {
+    const _unloadTurntable = () => {
       if ($container.matches(':popover-open')) {
         $pickup.textContent = '';
         $pickup.className = pickup_base_class;
@@ -160,7 +160,7 @@
 
       $dump.click();
 
-      setTimeout(() => {
+      demoWindow.setTimeout(() => {
         $dump.href = '';
         $dump.download = '';
         $dump.textContent = '';
