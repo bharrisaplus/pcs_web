@@ -8,7 +8,7 @@ import { default as RollupTerser } from '@rollup/plugin-terser';
 const
 	_dir = import.meta.dirname,
 	buildInfo = {
-		common: {
+		shared: {
 			behavior_path: NodeProcess.env.BEHAVIOR_DIR || NodePath.resolve(_dir, '../../../source/behavior')
 		},
 		demo: {
@@ -25,7 +25,7 @@ const
 
 const
 	fhostConfig = {
-	  input: NodePath.resolve(buildInfo.common.behavior_path, 'demo.js'),
+	  input: NodePath.resolve(buildInfo.shared.behavior_path, 'demo.js'),
 	  output: [{
 			file: NodePath.resolve(buildInfo.demo.fhost.path, 'main.js'),
 			format: 'iife',
@@ -36,7 +36,7 @@ const
 		}]
 	},
 	prodConfig = {
-	  input: NodePath.resolve(buildInfo.common.behavior_path, 'demo.js'),
+	  input: NodePath.resolve(buildInfo.shared.behavior_path, 'demo.js'),
 	  output: [{
 			file: NodePath.resolve(buildInfo.demo.prod.path, 'main.js'),
 			format: 'iife',

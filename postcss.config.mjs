@@ -5,14 +5,14 @@ import { URL as NodeURL } from 'node:url';
 const
 	_dir = import.meta.dirname,
 	buildInfo = {
-		common: {
+		shared: {
 			project_path: NodeProcess.env.PROJECT_DIR || NodePath.resolve(_dir, './')
 		}
 	};
 
 
 const pagesDemoConfig = {
-	cwd: buildInfo.project_path,
+	cwd: buildInfo.shared.project_path,
 	map: NodeProcess.env.NODE_ENV == 'production' ? false : true,
 	plugins: {
 		'postcss-combine-duplicated-selectors': {},
