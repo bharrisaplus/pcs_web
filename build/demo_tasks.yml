@@ -10,7 +10,7 @@ tasks:
     desc: Stlus to CSS
     cmds:
       - pnpm stylus {{.PRESENTATION_DIR}}/demo.styl -m --sourcemap-base {{.DEMO_FILE_HOST}} -o {{.DEMO_DIR}}/main.css
-      - pnpm postcss {{.DEMO_DIR}}/main.css -o {{.DEMO_DIR}}/main.css
+      - pnpm postcss {{.DEMO_DIR}}/main.css --config {{.PROJECT_DIR}} -o {{.DEMO_DIR}}/main.css
   rear-content:
     desc: Pug to HTML
     cmds:
@@ -20,11 +20,11 @@ tasks:
     cmds:
       -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
   nit-behavior:
-    desc: Keeping consistent
+    desc: Keeping js/mjs consistent
     cmds:
       - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs
   nit-presentation:
-    desc: Keeping consistent
+    desc: Keeping stylus/css consistent
     cmds:
       - pnpm stylelint -c {{.PROJECT_DIR}}/stylelint.config.mjs {{.PRESENTATION_DIR}}/demo.styl
   # Moving things around
