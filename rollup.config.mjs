@@ -1,10 +1,7 @@
-// Node stuff
 import { default as NodeProcess } from 'node:process';
-import { default as NodePath } from 'node:path';
-import { URL as NodeURL } from 'node:url';
-// NPM packages
+
 import { default as RollupTerser } from '@rollup/plugin-terser';
-// Project
+
 import { default as octocatV0Target } from './build/octocat/v0/_rollup.config.mjs'
 
 
