@@ -32,9 +32,9 @@ tasks:
     desc: Copy 3rd party scripts/stylesheets/etc
     cmds:
       - cp {{.COMMON_DIR}}/vendor/meyerweb/reset.css {{.DEMO_DIR}}
-      - cp {{.COMMON_DIR}}/vendor/html2canvas/html2canvas.min.js {{.DEMO_DIR}}
-      - cp {{.COMMON_DIR}}/vendor/chancejs/chance.min.js {{.DEMO_DIR}}
-      - echo "MeyerWeb-CSSReset and HTML2Canvas placed with demo files"
+      - cp {{.COMMON_DIR}}/vendor/html2canvas/html2canvas.{js,js.map} {{.DEMO_DIR}}
+      - cp {{.COMMON_DIR}}/vendor/chancejs/chance.js {{.DEMO_DIR}}
+      - echo "MeyerWeb-CSSReset, HTML2Canvas and ChanceJS placed with demo files"
   # Clean up/Tear down
   sweep-content:
     desc: Remove generated files
@@ -49,6 +49,5 @@ tasks:
     desc: Remove generated files
     cmds:
       - rm -f {{.DEMO_DIR}}/main.{js,js.map,mjs}
-      - rm -f {{.DEMO_DIR}}/html2canvas.js
-      - rm -f {{.DEMO_DIR}}/chance.js
-
+      - rm -f {{.DEMO_DIR}}/html2canvas.{js,js.map}
+      - rm -f {{.DEMO_DIR}}/chance.{js,min.js,min.js.map}
