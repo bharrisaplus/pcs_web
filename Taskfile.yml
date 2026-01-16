@@ -6,41 +6,41 @@
 version: '3'
 
 includes:
-  pages_demo_fhost: ./build/github_pages/demo/fhost_tasks.yml
-  pages_demo_prod: ./build/github_pages/demo/prod_tasks.yml
+  pages_v0_fhost: ./build/github_pages/v0/fhost_tasks.yml
+  pages_v0_prod: ./build/github_pages/v0/prod_tasks.yml
 
 tasks:
   check_env:
     cmds:
       - echo $PROJECT_DIR
       - echo $BEHAVIOR_DIR
-  rear-pages-demo-fhost:
+  rear-pages-v0-fhost:
     desc: Build demo files
     cmds:
-      - task: pages_demo_fhost:rear-content
-      - task: pages_demo_fhost:rear-presentation
-      - task: pages_demo_fhost:rear-behavior
-      - task: pages_demo_fhost:put-vendor
+      - task: pages_v0_fhost:rear-content
+      - task: pages_v0_fhost:rear-presentation
+      - task: pages_v0_fhost:rear-behavior
+      - task: pages_v0_fhost:put-vendor
       - echo "Demo file-host ready"
-  rear-pages-demo-prod:
+  rear-pages-v0-prod:
     desc: Build demo files
     cmds:
-      - task: pages_demo_prod:rear-content
-      - task: pages_demo_prod:rear-presentation
-      - task: pages_demo_prod:rear-behavior
-      - task: pages_demo_prod:put-vendor
+      - task: pages_v0_prod:rear-content
+      - task: pages_v0_prod:rear-presentation
+      - task: pages_v0_prod:rear-behavior
+      - task: pages_v0_prod:put-vendor
       - echo "Prod host directory for demo is ready"
-  sweep-pages-demo-fhost:
+  sweep-pages-v0-fhost:
     desc: Remove generated files
     cmds:
-      - task: pages_demo_fhost:sweep-content
-      - task: pages_demo_fhost:sweep-presentation
-      - task: pages_demo_fhost:sweep-behavior
+      - task: pages_v0_fhost:sweep-content
+      - task: pages_v0_fhost:sweep-presentation
+      - task: pages_v0_fhost:sweep-behavior
       - echo "Demo file-host cleared"
-  sweep-pages-demo-prod:
+  sweep-pages-v0-prod:
     desc: Remove generated files
     cmds:
-      - task: pages_demo_prod:sweep-content
-      - task: pages_demo_prod:sweep-presentation
-      - task: pages_demo_prod:sweep-behavior
+      - task: pages_v0_prod:sweep-content
+      - task: pages_v0_prod:sweep-presentation
+      - task: pages_v0_prod:sweep-behavior
       - echo "Pages host directory cleared"
