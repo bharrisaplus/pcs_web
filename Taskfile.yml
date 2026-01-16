@@ -24,14 +24,11 @@ tasks:
       - echo "Demo ready"
   pages-demo:
     desc: Copy demo files into pages host directory
-    deps: [rear-demo]
     cmds:
-      - cp {{.DIST_DIR}}/demo/demo.html {{.PAGES_HOST_DIR}}/index.html
-      - cp {{.DIST_DIR}}/demo/reset.css {{.PAGES_HOST_DIR}}/reset.css
-      - cp {{.DIST_DIR}}/demo/main.css {{.PAGES_HOST_DIR}}/main.css
-      - cp {{.DIST_DIR}}/demo/main.js {{.PAGES_HOST_DIR}}/main.js
-      - cp {{.DIST_DIR}}/demo/html2canvas.js {{.PAGES_HOST_DIR}}/html2canvas.js
-      - cp {{.DIST_DIR}}/demo/chance.js {{.PAGES_HOST_DIR}}/chance.js
+      - task: pages_demo:rear-content
+      - task: pages_demo:rear-presentation
+      - task: pages_demo:rear-behavior
+      - task: pages_demo:put-vendor
       - echo "Pages host directory for demo is ready"
   sweep-demo:
     desc: Remove generated files

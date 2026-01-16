@@ -13,7 +13,7 @@ const
 
 const pagesDemoConfig = {
 	cwd: buildInfo.project_path,
-	map: true,
+	map: NodeProcess.env.NODE_ENV == 'production' ? false : true,
 	plugins: {
 		'postcss-combine-duplicated-selectors': {},
 		autoprefixer: {},
