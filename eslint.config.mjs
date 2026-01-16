@@ -2,29 +2,23 @@ import { default as NodeProcess } from 'node:process';
 import { default as NodePath } from 'node:path';
 
 import { default as ESLintJS } from '@eslint/js';
+import { defineConfig } from "eslint/config";
 
 
-const
-  _dir = import.meta.dirname,
-  buildInfo = {
-    common: {
-      behavior_path: NodeProcess.env.BEHAVIOR_DIR || NodePath.resolve(_dir, './source/behavior')
+const demoLintConfig = defineConfig([
+  ESLintJS.configs.recommended,
+  {
+    languageOptions: {
+    	globals: {
+    		document: "readonly",
+    		window: "readonly",
+        html2canvas: "readonly",
+        chance: "readonly",
+        HTMLElement: "readonly"
+    	}
     }
-  };
-
-
-const demoLintConfig = {
-  ...ESLintJS.configs.recommended,
-  files: [
-    NodePath.resolve(buildInfo.common.behavior_path, 'demo.{js,mjs}')
-  ],
-  languageOptions: {
-  	globals: {
-  		document: "readonly",
-  		window: "readonly",
-  	}
   }
-}
+]);
 
 
-export default demoLintConfig
+export default demoLintConfig;
