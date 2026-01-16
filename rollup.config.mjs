@@ -12,29 +12,33 @@ const
 			behavior_path: NodeProcess.env.BEHAVIOR_DIR || NodePath.resolve(_dir, './source/behavior')
 		},
 		demo: {
-			url_host: NodeProcess.env.DEMO_FILE_HOST || new NodeURL('./distribution/demo}', import.meta.url),
-			demo_path: NodeProcess.env.DEMO_DIR || NodePath.resolve(_dir, `./distribution/demo`),
-			pages_host_path: NodeProcess.env.PAGES_HOST_DIR || NodePath.resolve(_dir, `./docs`)
+			fhost: {
+				url: NodeProcess.env.DEMO_FILE_HOST || new NodeURL('./distribution/demo', import.meta.url),
+				path: NodeProcess.env.DEMO_DIR || NodePath.resolve(_dir, `./distribution/demo`),
+			},
+			prod: {
+				path: NodeProcess.env.PAGES_HOST_DIR || NodePath.resolve(_dir, `./docs`)
+			}
 		}
 	};
 
 
 const
-	demoConfig = {
+	fhostConfig = {
 	  input: NodePath.resolve(buildInfo.common.behavior_path, 'demo.js'),
 	  output: [{
-			file: NodePath.resolve(buildInfo.demo.demo_path, 'main.js'),
+			file: NodePath.resolve(buildInfo.demo.fhost.path, 'main.js'),
 			format: 'iife',
 			name: 'PCS',
 			plugins: [ RollupTerser() ],
 			sourcemap: true,
-			sourcemapBaseUrl: new NodeURL(buildInfo.demo.url_host).toString()
+			sourcemapBaseUrl: new NodeURL(buildInfo.demo.fhost.url).toString()
 		}]
 	},
-	pagesDemoConfig = {
+	prodConfig = {
 	  input: NodePath.resolve(buildInfo.common.behavior_path, 'demo.js'),
 	  output: [{
-			file: NodePath.resolve(buildInfo.demo.pages_host_path, 'main.js'),
+			file: NodePath.resolve(buildInfo.demo.prod.path, 'main.js'),
 			format: 'iife',
 			name: 'PCS',
 			plugins: [ RollupTerser() ]
@@ -42,7 +46,7 @@ const
 	};
 
 
-const targetConfig = NodeProcess.env.NODE_ENV == 'production' ? pagesDemoConfig : demoConfig;
+const targetConfig = NodeProcess.env.NODE_ENV == 'production' ? prodConfig : fhostConfig;
 
 
 export default targetConfig;
