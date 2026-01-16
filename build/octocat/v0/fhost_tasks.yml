@@ -22,7 +22,7 @@ tasks:
   nit-behavior:
     desc: Keeping js/mjs consistent
     cmds:
-      - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs
+      - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs {{.BEHAVIOR_DIR}}/demo.js
   nit-presentation:
     desc: Keeping stylus/css consistent
     cmds:
