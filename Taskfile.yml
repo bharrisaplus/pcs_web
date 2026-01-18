@@ -21,6 +21,7 @@ tasks:
       - task: octocat_v0_fhost:rear-presentation
       - task: octocat_v0_fhost:rear-behavior
       - task: octocat_v0_fhost:put-vendor
+      - task: octocat_v0_fhost:put-meta
       - echo "Demo file-host ready"
   rear-octocat-v0-prod:
     desc: Build demo files
@@ -29,6 +30,7 @@ tasks:
       - task: octocat_v0_prod:rear-presentation
       - task: octocat_v0_prod:rear-behavior
       - task: octocat_v0_prod:put-vendor
+      - task: octocat_v0_fhost:put-meta
       - echo "Prod host directory for demo is ready"
   sweep-octocat-v0-fhost:
     desc: Remove generated files
@@ -36,6 +38,8 @@ tasks:
       - task: octocat_v0_fhost:sweep-content
       - task: octocat_v0_fhost:sweep-presentation
       - task: octocat_v0_fhost:sweep-behavior
+      - task: octocat_v0_fhost:sweep-vendor
+      - task: octocat_v0_fhost:sweep-meta
       - echo "Demo file-host cleared"
   sweep-octocat-v0-prod:
     desc: Remove generated files
@@ -43,4 +47,6 @@ tasks:
       - task: octocat_v0_prod:sweep-content
       - task: octocat_v0_prod:sweep-presentation
       - task: octocat_v0_prod:sweep-behavior
+      - task: octocat_v0_fhost:sweep-vendor
+      - task: octocat_v0_fhost:sweep-meta
       - echo "Pages host directory cleared"

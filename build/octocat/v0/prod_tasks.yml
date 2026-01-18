@@ -30,6 +30,18 @@ tasks:
       - cp {{.COMMON_DIR}}/vendor/html2canvas/html2canvas.min.js {{.PAGES_HOST_DIR}}/html2canvas.js
       - cp {{.COMMON_DIR}}/vendor/chancejs/chance.min.js {{.PAGES_HOST_DIR}}/chance.js
       - echo "MeyerWeb-CSSReset, HTML2Canvas and ChanceJS placed with demo files for pages host"
+  put-meta:
+    desc: Place fils needed for pwa
+    cmds:
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle.ico {{.DEMO_DIR}}/favicon.ico
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle-alt.ico {{.DEMO_DIR}}/favicon-alt.ico
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_16.png {{.DEMO_DIR}}/favicon-16x16.png
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_16-alt.png {{.DEMO_DIR}}/favicon-16x16-alt.png
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_32.png {{.DEMO_DIR}}/favicon-32x32.png
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_32-alt.png {{.DEMO_DIR}}/favicon-32x32-alt.png
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_180.png {{.DEMO_DIR}}/apple-touch-icon.png
+      - cp {{.CONTENT_DIR}}/browserconfig.source.xml {{.DEMO_DIR}}/browserconfig.xml
+      - cp {{.CONTENT_DIR}}/webmanifest.source.json {{.DEMO_DIR}}/site.webmanifest
   sweep-content:
     desc: Clear out pages host directory
     cmds:
@@ -38,10 +50,25 @@ tasks:
     desc: Clear out pages host directory
     cmds:
       - rm -f {{.PAGES_HOST_DIR}}/main.css
-      - rm -f {{.PAGES_HOST_DIR}}/reset.css
   sweep-behavior:
     desc: Clear out pages host directory
     cmds:
       - rm -f {{.PAGES_HOST_DIR}}/main.js
-      - rm -f {{.PAGES_HOST_DIR}}/html2canvas.js
-      - rm -f {{.PAGES_HOST_DIR}}/chance.js
+  sweep-vendor:
+    desc: Remove generated files
+    cmds:
+      - rm -f {{.DEMO_DIR}}/html2canvas.{js,js.map}
+      - rm -f {{.DEMO_DIR}}/chance.{js,min.js,min.js.map}
+      - rm -f {{.DEMO_DIR}}/reset.css
+  sweep-meta:
+    desc: Remove generated files
+    cmds:
+      - rm -f {{.DEMO_DIR}}/favicon.ico
+      - rm -f {{.DEMO_DIR}}/favicon-alt.ico
+      - rm -f {{.DEMO_DIR}}/favicon-16x16.png
+      - rm -f {{.DEMO_DIR}}/favicon-16x16-alt.png
+      - rm -f {{.DEMO_DIR}}/favicon-32x32.png
+      - rm -f {{.DEMO_DIR}}/favicon-32x32-alt.png
+      - rm -f {{.DEMO_DIR}}/apple-touch-icon.png
+      - rm -f {{.DEMO_DIR}}/browserconfig.xml
+      - rm -f {{.DEMO_DIR}}/site.webmanifest
