@@ -23,6 +23,12 @@ html(lang="en")
             .title-marqee
                 h2 (P)seudo (C)ard (S)huffler
                 .ribbon
+                    select(name="bg-wells")
+                        option(value=0 selected)="Choose a background"
+                        option(value=1)="Emerald"
+                        option(value=2)="Cherry"
+                        option(value=3)="Twilight"
+                        option(value=4)="Amethyst"
                     button.shuffle
                         | Shuffle
                     button.export
