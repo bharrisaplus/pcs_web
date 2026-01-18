@@ -69,6 +69,7 @@ footer
             display: flex
             margin-right: 18px
             flex-flow: row nowrap
+            align-items: center
             column-gap: 4.5px
 
             & [name="bg-wells"]
@@ -77,12 +78,24 @@ footer
             & .export-zone
                 display: inline-flex
                 width: 126px
+                height: floor(@width / 5)
                 border-width: 1px
                 border-style: dashed
                 border-radius: 18px
                 text-decoration: none
                 justify-content: center
                 align-items: center
+
+            .bar-separator
+                font-size: 18px
+                text-align: center
+                vertical-align: middle
+
+                &:first-of-type::before
+                  content: "•"
+
+                &::before
+                  content: "|"
 
 
     & .closeup
