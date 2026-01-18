@@ -7,8 +7,8 @@
       $close = $turntable.querySelector(".turntable-close"),
       $cuePrevious = $turntable.querySelector('.turntable-cue-lever-regression'),
       $cueNext = $turntable.querySelector('.turntable-cue-lever-progression'),
-      $exportTrigger = document.querySelector('.export button'),
-      $shuffleTrigger = demoDoc.querySelector('.shuffle button');
+      $exportTrigger = document.querySelector('.ribbon .export button'),
+      $shuffleTrigger = demoDoc.querySelector('.ribbon .shuffle button');
 
     const
       ndo = [],
