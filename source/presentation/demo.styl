@@ -64,6 +64,7 @@ footer
             font-size: 24px
             font-weight: bold
             line-height: normal
+            user-select: none
         
         & .ribbon
             display: flex
@@ -74,6 +75,7 @@ footer
 
             & [name="bg-wells"]
                 width: fit-content
+                cursor: pointer
 
             & .export-zone
                 display: inline-flex
@@ -96,6 +98,8 @@ footer
 
                 &::before
                   content: "|"
+            & button
+                cursor: pointer
 
 
     & .closeup
