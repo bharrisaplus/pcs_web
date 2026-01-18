@@ -6,43 +6,41 @@
 version: '3'
 
 includes:
-  demo_build: ./build/demo_tasks.yml
-  pages_demo: ./build/github_pages/demo_tasks.yml
+  octocat_v0_fhost: ./build/octocat/v0/fhost_tasks.yml
+  octocat_v0_prod: ./build/octocat/v0/prod_tasks.yml
 
 tasks:
   check_env:
     cmds:
       - echo $PROJECT_DIR
       - echo $BEHAVIOR_DIR
-  rear-demo:
-    desc: Demo files
+  rear-octocat-v0-fhost:
+    desc: Build demo files
     cmds:
-      - task: demo_build:rear-content
-      - task: demo_build:rear-presentation
-      - task: demo_build:rear-behavior
-      - task: demo_build:put-vendor
-      - echo "Demo ready"
-  pages-demo:
-    desc: Copy demo files into pages host directory
-    deps: [rear-demo]
+      - task: octocat_v0_fhost:rear-content
+      - task: octocat_v0_fhost:rear-presentation
+      - task: octocat_v0_fhost:rear-behavior
+      - task: octocat_v0_fhost:put-vendor
+      - echo "Demo file-host ready"
+  rear-octocat-v0-prod:
+    desc: Build demo files
     cmds:
-      - cp {{.DIST_DIR}}/demo/demo.html {{.PAGES_HOST_DIR}}/index.html
-      - cp {{.DIST_DIR}}/demo/reset.css {{.PAGES_HOST_DIR}}/reset.css
-      - cp {{.DIST_DIR}}/demo/main.css {{.PAGES_HOST_DIR}}/main.css
-      - cp {{.DIST_DIR}}/demo/main.js {{.PAGES_HOST_DIR}}/main.js
-      - cp {{.DIST_DIR}}/demo/html2canvas.js {{.PAGES_HOST_DIR}}/html2canvas.js
-      - echo "Pages host directory for demo is ready"
-  sweep-demo:
+      - task: octocat_v0_prod:rear-content
+      - task: octocat_v0_prod:rear-presentation
+      - task: octocat_v0_prod:rear-behavior
+      - task: octocat_v0_prod:put-vendor
+      - echo "Prod host directory for demo is ready"
+  sweep-octocat-v0-fhost:
     desc: Remove generated files
     cmds:
-      - task: demo_build:sweep-content
-      - task: demo_build:sweep-presentation
-      - task: demo_build:sweep-behavior
-      - echo "Demo gone"
-  sweep-pages-demo:
-    desc: Clear out pages host directory
+      - task: octocat_v0_fhost:sweep-content
+      - task: octocat_v0_fhost:sweep-presentation
+      - task: octocat_v0_fhost:sweep-behavior
+      - echo "Demo file-host cleared"
+  sweep-octocat-v0-prod:
+    desc: Remove generated files
     cmds:
-      - task: pages_demo:sweep-content
-      - task: pages_demo:sweep-presentation
-      - task: pages_demo:sweep-behavior
+      - task: octocat_v0_prod:sweep-content
+      - task: octocat_v0_prod:sweep-presentation
+      - task: octocat_v0_prod:sweep-behavior
       - echo "Pages host directory cleared"

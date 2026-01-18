@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+# Tasks are expected to be called from the project root or via the main Taskfile
+
+version: '3'
+
+tasks:
+  rear-presentation:
+    desc: Stylus to CSS
+    cmds:
+      - pnpm stylus {{.PRESENTATION_DIR}}/demo.styl -o {{.PAGES_HOST_DIR}}/main.css
+      - pnpm postcss {{.PAGES_HOST_DIR}}/main.css --config {{.PROJECT_DIR}} -o {{.PAGES_HOST_DIR}}/main.css
+    env:
+      NODE_ENV: production
+  rear-content:
+    desc: Pug to HTML
+    cmds:
+      - pnpm pug {{.CONTENT_DIR}}/demo.pug -o {{.PAGES_HOST_DIR}}
+      - mv {{.PAGES_HOST_DIR}}/demo.html {{.PAGES_HOST_DIR}}/index.html
+  rear-behavior:
+    desc: JS
+    cmds:
+      -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
+    env:
+      NODE_ENV: production
+  put-vendor:
+    desc: Copy 3rd party scripts/stylesheets/etc
+    cmds:
+      - cp {{.COMMON_DIR}}/vendor/meyerweb/reset.min.css {{.PAGES_HOST_DIR}}/reset.css
+      - cp {{.COMMON_DIR}}/vendor/html2canvas/html2canvas.min.js {{.PAGES_HOST_DIR}}/html2canvas.js
+      - cp {{.COMMON_DIR}}/vendor/chancejs/chance.min.js {{.PAGES_HOST_DIR}}/chance.js
+      - echo "MeyerWeb-CSSReset, HTML2Canvas and ChanceJS placed with demo files for pages host"
+  sweep-content:
+    desc: Clear out pages host directory
+    cmds:
+      - rm -f {{.PAGES_HOST_DIR}}/index.html
+  sweep-presentation:
+    desc: Clear out pages host directory
+    cmds:
+      - rm -f {{.PAGES_HOST_DIR}}/main.css
+      - rm -f {{.PAGES_HOST_DIR}}/reset.css
+  sweep-behavior:
+    desc: Clear out pages host directory
+    cmds:
+      - rm -f {{.PAGES_HOST_DIR}}/main.js
+      - rm -f {{.PAGES_HOST_DIR}}/html2canvas.js
+      - rm -f {{.PAGES_HOST_DIR}}/chance.js

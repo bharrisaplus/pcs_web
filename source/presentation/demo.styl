@@ -1,5 +1,8 @@
 // colors
 $card-table-green = #1c5e3d
+$card-table-red = #6B0D16
+$card-table-blue = #0C2D5F
+$card-table-purple = #4B2262
 $card-stock = #F7F7F7
 $spade-fam = #191970 // midnightblue
 $diamond-fam = #b22222 // firebrick
@@ -23,7 +26,10 @@ card-col-gap()
     --turntable-curtain: rgba($pcs-black, 0.75)
     --turntable-curtain-blend: rgba($pcs-black, 0.375)
     --card-base: $card-stock
-    --pad-dye: $card-table-green
+    --bg-emerald: $card-table-green
+    --bg-cherry: $card-table-red
+    --bg-twilight: $card-table-blue
+    --bg-amethyst: $card-table-purple
 
 html
     height: 100%
@@ -34,9 +40,16 @@ body
     width: calc(100% - 16px)
     margin: 8px
 
-.pcs-container
+footer
+    display: none
+
+.pcs
+    display: flex
     height: 100%
     width: 100%
+    flex-flow: column nowrap
+    justify-content: space-between
+    align-items: center
 
     & .title-marqee
         display: flex
@@ -51,27 +64,58 @@ body
             font-size: 24px
             font-weight: bold
             line-height: normal
-            align-self: flex-start
+            user-select: none
+        
+        & .ribbon
+            display: flex
+            margin-right: 18px
+            flex-flow: row nowrap
+            align-items: center
+            column-gap: 4.5px
 
-        & .export
+            & [name="bg-wells"]
+                width: fit-content
+                cursor: pointer
+
+            & .export-zone
+                display: inline-flex
+                width: 126px
+                height: floor(@width / 5)
+                border-width: 1px
+                border-style: dashed
+                border-radius: 18px
+                text-decoration: none
+                justify-content: center
+                align-items: center
+
+            .bar-separator
+                font-size: 18px
+                text-align: center
+                vertical-align: middle
+
+                &:first-of-type::before
+                  content: "•"
+
+                &::before
+                  content: "|"
             & button
-                margin-left: 4.5px
+                cursor: pointer
+
 
     & .closeup
-        height: 85%
+        height: 87%
         width: 100%
         overflow-y: scroll
-        background-color: var(--pad-dye)
 
 .closeup
     & .pad
         display: flex
         height: calc(100% - 18px)
         width: calc(100% - 18px)
-        padding: 9px
+        padding: 14.5px 9px 0
         margin: 0
         font-size: 108px
-        background-color: var(--pad-dye)
+        background-color: inherit
         list-style: none
         flex-flow: row wrap
         justify-content: space-evenly
@@ -82,13 +126,14 @@ body
 
         & li
             cursor: pointer
+            rotate: 0deg
 
-.turntable-container
+.dust-cover
     margin: auto
     border: 3.5px
     border-radius: 4.5%
     padding: 4.5px
-    background-color: var(--pad-dye)
+    background-color: inherit
     border-color: var(--turntable-curtain-blend)
 
     &::backdrop
@@ -100,7 +145,7 @@ body
     height: fit-content
     width: fit-content
     padding: 0px 27px 27px
-    background-color: var(--pad-dye)
+    background-color: inherit
     flex-flow: column wrap
     justify-content: center
     gap: 18px
@@ -111,7 +156,7 @@ body
         cursor: default
         user-select: none
 
-    & &-close
+    & .turn-off
         width: 25%
         margin-right: -25px
         margin-bottom: 9px
@@ -159,3 +204,24 @@ body
     border-color: transparent
     justify-content: center
     align-items: center
+
+.green-dye
+    background-color: var(--bg-emerald)
+.red-dye
+    background-color: var(--bg-cherry)
+.blue-dye
+    background-color: var(--bg-twilight)
+.purple-dye
+    background-color: var(--bg-amethyst)
+
+[name="bg-wells"] option:nth-of-type(2)
+    background-color: rgba($card-table-green, 0.33)
+
+[name="bg-wells"] option:nth-of-type(3)
+    background-color: rgba($card-table-red, 0.33)
+
+[name="bg-wells"] option:nth-of-type(4)
+    background-color: rgba($card-table-blue, 0.33)
+
+[name="bg-wells"] option:nth-of-type(5)
+    background-color: rgba($card-table-purple, 0.33)
