@@ -26,7 +26,6 @@
 
     const _tidy = (_toggleEvt) => {
       if (_toggleEvt.oldState === 'open' && _toggleEvt.newState === 'closed') {
-        console.log('closing popover');
         $pickup.textContent = '';
         $pickup.className = pickup_base_class;
         $cueNext.disabled = false;
@@ -35,7 +34,6 @@
         $shuffleTrigger.disabled = false;
         $bgPicker.disabled = false;
       } else if (_toggleEvt.oldState === 'closed' && _toggleEvt.newState === 'open') {
-        console.log('opening popover');
         $exportTrigger.disabled = true;
         $shuffleTrigger.disabled = true;
         $bgPicker.disabled = true;
@@ -64,7 +62,9 @@
       $bgPicker.disabled = false;
 
       demoWindow.setTimeout(() => {
-        $shuffleTrigger.disabled = false;
+        if (!$dustCover.matches(':popover-open')) {
+          $shuffleTrigger.disabled = false;
+        }
       }, 5000);
     };
 
@@ -181,7 +181,9 @@
         $dump.download = '';
         $dump.textContent = '';
 
-        $exportTrigger.disabled = false;
+        if (!$dustCover.matches(':popover-open')) {
+          $exportTrigger.disabled = false;
+        }
       }, 5000);
     };
 
