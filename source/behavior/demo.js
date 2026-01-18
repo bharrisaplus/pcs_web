@@ -1,10 +1,10 @@
 (function (demoWindow, demoDoc, demoCanvasConvert, demoRand) {
   demoWindow.onload = () => {
     const
-      $container = demoDoc.querySelector(".closeup .turntable-container"),
-      $turntable = $container.querySelector('.turntable'),
+      $dustCover = demoDoc.querySelector(".closeup .dust-cover"),
+      $turntable = $dustCover.querySelector('.turntable'),
       $pickup = $turntable.querySelector('.turntable-pickup'),
-      $close = $turntable.querySelector(".turntable-close"),
+      $turnOff = $turntable.querySelector(".turn-off"),
       $cuePrevious = $turntable.querySelector('.turntable-cue-lever-regression'),
       $cueNext = $turntable.querySelector('.turntable-cue-lever-progression'),
       $exportTrigger = demoDoc.querySelector('.ribbon .export'),
@@ -85,7 +85,7 @@
 
 
     const _loadTurntable = (_clickEvt) => {
-      if (!$container.matches(':popover-open')) {
+      if (!$dustCover.matches(':popover-open')) {
         const $item = _clickEvt.target;
 
         if ($item && $item.textContent != $pickup.textContent) {
@@ -101,7 +101,7 @@
               $cueNext.disabled = true;
             }
 
-            $container.showPopover();
+            $dustCover.showPopover();
           } 
         }
       }
@@ -196,8 +196,8 @@
 
       decklist = Array.from(ndo);
 
-      $container.addEventListener('beforetoggle', _tidy);
-      $close.addEventListener("click", () => $container.hidePopover());
+      $dustCover.addEventListener('beforetoggle', _tidy);
+      $turnOff.addEventListener("click", () => $dustCover.hidePopover());
       $cuePrevious.addEventListener('click', _spinTurntable);
       $cueNext.addEventListener('click', _spinTurntable);
 
