@@ -22,6 +22,22 @@
 
     const _get_suite = (ndo_idx) => suites[Math.floor(ndo_idx / 13)];
 
+    const _tidy = (_toggleEvt) => {
+      if (_toggleEvt.oldState === 'open' && _toggleEvt.newState === 'closed') {
+        console.log('closing popover');
+        $pickup.textContent = '';
+        $pickup.className = pickup_base_class;
+        $cueNext.disabled = false;
+        $cuePrevious.disabled = false;
+        $exportTrigger.disabled = false;
+        $shuffleTrigger.disabled = false;
+      } else if (_toggleEvt.oldState === 'closed' && _toggleEvt.newState === 'open') {
+        console.log('opening popover');
+        $exportTrigger.disabled = true;
+        $shuffleTrigger.disabled = true;
+      }
+    };
+
 
     const _shuffle_items = () => {
       //
@@ -61,21 +77,6 @@
     };
 
 
-    const _unloadTurntable = () => {
-      if ($container.matches(':popover-open')) {
-        $pickup.textContent = '';
-        $pickup.className = pickup_base_class;
-
-        $container.hidePopover();
-
-        $cueNext.disabled = false;
-        $cuePrevious.disabled = false;
-        $exportTrigger.disabled = false;
-        $shuffleTrigger.disabled = false;
-      }
-    };
-
-
     const _loadTurntable = (_clickEvt) => {
       if (!$container.matches(':popover-open')) {
         const $item = _clickEvt.target;
@@ -93,8 +94,6 @@
               $cueNext.disabled = true;
             }
 
-            $exportTrigger.disabled = true;
-            $shuffleTrigger.disabled = true;
             $container.showPopover();
           } 
         }
@@ -190,7 +189,8 @@
 
       decklist = Array.from(ndo);
 
-      $close.addEventListener("click", _unloadTurntable);
+      $container.addEventListener('beforetoggle', _tidy);
+      $close.addEventListener("click", () => $container.hidePopover());
       $cuePrevious.addEventListener('click', _spinTurntable);
       $cueNext.addEventListener('click', _spinTurntable);
 
