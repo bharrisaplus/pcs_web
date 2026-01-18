@@ -24,15 +24,21 @@
 
 
     const _shuffle_items = () => {
+      //
+      // disallow buttons
       $shuffleTrigger.disabled = true;
+      //
       // do shuffle
       const mixed_up = demoRand.shuffle(Array.from(demoDoc.querySelectorAll('.closeup .pad li')))
       //
       // update current decklist
       decklist = mixed_up.map(($elm) => $elm.textContent);
       //
-      //
+      // swapout previous decklist
       demoDoc.querySelector('.closeup .pad').replaceChildren(...mixed_up);
+      //
+      // allow buttons
+      $exportTrigger.disabled = false;
 
       demoWindow.setTimeout(() => {
         $shuffleTrigger.disabled = false;
@@ -146,6 +152,7 @@
       let $maybeCanvas, canvas_data;
 
       $clickTarget.disabled = true;
+      $shuffleTrigger.disabled = true;
 
       $maybeCanvas = await demoCanvasConvert($capture, {
         height: $capture.scrollHeight,
@@ -159,6 +166,8 @@
       $dump.textContent = '>redownload here<';
 
       $dump.click();
+
+      $shuffleTrigger.disabled = false;
 
       demoWindow.setTimeout(() => {
         $dump.href = '';
