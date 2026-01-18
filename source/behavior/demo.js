@@ -7,14 +7,16 @@
       $close = $turntable.querySelector(".turntable-close"),
       $cuePrevious = $turntable.querySelector('.turntable-cue-lever-regression'),
       $cueNext = $turntable.querySelector('.turntable-cue-lever-progression'),
-      $exportTrigger = document.querySelector('.ribbon .export'),
-      $shuffleTrigger = demoDoc.querySelector('.ribbon .shuffle');
+      $exportTrigger = demoDoc.querySelector('.ribbon .export'),
+      $shuffleTrigger = demoDoc.querySelector('.ribbon .shuffle'),
+      $bgPicker = demoDoc.querySelector('.ribbon [name="bg-wells"]');
 
     const
       ndo = [],
       ndo_max = 51,
       suites = ['spade', 'diamond', 'club', 'heart'],
-      pickup_base_class = $pickup.className;
+      pickup_base_class = $pickup.className,
+      closeup_base_class = Array.from(demoDoc.querySelector('.closeup').classList).slice(0, -1);
 
     let
       decklist = [];
@@ -31,10 +33,12 @@
         $cuePrevious.disabled = false;
         $exportTrigger.disabled = false;
         $shuffleTrigger.disabled = false;
+        $bgPicker.disabled = false;
       } else if (_toggleEvt.oldState === 'closed' && _toggleEvt.newState === 'open') {
         console.log('opening popover');
         $exportTrigger.disabled = true;
         $shuffleTrigger.disabled = true;
+        $bgPicker.disabled = true;
       }
     };
 
@@ -43,9 +47,11 @@
       //
       // disallow buttons
       $shuffleTrigger.disabled = true;
+      $exportTrigger.disabled = true;
+      $bgPicker.disabled = true;
       //
       // do shuffle
-      const mixed_up = demoRand.shuffle(Array.from(demoDoc.querySelectorAll('.closeup .pad li')))
+      const mixed_up = demoRand.shuffle(Array.from(demoDoc.querySelectorAll('.closeup .pad li')));
       //
       // update current decklist
       decklist = mixed_up.map(($elm) => $elm.textContent);
@@ -55,6 +61,7 @@
       //
       // allow buttons
       $exportTrigger.disabled = false;
+      $bgPicker.disabled = false;
 
       demoWindow.setTimeout(() => {
         $shuffleTrigger.disabled = false;
@@ -143,15 +150,15 @@
 
     const _canvasyze_rasterize_ = async (_clickEvt, captureQS, dumpQS) => {
       const
-        $clickTarget = _clickEvt.target,
         $capture = demoDoc.querySelector(captureQS),
         $captureStyle = (demoWindow.getComputedStyle($capture)),
         $dump = demoDoc.querySelector(dumpQS);
 
       let $maybeCanvas, canvas_data;
 
-      $clickTarget.disabled = true;
+      $exportTrigger.disabled = true;
       $shuffleTrigger.disabled = true;
+      $bgPicker.disabled = true;
 
       $maybeCanvas = await demoCanvasConvert($capture, {
         height: $capture.scrollHeight,
@@ -167,6 +174,7 @@
       $dump.click();
 
       $shuffleTrigger.disabled = false;
+      $bgPicker.disabled = false;
 
       demoWindow.setTimeout(() => {
         $dump.href = '';
@@ -174,7 +182,6 @@
         $dump.textContent = '';
 
         $exportTrigger.disabled = false;
-        
       }, 5000);
     };
 
@@ -199,9 +206,25 @@
       });
 
       $shuffleTrigger.addEventListener('click', _shuffle_items);
+
+      $bgPicker.value = '0';
+      $bgPicker.addEventListener('change', (_evt) => {
+        const
+          choosenBG = _evt.target?.value || 0,
+          $closeup = demoDoc.querySelector('.closeup');
+
+        switch(choosenBG) {
+          case '1': $closeup.className = `${closeup_base_class} green-dye`; break;
+          case '2': $closeup.className = `${closeup_base_class} red-dye`; break;
+          case '3': $closeup.className = `${closeup_base_class} blue-dye`; break;
+          case '4': $closeup.className = `${closeup_base_class} purple-dye`; break;
+          case '0':
+          default:
+        }
+      });
     }
   }
 })(window, document, html2canvas, chance);
 
-// ◖ -> 9686 
+// ◖ -> 9686
 // ◗ -> 9687
