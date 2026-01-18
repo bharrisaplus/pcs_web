@@ -26,7 +26,10 @@ card-col-gap()
     --turntable-curtain: rgba($pcs-black, 0.75)
     --turntable-curtain-blend: rgba($pcs-black, 0.375)
     --card-base: $card-stock
-    --pad-dye: $card-table-green
+    --bg-emerald: $card-table-green
+    --bg-cherry: $card-table-red
+    --bg-twilight: $card-table-blue
+    --bg-amethyst: $card-table-purple
 
 html
     height: 100%
@@ -73,10 +76,9 @@ body
 
 
     & .closeup
-        height: 85%
+        height: 87%
         width: 100%
         overflow-y: scroll
-        background-color: var(--pad-dye)
 
 .closeup
     & .pad
@@ -86,7 +88,7 @@ body
         padding: 9px
         margin: 0
         font-size: 108px
-        background-color: var(--pad-dye)
+        background-color: inherit
         list-style: none
         flex-flow: row wrap
         justify-content: space-evenly
@@ -103,7 +105,7 @@ body
     border: 3.5px
     border-radius: 4.5%
     padding: 4.5px
-    background-color: var(--pad-dye)
+    background-color: inherit
     border-color: var(--turntable-curtain-blend)
 
     &::backdrop
@@ -115,7 +117,7 @@ body
     height: fit-content
     width: fit-content
     padding: 0px 27px 27px
-    background-color: var(--pad-dye)
+    background-color: inherit
     flex-flow: column wrap
     justify-content: center
     gap: 18px
@@ -174,3 +176,15 @@ body
     border-color: transparent
     justify-content: center
     align-items: center
+
+.green-dye
+    background-color: var(--bg-emerald)
+
+.red-dye
+    background-color: var(--bg-cherry)
+
+.blue-dye
+    background-color: var(--bg-twilight)
+
+.purple-dye
+    background-color: var(--bg-amethyst)
