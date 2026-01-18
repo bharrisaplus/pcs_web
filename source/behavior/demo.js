@@ -7,8 +7,8 @@
       $close = $turntable.querySelector(".turntable-close"),
       $cuePrevious = $turntable.querySelector('.turntable-cue-lever-regression'),
       $cueNext = $turntable.querySelector('.turntable-cue-lever-progression'),
-      $exportTrigger = document.querySelector('.ribbon .export button'),
-      $shuffleTrigger = demoDoc.querySelector('.ribbon .shuffle button');
+      $exportTrigger = document.querySelector('.ribbon .export'),
+      $shuffleTrigger = demoDoc.querySelector('.ribbon .shuffle');
 
     const
       ndo = [],
@@ -163,7 +163,7 @@
 
       $dump.href = canvas_data;
       $dump.download = 'pcs_demo_ndo.png';
-      $dump.textContent = '>redownload here<';
+      $dump.textContent = 'redownload here';
 
       $dump.click();
 
@@ -195,7 +195,7 @@
       $cueNext.addEventListener('click', _spinTurntable);
 
       $exportTrigger.addEventListener("click", (_evt) => {
-        _canvasyze_rasterize_(_evt, '.closeup', '.export a')
+        _canvasyze_rasterize_(_evt, '.closeup', '.ribbon .export-zone');
       });
 
       $shuffleTrigger.addEventListener('click', _shuffle_items);
