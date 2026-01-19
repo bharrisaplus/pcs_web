@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+# Tasks are expected to be called from the project root or via the main Taskfile
+
+version: '3'
+
+tasks:
+  # Building/Transpiling/etc
+  rear-presentation:
+    desc: Stlus to CSS
+    cmds:
+      - pnpm stylus {{.PRESENTATION_DIR}}/demo.styl -m --sourcemap-base {{.LHOST_HOST}} -o {{.DEMO_DIR}}/{{.CSS_MAIN_NAME}}
+      - pnpm postcss {{.DEMO_DIR}}/{{.CSS_MAIN_NAME}} --config {{.PROJECT_DIR}} -o {{.DEMO_DIR}}/{{.CSS_MAIN_NAME}}
+  rear-content:
+    desc: Pug to HTML
+    cmds:
+      - echo {{.CONTENT_DATA}} > {{.DEMO_DIR}}/content_data_options.json
+      - pnpm pug {{.CONTENT_DIR}}/demo.pug -o {{.DEMO_DIR}} -O {{.DEMO_DIR}}/content_data_options.json
+      - echo "JSON options created @ {{.DEMO_DIR}}/content_data_options.json"
+    vars:
+      APPLE_TOUCH_ICON_URL: '{{.LHOST_HOST}}{{.APPLE_TOUCH_ICON_NAME}}'
+      FAVICON_32_URL: '{{.LHOST_HOST}}{{.FAVICON_32_NAME}}'
+      FAVICON_32_ALT_URL: '{{.LHOST_HOST}}{{.FAVICON_32_ALT_NAME}}'
+      FAVICON_16_URL: '{{.LHOST_HOST}}{{.FAVICON_16_NAME}}'
+      FAVICON_16_ALT_URL: '{{.LHOST_HOST}}{{.FAVICON_16_ALT_NAME}}'
+      FAVICON_ICO_URL: '{{.LHOST_HOST}}{{.FAVICON_ICO_NAME}}'
+      FAVICON_ICO_ALT_URL: '{{.LHOST_HOST}}{{.FAVICON_ICO_ALT_NAME}}'
+      VENDOR_CSS_RESET_URL: '{{.LHOST_HOST}}{{.VENDOR_CSS_RESET_NAME}}'
+      VENDOR_CHANCEJS_URL: '{{.LHOST_HOST}}{{.VENDOR_CHANCEJS_NAME}}'
+      VENDOR_HTML2CANVAS_URL: '{{.LHOST_HOST}}{{.VENDOR_HTML2CANVAS_NAME}}'
+      CSS_MAIN_URL: '{{.LHOST_HOST}}{{.CSS_MAIN_NAME}}'
+      ES_MAIN_URL: '{{.LHOST_HOST}}{{.ES_MAIN_NAME}}'
+      BROWSERCONFIG_URL: '{{.LHOST_HOST}}{{.BROWSERCONFIG_NAME}}'
+      WEBMANIFEST_URL: '{{.LHOST_HOST}}{{.WEBMANIFEST_NAME}}'
+      # Turn above variables into a json string
+      CONTENT_DATA: '{\"APPLE_TOUCH_ICON_URL\": \"{{.APPLE_TOUCH_ICON_URL}}\",\"FAVICON_32_URL\": \"{{.FAVICON_32_URL}}\",\"FAVICON_32_ALT_URL\": \"{{.FAVICON_32_ALT_URL}}\",\"FAVICON_16_URL\": \"{{.FAVICON_16_URL}}\",\"FAVICON_16_ALT_URL\": \"{{.FAVICON_16_ALT_URL}}\",\"FAVICON_ICO_URL\": \"{{.FAVICON_ICO_URL}}\",\"FAVICON_ICO_ALT_URL\": \"{{.FAVICON_ICO_ALT_URL}}\",\"VENDOR_CSS_RESET_URL\": \"{{.VENDOR_CSS_RESET_URL}}\",\"VENDOR_CHANCEJS_URL\": \"{{.VENDOR_CHANCEJS_URL}}\",\"VENDOR_HTML2CANVAS_URL\": \"{{.VENDOR_HTML2CANVAS_URL}}\",\"CSS_MAIN_URL\": \"{{.CSS_MAIN_URL}}\",\"ES_MAIN_URL\": \"{{.ES_MAIN_URL}}\",\"BROWSERCONFIG_URL\": \"{{.BROWSERCONFIG_URL}}\",\"WEBMANIFEST_URL\": \"{{.WEBMANIFEST_URL}}\"}'
+  rear-behavior:
+    desc: JS
+    cmds:
+      -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
+    env:
+      NODE_ENV: lhost

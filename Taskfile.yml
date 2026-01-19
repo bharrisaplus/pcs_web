@@ -7,6 +7,7 @@ version: '3'
 
 includes:
   octocat_v0_fhost: ./build/octocat/v0/fhost_tasks.yml
+  octocat_v0_lhost: ./build/octocat/v0/lhost_tasks.yml
   octocat_v0_prod: ./build/octocat/v0/prod_tasks.yml
 
 tasks:
@@ -23,6 +24,15 @@ tasks:
       - task: octocat_v0_fhost:put-vendor
       - task: octocat_v0_fhost:put-meta
       - echo "Demo file-host ready"
+  rear-octocat-v0-lhost:
+    desc: Build demo files
+    cmds:
+      - task: octocat_v0_lhost:rear-content
+      - task: octocat_v0_lhost:rear-presentation
+      - task: octocat_v0_lhost:rear-behavior
+      - task: octocat_v0_fhost:put-vendor
+      - task: octocat_v0_fhost:put-meta
+      - echo "localhost ready"
   rear-octocat-v0-prod:
     desc: Build demo files
     cmds:
@@ -41,6 +51,11 @@ tasks:
       - task: octocat_v0_fhost:sweep-vendor
       - task: octocat_v0_fhost:sweep-meta
       - echo "Demo file-host cleared"
+  sweep-octocat-v0-lhost:
+    desc: Remove generated files
+    cmds:
+      - task: sweep-octocat-v0-fhost
+      - echo "localhost cleared"
   sweep-octocat-v0-prod:
     desc: Remove generated files
     cmds:

@@ -14,6 +14,9 @@ const
 			url: NodeProcess.env.DEMO_FILE_HOST || new NodeURL('../../../distribution/demo', import.meta.url),
 			path: NodeProcess.env.DEMO_DIR || NodePath.resolve(_dir, '../../../distribution/demo'),
 		},
+		lhost: {
+			url: NodeProcess.env.LHOST_HOST || new NodeURL('http://localhost:54321', import.meta.url)
+		},
 		prod: {
 			path: NodeProcess.env.OCTOCAT_HOST_DIR || NodePath.resolve(_dir, '../../../docs')
 		}
@@ -32,6 +35,17 @@ const
 			sourcemapBaseUrl: new NodeURL(buildInfo.fhost.url).toString()
 		}]
 	},
+	lhostConfig = {
+	  input: NodePath.resolve(buildShared.behavior_path, 'demo.js'),
+	  output: [{
+			file: NodePath.resolve(buildInfo.fhost.path, buildShared.es_main),
+			format: 'iife',
+			name: 'PCS',
+			plugins: [ RollupTerser() ],
+			sourcemap: true,
+			sourcemapBaseUrl: new NodeURL(buildInfo.lhost.url).toString()
+		}]
+	},
 	prodConfig = {
 	  input: NodePath.resolve(buildShared.behavior_path, 'demo.js'),
 	  output: [{
@@ -45,5 +59,6 @@ const
 
 export default {
 	prodConfig,
-	fhostConfig
+	fhostConfig,
+	lhostConfig
 };
