@@ -8,15 +8,34 @@ tasks:
   rear-presentation:
     desc: Stylus to CSS
     cmds:
-      - pnpm stylus {{.PRESENTATION_DIR}}/demo.styl -o {{.PAGES_HOST_DIR}}/main.css
-      - pnpm postcss {{.PAGES_HOST_DIR}}/main.css --config {{.PROJECT_DIR}} -o {{.PAGES_HOST_DIR}}/main.css
+      - pnpm stylus {{.PRESENTATION_DIR}}/demo.styl -o {{.PAGES_HOST_DIR}}/{{.CSS_MAIN_NAME}}
+      - pnpm postcss {{.PAGES_HOST_DIR}}/{{.CSS_MAIN_NAME}} --config {{.PROJECT_DIR}} -o {{.PAGES_HOST_DIR}}/{{.CSS_MAIN_NAME}}
     env:
       NODE_ENV: production
   rear-content:
     desc: Pug to HTML
     cmds:
-      - pnpm pug {{.CONTENT_DIR}}/demo.pug -o {{.PAGES_HOST_DIR}}
+      - echo {{.CONTENT_DATA}} > {{.PAGES_HOST_DIR}}/content_data_options.json
+      - pnpm pug {{.CONTENT_DIR}}/demo.pug -o {{.PAGES_HOST_DIR}} -O {{.PAGES_HOST_DIR}}/content_data_options.json
       - mv {{.PAGES_HOST_DIR}}/demo.html {{.PAGES_HOST_DIR}}/index.html
+      #- rm -f {{.PAGES_HOST_DIR}}/content_data_options.json
+    vars:
+      APPLE_TOUCH_ICON_URL: '{{.PAGES_HOST}}{{.APPLE_TOUCH_ICON_NAME}}'
+      FAVICON_32_URL: '{{.PAGES_HOST}}{{.FAVICON_32_NAME}}'
+      FAVICON_32_ALT_URL: '{{.PAGES_HOST}}{{.FAVICON_32_ALT_NAME}}'
+      FAVICON_16_URL: '{{.PAGES_HOST}}{{.FAVICON_16_NAME}}'
+      FAVICON_16_ALT_URL: '{{.PAGES_HOST}}{{.FAVICON_16_ALT_NAME}}'
+      FAVICON_ICO_URL: '{{.PAGES_HOST}}{{.FAVICON_ICO_NAME}}'
+      FAVICON_ICO_ALT_URL: '{{.PAGES_HOST}}{{.FAVICON_ICO_ALT_NAME}}'
+      VENDOR_CSS_RESET_URL: '{{.PAGES_HOST}}{{.VENDOR_CSS_RESET_NAME}}'
+      VENDOR_CHANCEJS_URL: '{{.PAGES_HOST}}{{.VENDOR_CHANCEJS_NAME}}'
+      VENDOR_HTML2CANVAS_URL: '{{.PAGES_HOST}}{{.VENDOR_HTML2CANVAS_NAME}}'
+      CSS_MAIN_URL: '{{.PAGES_HOST}}{{.CSS_MAIN_NAME}}'
+      ES_MAIN_URL: '{{.PAGES_HOST}}{{.ES_MAIN_NAME}}'
+      BROWSERCONFIG_URL: '{{.PAGES_HOST}}{{.BROWSERCONFIG_NAME}}'
+      WEBMANIFEST_URL: '{{.PAGES_HOST}}{{.WEBMANIFEST_NAME}}'
+      # Turn above variables into a json string
+      CONTENT_DATA: '{\"APPLE_TOUCH_ICON_URL\": \"{{.APPLE_TOUCH_ICON_URL}}\",\"FAVICON_32_URL\": \"{{.FAVICON_32_URL}}\",\"FAVICON_32_ALT_URL\": \"{{.FAVICON_32_ALT_URL}}\",\"FAVICON_16_URL\": \"{{.FAVICON_16_URL}}\",\"FAVICON_16_ALT_URL\": \"{{.FAVICON_16_ALT_URL}}\",\"FAVICON_ICO_URL\": \"{{.FAVICON_ICO_URL}}\",\"FAVICON_ICO_ALT_URL\": \"{{.FAVICON_ICO_ALT_URL}}\",\"VENDOR_CSS_RESET_URL\": \"{{.VENDOR_CSS_RESET_URL}}\",\"VENDOR_CHANCEJS_URL\": \"{{.VENDOR_CHANCEJS_URL}}\",\"VENDOR_HTML2CANVAS_URL\": \"{{.VENDOR_HTML2CANVAS_URL}}\",\"CSS_MAIN_URL\": \"{{.CSS_MAIN_URL}}\",\"ES_MAIN_URL\": \"{{.ES_MAIN_URL}}\",\"BROWSERCONFIG_URL\": \"{{.BROWSERCONFIG_URL}}\",\"WEBMANIFEST_URL\": \"{{.WEBMANIFEST_URL}}\"}'
   rear-behavior:
     desc: JS
     cmds:
@@ -26,26 +45,28 @@ tasks:
   put-vendor:
     desc: Copy 3rd party scripts/stylesheets/etc
     cmds:
-      - cp {{.COMMON_DIR}}/vendor/meyerweb/reset.min.css {{.PAGES_HOST_DIR}}/reset.css
-      - cp {{.COMMON_DIR}}/vendor/html2canvas/html2canvas.min.js {{.PAGES_HOST_DIR}}/html2canvas.js
-      - cp {{.COMMON_DIR}}/vendor/chancejs/chance.min.js {{.PAGES_HOST_DIR}}/chance.js
-      - echo "MeyerWeb-CSSReset, HTML2Canvas and ChanceJS placed with demo files for pages host"
+      - cp {{.COMMON_DIR}}/vendor/meyerweb/reset.min.css {{.PAGES_HOST_DIR}}/{{.VENDOR_CSS_RESET_NAME}}
+      - cp {{.COMMON_DIR}}/vendor/html2canvas/html2canvas.min.js {{.PAGES_HOST_DIR}}/{{.VENDOR_HTML2CANVAS_NAME}}
+      - cp {{.COMMON_DIR}}/vendor/chancejs/chance.min.js {{.PAGES_HOST_DIR}}/{{.VENDOR_CHANCEJS_NAME}}
+      - echo "MeyerWeb-CSSReset, HTML2Canvas and ChanceJS placed with pages host files"
   put-meta:
     desc: Place fils needed for pwa
     cmds:
-      - cp {{.COMMON_DIR}}/favicons/sqwiggle.ico {{.DEMO_DIR}}/favicon.ico
-      - cp {{.COMMON_DIR}}/favicons/sqwiggle-alt.ico {{.DEMO_DIR}}/favicon-alt.ico
-      - cp {{.COMMON_DIR}}/favicons/sqwiggle_16.png {{.DEMO_DIR}}/favicon-16x16.png
-      - cp {{.COMMON_DIR}}/favicons/sqwiggle_16-alt.png {{.DEMO_DIR}}/favicon-16x16-alt.png
-      - cp {{.COMMON_DIR}}/favicons/sqwiggle_32.png {{.DEMO_DIR}}/favicon-32x32.png
-      - cp {{.COMMON_DIR}}/favicons/sqwiggle_32-alt.png {{.DEMO_DIR}}/favicon-32x32-alt.png
-      - cp {{.COMMON_DIR}}/favicons/sqwiggle_180.png {{.DEMO_DIR}}/apple-touch-icon.png
-      - cp {{.CONTENT_DIR}}/browserconfig.source.xml {{.DEMO_DIR}}/browserconfig.xml
-      - cp {{.CONTENT_DIR}}/webmanifest.source.json {{.DEMO_DIR}}/site.webmanifest
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle.ico {{.PAGES_HOST_DIR}}/{{.FAVICON_ICO_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle-alt.ico {{.PAGES_HOST_DIR}}/{{.FAVICON_ICO_ALT_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_16.png {{.PAGES_HOST_DIR}}/{{.FAVICON_16_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_16-alt.png {{.PAGES_HOST_DIR}}/{{.FAVICON_16_ALT_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_32.png {{.PAGES_HOST_DIR}}/{{.FAVICON_32_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_32-alt.png {{.PAGES_HOST_DIR}}/{{.FAVICON_32_ALT_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_180.png {{.PAGES_HOST_DIR}}/{{.APPLE_TOUCH_ICON_NAME}}
+      - cp {{.CONTENT_DIR}}/browserconfig.source.xml {{.PAGES_HOST_DIR}}/{{.BROWSERCONFIG_NAME}}
+      - cp {{.CONTENT_DIR}}/webmanifest.source.json {{.PAGES_HOST_DIR}}/{{.WEBMANIFEST_NAME}}
+      - echo "Favicon and Offline files placed with pages host files"
   sweep-content:
     desc: Clear out pages host directory
     cmds:
       - rm -f {{.PAGES_HOST_DIR}}/index.html
+      - rm -f {{.PAGES_HOST_DIR}}/content_data_options.json
   sweep-presentation:
     desc: Clear out pages host directory
     cmds:
@@ -53,22 +74,22 @@ tasks:
   sweep-behavior:
     desc: Clear out pages host directory
     cmds:
-      - rm -f {{.PAGES_HOST_DIR}}/main.js
+      - rm -f {{.PAGES_HOST_DIR}}/main.{js,mjs}
   sweep-vendor:
     desc: Remove generated files
     cmds:
-      - rm -f {{.DEMO_DIR}}/html2canvas.{js,js.map}
-      - rm -f {{.DEMO_DIR}}/chance.{js,min.js,min.js.map}
-      - rm -f {{.DEMO_DIR}}/reset.css
+      - rm -f {{.PAGES_HOST_DIR}}/html2canvas.{js,js.map}
+      - rm -f {{.PAGES_HOST_DIR}}/chance.{js,min.js,min.js.map}
+      - rm -f {{.PAGES_HOST_DIR}}/reset.css
   sweep-meta:
     desc: Remove generated files
     cmds:
-      - rm -f {{.DEMO_DIR}}/favicon.ico
-      - rm -f {{.DEMO_DIR}}/favicon-alt.ico
-      - rm -f {{.DEMO_DIR}}/favicon-16x16.png
-      - rm -f {{.DEMO_DIR}}/favicon-16x16-alt.png
-      - rm -f {{.DEMO_DIR}}/favicon-32x32.png
-      - rm -f {{.DEMO_DIR}}/favicon-32x32-alt.png
-      - rm -f {{.DEMO_DIR}}/apple-touch-icon.png
-      - rm -f {{.DEMO_DIR}}/browserconfig.xml
-      - rm -f {{.DEMO_DIR}}/site.webmanifest
+      - rm -f {{.PAGES_HOST_DIR}}/{{.FAVICON_ICO_NAME}}
+      - rm -f {{.PAGES_HOST_DIR}}/{{.FAVICON_ICO_ALT_NAME}}
+      - rm -f {{.PAGES_HOST_DIR}}/{{.FAVICON_16_NAME}}
+      - rm -f {{.PAGES_HOST_DIR}}/{{.FAVICON_16_ALT_NAME}}
+      - rm -f {{.PAGES_HOST_DIR}}/{{.FAVICON_32_NAME}}
+      - rm -f {{.PAGES_HOST_DIR}}/{{.FAVICON_32_ALT_NAME}}
+      - rm -f {{.PAGES_HOST_DIR}}/{{.APPLE_TOUCH_ICON_NAME}}
+      - rm -f {{.PAGES_HOST_DIR}}/{{.BROWSERCONFIG_NAME}}
+      - rm -f {{.PAGES_HOST_DIR}}/{{.WEBMANIFEST_NAME}}
