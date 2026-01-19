@@ -8,6 +8,7 @@ Each build is for a _target_ , _area_ and _objective_
 	- Usually a shorthand, codename or mascot
 		- `octocat == github pages`
 		- `jammy == netlify`
+		- `tanuki == gitlab`
 - An _area_ represents a variation of the target
 	- fhost = file host (ex: `file://`)
 	- lhost = local host (ex: `http://localhost:8080`)
