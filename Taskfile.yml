@@ -15,6 +15,7 @@ tasks:
     cmds:
       - echo $PROJECT_DIR
       - echo $BEHAVIOR_DIR
+      - echo "Unix timestamp {{now | unixEpoch}}"
   rear-octocat-v0-fhost:
     desc: Build demo files
     cmds:
@@ -26,12 +27,12 @@ tasks:
       - echo "Demo file-host ready"
   rear-octocat-v0-lhost:
     desc: Build demo files
+    deps: [octocat_v0_fhost:put-vendor, octocat_v0_fhost:put-meta]
     cmds:
       - task: octocat_v0_lhost:rear-content
       - task: octocat_v0_lhost:rear-presentation
       - task: octocat_v0_lhost:rear-behavior
-      - task: octocat_v0_fhost:put-vendor
-      - task: octocat_v0_fhost:put-meta
+      - task: octocat_v0_lhost:set-meta
       - echo "localhost ready"
   rear-octocat-v0-prod:
     desc: Build demo files
@@ -41,6 +42,7 @@ tasks:
       - task: octocat_v0_prod:rear-behavior
       - task: octocat_v0_prod:put-vendor
       - task: octocat_v0_prod:put-meta
+      - task: octocat_v0_prod:set-meta
       - echo "ocotcat host directory for demo is ready"
   sweep-octocat-v0-fhost:
     desc: Remove generated files

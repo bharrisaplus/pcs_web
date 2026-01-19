@@ -65,6 +65,8 @@ tasks:
       - cp {{.COMMON_DIR}}/favicons/sqwiggle_32.png {{.DEMO_DIR}}/{{.FAVICON_32_NAME}}
       - cp {{.COMMON_DIR}}/favicons/sqwiggle_32-alt.png {{.DEMO_DIR}}/{{.FAVICON_32_ALT_NAME}}
       - cp {{.COMMON_DIR}}/favicons/sqwiggle_180.png {{.DEMO_DIR}}/{{.APPLE_TOUCH_ICON_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_192.png {{.DEMO_DIR}}/{{.FAVICON_ANDROID_CHROME_192_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_512.png {{.DEMO_DIR}}/{{.FAVICON_ANDROID_CHROME_512_NAME}}
       - cp {{.CONTENT_DIR}}/browserconfig.source.xml {{.DEMO_DIR}}/{{.BROWSERCONFIG_NAME}}
       - cp {{.CONTENT_DIR}}/webmanifest.source.json {{.DEMO_DIR}}/{{.WEBMANIFEST_NAME}}
       - echo "Favicon and Offline files placed with demo files"
@@ -99,5 +101,7 @@ tasks:
       - rm -f {{.DEMO_DIR}}/{{.FAVICON_32_NAME}}
       - rm -f {{.DEMO_DIR}}/{{.FAVICON_32_ALT_NAME}}
       - rm -f {{.DEMO_DIR}}/{{.APPLE_TOUCH_ICON_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.FAVICON_ANDROID_CHROME_192_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.FAVICON_ANDROID_CHROME_512_NAME}}
       - rm -f {{.DEMO_DIR}}/{{.BROWSERCONFIG_NAME}}
       - rm -f {{.DEMO_DIR}}/{{.WEBMANIFEST_NAME}}

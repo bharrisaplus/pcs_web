@@ -40,3 +40,10 @@ tasks:
       -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
     env:
       NODE_ENV: lhost
+  set-meta:
+    desc: Update pwa files
+    cmds:
+      -  jq '.id|=env.LHOST_HOST | .start_url|=env.LHOST_HOST | .icons[0].src|=env.FAVICON_ANDROID_CHROME_192_URL | .icons[1].src|=env.FAVICON_ANDROID_CHROME_512_URL' {{.CONTENT_DIR}}/webmanifest.source.json > {{.DEMO_DIR}}/site.webmanifest
+    env:
+      FAVICON_ANDROID_CHROME_192_URL: '{{.LHOST_HOST}}{{.FAVICON_ANDROID_CHROME_192_NAME}}'
+      FAVICON_ANDROID_CHROME_512_URL: '{{.LHOST_HOST}}{{.FAVICON_ANDROID_CHROME_512_NAME}}'
