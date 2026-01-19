@@ -19,7 +19,9 @@ tasks:
       - pnpm pug {{.CONTENT_DIR}}/demo.pug -o {{.OCTOCAT_HOST_DIR}} -O {{.OCTOCAT_HOST_DIR}}/content_data_options.json
       - mv {{.OCTOCAT_HOST_DIR}}/demo.html {{.OCTOCAT_HOST_DIR}}/index.html
       - rm -f {{.OCTOCAT_HOST_DIR}}/content_data_options.json
+      - cp {{.CONTENT_DIR}}/graphic/icon/sqwiggle.svg {{.OCTOCAT_HOST_DIR}}/{{.MARKLOGO_NAME}}
     vars:
+      MARKLOGO_URL: '{{.OCTOCAT_HOST}}{{.MARKLOGO_NAME}}'
       APPLE_TOUCH_ICON_URL: '{{.OCTOCAT_HOST}}{{.APPLE_TOUCH_ICON_NAME}}'
       FAVICON_32_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_32_NAME}}'
       FAVICON_32_ALT_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_32_ALT_NAME}}'
@@ -35,7 +37,7 @@ tasks:
       BROWSERCONFIG_URL: '{{.OCTOCAT_HOST}}{{.BROWSERCONFIG_NAME}}'
       WEBMANIFEST_URL: '{{.OCTOCAT_HOST}}{{.WEBMANIFEST_NAME}}'
       # Turn above variables into a json string
-      CONTENT_DATA: '{\"APPLE_TOUCH_ICON_URL\": \"{{.APPLE_TOUCH_ICON_URL}}\",\"FAVICON_32_URL\": \"{{.FAVICON_32_URL}}\",\"FAVICON_32_ALT_URL\": \"{{.FAVICON_32_ALT_URL}}\",\"FAVICON_16_URL\": \"{{.FAVICON_16_URL}}\",\"FAVICON_16_ALT_URL\": \"{{.FAVICON_16_ALT_URL}}\",\"FAVICON_ICO_URL\": \"{{.FAVICON_ICO_URL}}\",\"FAVICON_ICO_ALT_URL\": \"{{.FAVICON_ICO_ALT_URL}}\",\"VENDOR_CSS_RESET_URL\": \"{{.VENDOR_CSS_RESET_URL}}\",\"VENDOR_CHANCEJS_URL\": \"{{.VENDOR_CHANCEJS_URL}}\",\"VENDOR_HTML2CANVAS_URL\": \"{{.VENDOR_HTML2CANVAS_URL}}\",\"CSS_MAIN_URL\": \"{{.CSS_MAIN_URL}}\",\"ES_MAIN_URL\": \"{{.ES_MAIN_URL}}\",\"BROWSERCONFIG_URL\": \"{{.BROWSERCONFIG_URL}}\",\"WEBMANIFEST_URL\": \"{{.WEBMANIFEST_URL}}\"}'
+      CONTENT_DATA: '{\"MARKLOGO_URL\": \"{{.MARKLOGO_URL}}\",\"APPLE_TOUCH_ICON_URL\": \"{{.APPLE_TOUCH_ICON_URL}}\",\"FAVICON_32_URL\": \"{{.FAVICON_32_URL}}\",\"FAVICON_32_ALT_URL\": \"{{.FAVICON_32_ALT_URL}}\",\"FAVICON_16_URL\": \"{{.FAVICON_16_URL}}\",\"FAVICON_16_ALT_URL\": \"{{.FAVICON_16_ALT_URL}}\",\"FAVICON_ICO_URL\": \"{{.FAVICON_ICO_URL}}\",\"FAVICON_ICO_ALT_URL\": \"{{.FAVICON_ICO_ALT_URL}}\",\"VENDOR_CSS_RESET_URL\": \"{{.VENDOR_CSS_RESET_URL}}\",\"VENDOR_CHANCEJS_URL\": \"{{.VENDOR_CHANCEJS_URL}}\",\"VENDOR_HTML2CANVAS_URL\": \"{{.VENDOR_HTML2CANVAS_URL}}\",\"CSS_MAIN_URL\": \"{{.CSS_MAIN_URL}}\",\"ES_MAIN_URL\": \"{{.ES_MAIN_URL}}\",\"BROWSERCONFIG_URL\": \"{{.BROWSERCONFIG_URL}}\",\"WEBMANIFEST_URL\": \"{{.WEBMANIFEST_URL}}\"}'
   rear-behavior:
     desc: JS
     cmds:
@@ -76,6 +78,7 @@ tasks:
     cmds:
       - rm -f {{.OCTOCAT_HOST_DIR}}/index.html
       - rm -f {{.OCTOCAT_HOST_DIR}}/content_data_options.json
+      - rm -f {{.OCTOCAT_HOST_DIR}}/markl.svg
   sweep-presentation:
     desc: Clear out pages host directory
     cmds:

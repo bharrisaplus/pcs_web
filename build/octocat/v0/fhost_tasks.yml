@@ -9,15 +9,17 @@ tasks:
   rear-presentation:
     desc: Stlus to CSS
     cmds:
-      - pnpm stylus {{.PRESENTATION_DIR}}/demo.styl -m --sourcemap-base {{.DEMO_FILE_HOST}} -o {{.DEMO_DIR}}/{{.CSS_MAIN_NAME}}
-      - pnpm postcss {{.DEMO_DIR}}/{{.CSS_MAIN_NAME}} --config {{.PROJECT_DIR}} -o {{.DEMO_DIR}}/{{.CSS_MAIN_NAME}}
+      - pnpm stylus {{.PRESENTATION_DIR}}/demo.styl -m --sourcemap-base {{.DEMO_FILE_HOST}} -o {{.DEMO_DIR}}
+      - pnpm postcss {{.DEMO_DIR}}/demo.css --config {{.PROJECT_DIR}} -o {{.DEMO_DIR}}/{{.CSS_MAIN_NAME}}
   rear-content:
     desc: Pug to HTML
     cmds:
       - echo {{.CONTENT_DATA}} > {{.DEMO_DIR}}/content_data_options.json
       - pnpm pug {{.CONTENT_DIR}}/demo.pug -o {{.DEMO_DIR}} -O {{.DEMO_DIR}}/content_data_options.json
       - echo "JSON options created @ {{.DEMO_DIR}}/content_data_options.json"
+      - cp {{.CONTENT_DIR}}/graphic/icon/sqwiggle.svg {{.DEMO_DIR}}/{{.MARKLOGO_NAME}}
     vars:
+      MARKLOGO_URL: '{{.DEMO_FILE_HOST}}{{.MARKLOGO_NAME}}'
       APPLE_TOUCH_ICON_URL: '{{.DEMO_FILE_HOST}}{{.APPLE_TOUCH_ICON_NAME}}'
       FAVICON_32_URL: '{{.DEMO_FILE_HOST}}{{.FAVICON_32_NAME}}'
       FAVICON_32_ALT_URL: '{{.DEMO_FILE_HOST}}{{.FAVICON_32_ALT_NAME}}'
@@ -33,7 +35,7 @@ tasks:
       BROWSERCONFIG_URL: '{{.DEMO_FILE_HOST}}{{.BROWSERCONFIG_NAME}}'
       WEBMANIFEST_URL: '{{.DEMO_FILE_HOST}}{{.WEBMANIFEST_NAME}}'
       # Turn above variables into a json string
-      CONTENT_DATA: '{\"APPLE_TOUCH_ICON_URL\": \"{{.APPLE_TOUCH_ICON_URL}}\",\"FAVICON_32_URL\": \"{{.FAVICON_32_URL}}\",\"FAVICON_32_ALT_URL\": \"{{.FAVICON_32_ALT_URL}}\",\"FAVICON_16_URL\": \"{{.FAVICON_16_URL}}\",\"FAVICON_16_ALT_URL\": \"{{.FAVICON_16_ALT_URL}}\",\"FAVICON_ICO_URL\": \"{{.FAVICON_ICO_URL}}\",\"FAVICON_ICO_ALT_URL\": \"{{.FAVICON_ICO_ALT_URL}}\",\"VENDOR_CSS_RESET_URL\": \"{{.VENDOR_CSS_RESET_URL}}\",\"VENDOR_CHANCEJS_URL\": \"{{.VENDOR_CHANCEJS_URL}}\",\"VENDOR_HTML2CANVAS_URL\": \"{{.VENDOR_HTML2CANVAS_URL}}\",\"CSS_MAIN_URL\": \"{{.CSS_MAIN_URL}}\",\"ES_MAIN_URL\": \"{{.ES_MAIN_URL}}\",\"BROWSERCONFIG_URL\": \"{{.BROWSERCONFIG_URL}}\",\"WEBMANIFEST_URL\": \"{{.WEBMANIFEST_URL}}\"}'
+      CONTENT_DATA: '{\"MARKLOGO_URL\": \"{{.MARKLOGO_URL}}\",\"APPLE_TOUCH_ICON_URL\": \"{{.APPLE_TOUCH_ICON_URL}}\",\"FAVICON_32_URL\": \"{{.FAVICON_32_URL}}\",\"FAVICON_32_ALT_URL\": \"{{.FAVICON_32_ALT_URL}}\",\"FAVICON_16_URL\": \"{{.FAVICON_16_URL}}\",\"FAVICON_16_ALT_URL\": \"{{.FAVICON_16_ALT_URL}}\",\"FAVICON_ICO_URL\": \"{{.FAVICON_ICO_URL}}\",\"FAVICON_ICO_ALT_URL\": \"{{.FAVICON_ICO_ALT_URL}}\",\"VENDOR_CSS_RESET_URL\": \"{{.VENDOR_CSS_RESET_URL}}\",\"VENDOR_CHANCEJS_URL\": \"{{.VENDOR_CHANCEJS_URL}}\",\"VENDOR_HTML2CANVAS_URL\": \"{{.VENDOR_HTML2CANVAS_URL}}\",\"CSS_MAIN_URL\": \"{{.CSS_MAIN_URL}}\",\"ES_MAIN_URL\": \"{{.ES_MAIN_URL}}\",\"BROWSERCONFIG_URL\": \"{{.BROWSERCONFIG_URL}}\",\"WEBMANIFEST_URL\": \"{{.WEBMANIFEST_URL}}\"}'
   rear-behavior:
     desc: JS
     cmds:
@@ -76,11 +78,13 @@ tasks:
     cmds:
       - rm -f {{.DEMO_DIR}}/demo.html
       - rm -f {{.DEMO_DIR}}/content_data_options.json
+      - rm -f {{.DEMO_DIR}}/markl.svg
 
   sweep-presentation:
     desc: Remove generated files
     cmds:
       - rm -f {{.DEMO_DIR}}/main.{css,css.map}
+      - rm -f {{.DEMO_DIR}}/demo.{css,css.map}
   sweep-behavior:
     desc: Remove generated files
     cmds:
