@@ -31,7 +31,7 @@ tasks:
       - task: octocat_v0_prod:rear-behavior
       - task: octocat_v0_prod:put-vendor
       - task: octocat_v0_prod:put-meta
-      - echo "Prod host directory for demo is ready"
+      - echo "ocotcat host directory for demo is ready"
   sweep-octocat-v0-fhost:
     desc: Remove generated files
     cmds:
@@ -49,4 +49,4 @@ tasks:
       - task: octocat_v0_prod:sweep-behavior
       - task: octocat_v0_prod:sweep-vendor
       - task: octocat_v0_prod:sweep-meta
-      - echo "Pages host directory cleared"
+      - echo "octocat host directory cleared"

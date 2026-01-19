@@ -15,7 +15,7 @@ const
 			path: NodeProcess.env.DEMO_DIR || NodePath.resolve(_dir, '../../../distribution/demo'),
 		},
 		prod: {
-			path: NodeProcess.env.PAGES_HOST_DIR || NodePath.resolve(_dir, '../../../docs')
+			path: NodeProcess.env.OCTOCAT_HOST_DIR || NodePath.resolve(_dir, '../../../docs')
 		}
 	};
 
