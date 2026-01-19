@@ -70,13 +70,4 @@ When showing an svg image as part of the DOM keep in mind the size of the image 
 	* Only scaling the image or changing the background color
 
 ## Privacy
-If the image is preferred to not be easily downloadable then load the image via js/mjs and set a blob url.
-
-```
-imageResponse = await fetch(imageUrl)
-imageBlob = await imageResponse.blob()
-safeImageUrl = URL.createObjectURL(imageBlob)
-
-noDownloadImg = document.createElement('img')
-noDownloadImg.src = safeImageUrl;
-``` 
+If the image is preferred to not be easily downloadable then look at the Encrypted Media Extensions API within the Web APIs
