@@ -24,7 +24,7 @@ const
 	fhostConfig = {
 	  input: NodePath.resolve(buildShared.behavior_path, 'demo.js'),
 	  output: [{
-			file: NodePath.resolve(buildInfo.fhost.path, 'main.js'),
+			file: NodePath.resolve(buildInfo.fhost.path, buildShared.es_main),
 			format: 'iife',
 			name: 'PCS',
 			plugins: [ RollupTerser() ],
