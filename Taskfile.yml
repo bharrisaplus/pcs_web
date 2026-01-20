@@ -7,6 +7,7 @@ version: '3'
 
 includes:
   octocat_v0_fhost: ./build/octocat/v0/fhost_tasks.yml
+  octocat_v0_lhost: ./build/octocat/v0/lhost_tasks.yml
   octocat_v0_prod: ./build/octocat/v0/prod_tasks.yml
 
 tasks:
@@ -14,33 +15,61 @@ tasks:
     cmds:
       - echo $PROJECT_DIR
       - echo $BEHAVIOR_DIR
+      - echo "Unix timestamp {{now | unixEpoch}}"
   rear-octocat-v0-fhost:
     desc: Build demo files
+    aliases: [rear-file]
     cmds:
       - task: octocat_v0_fhost:rear-content
       - task: octocat_v0_fhost:rear-presentation
       - task: octocat_v0_fhost:rear-behavior
       - task: octocat_v0_fhost:put-vendor
-      - echo "Demo file-host ready"
+      - task: octocat_v0_fhost:put-meta
+      - echo "demo file-host ready"
+  rear-octocat-v0-lhost:
+    desc: Build demo files
+    deps: [octocat_v0_fhost:put-vendor, octocat_v0_fhost:put-meta]
+    aliases: [rear-local]
+    cmds:
+      - task: octocat_v0_lhost:rear-content
+      - task: octocat_v0_lhost:rear-presentation
+      - task: octocat_v0_lhost:rear-behavior
+      - task: octocat_v0_lhost:set-meta
+      - echo "localhost ready"
   rear-octocat-v0-prod:
     desc: Build demo files
+    aliases: [rear-prod]
     cmds:
       - task: octocat_v0_prod:rear-content
       - task: octocat_v0_prod:rear-presentation
       - task: octocat_v0_prod:rear-behavior
       - task: octocat_v0_prod:put-vendor
-      - echo "Prod host directory for demo is ready"
+      - task: octocat_v0_prod:put-meta
+      - task: octocat_v0_prod:set-meta
+      - echo "ocotcat host directory for demo is ready"
   sweep-octocat-v0-fhost:
     desc: Remove generated files
+    aliases: [sweep-file]
     cmds:
       - task: octocat_v0_fhost:sweep-content
       - task: octocat_v0_fhost:sweep-presentation
       - task: octocat_v0_fhost:sweep-behavior
-      - echo "Demo file-host cleared"
+      - task: octocat_v0_fhost:sweep-vendor
+      - task: octocat_v0_fhost:sweep-meta
+      - echo "demo file-host cleared"
+  sweep-octocat-v0-lhost:
+    desc: Remove generated files
+    aliases: [sweep-local]
+    cmds:
+      - task: sweep-octocat-v0-fhost
+      - echo "localhost cleared"
   sweep-octocat-v0-prod:
     desc: Remove generated files
+    aliases: [sweep-prod]
     cmds:
       - task: octocat_v0_prod:sweep-content
       - task: octocat_v0_prod:sweep-presentation
       - task: octocat_v0_prod:sweep-behavior
-      - echo "Pages host directory cleared"
+      - task: octocat_v0_prod:sweep-vendor
+      - task: octocat_v0_prod:sweep-meta
+      - echo "octocat host directory cleared"

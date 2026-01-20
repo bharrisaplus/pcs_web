@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+# Tasks are expected to be called from the project root or via the main Taskfile
+
+version: '3'
+
+tasks:
+  # Building/Transpiling/etc
+  rear-presentation:
+    desc: Stlus to CSS
+    cmds:
+      - pnpm stylus {{.PRESENTATION_DIR}}/demo.main.styl -m --sourcemap-base {{.LHOST_HOST}} -o {{.DEMO_DIR}}
+      - pnpm postcss {{.DEMO_DIR}}/demo.main.css --config {{.PROJECT_DIR}} -o {{.DEMO_DIR}}/{{.CSS_MAIN_NAME}}
+  rear-content:
+    desc: Pug to HTML
+    cmds:
+      - echo {{.CONTENT_DATA}} > {{.DEMO_DIR}}/content_data_options.json
+      - pnpm pug {{.CONTENT_DIR}}/demo.page.pug -o {{.DEMO_DIR}} -O {{.DEMO_DIR}}/content_data_options.json
+      - mv {{.DEMO_DIR}}/demo.page.html {{.DEMO_DIR}}/demo.html
+      - cp {{.CONTENT_DIR}}/graphic/icon/sqwiggle.svg {{.DEMO_DIR}}/{{.MARKLOGO_NAME}}
+    vars:
+      MARKLOGO_URL: '{{.LHOST_HOST}}{{.MARKLOGO_NAME}}'
+      APPLE_TOUCH_ICON_URL: '{{.LHOST_HOST}}{{.APPLE_TOUCH_ICON_NAME}}'
+      FAVICON_32_URL: '{{.LHOST_HOST}}{{.FAVICON_32_NAME}}'
+      FAVICON_32_ALT_URL: '{{.LHOST_HOST}}{{.FAVICON_32_ALT_NAME}}'
+      FAVICON_16_URL: '{{.LHOST_HOST}}{{.FAVICON_16_NAME}}'
+      FAVICON_16_ALT_URL: '{{.LHOST_HOST}}{{.FAVICON_16_ALT_NAME}}'
+      FAVICON_ICO_URL: '{{.LHOST_HOST}}{{.FAVICON_ICO_NAME}}'
+      FAVICON_ICO_ALT_URL: '{{.LHOST_HOST}}{{.FAVICON_ICO_ALT_NAME}}'
+      VENDOR_CSS_RESET_URL: '{{.LHOST_HOST}}{{.VENDOR_CSS_RESET_NAME}}'
+      VENDOR_CHANCEJS_URL: '{{.LHOST_HOST}}{{.VENDOR_CHANCEJS_NAME}}'
+      VENDOR_HTML2CANVAS_URL: '{{.LHOST_HOST}}{{.VENDOR_HTML2CANVAS_NAME}}'
+      CSS_MAIN_URL: '{{.LHOST_HOST}}{{.CSS_MAIN_NAME}}'
+      ES_MAIN_URL: '{{.LHOST_HOST}}{{.ES_MAIN_NAME}}'
+      BROWSERCONFIG_URL: '{{.LHOST_HOST}}{{.BROWSERCONFIG_NAME}}'
+      WEBMANIFEST_URL: '{{.LHOST_HOST}}{{.WEBMANIFEST_NAME}}'
+      # Turn above variables into a json string
+      CONTENT_DATA: '{\"MARKLOGO_URL\": \"{{.MARKLOGO_URL}}\",\"APPLE_TOUCH_ICON_URL\": \"{{.APPLE_TOUCH_ICON_URL}}\",\"FAVICON_32_URL\": \"{{.FAVICON_32_URL}}\",\"FAVICON_32_ALT_URL\": \"{{.FAVICON_32_ALT_URL}}\",\"FAVICON_16_URL\": \"{{.FAVICON_16_URL}}\",\"FAVICON_16_ALT_URL\": \"{{.FAVICON_16_ALT_URL}}\",\"FAVICON_ICO_URL\": \"{{.FAVICON_ICO_URL}}\",\"FAVICON_ICO_ALT_URL\": \"{{.FAVICON_ICO_ALT_URL}}\",\"VENDOR_CSS_RESET_URL\": \"{{.VENDOR_CSS_RESET_URL}}\",\"VENDOR_CHANCEJS_URL\": \"{{.VENDOR_CHANCEJS_URL}}\",\"VENDOR_HTML2CANVAS_URL\": \"{{.VENDOR_HTML2CANVAS_URL}}\",\"CSS_MAIN_URL\": \"{{.CSS_MAIN_URL}}\",\"ES_MAIN_URL\": \"{{.ES_MAIN_URL}}\",\"BROWSERCONFIG_URL\": \"{{.BROWSERCONFIG_URL}}\",\"WEBMANIFEST_URL\": \"{{.WEBMANIFEST_URL}}\"}'
+  rear-behavior:
+    desc: JS
+    cmds:
+      -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
+    env:
+      NODE_ENV: lhost
+  set-meta:
+    desc: Update pwa files
+    cmds:
+      - jq '.id|=env.LHOST_HOST | .start_url|=env.LHOST_HOST | .icons[0].src|=env.FAVICON_ANDROID_CHROME_192_URL | .icons[1].src|=env.FAVICON_ANDROID_CHROME_512_URL' {{.CONTENT_DIR}}/webmanifest.source.json > {{.DEMO_DIR}}/site.webmanifest
+      - echo {{.META_DATA}} > {{.DEMO_DIR}}/meta_data_options.json
+      - pnpm pug {{.CONTENT_DIR}}/browserconfig.source.pug -o {{.DEMO_DIR}} -O {{.DEMO_DIR}}/meta_data_options.json
+      - mv {{.DEMO_DIR}}/browserconfig.source.html {{.DEMO_DIR}}/{{.BROWSERCONFIG_NAME}}
+      - echo "Generated files for app/offline install"
+    env:
+      FAVICON_ANDROID_CHROME_192_URL: '{{.LHOST_HOST}}{{.FAVICON_ANDROID_CHROME_192_NAME}}'
+      FAVICON_ANDROID_CHROME_512_URL: '{{.LHOST_HOST}}{{.FAVICON_ANDROID_CHROME_512_NAME}}'
+    vars:
+      FAVICON_MSTILE_s70_URL: "{{.LHOST_HOST}}{{.FAVICON_MSTILE_s70_NAME}}"
+      FAVICON_MSTILE_s144_URL: '{{.LHOST_HOST}}{{.FAVICON_MSTILE_s144_NAME}}'
+      FAVICON_MSTILE_s150_URL: '{{.LHOST_HOST}}{{.FAVICON_MSTILE_s150_NAME}}'
+      FAVICON_MSTILE_s310_URL: '{{.LHOST_HOST}}{{.FAVICON_MSTILE_s310_NAME}}'
+      FAVICON_MSTILE_w310_URL: '{{.LHOST_HOST}}{{.FAVICON_MSTILE_w310_NAME}}'
+      META_DATA: '{\"FAVICON_MSTILE_s70_URL\": \"{{.FAVICON_MSTILE_s70_URL}}\",\"FAVICON_MSTILE_s144_URL\": \"{{.FAVICON_MSTILE_s144_URL}}\",\"FAVICON_MSTILE_s150_URL\": \"{{.FAVICON_MSTILE_s150_URL}}\",\"FAVICON_MSTILE_s310_URL\": \"{{.FAVICON_MSTILE_s310_URL}}\",\"FAVICON_MSTILE_w310_URL\": \"{{.FAVICON_MSTILE_w310_URL}}\"}'

@@ -11,8 +11,11 @@ $heart-fam = #ff8c00 // darkorange
 $pcs-black = #333
 
 // spacing and layout
-card-row-gap()
-    calc(100% / 7.5) // for 4 row
+card-row-gap(s='')
+    if s == 'small'
+        calc(100% / 11.5) // for > 8 rows
+    else
+        calc(100% / 7.5) // for 4 row
 
 card-col-gap()
     calc(100% / 26.5) // for 13 col
@@ -43,7 +46,15 @@ body
 footer
     display: none
 
+#markl
+    height: 24px
+    width: 24px
+    margin: 0 18px
+    user-select: none
+
 .pcs
+    container-name: app-shell
+    container-type: size
     display: flex
     height: 100%
     width: 100%
@@ -55,23 +66,23 @@ footer
         display: flex
         height: 10%
         width: 100%
-        flex-flow row nowrap
+        flex-flow: row nowrap
         justify-content: space-between
         align-items: center
-        
+
         & h2
             margin: 0
             font-size: 24px
             font-weight: bold
             line-height: normal
             user-select: none
-        
+
         & .ribbon
             display: flex
             margin-right: 18px
             flex-flow: row nowrap
             align-items: center
-            column-gap: 4.5px
+            gap: 0 4.5px
 
             & [name="bg-wells"]
                 width: fit-content
@@ -94,10 +105,11 @@ footer
                 vertical-align: middle
 
                 &:first-of-type::before
-                  content: "•"
+                    content: "•"
 
                 &::before
-                  content: "|"
+                    content: "|"
+
             & button
                 cursor: pointer
 
@@ -225,3 +237,15 @@ footer
 
 [name="bg-wells"] option:nth-of-type(5)
     background-color: rgba($card-table-purple, 0.33)
+
+
+@container app-shell (width < 801px)
+    .pcs
+        & .title-marqee
+            min-height: 60px
+            flex-wrap: wrap
+            justify-content: flex-start
+            gap: 4.5px 0
+
+        & .closeup .pad
+            gap: card-row-gap('small') card-col-gap()

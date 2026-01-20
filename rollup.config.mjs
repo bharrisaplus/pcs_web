@@ -7,10 +7,15 @@ import { default as octocatV0Target } from './build/octocat/v0/_rollup.config.mj
 
 let targetConfig;
 
-if (NodeProcess.env.NODE_ENV == 'production') {
-	targetConfig = octocatV0Target.prodConfig;
-} else {
-	targetConfig = octocatV0Target.fhostConfig;
+switch(NodeProcess.env.NODE_ENV) {
+	case 'production':
+		targetConfig = octocatV0Target.prodConfig;
+		break;
+	case 'lhost':
+		targetConfig = octocatV0Target.lhostConfig;
+		break;
+	default:
+		targetConfig = octocatV0Target.fhostConfig;
 }
 
 

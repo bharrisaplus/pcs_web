@@ -151,7 +151,6 @@
     const _canvasyze_rasterize_ = async (_clickEvt, captureQS, dumpQS) => {
       const
         $capture = demoDoc.querySelector(captureQS),
-        $captureStyle = (demoWindow.getComputedStyle($capture)),
         $dump = demoDoc.querySelector(dumpQS);
 
       let $maybeCanvas, canvas_data;

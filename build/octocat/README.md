@@ -1,1 +1,0 @@
-Files here are what's needed in `docs/` for any version pages site.
