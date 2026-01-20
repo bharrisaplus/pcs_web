@@ -1,4 +1,32 @@
 # Files here are what's needed in `docs/` for any version pages site.
+
+# site files
 !index.html
 !main.css
 !main.js
+
+# vendor files
+!reset.css
+!chance.js
+!html2canvas.js
+
+# image assets
+!markl.svg
+
+# other
+!android-chrome-192x192.png
+!android-chrome-512x512.png
+!apple-touch-icon.png
+!browserconfig.xml
+!favicon.ico
+!favicon-16x16.png
+!favicon-16x16-alt.png
+!favicon-32x32.png
+!favicon-32x32-alt.png
+!favicon-alt.ico
+!mstile-144x144.png
+!mstile-150x150.png
+!mstile-310x150.png
+!mstile-310x310.png
+!mstile-70x70.png
+!site.webmanifest
