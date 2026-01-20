@@ -10,15 +10,12 @@ let targetConfig;
 switch(NodeProcess.env.NODE_ENV) {
 	case 'production':
 		targetConfig = octocatV0Target.prodConfig;
-		console.log("Building octocat v0 prod")
 		break;
 	case 'lhost':
 		targetConfig = octocatV0Target.lhostConfig;
-		console.log("Building octocat v0 lhost");
 		break;
 	default:
 		targetConfig = octocatV0Target.fhostConfig;
-		console.log("Building octocat v0 fhost")
 }
 
 
