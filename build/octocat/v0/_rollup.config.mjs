@@ -25,7 +25,7 @@ const
 
 const
 	fhostConfig = {
-	  input: NodePath.resolve(buildShared.behavior_path, 'demo.js'),
+	  input: NodePath.resolve(buildShared.behavior_path, 'demo.main.js'),
 	  output: [{
 			file: NodePath.resolve(buildInfo.fhost.path, buildShared.es_main),
 			format: 'iife',
@@ -36,7 +36,7 @@ const
 		}]
 	},
 	lhostConfig = {
-	  input: NodePath.resolve(buildShared.behavior_path, 'demo.js'),
+	  input: NodePath.resolve(buildShared.behavior_path, 'demo.main.js'),
 	  output: [{
 			file: NodePath.resolve(buildInfo.fhost.path, buildShared.es_main),
 			format: 'iife',
@@ -47,7 +47,7 @@ const
 		}]
 	},
 	prodConfig = {
-	  input: NodePath.resolve(buildShared.behavior_path, 'demo.js'),
+	  input: NodePath.resolve(buildShared.behavior_path, 'demo.main.js'),
 	  output: [{
 			file: NodePath.resolve(buildInfo.prod.path, 'main.js'),
 			format: 'iife',
