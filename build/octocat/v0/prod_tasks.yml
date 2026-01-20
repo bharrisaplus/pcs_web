@@ -8,7 +8,7 @@ tasks:
   rear-presentation:
     desc: Stylus to CSS
     cmds:
-      - pnpm stylus {{.PRESENTATION_DIR}}/demo.styl -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
+      - pnpm stylus {{.PRESENTATION_DIR}}/demo.main.styl -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
       - pnpm postcss {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}} --config {{.PROJECT_DIR}} -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
     env:
       NODE_ENV: production
