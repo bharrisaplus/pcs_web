@@ -66,23 +66,23 @@ footer
         display: flex
         height: 10%
         width: 100%
-        flex-flow row nowrap
+        flex-flow: row nowrap
         justify-content: space-between
         align-items: center
-        
+
         & h2
             margin: 0
             font-size: 24px
             font-weight: bold
             line-height: normal
             user-select: none
-        
+
         & .ribbon
             display: flex
             margin-right: 18px
             flex-flow: row nowrap
             align-items: center
-            column-gap: 4.5px
+            gap: 0 4.5px
 
             & [name="bg-wells"]
                 width: fit-content
@@ -105,10 +105,11 @@ footer
                 vertical-align: middle
 
                 &:first-of-type::before
-                  content: "•"
+                    content: "•"
 
                 &::before
-                  content: "|"
+                    content: "|"
+
             & button
                 cursor: pointer
 
@@ -248,4 +249,3 @@ footer
 
         & .closeup .pad
             gap: card-row-gap('small') card-col-gap()
-        
