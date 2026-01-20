@@ -15,8 +15,8 @@ tasks:
     desc: Pug to HTML
     cmds:
       - echo {{.CONTENT_DATA}} > {{.DEMO_DIR}}/content_data_options.json
-      - pnpm pug {{.CONTENT_DIR}}/demo.pug -o {{.DEMO_DIR}} -O {{.DEMO_DIR}}/content_data_options.json
-      - echo "JSON options created @ {{.DEMO_DIR}}/content_data_options.json"
+      - pnpm pug {{.CONTENT_DIR}}/demo.page.pug -o {{.DEMO_DIR}} -O {{.DEMO_DIR}}/content_data_options.json
+      - mv {{.DEMO_DIR}}/demo.page.html {{.DEMO_DIR}}/demo.html
       - cp {{.CONTENT_DIR}}/graphic/icon/sqwiggle.svg {{.DEMO_DIR}}/{{.MARKLOGO_NAME}}
     vars:
       MARKLOGO_URL: '{{.DEMO_FILE_HOST}}{{.MARKLOGO_NAME}}'

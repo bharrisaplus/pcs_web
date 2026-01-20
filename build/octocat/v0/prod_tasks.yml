@@ -16,8 +16,8 @@ tasks:
     desc: Pug to HTML
     cmds:
       - echo {{.CONTENT_DATA}} > {{.OCTOCAT_HOST_DIR}}/content_data_options.json
-      - pnpm pug {{.CONTENT_DIR}}/demo.pug -o {{.OCTOCAT_HOST_DIR}} -O {{.OCTOCAT_HOST_DIR}}/content_data_options.json
-      - mv {{.OCTOCAT_HOST_DIR}}/demo.html {{.OCTOCAT_HOST_DIR}}/index.html
+      - pnpm pug {{.CONTENT_DIR}}/demo.page.pug -o {{.OCTOCAT_HOST_DIR}} -O {{.OCTOCAT_HOST_DIR}}/content_data_options.json
+      - mv {{.OCTOCAT_HOST_DIR}}/demo.page.html {{.OCTOCAT_HOST_DIR}}/index.html
       - rm -f {{.OCTOCAT_HOST_DIR}}/content_data_options.json
       - cp {{.CONTENT_DIR}}/graphic/icon/sqwiggle.svg {{.OCTOCAT_HOST_DIR}}/{{.MARKLOGO_NAME}}
     vars:
