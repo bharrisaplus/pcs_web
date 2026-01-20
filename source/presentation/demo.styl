@@ -11,8 +11,11 @@ $heart-fam = #ff8c00 // darkorange
 $pcs-black = #333
 
 // spacing and layout
-card-row-gap()
-    calc(100% / 7.5) // for 4 row
+card-row-gap(s='')
+    if s == 'small'
+        calc(100% / 11.5) // for > 8 rows
+    else
+        calc(100% / 7.5) // for 4 row
 
 card-col-gap()
     calc(100% / 26.5) // for 13 col
@@ -236,9 +239,13 @@ footer
 
 
 @container app-shell (width < 801px)
-    .pcs .title-marqee
-        min-height: 60px
-        flex-wrap: wrap
-        justify-content: flex-start
-        gap: 4.5px 0
+    .pcs
+        & .title-marqee
+            min-height: 60px
+            flex-wrap: wrap
+            justify-content: flex-start
+            gap: 4.5px 0
+
+        & .closeup .pad
+            gap: card-row-gap('small') card-col-gap()
         
