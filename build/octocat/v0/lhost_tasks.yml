@@ -45,7 +45,18 @@ tasks:
   set-meta:
     desc: Update pwa files
     cmds:
-      -  jq '.id|=env.LHOST_HOST | .start_url|=env.LHOST_HOST | .icons[0].src|=env.FAVICON_ANDROID_CHROME_192_URL | .icons[1].src|=env.FAVICON_ANDROID_CHROME_512_URL' {{.CONTENT_DIR}}/webmanifest.source.json > {{.DEMO_DIR}}/site.webmanifest
+      - jq '.id|=env.LHOST_HOST | .start_url|=env.LHOST_HOST | .icons[0].src|=env.FAVICON_ANDROID_CHROME_192_URL | .icons[1].src|=env.FAVICON_ANDROID_CHROME_512_URL' {{.CONTENT_DIR}}/webmanifest.source.json > {{.DEMO_DIR}}/site.webmanifest
+      - echo {{.META_DATA}} > {{.DEMO_DIR}}/meta_data_options.json
+      - pnpm pug {{.CONTENT_DIR}}/browserconfig.source.pug -o {{.DEMO_DIR}} -O {{.DEMO_DIR}}/meta_data_options.json
+      - mv {{.DEMO_DIR}}/browserconfig.source.html {{.DEMO_DIR}}/{{.BROWSERCONFIG_NAME}}
+      - echo "Generated files for app/offline install"
     env:
       FAVICON_ANDROID_CHROME_192_URL: '{{.LHOST_HOST}}{{.FAVICON_ANDROID_CHROME_192_NAME}}'
       FAVICON_ANDROID_CHROME_512_URL: '{{.LHOST_HOST}}{{.FAVICON_ANDROID_CHROME_512_NAME}}'
+    vars:
+      FAVICON_MSTILE_s70_URL: "{{.LHOST_HOST}}{{.FAVICON_MSTILE_s70_NAME}}"
+      FAVICON_MSTILE_s144_URL: '{{.LHOST_HOST}}{{.FAVICON_MSTILE_s144_NAME}}'
+      FAVICON_MSTILE_s150_URL: '{{.LHOST_HOST}}{{.FAVICON_MSTILE_s150_NAME}}'
+      FAVICON_MSTILE_s310_URL: '{{.LHOST_HOST}}{{.FAVICON_MSTILE_s310_NAME}}'
+      FAVICON_MSTILE_w310_URL: '{{.LHOST_HOST}}{{.FAVICON_MSTILE_w310_NAME}}'
+      META_DATA: '{\"FAVICON_MSTILE_s70_URL\": \"{{.FAVICON_MSTILE_s70_URL}}\",\"FAVICON_MSTILE_s144_URL\": \"{{.FAVICON_MSTILE_s144_URL}}\",\"FAVICON_MSTILE_s150_URL\": \"{{.FAVICON_MSTILE_s150_URL}}\",\"FAVICON_MSTILE_s310_URL\": \"{{.FAVICON_MSTILE_s310_URL}}\",\"FAVICON_MSTILE_w310_URL\": \"{{.FAVICON_MSTILE_w310_URL}}\"}'

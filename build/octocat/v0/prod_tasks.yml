@@ -63,16 +63,31 @@ tasks:
       - cp {{.COMMON_DIR}}/favicons/sqwiggle_180.png {{.OCTOCAT_HOST_DIR}}/{{.APPLE_TOUCH_ICON_NAME}}
       - cp {{.COMMON_DIR}}/favicons/sqwiggle_192.png {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_ANDROID_CHROME_192_NAME}}
       - cp {{.COMMON_DIR}}/favicons/sqwiggle_512.png {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_ANDROID_CHROME_512_NAME}}
-      - cp {{.CONTENT_DIR}}/browserconfig.source.xml {{.OCTOCAT_HOST_DIR}}/{{.BROWSERCONFIG_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_70.png {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_s70_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_144.png {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_s144_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_150.png {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_s150_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_310.png {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_s310_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_310x150.png {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_w310_NAME}}
       - cp {{.CONTENT_DIR}}/webmanifest.source.json {{.OCTOCAT_HOST_DIR}}/{{.WEBMANIFEST_NAME}}
       - echo "Favicon and Offline files placed with pages host files"
   set-meta:
     desc: Update pwa files
     cmds:
-      -  jq '.id|=env.OCTOCAT_HOST | .start_url|=env.OCTOCAT_HOST | .icons[0].src|=env.FAVICON_ANDROID_CHROME_192_URL | .icons[1].src|=env.FAVICON_ANDROID_CHROME_512_URL' {{.CONTENT_DIR}}/webmanifest.source.json > {{.OCTOCAT_HOST_DIR}}/site.webmanifest
+      - jq '.id|=env.OCTOCAT_HOST | .start_url|=env.OCTOCAT_HOST | .icons[0].src|=env.FAVICON_ANDROID_CHROME_192_URL | .icons[1].src|=env.FAVICON_ANDROID_CHROME_512_URL' {{.CONTENT_DIR}}/webmanifest.source.json > {{.OCTOCAT_HOST_DIR}}/site.webmanifest
+      - echo {{.META_DATA}} > {{.OCTOCAT_HOST_DIR}}/content_data_options.json
+      - pnpm pug {{.CONTENT_DIR}}/browserconfig.source.pug -o {{.OCTOCAT_HOST_DIR}} -O {{.OCTOCAT_HOST_DIR}}/content_data_options.json
+      - mv {{.OCTOCAT_HOST_DIR}}/browserconfig.source.html {{.OCTOCAT_HOST_DIR}}/{{.BROWSERCONFIG_NAME}}
+      - rm -f {{.OCTOCAT_HOST_DIR}}/content_data_options.json
     env:
       FAVICON_ANDROID_CHROME_192_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_ANDROID_CHROME_192_NAME}}'
       FAVICON_ANDROID_CHROME_512_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_ANDROID_CHROME_512_NAME}}'
+    vars:
+      FAVICON_MSTILE_s70_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_MSTILE_s70_NAME}}'
+      FAVICON_MSTILE_s144_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_MSTILE_s144_NAME}}'
+      FAVICON_MSTILE_s150_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_MSTILE_s150_NAME}}'
+      FAVICON_MSTILE_s310_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_MSTILE_s310_NAME}}'
+      FAVICON_MSTILE_w310_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_MSTILE_w310_NAME}}'
+      META_DATA: '{\"FAVICON_MSTILE_s70_URL\": \"{{.FAVICON_MSTILE_s70_URL}}\",\"FAVICON_MSTILE_s144_URL\": \"{{.FAVICON_MSTILE_s144_URL}}\",\"FAVICON_MSTILE_s150_URL\": \"{{.FAVICON_MSTILE_s150_URL}}\",\"FAVICON_MSTILE_s310_URL\": \"{{.FAVICON_MSTILE_s310_URL}}\",\"FAVICON_MSTILE_w310_URL\": \"{{.FAVICON_MSTILE_w310_URL}}\"}'
   sweep-content:
     desc: Clear out pages host directory
     cmds:
@@ -105,5 +120,10 @@ tasks:
       - rm -f {{.OCTOCAT_HOST_DIR}}/{{.APPLE_TOUCH_ICON_NAME}}
       - rm -f {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_ANDROID_CHROME_192_NAME}}
       - rm -f {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_ANDROID_CHROME_512_NAME}}
+      - rm -f {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_s70_NAME}}
+      - rm -f {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_s144_NAME}}
+      - rm -f {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_s150_NAME}}
+      - rm -f {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_s310_NAME}}
+      - rm -f {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_w310_NAME}}
       - rm -f {{.OCTOCAT_HOST_DIR}}/{{.BROWSERCONFIG_NAME}}
       - rm -f {{.OCTOCAT_HOST_DIR}}/{{.WEBMANIFEST_NAME}}
