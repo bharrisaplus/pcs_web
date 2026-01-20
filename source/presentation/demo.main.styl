@@ -244,10 +244,17 @@ footer
 @container app-shell (width < 801px)
     .pcs
         & .title-marqee
-            min-height: 60px
+            min-height: 100px
             flex-wrap: wrap
             justify-content: flex-start
             gap: 4.5px 0
+            
+            & .ribbon
+                flex-wrap: wrap
+                gap: 4.5px
+                
+                & [name="bg-wells"]
+                    min-height: 22px
 
         & .closeup .pad
             gap: card-row-gap('small') card-col-gap()
