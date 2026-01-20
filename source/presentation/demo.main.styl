@@ -177,9 +177,6 @@ footer
         border-color: transparent
         align-self: flex-end
 
-        &:hover
-            border-color: var(--diamond-splash)
-
     & &-cue-lever
         display: flex
         width: 100%
@@ -237,6 +234,11 @@ footer
 
 [name="bg-wells"] option:nth-of-type(5)
     background-color: rgba($card-table-purple, 0.33)
+
+
+@media (hover: hover)
+    .turntable .turn-off:hover
+        border-color: var(--diamond-splash)
 
 
 @container app-shell (width < 801px)
