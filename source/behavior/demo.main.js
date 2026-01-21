@@ -160,8 +160,9 @@
       $bgPicker.disabled = true;
 
       $maybeCanvas = await demoCanvasConvert($capture, {
-        height: $capture.scrollHeight,
-        width: $capture.getBoundingClientRect().width
+        windowHeight: '810',
+        windowWidth: '1904',
+        scale: '1.0'
       });
 
       canvas_data = $maybeCanvas.toDataURL('image/png');
