@@ -15,7 +15,7 @@ const
 			path: NodeProcess.env.DEMO_DIR || NodePath.resolve(_dir, '../../../distribution/demo'),
 		},
 		lhost: {
-			url: NodeProcess.env.LHOST_HOST || new NodeURL('http://localhost:54321', import.meta.url)
+			url: NodeProcess.env.LHOST_HOST || new NodeURL('http://localhost:54321')
 		},
 		prod: {
 			path: NodeProcess.env.OCTOCAT_HOST_DIR || NodePath.resolve(_dir, '../../../docs')
