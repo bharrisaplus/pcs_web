@@ -37,17 +37,17 @@ html(lang="en")
                 h2 (P)seudo (C)ard (S)huffler
                 img#markl(src=MARKLOGO_URL alt="A scribbly sqwiggle" height="24px" width="24px" role="img")
                 .ribbon
-                    select(name="bg-wells")
+                    select(name="bg-wells" aria-label="Background Color Change" aria-description="Pick a different color for the card area")
                         option(value=0 selected)="Choose a background"
                         option(value=1)="Emerald"
                         option(value=2)="Cherry"
                         option(value=3)="Twilight"
                         option(value=4)="Amethyst"
                     .bar-separator
-                    button.shuffle
+                    button(aria-description="Arranges the cards in random order").shuffle
                         | Shuffle
                     .bar-separator
-                    button.export
+                    button(aria-description="Saves the cards as an image").export
                         | Export
                     a.export-zone
 
