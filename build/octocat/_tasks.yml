@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+# Tasks are expected to be called from the project root or via the main Taskfile
+
+version: '3'
+
+includes:
+  v0: ./v0/_tasks.yml

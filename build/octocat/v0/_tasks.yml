@@ -1,0 +1,67 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+# Tasks are expected to be called from the project root or via the main Taskfile
+
+version: '3'
+
+includes:
+  fhost: ./fhost_tasks.yml
+  lhost: ./lhost_tasks.yml
+  prod: ./prod_tasks.yml
+
+tasks:
+  rear-fhost:
+    desc: Build demo for file:// host
+    cmds:
+      - task: fhost:rear-content
+      - task: fhost:rear-presentation
+      - task: fhost:rear-behavior
+      - task: fhost:put-vendor
+      - task: fhost:put-meta
+      - echo "file:// host ready"
+  rear-lhost:
+    desc: Build demo for localhost://
+    deps: [fhost:put-vendor, fhost:put-meta]
+    cmds:
+      - task: lhost:rear-content
+      - task: lhost:rear-presentation
+      - task: lhost:rear-behavior
+      - task: lhost:set-meta
+      - echo "localhost ready"
+  rear-prod:
+    desc: Build demo files
+    cmds:
+      - task: prod:rear-content
+      - task: prod:rear-presentation
+      - task: prod:rear-behavior
+      - task: prod:put-vendor
+      - task: prod:put-meta
+      - task: prod:set-meta
+      - echo "ocotcat host ready"
+  sweep-fhost:
+    desc: Remove demo files
+    cmds:
+      - task: fhost:sweep-content
+      - task: fhost:sweep-presentation
+      - task: fhost:sweep-behavior
+      - task: fhost:sweep-vendor
+      - task: fhost:sweep-meta
+      - echo "demo file:// host cleared"
+  sweep-lhost:
+    desc: Remove generated files
+    cmds:
+      - task: fhost:sweep-content
+      - task: fhost:sweep-presentation
+      - task: fhost:sweep-behavior
+      - task: fhost:sweep-vendor
+      - task: fhost:sweep-meta
+      - echo "localhost cleared"
+  sweep-prod:
+    desc: Remove generated files
+    cmds:
+      - task: prod:sweep-content
+      - task: prod:sweep-presentation
+      - task: prod:sweep-behavior
+      - task: prod:sweep-vendor
+      - task: prod:sweep-meta
+      - echo "octocat host cleared"
