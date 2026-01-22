@@ -16,7 +16,7 @@ Each build is for a _target_ , _area_ and _objective_
 	- prod = real host (ex: `https://somesite`)
 - An _objective_ represents the version
 
-Directory structure:
+## Directory structure:
 ```
 build
 └── target
@@ -26,4 +26,13 @@ build
     		├── area2_otherfile
     		├── area3_afile
     		└── area4_anotherfile
+```
+## Running tasks
+Using [task](https://taskfile.dev/) as the build tool. The tasks will typically have some _action_ verb associated like building or tearing down, the commands for running tasks will look something like:
+```
+task TARGET:OBJECTIVE:action-AREA
+```
+So to build the github pages demo for testing locally without a server:
+```
+task octocat:v0:rear-fhost
 ```
