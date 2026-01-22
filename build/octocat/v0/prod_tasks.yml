@@ -11,7 +11,7 @@ tasks:
       - pnpm stylus {{.PRESENTATION_DIR}}/demo.main.styl -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
       - pnpm postcss {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}} --config {{.PROJECT_DIR}} -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
     env:
-      NODE_ENV: production
+      NODE_ENV: prod
   rear-content:
     desc: Pug to HTML
     cmds:
@@ -43,7 +43,7 @@ tasks:
     cmds:
       -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
     env:
-      NODE_ENV: production
+      NODE_ENV: prod
   put-vendor:
     desc: Copy 3rd party scripts/stylesheets/etc
     cmds:
