@@ -11,7 +11,7 @@ const buildConfig = {
 	plugins: {
 		'postcss-combine-duplicated-selectors': {},
 		autoprefixer: {},
-		cssnano: { preset: 'default' }
+		cssnano: NodeProcess.env.NODE_ENV == 'prod' ? { preset: 'default' } : false
 	}
 };
 

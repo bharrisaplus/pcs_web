@@ -43,7 +43,7 @@ switch (NodeProcess.env.NODE_ENV) {
 				file: NodePath.resolve(buildInfo.fhost.path, buildShared.es_main),
 				format: 'iife',
 				name: 'PCS',
-				plugins: [ RollupTerser() ],
+				plugins: [],
 				sourcemap: true,
 				sourcemapBaseUrl: buildInfo.lhost.url.toString()
 			}]
@@ -55,7 +55,7 @@ switch (NodeProcess.env.NODE_ENV) {
 				file: NodePath.resolve(buildInfo.fhost.path, buildShared.es_main),
 				format: 'iife',
 				name: 'PCS',
-				plugins: [ RollupTerser() ],
+				plugins: [],
 				sourcemap: true,
 				sourcemapBaseUrl: buildInfo.fhost.url.toString()
 			}]
