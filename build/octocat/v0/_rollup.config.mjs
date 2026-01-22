@@ -10,6 +10,7 @@ import { default as buildShared } from '../../manifest.mjs';
 const
 	_dir = import.meta.dirname,
 	buildInfo = {
+		inputFilePath: NodePath.resolve(buildShared.behavior_path, 'demo.main.js'),
 		fhost: {
 			url: NodeProcess.env.DEMO_FILE_HOST || new NodeURL('../../../distribution/demo', import.meta.url),
 			path: NodeProcess.env.DEMO_DIR || NodePath.resolve(_dir, '../../../distribution/demo'),
@@ -25,31 +26,31 @@ const
 
 const
 	fhostConfig = {
-	  input: NodePath.resolve(buildShared.behavior_path, 'demo.main.js'),
+	  input: buildInfo.inputFilePath,
 	  output: [{
 			file: NodePath.resolve(buildInfo.fhost.path, buildShared.es_main),
 			format: 'iife',
 			name: 'PCS',
 			plugins: [ RollupTerser() ],
 			sourcemap: true,
-			sourcemapBaseUrl: new NodeURL(buildInfo.fhost.url).toString()
+			sourcemapBaseUrl: buildInfo.fhost.url.toString()
 		}]
 	},
 	lhostConfig = {
-	  input: NodePath.resolve(buildShared.behavior_path, 'demo.main.js'),
+	  input: buildInfo.inputFilePath,
 	  output: [{
 			file: NodePath.resolve(buildInfo.fhost.path, buildShared.es_main),
 			format: 'iife',
 			name: 'PCS',
 			plugins: [ RollupTerser() ],
 			sourcemap: true,
-			sourcemapBaseUrl: new NodeURL(buildInfo.lhost.url).toString()
+			sourcemapBaseUrl: buildInfo.lhost.url.toString()
 		}]
 	},
 	prodConfig = {
-	  input: NodePath.resolve(buildShared.behavior_path, 'demo.main.js'),
+	  input: buildInfo.inputFilePath,
 	  output: [{
-			file: NodePath.resolve(buildInfo.prod.path, 'main.js'),
+			file: NodePath.resolve(buildInfo.prod.path, buildShared.es_main),
 			format: 'iife',
 			name: 'PCS',
 			plugins: [ RollupTerser() ]
