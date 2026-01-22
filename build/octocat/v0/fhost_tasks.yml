@@ -11,6 +11,10 @@ tasks:
     cmds:
       - pnpm stylus {{.PRESENTATION_DIR}}/demo.main.styl -m --sourcemap-base {{.DEMO_DIR}} -o {{.DEMO_DIR}}
       - pnpm postcss {{.DEMO_DIR}}/demo.main.css --config {{.PROJECT_DIR}} -o {{.DEMO_DIR}}/{{.CSS_MAIN_NAME}}
+    env:
+      BUILD_TARGET: octocat
+      BUILD_OBJECTIVE: v0
+      BUILD_AREA: fhost
   rear-content:
     desc: Pug to HTML
     cmds:
@@ -40,6 +44,10 @@ tasks:
     desc: JS
     cmds:
       -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
+    env:
+      BUILD_TARGET: octocat
+      BUILD_OBJECTIVE: v0
+      BUILD_AREA: fhost
   nit-behavior:
     desc: Keeping js/mjs consistent
     cmds:
