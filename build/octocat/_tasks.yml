@@ -6,3 +6,6 @@ version: '3'
 
 includes:
   v0: ./v0/_tasks.yml
+
+  # Convenience
+  latest: ./v0/_tasks.yml
