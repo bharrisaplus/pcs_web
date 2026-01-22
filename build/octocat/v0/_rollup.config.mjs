@@ -25,7 +25,7 @@ const
 
 let config;
 
-switch (NodeProcess.env.NODE_ENV) {
+switch (NodeProcess.env.BUILD_AREA) {
 	case 'prod':
 		config = {
 		  input: buildInfo.inputFilePath,

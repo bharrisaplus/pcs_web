@@ -7,11 +7,11 @@ import { default as buildShared } from '../../manifest.mjs';
 
 const buildConfig = {
 	cwd: buildShared.project_path,
-	map: NodeProcess.env.NODE_ENV == 'prod' ? false : true,
+	map: NodeProcess.env.BUILD_AREA == 'prod' ? false : true,
 	plugins: {
 		'postcss-combine-duplicated-selectors': {},
 		autoprefixer: {},
-		cssnano: NodeProcess.env.NODE_ENV == 'prod' ? { preset: 'default' } : false
+		cssnano: NodeProcess.env.BUILD_AREA == 'prod' ? { preset: 'default' } : false
 	}
 };
 
