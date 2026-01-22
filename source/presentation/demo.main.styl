@@ -92,16 +92,23 @@ footer
                 width: fit-content
                 cursor: pointer
 
-            & .export-zone
-                display: inline-flex
-                width: 126px
-                height: floor(@width / 5)
-                border-width: 1px
-                border-style: dashed
-                border-radius: 18px
-                text-decoration: none
-                justify-content: center
+            & .export
+                display: flex
+                flex-flow: row nowrap
+                justify-content: space-between
                 align-items: center
+                gap: 0 4.5px
+
+                & a
+                    display: inline-flex
+                    width: 126px
+                    height: floor(@width / 5)
+                    border-width: 1px
+                    border-style: dashed
+                    border-radius: 18px
+                    text-decoration: none
+                    justify-content: center
+                    align-items: center
 
             .bar-separator
                 font-size: 18px

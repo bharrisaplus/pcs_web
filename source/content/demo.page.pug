@@ -47,9 +47,10 @@ html(lang="en")
                     button(aria-description="Arranges the cards in random order").shuffle
                         | Shuffle
                     .bar-separator
-                    button(aria-description="Saves the cards as an image").export
-                        | Export
-                    a.export-zone
+                    .export
+                        button(aria-description="Saves the cards as an image")
+                            | Export
+                        a
 
             main.closeup.green-dye
                 ol.pad

@@ -7,7 +7,7 @@
       $turnOff = $turntable.querySelector(".turn-off"),
       $cuePrevious = $turntable.querySelector('.turntable-cue-lever-regression'),
       $cueNext = $turntable.querySelector('.turntable-cue-lever-progression'),
-      $exportTrigger = demoDoc.querySelector('.ribbon .export'),
+      $exportTrigger = demoDoc.querySelector('.ribbon .export button'),
       $shuffleTrigger = demoDoc.querySelector('.ribbon .shuffle'),
       $bgPicker = demoDoc.querySelector('.ribbon [name="bg-wells"]');
 
@@ -204,7 +204,7 @@
       $cueNext.addEventListener('click', _spinTurntable);
 
       $exportTrigger.addEventListener("click", (_evt) => {
-        _canvasyze_rasterize_(_evt, '.closeup', '.ribbon .export-zone');
+        _canvasyze_rasterize_(_evt, '.closeup', '.ribbon .export a');
       });
 
       $shuffleTrigger.addEventListener('click', _shuffle_items);
