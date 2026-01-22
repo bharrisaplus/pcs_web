@@ -45,6 +45,7 @@ switch (NodeProcess.env.BUILD_AREA) {
 				name: 'PCS',
 				plugins: [],
 				sourcemap: true,
+				sourcemapExcludeSources: true,
 				sourcemapBaseUrl: buildInfo.lhost.url.toString()
 			}]
 		}; break;
@@ -57,6 +58,7 @@ switch (NodeProcess.env.BUILD_AREA) {
 				name: 'PCS',
 				plugins: [],
 				sourcemap: true,
+				sourcemapExcludeSources: true,
 				sourcemapBaseUrl: buildInfo.fhost.url.toString()
 			}]
 		};
