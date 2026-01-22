@@ -1,6 +1,16 @@
-import { default as octocatV0Target } from './build/octocat/v0/_postcss.config.mjs'
+import { default as NodeProcess } from 'node:process';
 
+let targetConfig;
 
-let targetConfig = octocatV0Target;
+if (NodeProcess.env.BUILD_TARGET == 'octocat') {
+	switch(NodeProcess.env.BUILD_OBJECTIVE) {
+		case 'v0':
+		default: {
+			const octocatV0 = await import('./build/octocat/v0/_postcss.config.mjs');
+
+			targetConfig = octocatV0.default;
+		}
+	}
+}
 
 export default targetConfig;
