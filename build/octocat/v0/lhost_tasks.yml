@@ -5,9 +5,8 @@
 version: '3'
 
 tasks:
-  # Building/Transpiling/etc
   rear-presentation:
-    desc: Stlus to CSS
+    desc: Stylus to CSS
     cmds:
       - pnpm stylus {{.PRESENTATION_DIR}}/demo.main.styl -m --sourcemap-base {{.DEMO_DIR}} -o {{.DEMO_DIR}}
       - pnpm postcss {{.DEMO_DIR}}/demo.main.css --config {{.PROJECT_DIR}} -o {{.DEMO_DIR}}/{{.CSS_MAIN_NAME}}
