@@ -23,43 +23,44 @@ const
 		}
 	};
 
+let config;
 
-const
-	fhostConfig = {
-	  input: buildInfo.inputFilePath,
-	  output: [{
-			file: NodePath.resolve(buildInfo.fhost.path, buildShared.es_main),
-			format: 'iife',
-			name: 'PCS',
-			plugins: [ RollupTerser() ],
-			sourcemap: true,
-			sourcemapBaseUrl: buildInfo.fhost.url.toString()
-		}]
-	},
-	lhostConfig = {
-	  input: buildInfo.inputFilePath,
-	  output: [{
-			file: NodePath.resolve(buildInfo.fhost.path, buildShared.es_main),
-			format: 'iife',
-			name: 'PCS',
-			plugins: [ RollupTerser() ],
-			sourcemap: true,
-			sourcemapBaseUrl: buildInfo.lhost.url.toString()
-		}]
-	},
-	prodConfig = {
-	  input: buildInfo.inputFilePath,
-	  output: [{
-			file: NodePath.resolve(buildInfo.prod.path, buildShared.es_main),
-			format: 'iife',
-			name: 'PCS',
-			plugins: [ RollupTerser() ]
-		}]
-	};
+switch (NodeProcess.env.NODE_ENV) {
+	case 'production':
+		config = {
+		  input: buildInfo.inputFilePath,
+		  output: [{
+				file: NodePath.resolve(buildInfo.prod.path, buildShared.es_main),
+				format: 'iife',
+				name: 'PCS',
+				plugins: [ RollupTerser() ]
+			}]
+		}; break;
+	case 'lhost':
+		config = {
+		  input: buildInfo.inputFilePath,
+		  output: [{
+				file: NodePath.resolve(buildInfo.fhost.path, buildShared.es_main),
+				format: 'iife',
+				name: 'PCS',
+				plugins: [ RollupTerser() ],
+				sourcemap: true,
+				sourcemapBaseUrl: buildInfo.lhost.url.toString()
+			}]
+		}; break;
+	default:
+		config = {
+			input: buildInfo.inputFilePath,
+			output: [{
+				file: NodePath.resolve(buildInfo.fhost.path, buildShared.es_main),
+				format: 'iife',
+				name: 'PCS',
+				plugins: [ RollupTerser() ],
+				sourcemap: true,
+				sourcemapBaseUrl: buildInfo.fhost.url.toString()
+			}]
+		};
+}
 
 
-export default {
-	prodConfig,
-	fhostConfig,
-	lhostConfig
-};
+export default config;
