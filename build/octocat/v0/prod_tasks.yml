@@ -7,20 +7,16 @@ version: '3'
 tasks:
   rear-presentation:
     desc: Stylus to CSS
-    cmds:
-      - pnpm stylus {{.PRESENTATION_DIR}}/demo.main.styl -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
-      - pnpm postcss {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}} --config {{.PROJECT_DIR}} -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
     env:
       BUILD_TARGET: octocat
       BUILD_OBJECTIVE: v0
       BUILD_AREA: prod
+    cmds:
+      - pnpm stylus {{.PRESENTATION_DIR}}/demo.main.styl -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
+      - pnpm postcss {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}} --config {{.PROJECT_DIR}} -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
 
   rear-content:
     desc: Pug to HTML
-    cmds:
-      - pnpm pug {{.CONTENT_DIR}}/demo.page.pug -o {{.OCTOCAT_HOST_DIR}} -O '{{.CONTENT_DATA | toJson}}'
-      - mv {{.OCTOCAT_HOST_DIR}}/demo.page.html {{.OCTOCAT_HOST_DIR}}/index.html
-      - cp {{.CONTENT_DIR}}/graphic/icon/sqwiggle.svg {{.OCTOCAT_HOST_DIR}}/{{.MARKLOGO_NAME}}
     vars:
       CONTENT_DATA:
         map:
@@ -39,15 +35,19 @@ tasks:
           ES_MAIN_URL: '{{.OCTOCAT_HOST}}{{.ES_MAIN_NAME}}'
           BROWSERCONFIG_URL: '{{.OCTOCAT_HOST}}{{.BROWSERCONFIG_NAME}}'
           WEBMANIFEST_URL: '{{.OCTOCAT_HOST}}{{.WEBMANIFEST_NAME}}'
+    cmds:
+      - pnpm pug {{.CONTENT_DIR}}/demo.page.pug -o {{.OCTOCAT_HOST_DIR}} -O '{{.CONTENT_DATA | toJson}}'
+      - mv {{.OCTOCAT_HOST_DIR}}/demo.page.html {{.OCTOCAT_HOST_DIR}}/index.html
+      - cp {{.CONTENT_DIR}}/graphic/icon/sqwiggle.svg {{.OCTOCAT_HOST_DIR}}/{{.MARKLOGO_NAME}}
 
   rear-behavior:
     desc: JS
-    cmds:
-      -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
     env:
       BUILD_TARGET: octocat
       BUILD_OBJECTIVE: v0
       BUILD_AREA: prod
+    cmds:
+      -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
 
   put-vendor:
     desc: Copy 3rd party scripts/stylesheets/etc
@@ -79,11 +79,6 @@ tasks:
 
   set-meta:
     desc: Update pwa files
-    cmds:
-      - jq '.id|=env.OCTOCAT_HOST | .start_url|=env.OCTOCAT_HOST | .icons[0].src|=env.FAVICON_ANDROID_CHROME_192_URL | .icons[1].src|=env.FAVICON_ANDROID_CHROME_512_URL' {{.CONTENT_DIR}}/webmanifest.source.json > {{.OCTOCAT_HOST_DIR}}/site.webmanifest
-      - pnpm pug {{.CONTENT_DIR}}/browserconfig.source.pug -o {{.OCTOCAT_HOST_DIR}} -O '{{.META_DATA | toJson}}'
-      - mv {{.OCTOCAT_HOST_DIR}}/browserconfig.source.html {{.OCTOCAT_HOST_DIR}}/{{.BROWSERCONFIG_NAME}}
-      - rm -f {{.OCTOCAT_HOST_DIR}}/content_data_options.json
     env:
       FAVICON_ANDROID_CHROME_192_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_ANDROID_CHROME_192_NAME}}'
       FAVICON_ANDROID_CHROME_512_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_ANDROID_CHROME_512_NAME}}'
@@ -95,6 +90,11 @@ tasks:
           FAVICON_MSTILE_s150_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_MSTILE_s150_NAME}}'
           FAVICON_MSTILE_s310_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_MSTILE_s310_NAME}}'
           FAVICON_MSTILE_w310_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_MSTILE_w310_NAME}}'
+    cmds:
+      - jq '.id|=env.OCTOCAT_HOST | .start_url|=env.OCTOCAT_HOST | .icons[0].src|=env.FAVICON_ANDROID_CHROME_192_URL | .icons[1].src|=env.FAVICON_ANDROID_CHROME_512_URL' {{.CONTENT_DIR}}/webmanifest.source.json > {{.OCTOCAT_HOST_DIR}}/site.webmanifest
+      - pnpm pug {{.CONTENT_DIR}}/browserconfig.source.pug -o {{.OCTOCAT_HOST_DIR}} -O '{{.META_DATA | toJson}}'
+      - mv {{.OCTOCAT_HOST_DIR}}/browserconfig.source.html {{.OCTOCAT_HOST_DIR}}/{{.BROWSERCONFIG_NAME}}
+      - rm -f {{.OCTOCAT_HOST_DIR}}/content_data_options.json
 
   sweep-content:
     desc: Clear out pages host directory
