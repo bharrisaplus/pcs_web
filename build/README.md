@@ -51,7 +51,7 @@ task octocat:v0:rear-fhost
 Three main categories of branches:
 * main -> Only one
 	- updated from the _feature_ branches
-* wip -> Represents the current work in progress
+* wip -> Only one
 	* - updated from the _main_ branch 
 * feature -> One for each thing/campaign being worked on
 	* updated from wip
