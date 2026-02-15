@@ -20,6 +20,7 @@ tasks:
       - echo $PROJECT_DIR
       - echo $BEHAVIOR_DIR
       - echo "Unix timestamp {{now | unixEpoch}}"
+      - echo $VERSION_NUM
 
   # Top level aliases for convenience
 
