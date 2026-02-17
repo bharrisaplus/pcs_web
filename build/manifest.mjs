@@ -7,6 +7,10 @@ const
 	 milieu = {
 	 	project_path: NodeProcess.env.PROJECT_DIR || NodePath.resolve(_dir, '../'),
 		behavior_path: NodeProcess.env.BEHAVIOR_DIR || NodePath.resolve(_dir, '../source/behavior'),
+		demo_path: NodeProcess.env.DEMO_DIR || NodePath.resolve(_dir, '../distribution/demo'),
+		octocat_path: NodeProcess.env.OCTOCAT_HOST_DIR || NodePath.resolve(_dir, '../distribution/octocat/docs'),
+		filehost_url: NodeProcess.env.FHOST_URL,
+		localhost_url: NodeProcess.env.LHOST_URL,
 		es_main: NodeProcess.env.ES_MAIN_NAME || 'main.js'
 	};
 

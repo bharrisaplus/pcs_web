@@ -12,14 +12,10 @@ const
 	buildInfo = {
 		inputFilePath: NodePath.resolve(buildShared.behavior_path, 'demo.main.js'),
 		fhost: {
-			url: NodeProcess.env.FHOST_URL || new NodeURL('../../../distribution/demo', import.meta.url),
-			path: NodeProcess.env.DEMO_DIR || NodePath.resolve(_dir, '../../../distribution/demo'),
+			url: buildShared.filehost_url || new NodeURL('../../../distribution/demo', import.meta.url)
 		},
 		lhost: {
-			url: NodeProcess.env.LHOST_URL || new NodeURL('http://localhost:54321')
-		},
-		prod: {
-			path: NodeProcess.env.OCTOCAT_HOST_DIR || NodePath.resolve(_dir, '../../../distribution/octocat/docs')
+			url: buildShared.localhost_url || new NodeURL('http://localhost:54321')
 		}
 	};
 
@@ -30,7 +26,7 @@ switch (NodeProcess.env.BUILD_AREA) {
 		config = {
 		  input: buildInfo.inputFilePath,
 		  output: [{
-				file: NodePath.resolve(buildInfo.prod.path, buildShared.es_main),
+				file: NodePath.resolve(buildShared.octocat_path, buildShared.es_main),
 				format: 'iife',
 				name: 'PCS',
 				plugins: [ RollupTerser() ]
@@ -40,7 +36,7 @@ switch (NodeProcess.env.BUILD_AREA) {
 		config = {
 		  input: buildInfo.inputFilePath,
 		  output: [{
-				file: NodePath.resolve(buildInfo.fhost.path, buildShared.es_main),
+				file: NodePath.resolve(buildShared.demo_path, buildShared.es_main),
 				format: 'iife',
 				name: 'PCS',
 				plugins: [],
@@ -53,7 +49,7 @@ switch (NodeProcess.env.BUILD_AREA) {
 		config = {
 			input: buildInfo.inputFilePath,
 			output: [{
-				file: NodePath.resolve(buildInfo.fhost.path, buildShared.es_main),
+				file: NodePath.resolve(buildShared.demo_path, buildShared.es_main),
 				format: 'iife',
 				name: 'PCS',
 				plugins: [],

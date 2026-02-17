@@ -6,10 +6,10 @@ import { default as buildShared } from '../../manifest.mjs';
 
 const buildInfo = {
 	fhost: {
-		url: NodeProcess.env.FHOST_URL || new NodeURL('../../../distribution/demo', import.meta.url),
+		url: buildShared.filehost_url || new NodeURL('../../../distribution/demo', import.meta.url),
 	},
 	lhost: {
-		url: NodeProcess.env.LHOST_URL || new NodeURL('http://localhost:54321')
+		url: buildShared.localhost_url || new NodeURL('http://localhost:54321')
 	}
 };
 
