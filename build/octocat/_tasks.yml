@@ -7,6 +7,3 @@ version: '3'
 
 includes:
   demo: ./demo/_tasks.yml
-
-  # Convenience
-  latest: ./demo/_tasks.yml
