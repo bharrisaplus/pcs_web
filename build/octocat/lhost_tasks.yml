@@ -1,0 +1,73 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+# Tasks are expected to be called from the project root or via the main Taskfile
+
+version: '3'
+
+
+tasks:
+  rear-presentation:
+    desc: Stylus to CSS
+    env:
+      BUILD_TARGET: octocat
+      BUILD_OBJECTIVE: '{{.DEV_VER}}'
+      BUILD_AREA: lhost
+    cmds:
+      - pnpm stylus {{.PRESENTATION_DIR}}/demo.main.styl -m --sourcemap-base {{.DEV_DIR}} -o {{.DEV_DIR}}
+      - pnpm postcss {{.DEV_DIR}}/demo.main.css --config {{.PROJECT_DIR}} -o {{.DEV_DIR}}/{{.CSS_MAIN_NAME}}
+
+  rear-content:
+    desc: Pug to HTML
+    vars:
+      CONTENT_DATA:
+        map:
+          MARKLOGO_URL: '{{.LHOST_URL}}{{.MARKLOGO_NAME}}'
+          APPLE_TOUCH_ICON_URL: '{{.LHOST_URL}}{{.APPLE_TOUCH_ICON_NAME}}'
+          FAVICON_32_URL: '{{.LHOST_URL}}{{.FAVICON_32_NAME}}'
+          FAVICON_32_ALT_URL: '{{.LHOST_URL}}{{.FAVICON_32_ALT_NAME}}'
+          FAVICON_16_URL: '{{.LHOST_URL}}{{.FAVICON_16_NAME}}'
+          FAVICON_16_ALT_URL: '{{.LHOST_URL}}{{.FAVICON_16_ALT_NAME}}'
+          FAVICON_ICO_URL: '{{.LHOST_URL}}{{.FAVICON_ICO_NAME}}'
+          FAVICON_ICO_ALT_URL: '{{.LHOST_URL}}{{.FAVICON_ICO_ALT_NAME}}'
+          VENDOR_CSS_RESET_URL: '{{.LHOST_URL}}{{.VENDOR_CSS_RESET_NAME}}'
+          VENDOR_CHANCEJS_URL: '{{.LHOST_URL}}{{.VENDOR_CHANCEJS_NAME}}'
+          VENDOR_HTML2CANVAS_URL: '{{.LHOST_URL}}{{.VENDOR_HTML2CANVAS_NAME}}'
+          CSS_MAIN_URL: '{{.LHOST_URL}}{{.CSS_MAIN_NAME}}'
+          ES_MAIN_URL: '{{.LHOST_URL}}{{.ES_MAIN_NAME}}'
+          BROWSERCONFIG_URL: '{{.LHOST_URL}}{{.BROWSERCONFIG_NAME}}'
+          WEBMANIFEST_URL: '{{.LHOST_URL}}{{.WEBMANIFEST_NAME}}'
+    cmds:
+      - echo '{{.CONTENT_DATA | toJson}}' > {{.DEV_DIR}}/content_data_options.json
+      - pnpm pug {{.CONTENT_DIR}}/demo.page.pug -o {{.DEV_DIR}} -O {{.DEV_DIR}}/content_data_options.json
+      - mv {{.DEV_DIR}}/demo.page.html {{.DEV_DIR}}/demo.html
+      - cp {{.CONTENT_DIR}}/graphic/icon/sqwiggle.svg {{.DEV_DIR}}/{{.MARKLOGO_NAME}}
+
+  rear-behavior:
+    desc: JS
+    env:
+      BUILD_TARGET: octocat
+      BUILD_OBJECTIVE: '{{.DEV_VER}}'
+      BUILD_AREA: lhost
+    cmds:
+      -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
+
+  set-meta:
+    desc: Update pwa files
+    env:
+      FAVICON_ANDROID_CHROME_192_URL: '{{.LHOST_URL}}{{.FAVICON_ANDROID_CHROME_192_NAME}}'
+      FAVICON_ANDROID_CHROME_512_URL: '{{.LHOST_URL}}{{.FAVICON_ANDROID_CHROME_512_NAME}}'
+    vars:
+      META_DATA:
+        map:
+          FAVICON_MSTILE_s70_URL: "{{.LHOST_URL}}{{.FAVICON_MSTILE_s70_NAME}}"
+          FAVICON_MSTILE_s144_URL: '{{.LHOST_URL}}{{.FAVICON_MSTILE_s144_NAME}}'
+          FAVICON_MSTILE_s150_URL: '{{.LHOST_URL}}{{.FAVICON_MSTILE_s150_NAME}}'
+          FAVICON_MSTILE_s310_URL: '{{.LHOST_URL}}{{.FAVICON_MSTILE_s310_NAME}}'
+          FAVICON_MSTILE_w310_URL: '{{.LHOST_URL}}{{.FAVICON_MSTILE_w310_NAME}}'
+    cmds:
+      - jq '.id|=env.LHOST_URL | .start_url|=env.LHOST_URL | .icons[0].src|=env.FAVICON_ANDROID_CHROME_192_URL | .icons[1].src|=env.FAVICON_ANDROID_CHROME_512_URL' {{.CONTENT_DIR}}/webmanifest.source.json > {{.DEV_DIR}}/site.webmanifest
+      - echo '{{.META_DATA | toJson}}' > {{.DEV_DIR}}/meta_data_options.json
+      - pnpm pug {{.CONTENT_DIR}}/browserconfig.source.pug -o {{.DEV_DIR}} -O {{.DEV_DIR}}/meta_data_options.json
+      - mv {{.DEV_DIR}}/browserconfig.source.html {{.DEV_DIR}}/{{.BROWSERCONFIG_NAME}}
+      - echo "Generated files for app/offline install"
+
