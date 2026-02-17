@@ -5,6 +5,9 @@ node_modules
 distribution/demo
 !distribution/.gitkeep
 
-# Pages
+# Pages hosting
 docs/**/*
 !docs/.gitkeep
+
+distribution/octocat/**/*
+!distribution/octocat/.gitkeep
