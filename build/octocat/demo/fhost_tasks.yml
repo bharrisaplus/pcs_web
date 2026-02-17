@@ -57,12 +57,12 @@ tasks:
   nit-behavior:
     desc: Keeping js/mjs consistent
     cmds:
-      - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs {{.BEHAVIOR_DIR}}/demo.js
+      - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs {{.BEHAVIOR_DIR}}/demo.main.js
 
   nit-presentation:
     desc: Keeping stylus/css consistent
     cmds:
-      - pnpm stylelint -c {{.PROJECT_DIR}}/stylelint.config.mjs {{.PRESENTATION_DIR}}/demo.styl
+      - pnpm stylelint -c {{.PROJECT_DIR}}/stylelint.config.mjs {{.PRESENTATION_DIR}}/demo.main.styl
 
   # Moving things around
   put-vendor:

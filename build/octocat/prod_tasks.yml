@@ -13,7 +13,7 @@ tasks:
       BUILD_OBJECTIVE: '{{.DEV_VER}}'
       BUILD_AREA: prod
     cmds:
-      - pnpm stylus {{.PRESENTATION_DIR}}/demo.main.styl -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
+      - pnpm stylus {{.PRESENTATION_DIR}}/pcs.main.styl -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
       - pnpm postcss {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}} --config {{.PROJECT_DIR}} -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
 
   rear-content:
@@ -37,8 +37,8 @@ tasks:
           BROWSERCONFIG_URL: '{{.OCTOCAT_URL}}{{.BROWSERCONFIG_NAME}}'
           WEBMANIFEST_URL: '{{.OCTOCAT_URL}}{{.WEBMANIFEST_NAME}}'
     cmds:
-      - pnpm pug {{.CONTENT_DIR}}/demo.page.pug -o {{.OCTOCAT_HOST_DIR}} -O '{{.CONTENT_DATA | toJson}}'
-      - mv {{.OCTOCAT_HOST_DIR}}/demo.page.html {{.OCTOCAT_HOST_DIR}}/index.html
+      - pnpm pug {{.CONTENT_DIR}}/index.page.pug -o {{.OCTOCAT_HOST_DIR}} -O '{{.CONTENT_DATA | toJson}}'
+      - mv {{.OCTOCAT_HOST_DIR}}/index.page.html {{.OCTOCAT_HOST_DIR}}/index.html
       - cp {{.CONTENT_DIR}}/graphic/icon/sqwiggle.svg {{.OCTOCAT_HOST_DIR}}/{{.MARKLOGO_NAME}}
 
   rear-behavior:

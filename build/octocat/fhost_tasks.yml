@@ -15,8 +15,8 @@ tasks:
       BUILD_AREA: fhost
       FHOST_URL: '{{.FHOST_URL_ROOT}}/{{.DEV_VER}}/'
     cmds:
-      - pnpm stylus {{.PRESENTATION_DIR}}/demo.main.styl -m --sourcemap-base {{.DEV_DIR}} -o {{.DEV_DIR}}
-      - pnpm postcss {{.DEV_DIR}}/demo.main.css --config {{.PROJECT_DIR}} -o {{.DEV_DIR}}/{{.CSS_MAIN_NAME}}
+      - pnpm stylus {{.PRESENTATION_DIR}}/pcs.main.styl -m --sourcemap-base {{.DEV_DIR}} -o {{.DEV_DIR}}
+      - pnpm postcss {{.DEV_DIR}}/pcs.main.css --config {{.PROJECT_DIR}} -o {{.DEV_DIR}}/{{.CSS_MAIN_NAME}}
 
   rear-content:
     desc: Pug to HTML
@@ -38,10 +38,11 @@ tasks:
           ES_MAIN_URL: '{{.FHOST_URL}}{{.ES_MAIN_NAME}}'
           BROWSERCONFIG_URL: '{{.FHOST_URL}}{{.BROWSERCONFIG_NAME}}'
           WEBMANIFEST_URL: '{{.FHOST_URL}}{{.WEBMANIFEST_NAME}}'
+          ON_FILE_HOST: true
     cmds:
       - echo '{{.CONTENT_DATA | toJson}}' > {{.DEV_DIR}}/content_data_options.json
-      - pnpm pug {{.CONTENT_DIR}}/demo.page.pug -o {{.DEV_DIR}} -O {{.DEV_DIR}}/content_data_options.json
-      - mv {{.DEV_DIR}}/demo.page.html {{.DEV_DIR}}/demo.html
+      - pnpm pug {{.CONTENT_DIR}}/index.page.pug -o {{.DEV_DIR}} -O {{.DEV_DIR}}/content_data_options.json
+      - mv {{.DEV_DIR}}/index.page.html {{.DEV_DIR}}/index.html
       - cp {{.CONTENT_DIR}}/graphic/icon/sqwiggle.svg {{.DEV_DIR}}/{{.MARKLOGO_NAME}}
 
   rear-behavior:
@@ -57,12 +58,12 @@ tasks:
   nit-behavior:
     desc: Keeping js/mjs consistent
     cmds:
-      - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs {{.BEHAVIOR_DIR}}/demo.js
+      - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs {{.BEHAVIOR_DIR}}/pcs.main.mjs
 
   nit-presentation:
     desc: Keeping stylus/css consistent
     cmds:
-      - pnpm stylelint -c {{.PROJECT_DIR}}/stylelint.config.mjs {{.PRESENTATION_DIR}}/demo.styl
+      - pnpm stylelint -c {{.PROJECT_DIR}}/stylelint.config.mjs {{.PRESENTATION_DIR}}/pcs.main.styl
 
   # Moving things around
   put-vendor:
@@ -98,7 +99,7 @@ tasks:
   sweep-content:
     desc: Remove generated files
     cmds:
-      - rm -f {{.DEV_DIR}}/demo.html
+      - rm -f {{.DEV_DIR}}/index.html
       - rm -f {{.DEV_DIR}}/content_data_options.json
       - rm -f {{.DEV_DIR}}/markl.svg
 
@@ -106,7 +107,7 @@ tasks:
     desc: Remove generated files
     cmds:
       - rm -f {{.DEV_DIR}}/main.{css,css.map}
-      - rm -f {{.DEV_DIR}}/demo.main.{css,css.map}
+      - rm -f {{.DEV_DIR}}/pcs.main.{css,css.map}
 
   sweep-behavior:
     desc: Remove generated files

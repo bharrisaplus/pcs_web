@@ -7,7 +7,7 @@ import { default as RollupTerser } from '@rollup/plugin-terser';
 import { default as buildShared } from '../manifest.mjs';
 
 
-const inputFilePath = NodePath.resolve(buildShared.behavior_path, 'demo.main.js')
+const inputFilePath = NodePath.resolve(buildShared.behavior_path, 'pcs.main.mjs')
 
 let config;
 
@@ -27,7 +27,7 @@ switch (NodeProcess.env.BUILD_AREA) {
 		  input: inputFilePath,
 		  output: [{
 				file: NodePath.resolve(buildShared.dev_path, buildShared.es_main),
-				format: 'iife',
+				format: 'es',
 				name: 'PCS',
 				plugins: [],
 				sourcemap: true,
@@ -41,7 +41,7 @@ switch (NodeProcess.env.BUILD_AREA) {
 			input: inputFilePath,
 			output: [{
 				file: NodePath.resolve(buildShared.dev_path, buildShared.es_main),
-				format: 'iife',
+				format: 'es',
 				name: 'PCS',
 				plugins: [],
 				sourcemap: true,
