@@ -19,7 +19,7 @@ const
 			url: NodeProcess.env.LHOST_URL || new NodeURL('http://localhost:54321')
 		},
 		prod: {
-			path: NodeProcess.env.OCTOCAT_HOST_DIR || NodePath.resolve(_dir, '../../../docs')
+			path: NodeProcess.env.OCTOCAT_HOST_DIR || NodePath.resolve(_dir, '../../../distribution/octocat/docs')
 		}
 	};
 
