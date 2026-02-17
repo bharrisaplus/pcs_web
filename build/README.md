@@ -43,7 +43,7 @@ task TARGET:OBJECTIVE:action-AREA
 ```
 So to build the github pages demo for testing locally without a server:
 ```
-task octocat:v0:rear-fhost
+task octocat:demo:rear-fhost
 ```
 
 

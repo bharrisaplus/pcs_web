@@ -4,9 +4,9 @@ let targetConfig;
 
 if (NodeProcess.env.BUILD_TARGET == 'octocat') {
 	switch(NodeProcess.env.BUILD_OBJECTIVE) {
-		case 'v0':
+		case 'demo':
 		default: {
-			const octocatV0 = await import('./build/octocat/v0/_rollup.config.mjs');
+			const octocatV0 = await import('./build/octocat/demo/_rollup.config.mjs');
 
 			targetConfig = octocatV0.default;
 		}

@@ -9,7 +9,7 @@ tasks:
     desc: Stylus to CSS
     env:
       BUILD_TARGET: octocat
-      BUILD_OBJECTIVE: v0
+      BUILD_OBJECTIVE: demo
       BUILD_AREA: prod
     cmds:
       - pnpm stylus {{.PRESENTATION_DIR}}/demo.main.styl -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
@@ -44,7 +44,7 @@ tasks:
     desc: JS
     env:
       BUILD_TARGET: octocat
-      BUILD_OBJECTIVE: v0
+      BUILD_OBJECTIVE: demo
       BUILD_AREA: prod
     cmds:
       -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
