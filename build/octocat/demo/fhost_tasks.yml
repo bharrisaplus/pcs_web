@@ -4,6 +4,9 @@
 
 version: '3'
 
+env:
+  FHOST_URL: '{{.FHOST_URL_ROOT}}/demo/'
+
 tasks:
   # Building/Transpiling/etc
   rear-presentation:
@@ -21,21 +24,21 @@ tasks:
     vars:
       CONTENT_DATA:
         map:
-          MARKLOGO_URL: '{{.DEMO_FILE_HOST}}{{.MARKLOGO_NAME}}'
-          APPLE_TOUCH_ICON_URL: '{{.DEMO_FILE_HOST}}{{.APPLE_TOUCH_ICON_NAME}}'
-          FAVICON_32_URL: '{{.DEMO_FILE_HOST}}{{.FAVICON_32_NAME}}'
-          FAVICON_32_ALT_URL: '{{.DEMO_FILE_HOST}}{{.FAVICON_32_ALT_NAME}}'
-          FAVICON_16_URL: '{{.DEMO_FILE_HOST}}{{.FAVICON_16_NAME}}'
-          FAVICON_16_ALT_URL: '{{.DEMO_FILE_HOST}}{{.FAVICON_16_ALT_NAME}}'
-          FAVICON_ICO_URL: '{{.DEMO_FILE_HOST}}{{.FAVICON_ICO_NAME}}'
-          FAVICON_ICO_ALT_URL: '{{.DEMO_FILE_HOST}}{{.FAVICON_ICO_ALT_NAME}}'
-          VENDOR_CSS_RESET_URL: '{{.DEMO_FILE_HOST}}{{.VENDOR_CSS_RESET_NAME}}'
-          VENDOR_CHANCEJS_URL: '{{.DEMO_FILE_HOST}}{{.VENDOR_CHANCEJS_NAME}}'
-          VENDOR_HTML2CANVAS_URL: '{{.DEMO_FILE_HOST}}{{.VENDOR_HTML2CANVAS_NAME}}'
-          CSS_MAIN_URL: '{{.DEMO_FILE_HOST}}{{.CSS_MAIN_NAME}}'
-          ES_MAIN_URL: '{{.DEMO_FILE_HOST}}{{.ES_MAIN_NAME}}'
-          BROWSERCONFIG_URL: '{{.DEMO_FILE_HOST}}{{.BROWSERCONFIG_NAME}}'
-          WEBMANIFEST_URL: '{{.DEMO_FILE_HOST}}{{.WEBMANIFEST_NAME}}'
+          MARKLOGO_URL: '{{.FHOST_URL}}{{.MARKLOGO_NAME}}'
+          APPLE_TOUCH_ICON_URL: '{{.FHOST_URL}}{{.APPLE_TOUCH_ICON_NAME}}'
+          FAVICON_32_URL: '{{.FHOST_URL}}{{.FAVICON_32_NAME}}'
+          FAVICON_32_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_32_ALT_NAME}}'
+          FAVICON_16_URL: '{{.FHOST_URL}}{{.FAVICON_16_NAME}}'
+          FAVICON_16_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_16_ALT_NAME}}'
+          FAVICON_ICO_URL: '{{.FHOST_URL}}{{.FAVICON_ICO_NAME}}'
+          FAVICON_ICO_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_ICO_ALT_NAME}}'
+          VENDOR_CSS_RESET_URL: '{{.FHOST_URL}}{{.VENDOR_CSS_RESET_NAME}}'
+          VENDOR_CHANCEJS_URL: '{{.FHOST_URL}}{{.VENDOR_CHANCEJS_NAME}}'
+          VENDOR_HTML2CANVAS_URL: '{{.FHOST_URL}}{{.VENDOR_HTML2CANVAS_NAME}}'
+          CSS_MAIN_URL: '{{.FHOST_URL}}{{.CSS_MAIN_NAME}}'
+          ES_MAIN_URL: '{{.FHOST_URL}}{{.ES_MAIN_NAME}}'
+          BROWSERCONFIG_URL: '{{.FHOST_URL}}{{.BROWSERCONFIG_NAME}}'
+          WEBMANIFEST_URL: '{{.FHOST_URL}}{{.WEBMANIFEST_NAME}}'
     cmds:
       - echo '{{.CONTENT_DATA | toJson}}' > {{.DEMO_DIR}}/content_data_options.json
       - pnpm pug {{.CONTENT_DIR}}/demo.page.pug -o {{.DEMO_DIR}} -O {{.DEMO_DIR}}/content_data_options.json

@@ -12,6 +12,7 @@ tasks:
       BUILD_OBJECTIVE: demo
       BUILD_AREA: prod
     cmds:
+      - mkdir {{.OCTOCAT_HOST_DIR}}
       - pnpm stylus {{.PRESENTATION_DIR}}/demo.main.styl -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
       - pnpm postcss {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}} --config {{.PROJECT_DIR}} -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
 
@@ -20,22 +21,23 @@ tasks:
     vars:
       CONTENT_DATA:
         map:
-          MARKLOGO_URL: '{{.OCTOCAT_HOST}}{{.MARKLOGO_NAME}}'
-          APPLE_TOUCH_ICON_URL: '{{.OCTOCAT_HOST}}{{.APPLE_TOUCH_ICON_NAME}}'
-          FAVICON_32_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_32_NAME}}'
-          FAVICON_32_ALT_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_32_ALT_NAME}}'
-          FAVICON_16_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_16_NAME}}'
-          FAVICON_16_ALT_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_16_ALT_NAME}}'
-          FAVICON_ICO_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_ICO_NAME}}'
-          FAVICON_ICO_ALT_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_ICO_ALT_NAME}}'
-          VENDOR_CSS_RESET_URL: '{{.OCTOCAT_HOST}}{{.VENDOR_CSS_RESET_NAME}}'
-          VENDOR_CHANCEJS_URL: '{{.OCTOCAT_HOST}}{{.VENDOR_CHANCEJS_NAME}}'
-          VENDOR_HTML2CANVAS_URL: '{{.OCTOCAT_HOST}}{{.VENDOR_HTML2CANVAS_NAME}}'
-          CSS_MAIN_URL: '{{.OCTOCAT_HOST}}{{.CSS_MAIN_NAME}}'
-          ES_MAIN_URL: '{{.OCTOCAT_HOST}}{{.ES_MAIN_NAME}}'
-          BROWSERCONFIG_URL: '{{.OCTOCAT_HOST}}{{.BROWSERCONFIG_NAME}}'
-          WEBMANIFEST_URL: '{{.OCTOCAT_HOST}}{{.WEBMANIFEST_NAME}}'
+          MARKLOGO_URL: '{{.OCTOCAT_URL}}{{.MARKLOGO_NAME}}'
+          APPLE_TOUCH_ICON_URL: '{{.OCTOCAT_URL}}{{.APPLE_TOUCH_ICON_NAME}}'
+          FAVICON_32_URL: '{{.OCTOCAT_URL}}{{.FAVICON_32_NAME}}'
+          FAVICON_32_ALT_URL: '{{.OCTOCAT_URL}}{{.FAVICON_32_ALT_NAME}}'
+          FAVICON_16_URL: '{{.OCTOCAT_URL}}{{.FAVICON_16_NAME}}'
+          FAVICON_16_ALT_URL: '{{.OCTOCAT_URL}}{{.FAVICON_16_ALT_NAME}}'
+          FAVICON_ICO_URL: '{{.OCTOCAT_URL}}{{.FAVICON_ICO_NAME}}'
+          FAVICON_ICO_ALT_URL: '{{.OCTOCAT_URL}}{{.FAVICON_ICO_ALT_NAME}}'
+          VENDOR_CSS_RESET_URL: '{{.OCTOCAT_URL}}{{.VENDOR_CSS_RESET_NAME}}'
+          VENDOR_CHANCEJS_URL: '{{.OCTOCAT_URL}}{{.VENDOR_CHANCEJS_NAME}}'
+          VENDOR_HTML2CANVAS_URL: '{{.OCTOCAT_URL}}{{.VENDOR_HTML2CANVAS_NAME}}'
+          CSS_MAIN_URL: '{{.OCTOCAT_URL}}{{.CSS_MAIN_NAME}}'
+          ES_MAIN_URL: '{{.OCTOCAT_URL}}{{.ES_MAIN_NAME}}'
+          BROWSERCONFIG_URL: '{{.OCTOCAT_URL}}{{.BROWSERCONFIG_NAME}}'
+          WEBMANIFEST_URL: '{{.OCTOCAT_URL}}{{.WEBMANIFEST_NAME}}'
     cmds:
+      - mkdir {{.OCTOCAT_HOST_DIR}}
       - pnpm pug {{.CONTENT_DIR}}/demo.page.pug -o {{.OCTOCAT_HOST_DIR}} -O '{{.CONTENT_DATA | toJson}}'
       - mv {{.OCTOCAT_HOST_DIR}}/demo.page.html {{.OCTOCAT_HOST_DIR}}/index.html
       - cp {{.CONTENT_DIR}}/graphic/icon/sqwiggle.svg {{.OCTOCAT_HOST_DIR}}/{{.MARKLOGO_NAME}}
@@ -47,11 +49,13 @@ tasks:
       BUILD_OBJECTIVE: demo
       BUILD_AREA: prod
     cmds:
+      - mkdir {{.OCTOCAT_HOST_DIR}}
       -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
 
   put-vendor:
     desc: Copy 3rd party scripts/stylesheets/etc
     cmds:
+      - mkdir {{.OCTOCAT_HOST_DIR}}
       - cp {{.COMMON_DIR}}/vendor/meyerweb/reset.min.css {{.OCTOCAT_HOST_DIR}}/{{.VENDOR_CSS_RESET_NAME}}
       - cp {{.COMMON_DIR}}/vendor/html2canvas/html2canvas.min.js {{.OCTOCAT_HOST_DIR}}/{{.VENDOR_HTML2CANVAS_NAME}}
       - cp {{.COMMON_DIR}}/vendor/chancejs/chance.min.js {{.OCTOCAT_HOST_DIR}}/{{.VENDOR_CHANCEJS_NAME}}
@@ -60,6 +64,7 @@ tasks:
   put-meta:
     desc: Place fils needed for pwa
     cmds:
+      - mkdir {{.OCTOCAT_HOST_DIR}}
       - cp {{.COMMON_DIR}}/favicons/sqwiggle.ico {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_ICO_NAME}}
       - cp {{.COMMON_DIR}}/favicons/sqwiggle-alt.ico {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_ICO_ALT_NAME}}
       - cp {{.COMMON_DIR}}/favicons/sqwiggle_16.png {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_16_NAME}}
@@ -80,18 +85,19 @@ tasks:
   set-meta:
     desc: Update pwa files
     env:
-      FAVICON_ANDROID_CHROME_192_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_ANDROID_CHROME_192_NAME}}'
-      FAVICON_ANDROID_CHROME_512_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_ANDROID_CHROME_512_NAME}}'
+      FAVICON_ANDROID_CHROME_192_URL: '{{.OCTOCAT_URL}}{{.FAVICON_ANDROID_CHROME_192_NAME}}'
+      FAVICON_ANDROID_CHROME_512_URL: '{{.OCTOCAT_URL}}{{.FAVICON_ANDROID_CHROME_512_NAME}}'
     vars:
       META_DATA:
         map:
-          FAVICON_MSTILE_s70_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_MSTILE_s70_NAME}}'
-          FAVICON_MSTILE_s144_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_MSTILE_s144_NAME}}'
-          FAVICON_MSTILE_s150_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_MSTILE_s150_NAME}}'
-          FAVICON_MSTILE_s310_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_MSTILE_s310_NAME}}'
-          FAVICON_MSTILE_w310_URL: '{{.OCTOCAT_HOST}}{{.FAVICON_MSTILE_w310_NAME}}'
+          FAVICON_MSTILE_s70_URL: '{{.OCTOCAT_URL}}{{.FAVICON_MSTILE_s70_NAME}}'
+          FAVICON_MSTILE_s144_URL: '{{.OCTOCAT_URL}}{{.FAVICON_MSTILE_s144_NAME}}'
+          FAVICON_MSTILE_s150_URL: '{{.OCTOCAT_URL}}{{.FAVICON_MSTILE_s150_NAME}}'
+          FAVICON_MSTILE_s310_URL: '{{.OCTOCAT_URL}}{{.FAVICON_MSTILE_s310_NAME}}'
+          FAVICON_MSTILE_w310_URL: '{{.OCTOCAT_URL}}{{.FAVICON_MSTILE_w310_NAME}}'
     cmds:
-      - jq '.id|=env.OCTOCAT_HOST | .start_url|=env.OCTOCAT_HOST | .icons[0].src|=env.FAVICON_ANDROID_CHROME_192_URL | .icons[1].src|=env.FAVICON_ANDROID_CHROME_512_URL' {{.CONTENT_DIR}}/webmanifest.source.json > {{.OCTOCAT_HOST_DIR}}/site.webmanifest
+      - mkdir {{.OCTOCAT_HOST_DIR}}
+      - jq '.id|=env.OCTOCAT_URL | .start_url|=env.OCTOCAT_URL | .icons[0].src|=env.FAVICON_ANDROID_CHROME_192_URL | .icons[1].src|=env.FAVICON_ANDROID_CHROME_512_URL' {{.CONTENT_DIR}}/webmanifest.source.json > {{.OCTOCAT_HOST_DIR}}/site.webmanifest
       - pnpm pug {{.CONTENT_DIR}}/browserconfig.source.pug -o {{.OCTOCAT_HOST_DIR}} -O '{{.META_DATA | toJson}}'
       - mv {{.OCTOCAT_HOST_DIR}}/browserconfig.source.html {{.OCTOCAT_HOST_DIR}}/{{.BROWSERCONFIG_NAME}}
       - rm -f {{.OCTOCAT_HOST_DIR}}/content_data_options.json
