@@ -1,9 +1,11 @@
 name: Deploy to Pages
 
 on:
+  workflow_dispatch:
   push:
     branches: ["gh-pages"]
-  workflow_dispatch:
+    tags:
+      - '2026_*'
 
 permissions:
   contents: read
@@ -16,6 +18,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.ref_type == 'tag' && github.event.base_ref == 'refs/heads/gh-pages'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
