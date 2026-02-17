@@ -1,22 +1,16 @@
 import { default as NodeProcess } from 'node:process';
 
-import { default as RollupTerser } from '@rollup/plugin-terser';
-
-import { default as octocatV0Target } from './build/octocat/v0/_rollup.config.mjs'
-
-
 let targetConfig;
 
-switch(NodeProcess.env.NODE_ENV) {
-	case 'production':
-		targetConfig = octocatV0Target.prodConfig;
-		break;
-	case 'lhost':
-		targetConfig = octocatV0Target.lhostConfig;
-		break;
-	default:
-		targetConfig = octocatV0Target.fhostConfig;
-}
+if (NodeProcess.env.BUILD_TARGET == 'octocat') {
+	switch(NodeProcess.env.BUILD_OBJECTIVE) {
+		case 'demo':
+		default: {
+			const octocatV0 = await import('./build/octocat/demo/_rollup.config.mjs');
 
+			targetConfig = octocatV0.default;
+		}
+	}
+}
 
 export default targetConfig;

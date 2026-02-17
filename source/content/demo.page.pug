@@ -37,33 +37,35 @@ html(lang="en")
                 h2 (P)seudo (C)ard (S)huffler
                 img#markl(src=MARKLOGO_URL alt="A scribbly sqwiggle" height="24px" width="24px" role="img")
                 .ribbon
-                    select(name="bg-wells")
+                    select(name="bg-wells" aria-label="Background Color Change" aria-description="Pick a different color for the card area")
                         option(value=0 selected)="Choose a background"
                         option(value=1)="Emerald"
                         option(value=2)="Cherry"
                         option(value=3)="Twilight"
                         option(value=4)="Amethyst"
                     .bar-separator
-                    button.shuffle
+                    button(aria-description="Arranges the cards in random order").shuffle
                         | Shuffle
                     .bar-separator
-                    button.export
-                        | Export
-                    a.export-zone
+                    .export
+                        button(aria-description="Saves the cards as an image")
+                            | Export
+                        a
 
             main.closeup.green-dye
                 ol.pad
+                    - var card_titles = ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seve', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']
                     for item, idx in ['🂡','🂢','🂣','🂤','🂥','🂦','🂧','🂨','🂩','🂪','🂫','🂭','🂮','🃁','🃂','🃃','🃄','🃅','🃆','🃇','🃈','🃉','🃊','🃋','🃍','🃎', '🃞','🃝','🃛','🃚','🃙','🃘','🃗','🃖','🃕','🃔','🃓','🃒','🃑', '🂾','🂽','🂻','🂺','🂹','🂸','🂷','🂶','🂵','🂴','🂳','🂲','🂱']
                         if idx < 13
-                            li.spade.playing-card= item
+                            li(aria-description=`${card_titles[idx]} of Spade`).spade.playing-card= item
                         else if idx < 26
-                            li.diamond.playing-card= item
+                            li(aria-description=`${card_titles[idx%13]} of Diamond`).diamond.playing-card= item
                         else if idx < 39
-                            li.club.playing-card= item
+                            li(aria-description=`${card_titles[idx%13]} of Club`).club.playing-card= item
                         else if idx < 52
-                            li.heart.playing-card= item
+                            li(aria-description=`${card_titles[idx%13]} of Heart`).heart.playing-card= item
                         else
-                            li.playing-card= item
+                            li(aria-description=`Joker`).playing-card= item
 
                 .dust-cover(popover)
                     .turntable
