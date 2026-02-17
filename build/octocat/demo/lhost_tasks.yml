@@ -8,6 +8,8 @@ tasks:
   rear-presentation:
     desc: Stylus to CSS
     env:
+      BUILD_TARGET: octocat
+      BUILD_OBJECTIVE: demo
       BUILD_AREA: lhost
     cmds:
       - pnpm stylus {{.PRESENTATION_DIR}}/demo.main.styl -m --sourcemap-base {{.DEMO_DIR}} -o {{.DEMO_DIR}}
@@ -42,6 +44,8 @@ tasks:
   rear-behavior:
     desc: JS
     env:
+      BUILD_TARGET: octocat
+      BUILD_OBJECTIVE: demo
       BUILD_AREA: lhost
     cmds:
       -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs

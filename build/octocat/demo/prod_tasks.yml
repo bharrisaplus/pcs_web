@@ -8,6 +8,8 @@ tasks:
   rear-presentation:
     desc: Stylus to CSS
     env:
+      BUILD_TARGET: octocat
+      BUILD_OBJECTIVE: demo
       BUILD_AREA: prod
     cmds:
       - mkdir {{.OCTOCAT_HOST_DIR}}
@@ -43,6 +45,8 @@ tasks:
   rear-behavior:
     desc: JS
     env:
+      BUILD_TARGET: octocat
+      BUILD_OBJECTIVE: demo
       BUILD_AREA: prod
     cmds:
       - mkdir {{.OCTOCAT_HOST_DIR}}
