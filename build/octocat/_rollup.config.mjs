@@ -4,27 +4,17 @@ import { URL as NodeURL } from 'node:url';
 
 import { default as RollupTerser } from '@rollup/plugin-terser';
 
-import { default as buildShared } from '../../manifest.mjs';
+import { default as buildShared } from '../manifest.mjs';
 
 
-const
-	_dir = import.meta.dirname,
-	buildInfo = {
-		inputFilePath: NodePath.resolve(buildShared.behavior_path, 'demo.main.js'),
-		fhost: {
-			url: buildShared.filehost_url || new NodeURL('../../../distribution/demo', import.meta.url)
-		},
-		lhost: {
-			url: buildShared.localhost_url || new NodeURL('http://localhost:54321')
-		}
-	};
+const inputFilePath = NodePath.resolve(buildShared.behavior_path, 'demo.main.js')
 
 let config;
 
 switch (NodeProcess.env.BUILD_AREA) {
 	case 'prod':
 		config = {
-		  input: buildInfo.inputFilePath,
+		  input: inputFilePath,
 		  output: [{
 				file: NodePath.resolve(buildShared.octocat_path, buildShared.es_main),
 				format: 'iife',
@@ -34,28 +24,29 @@ switch (NodeProcess.env.BUILD_AREA) {
 		}; break;
 	case 'lhost':
 		config = {
-		  input: buildInfo.inputFilePath,
+		  input: inputFilePath,
 		  output: [{
-				file: NodePath.resolve(buildShared.demo_path, buildShared.es_main),
+				file: NodePath.resolve(buildShared.dev_path, buildShared.es_main),
 				format: 'iife',
 				name: 'PCS',
 				plugins: [],
 				sourcemap: true,
 				sourcemapExcludeSources: true,
-				sourcemapBaseUrl: buildInfo.lhost.url.toString()
+				sourcemapBaseUrl: buildShared.localhost_url.toString()
 			}]
 		}; break;
+	case 'fhost':
 	default:
 		config = {
-			input: buildInfo.inputFilePath,
+			input: inputFilePath,
 			output: [{
-				file: NodePath.resolve(buildShared.demo_path, buildShared.es_main),
+				file: NodePath.resolve(buildShared.dev_path, buildShared.es_main),
 				format: 'iife',
 				name: 'PCS',
 				plugins: [],
 				sourcemap: true,
 				sourcemapExcludeSources: true,
-				sourcemapBaseUrl: buildInfo.fhost.url.toString()
+				sourcemapBaseUrl: buildShared.filehost_url.toString()
 			}]
 		};
 }

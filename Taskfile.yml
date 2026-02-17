@@ -24,32 +24,32 @@ tasks:
 
   # Top level aliases for convenience
 
-  rear-octocat-latest-fhost:
-    aliases: [rear-file]
+  rear-octocat-demo-fhost:
+    aliases: [rear-demo-file]
     cmds:
-      - task: octocat:latest:rear-fhost
+      - task: octocat:demo:rear-fhost
 
-  rear-octocat-latest-lhost:
-    aliases: [rear-local]
+  rear-octocat-demo-lhost:
+    aliases: [rear-demo-local]
     cmds:
-      - task: octocat:latest:rear-lhost
+      - task: octocat:demo:rear-lhost
 
-  rear-octocat-latest-prod:
-    aliases: [rear-prod]
+  rear-octocat-demo-prod:
+    aliases: [rear-demo-prod]
     cmds:
-      - task: octocat:latest:rear-prod
+      - task: octocat:demo:rear-prod
 
-  sweep-octocat-latest-fhost:
-    aliases: [sweep-file]
+  sweep-octocat-demo-fhost:
+    aliases: [sweep-demo-file]
     cmds:
-      - task: octocat:latest:sweep-fhost
+      - task: octocat:demo:sweep-fhost
 
-  sweep-octocat-latest-lhost:
-    aliases: [sweep-local]
+  sweep-octocat-demo-lhost:
+    aliases: [sweep-demo-local]
     cmds:
-      - task: octocat:latest:sweep-lhost
+      - task: octocat:demo:sweep-lhost
 
-  sweep-octocat-latest-prod:
-    aliases: [sweep-prod]
+  sweep-octocat-demo-prod:
+    aliases: [sweep-demo-prod]
     cmds:
-      - task: octocat:latest:sweep-prod
+      - task: octocat:demo:sweep-prod

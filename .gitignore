@@ -3,6 +3,7 @@ node_modules
 
 # built resources
 distribution/demo
+distribution/2026_*
 !distribution/.gitkeep
 
 # Pages hosting

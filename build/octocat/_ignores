@@ -8,7 +8,6 @@
 # vendor files
 !reset.css
 !chance.js
-!html2canvas.js
 
 # image assets
 !markl.svg
