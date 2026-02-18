@@ -1,0 +1,43 @@
+html
+    height: 100%
+    width: 100%
+
+body
+    height: calc(100% - 16px)
+    width: calc(100% - 16px)
+    margin: 8px
+
+header
+    display: flex
+    height: 10%
+    width: 100%
+    flex-flow: row nowrap
+    justify-content: space-between
+    align-items: center
+
+main
+    display: flex
+    height: 87%
+    width: 100%
+    justify-content: center
+    align-items: center
+
+
+.loading-indicator-container
+    display: flex
+    position: relative
+    flex-flow: column nowrap
+    justify-content: center
+    align-items: center
+    z-index: 10
+    opacity: 1
+
+    & #pcs-card
+        height: 54px
+        width: fit-content
+        aspect-ratio: 3/4
+        padding: 4.5px
+        border-radius: 4.5%
+
+    & p
+        padding: 1px 4.5px

@@ -1,37 +1,75 @@
-html
-    height: 100%
-    width: 100%
+@import 'color/palette.styl'
+@import 'typography/_typeset.styl'
+@import 'layout/_graph.styl'
+@import 'layout/animations.styl'
 
-body
-    height: calc(100% - 16px)
-    width: calc(100% - 16px)
-    margin: 8px
+@import 'typography/pcs_typeset.styl'
+@import 'layout/pcs_graph.styl'
 
-header
-    display: flex
-    height: 10%
-    width: 100%
-    flex-flow: row nowrap
-    justify-content: space-between
-    align-items: center
 
-    & div
-        display: flex
-        gap: 9px
-        align-items: center
-
+#title-marquee h2
+    user-select: none
+    pointer-events: none
 
 main
-    display: flex
-    height: 87%
-    width: 100%
-    background: green
-    flex-flow: row nowrap
-    justify-content: center
-    align-items: center
-    
-    & span
-        background: white
-        line-height: 1
-        border-radius: 4.5%
-        padding: 4.5px
+    background: var(--bg-emerald)
+
+.loading-indicator-container
+    background-color: var(--loading-curtain)
+
+    & #pcs-card
+        background-color: var(--card-base)
+
+    & p
+        height: 27px;
+        color: var(--card-base)
+        user-select: none
+        pointer-events: none
+
+
+/* setup transitions & animations */
+
+.loading-indicator-container
+    transition-property: opacity
+    transition-delay: 0.1s
+    transition-duration: 0.3s
+    transition-behavior: allow-discrete
+
+    & #pcs-card
+        animation-name: yo-yo
+        animation-delay: 0.4s
+        animation-duration: 1.5s
+        animation-iteration-count: 36
+        animation-timing-function: ease-in-out
+        animation-direction: alternate
+        transform: rotate(0deg);
+
+    & p::before
+        animation-name: dotdot-dot
+        animation-delay: 0.4s
+        animation-duration: 1.5s
+        animation-iteration-count: 36
+        animation-timing-function: ease-out
+        animation-direction: alternate
+        color: var(--card-base)
+        content: ""
+
+    &.loading-done
+        opacity: 0
+        z-index: -1
+
+        & #pcs-card, & p::before /* Or just glob like '& > *' */
+            animation-play-state: paused
+
+
+@starting-style
+    .loading-indicator-container
+        display: none
+        z-index: -1
+        opacity: 0
+
+        & #pcs-card
+            transform: rotate(0deg)
+
+        & p::before
+            content: ""
