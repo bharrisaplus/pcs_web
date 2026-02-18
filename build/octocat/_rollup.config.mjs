@@ -12,17 +12,18 @@ const inputFilePath = NodePath.resolve(buildShared.behavior_path, 'pcs.main.mjs'
 let config;
 
 switch (NodeProcess.env.BUILD_AREA) {
-	case 'prod':
+	case 'prod': {
 		config = {
 		  input: inputFilePath,
 		  output: [{
 				file: NodePath.resolve(buildShared.octocat_path, buildShared.es_main),
-				format: 'iife',
+				format: 'es',
 				name: 'PCS',
 				plugins: [ RollupTerser() ]
 			}]
 		}; break;
-	case 'lhost':
+	}
+	case 'lhost': {
 		config = {
 		  input: inputFilePath,
 		  output: [{
@@ -35,8 +36,9 @@ switch (NodeProcess.env.BUILD_AREA) {
 				sourcemapBaseUrl: buildShared.localhost_url.toString()
 			}]
 		}; break;
+	}
 	case 'fhost':
-	default:
+	default: {
 		config = {
 			input: inputFilePath,
 			output: [{
@@ -49,6 +51,7 @@ switch (NodeProcess.env.BUILD_AREA) {
 				sourcemapBaseUrl: buildShared.filehost_url.toString()
 			}]
 		};
+	}
 }
 
 
