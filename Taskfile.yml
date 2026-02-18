@@ -11,6 +11,12 @@
 
 version: '3'
 
+vars:
+  PRESENTATION_REL:
+    sh: realpath --relative-to="{{.PROJECT_DIR}}" "{{.PRESENTATION_DIR}}"
+  DEV_REL:
+    sh: realpath --relative-to="{{.PROJECT_DIR}}" "{{.DEV_DIR}}"
+
 includes:
   octocat: ./Build/octocat/_tasks.yml
 

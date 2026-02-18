@@ -15,7 +15,7 @@ tasks:
       BUILD_AREA: fhost
       FHOST_URL: '{{.FHOST_URL_ROOT}}/{{.DEV_VER}}/'
     cmds:
-      - pnpm stylus {{.PRESENTATION_DIR}}/pcs.main.styl -m --sourcemap-base {{.DEV_DIR}} -o {{.DEV_DIR}}
+      - pnpm stylus {{.PRESENTATION_REL}}/pcs.main.styl -m --sourcemap-base {{.DEV_REL}} -o {{.DEV_DIR}}
       - pnpm postcss {{.DEV_DIR}}/pcs.main.css --config {{.PROJECT_DIR}} -o {{.DEV_DIR}}/{{.CSS_MAIN_NAME}}
 
   rear-content:

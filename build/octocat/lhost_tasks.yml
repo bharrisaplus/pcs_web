@@ -13,7 +13,7 @@ tasks:
       BUILD_OBJECTIVE: '{{.DEV_VER}}'
       BUILD_AREA: lhost
     cmds:
-      - pnpm stylus {{.PRESENTATION_DIR}}/pcs.main.styl -m --sourcemap-base {{.DEV_DIR}} -o {{.DEV_DIR}}
+      - pnpm stylus {{.PRESENTATION_REL}}/pcs.main.styl -m --sourcemap-base {{.DEV_REL}} -o {{.DEV_DIR}}
       - pnpm postcss {{.DEV_DIR}}/pcs.main.css --config {{.PROJECT_DIR}} -o {{.DEV_DIR}}/{{.CSS_MAIN_NAME}}
 
   rear-content:
