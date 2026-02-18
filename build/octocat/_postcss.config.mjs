@@ -4,16 +4,9 @@ import { URL as NodeURL } from 'node:url';
 
 import { default as buildShared } from '../manifest.mjs';
 
-
 const buildConfig = {
 	cwd: buildShared.project_path,
-	map: NodeProcess.env.BUILD_AREA == 'prod' ? false : {
-		annotation: (postCSSOptTo) => {
-			let baseURL = NodeProcess.env.BUILD_AREA == 'lhost' ? buildShared.localhost_url : buildShared.filehost_url;
-
-			return `${baseURL.toString()}${NodePath.basename(postCSSOptTo)}.map`;
-		}
-	},
+	map: NodeProcess.env.BUILD_AREA == 'prod' ? false : true,
 	plugins: {
 		'postcss-combine-duplicated-selectors': {},
 		autoprefixer: {},
