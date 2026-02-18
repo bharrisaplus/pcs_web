@@ -16,21 +16,16 @@ block html_head_scripts
 block html_body
     body
         header
-            div
+            #title-marquee
                 h2 (P)seudo (C)ard (S)huffler
-                img(src=MARKLOGO_URL alt="A scribbly sqwiggle" height="24px" width="24px")
+                include graphic/misc/pcs-logo.svg
 
         main
-            span(style="font-size:48px;")
-                | 🂠
+            include document/partials/loading-indicator.pug
 
         block html_body_scripts
             footer
                 if ON_FILE_HOST
                     script(src=ES_MAIN_URL defer)
                 else
-                    script.
-                        document.addEventListener('DOMContentLoaded', () => {
-                            PCS.echo();
-                        });
                     script(src=ES_MAIN_URL type="module" defer)
