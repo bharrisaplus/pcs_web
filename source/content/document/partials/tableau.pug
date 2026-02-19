@@ -1,7 +1,7 @@
 #tableau(style="display: none;").hide-before-load
 	ol
 		- var card_titles = ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seve', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']
-		for _itm, cardIdx in Array(2)
+		for _itm, cardIdx in Array(52)
 			if ON_FILE_HOST
 				if cardIdx < 13
 					if cardIdx < 10
