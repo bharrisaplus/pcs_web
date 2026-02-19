@@ -1,3 +1,8 @@
+$card-whratio = 3/4
+$card-height = 120px
+$card-width = $card-height * $card-whratio
+$card-hspace = $card-height * (1/3)
+$card-wspace = $card-width * 0.25
 
 #title-marquee
     display: flex
@@ -13,3 +18,33 @@ main
     & > .loading-indicator-container
         height: 100%
         width: 100%
+
+    & #tableau
+        display: flex
+        width: 100%
+        height: 100%
+        justify-content: center
+        overflow: hidden
+        --card-ratio: $card-whratio
+        --card-height: $card-height
+        --card-width: $card-width
+        --card-hspace: $card-hspace
+        --card-wspace: $card-wspace
+
+        & ol
+            display: flex
+            width: calc(100% - var(--card-hspace))
+            height: calc(100% - var(--card-wspace))
+            column-gap: var(--card-hspace)
+            row-gap: var(--card-wspace)
+            flex-flow: row wrap;
+            padding: calc(var(--card-hspace) / 2) calc(var(--card-wspace) / 2)
+            overflow-y: scroll;
+
+            & .playing-card
+                height: var(--card-height)
+                aspect-ratio: var(--card-ratio)
+            
+                & svg
+                    height: 100%
+                    width: 100%

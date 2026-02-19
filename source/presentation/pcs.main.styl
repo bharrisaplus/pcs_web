@@ -13,6 +13,18 @@
 
 main
     background: var(--bg-emerald)
+    border-radius: 18px
+    
+    & .loading-indicator-container
+        border-radius: inherit;
+
+    & #tableau
+        background-color: inherit;
+        border-radius: inherit;
+
+        & ol
+            background-color: inherit;
+
 
 .loading-indicator-container
     background-color: var(--loading-curtain)
@@ -62,6 +74,17 @@ main
             animation-play-state: paused
 
 
+#tableau
+    .playing-card
+        animation-name: card-drop
+        animation-duration: 0.5s
+        animation-timing-function: ease-out
+        animation-fill-mode: backwards
+
+    & .hide-before-load
+        display: none
+    
+
 @starting-style
     .loading-indicator-container
         display: none
@@ -73,3 +96,6 @@ main
 
         & p::before
             content: ""
+    
+    #tableau .playing-card
+        opacity: 0
