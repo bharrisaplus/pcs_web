@@ -5,6 +5,8 @@ block html_head_title
 
 block html_head
     include document/partials/_base/_head.pug
+    if !ON_FILE_HOST
+        link(rel="prefetch" href=CARD_SOT_URL)
 
 block html_head_styles
     link(rel="stylesheet" href=VENDOR_CSS_RESET_URL)
@@ -22,10 +24,12 @@ block html_body
 
         main
             include document/partials/loading-indicator.pug
+            include document/partials/tableau.pug
 
         block html_body_scripts
             footer
                 if ON_FILE_HOST
                     script(src=ES_MAIN_URL defer)
+                    include graphic/misc/carddeck.svg
                 else
                     script(src=ES_MAIN_URL type="module" defer)

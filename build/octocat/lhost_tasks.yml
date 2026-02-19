@@ -21,7 +21,6 @@ tasks:
     vars:
       CONTENT_DATA:
         map:
-          MARKLOGO_URL: '{{.LHOST_URL}}{{.MARKLOGO_NAME}}'
           APPLE_TOUCH_ICON_URL: '{{.LHOST_URL}}{{.APPLE_TOUCH_ICON_NAME}}'
           FAVICON_32_URL: '{{.LHOST_URL}}{{.FAVICON_32_NAME}}'
           FAVICON_32_ALT_URL: '{{.LHOST_URL}}{{.FAVICON_32_ALT_NAME}}'
@@ -34,13 +33,14 @@ tasks:
           VENDOR_HTML2CANVAS_URL: '{{.LHOST_URL}}{{.VENDOR_HTML2CANVAS_NAME}}'
           CSS_MAIN_URL: '{{.LHOST_URL}}{{.CSS_MAIN_NAME}}'
           ES_MAIN_URL: '{{.LHOST_URL}}{{.ES_MAIN_NAME}}'
+          CARD_SOT_URL: '{{.LHOST_URL}}{{.CARD_SOT_NAME}}'
           BROWSERCONFIG_URL: '{{.LHOST_URL}}{{.BROWSERCONFIG_NAME}}'
           WEBMANIFEST_URL: '{{.LHOST_URL}}{{.WEBMANIFEST_NAME}}'
     cmds:
       - echo '{{.CONTENT_DATA | toJson}}' > {{.DEV_DIR}}/content_data_options.json
       - pnpm pug {{.CONTENT_DIR}}/index.page.pug -o {{.DEV_DIR}} -O {{.DEV_DIR}}/content_data_options.json
       - mv {{.DEV_DIR}}/index.page.html {{.DEV_DIR}}/index.html
-      - cp {{.CONTENT_DIR}}/graphic/icon/sqwiggle.svg {{.DEV_DIR}}/{{.MARKLOGO_NAME}}
+      - cp {{.CONTENT_DIR}}/graphic/misc/carddeck.svg {{.DEV_DIR}}/{{.CARD_SOT_NAME}}
 
   rear-behavior:
     desc: JS

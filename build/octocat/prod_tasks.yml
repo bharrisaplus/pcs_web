@@ -21,7 +21,6 @@ tasks:
     vars:
       CONTENT_DATA:
         map:
-          MARKLOGO_URL: '{{.OCTOCAT_URL}}{{.MARKLOGO_NAME}}'
           APPLE_TOUCH_ICON_URL: '{{.OCTOCAT_URL}}{{.APPLE_TOUCH_ICON_NAME}}'
           FAVICON_32_URL: '{{.OCTOCAT_URL}}{{.FAVICON_32_NAME}}'
           FAVICON_32_ALT_URL: '{{.OCTOCAT_URL}}{{.FAVICON_32_ALT_NAME}}'
@@ -34,12 +33,13 @@ tasks:
           VENDOR_HTML2CANVAS_URL: '{{.OCTOCAT_URL}}{{.VENDOR_HTML2CANVAS_NAME}}'
           CSS_MAIN_URL: '{{.OCTOCAT_URL}}{{.CSS_MAIN_NAME}}'
           ES_MAIN_URL: '{{.OCTOCAT_URL}}{{.ES_MAIN_NAME}}'
+          CARD_SOT_URL: '{{.OCTOCAT_URL}}{{.CARD_SOT_NAME}}'
           BROWSERCONFIG_URL: '{{.OCTOCAT_URL}}{{.BROWSERCONFIG_NAME}}'
           WEBMANIFEST_URL: '{{.OCTOCAT_URL}}{{.WEBMANIFEST_NAME}}'
     cmds:
       - pnpm pug {{.CONTENT_DIR}}/index.page.pug -o {{.OCTOCAT_HOST_DIR}} -O '{{.CONTENT_DATA | toJson}}'
       - mv {{.OCTOCAT_HOST_DIR}}/index.page.html {{.OCTOCAT_HOST_DIR}}/index.html
-      - cp {{.CONTENT_DIR}}/graphic/icon/sqwiggle.svg {{.OCTOCAT_HOST_DIR}}/{{.MARKLOGO_NAME}}
+      - cp {{.CONTENT_DIR}}/graphic/misc/carddeck.svg {{.OCTOCAT_HOST_DIR}}/{{.CARD_SOT_NAME}}
 
   rear-behavior:
     desc: JS
@@ -102,7 +102,7 @@ tasks:
     cmds:
       - rm -f {{.OCTOCAT_HOST_DIR}}/index.html
       - rm -f {{.OCTOCAT_HOST_DIR}}/content_data_options.json
-      - rm -f {{.OCTOCAT_HOST_DIR}}/markl.svg
+      - rm -f {{.DEV_DIR}}/{{.CARD_SOT_NAME}}
 
   sweep-presentation:
     desc: Clear out pages host directory

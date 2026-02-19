@@ -23,7 +23,6 @@ tasks:
     vars:
       CONTENT_DATA:
         map:
-          MARKLOGO_URL: '{{.FHOST_URL}}{{.MARKLOGO_NAME}}'
           APPLE_TOUCH_ICON_URL: '{{.FHOST_URL}}{{.APPLE_TOUCH_ICON_NAME}}'
           FAVICON_32_URL: '{{.FHOST_URL}}{{.FAVICON_32_NAME}}'
           FAVICON_32_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_32_ALT_NAME}}'
@@ -43,7 +42,6 @@ tasks:
       - echo '{{.CONTENT_DATA | toJson}}' > {{.DEV_DIR}}/content_data_options.json
       - pnpm pug {{.CONTENT_DIR}}/index.page.pug -o {{.DEV_DIR}} -O {{.DEV_DIR}}/content_data_options.json
       - mv {{.DEV_DIR}}/index.page.html {{.DEV_DIR}}/index.html
-      - cp {{.CONTENT_DIR}}/graphic/icon/sqwiggle.svg {{.DEV_DIR}}/{{.MARKLOGO_NAME}}
 
   rear-behavior:
     desc: JS
@@ -101,7 +99,7 @@ tasks:
     cmds:
       - rm -f {{.DEV_DIR}}/index.html
       - rm -f {{.DEV_DIR}}/content_data_options.json
-      - rm -f {{.DEV_DIR}}/markl.svg
+      - rm -f {{.DEV_DIR}}/{{.CARD_SOT_NAME}}
 
   sweep-presentation:
     desc: Remove generated files
