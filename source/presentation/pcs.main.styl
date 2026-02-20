@@ -17,6 +17,15 @@ main
     
     & .loading-indicator-container
         border-radius: inherit;
+        background-color: var(--loading-curtain)
+
+        & #pcs-card
+            background-color: var(--card-base)
+
+        & p
+            color: var(--card-base)
+            user-select: none
+            pointer-events: none
 
     & #tableau
         background-color: inherit;
@@ -28,19 +37,6 @@ main
 
             & playing-card
                 cursor: pointer
-
-
-.loading-indicator-container
-    background-color: var(--loading-curtain)
-
-    & #pcs-card
-        background-color: var(--card-base)
-
-    & p
-        height: 27px;
-        color: var(--card-base)
-        user-select: none
-        pointer-events: none
 
 
 /* setup transitions & animations */
