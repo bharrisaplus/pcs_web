@@ -1,44 +1,43 @@
-#tableau(style="display: none;").hide-before-load
-	ol
-		- var card_titles = ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seve', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']
-		for _itm, cardIdx in Array(52)
-			if ON_FILE_HOST
-				if cardIdx < 13
-					if cardIdx < 10
-						li(id=`card-s0${cardIdx}` aria-description=`${card_titles[cardIdx]} of Spade`).playing-card
-							svg: use(href=`#s0${cardIdx}`)
-					else
-						li(id=`card-s${cardIdx}` aria-description=`${card_titles[cardIdx]} of Spade`).playing-card
-							svg: use(href=`#s${cardIdx}`)
-				else if cardIdx < 26
-					li(id=`card-d${cardIdx}` aria-description=`${card_titles[cardIdx%13]} of Diamond`).playing-card
-						svg: use(href=`#d${cardIdx}`)
-				else if cardIdx < 39
-					li(id=`card-c${cardIdx}` aria-description=`${card_titles[cardIdx%13]} of Club`).playing-card
-						svg: use(href=`#c${cardIdx}`)
-				else if cardIdx < 52
-					li(id=`card-h${cardIdx}` aria-description=`${card_titles[cardIdx%13]} of Heart`).playing-card
-						svg: use(href=`#h${cardIdx}`)
-				else
-					li(id=`card-${cardIdx}` aria-description=`Joker`).playing-card
-						svg: use(href=`#pcs-card`)
-			else
-				if cardIdx < 13
-					if cardIdx < 10
-						li(id=`card-s0${cardIdx}` aria-description=`${card_titles[cardIdx]} of Spade`).playing-card
-							svg: use(href=`${CARD_SOT_URL}#s0${cardIdx}`)
-					else
-						li(id=`card-s${cardIdx}` aria-description=`${card_titles[cardIdx]} of Spade`).playing-card
-							svg: use(href=`${CARD_SOT_URL}#s${cardIdx}`)
-				else if cardIdx < 26
-					li(id=`card-d${cardIdx}` aria-description=`${card_titles[cardIdx%13]} of Diamond`).playing-card
-						svg: use(href=`${CARD_SOT_URL}#d${cardIdx}`)
-				else if cardIdx < 39
-					li(id=`card-c${cardIdx}` aria-description=`${card_titles[cardIdx%13]} of Club`).playing-card
-						svg: use(href=`${CARD_SOT_URL}#c${cardIdx}`)
-				else if cardIdx < 52
-					li(id=`card-h${cardIdx}` aria-description=`${card_titles[cardIdx%13]} of Heart`).playing-card
-						svg: use(href=`${CARD_SOT_URL}#h${cardIdx}`)
-				else
-					li(id=`card-${cardIdx}` aria-description=`Joker`).playing-card
-						svg: use(href=`${CARD_SOT_URL}#pcs-card`)
+ol#tableau(style="display: none;").hide-before-load
+    - var card_titles = ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seve', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']
+    for _itm, cardIdx in Array(52)
+        if ON_FILE_HOST
+            if cardIdx < 13
+                if cardIdx < 10
+                    li(id=`card-s0${cardIdx}` aria-description=`${card_titles[cardIdx]} of Spade`).playing-card
+                        svg: use(href=`#s0${cardIdx}`)
+                else
+                    li(id=`card-s${cardIdx}` aria-description=`${card_titles[cardIdx]} of Spade`).playing-card
+                        svg: use(href=`#s${cardIdx}`)
+            else if cardIdx < 26
+                li(id=`card-d${cardIdx}` aria-description=`${card_titles[cardIdx%13]} of Diamond`).playing-card
+                    svg: use(href=`#d${cardIdx}`)
+            else if cardIdx < 39
+                li(id=`card-c${cardIdx}` aria-description=`${card_titles[cardIdx%13]} of Club`).playing-card
+                    svg: use(href=`#c${cardIdx}`)
+            else if cardIdx < 52
+                li(id=`card-h${cardIdx}` aria-description=`${card_titles[cardIdx%13]} of Heart`).playing-card
+                    svg: use(href=`#h${cardIdx}`)
+            else
+                li(id=`card-${cardIdx}` aria-description=`Joker`).playing-card
+                    svg: use(href=`#pcs-card`)
+        else
+            if cardIdx < 13
+                if cardIdx < 10
+                    li(id=`card-s0${cardIdx}` aria-description=`${card_titles[cardIdx]} of Spade`).playing-card
+                        svg: use(href=`${CARD_SOT_URL}#s0${cardIdx}`)
+                else
+                    li(id=`card-s${cardIdx}` aria-description=`${card_titles[cardIdx]} of Spade`).playing-card
+                        svg: use(href=`${CARD_SOT_URL}#s${cardIdx}`)
+            else if cardIdx < 26
+                li(id=`card-d${cardIdx}` aria-description=`${card_titles[cardIdx%13]} of Diamond`).playing-card
+                    svg: use(href=`${CARD_SOT_URL}#d${cardIdx}`)
+            else if cardIdx < 39
+                li(id=`card-c${cardIdx}` aria-description=`${card_titles[cardIdx%13]} of Club`).playing-card
+                    svg: use(href=`${CARD_SOT_URL}#c${cardIdx}`)
+            else if cardIdx < 52
+                li(id=`card-h${cardIdx}` aria-description=`${card_titles[cardIdx%13]} of Heart`).playing-card
+                    svg: use(href=`${CARD_SOT_URL}#h${cardIdx}`)
+            else
+                li(id=`card-${cardIdx}` aria-description=`Joker`).playing-card
+                    svg: use(href=`${CARD_SOT_URL}#pcs-card`)

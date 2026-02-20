@@ -30,14 +30,11 @@ main
 #tableau
     background-color: inherit;
     border-radius: inherit;
+    list-style: none
 
-    & ol
-        background-color: inherit;
-        list-style: none
-
-        & .playing-card
-            cursor: pointer
-            rotate: 0deg
+    & .playing-card
+        cursor: pointer
+        rotate: 0deg
 
 
 /* setup transitions & animations */
@@ -76,7 +73,7 @@ main
 
 
 #tableau
-    & ol .playing-card
+    & .playing-card
         animation-name: card-drop
         animation-duration: 0.25s
         animation-timing-function: ease-out
@@ -99,11 +96,11 @@ main
         & p::before
             content: ""
 
-    #tableau ol .playing-card
+    #tableau .playing-card
         rotate: 0deg
         opacity: 0
 
 
 @media (hover: hover)
-    #tableau ol .playing-card:hover
+    #tableau .playing-card:hover
         rotate: -9deg
