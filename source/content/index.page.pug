@@ -29,6 +29,9 @@ block html_body
 
         block html_body_scripts
             footer
+                div.inline-svg-assets-here(style="display: none; visibility: hidden;")
+                    include graphic/misc/pcs-card.svg
+
                 if ON_FILE_HOST
                     script(src=ES_MAIN_URL defer)
                     include graphic/misc/carddeck.svg
