@@ -15,15 +15,19 @@ main
     background: var(--bg-emerald)
     border-radius: 18px
 
-    & .loading-indicator-container
-        border-radius: inherit
-        background-color: var(--loading-curtain)
+#pageload-curtain
+    border-radius: inherit
+    background-color: var(--loading-curtain)
+
+    & .loading-indicator
+        background-color: transparent
 
         & #pcs-card
             background-color: var(--card-base)
 
         & p
             color: var(--card-base)
+            background-color: inherit
             user-select: none
             pointer-events: none
 
@@ -39,13 +43,13 @@ main
 
 /* setup transitions & animations */
 
-.loading-indicator-container
+#pageload-curtain
     transition-property: opacity
     transition-delay: 0.1s
     transition-duration: 0.2s
     transition-behavior: allow-discrete
 
-    & #pcs-card
+    & .loading-indicator #pcs-card
         animation-name: yo-yo
         animation-delay: 0.4s
         animation-duration: 1.5s
@@ -54,7 +58,7 @@ main
         animation-direction: alternate
         rotate: 0deg
 
-    & p::before
+    & .loading-indicator p::before
         animation-name: dotdot-dot
         animation-delay: 0.4s
         animation-duration: 1.5s
@@ -68,7 +72,8 @@ main
         opacity: 0
         z-index: -1
 
-        & #pcs-card, & p::before /* Or just glob like '& > *' */
+        /* Or just glob like '& > *' */
+        & .loading-indicator #pcs-card, & .loading-indicator p::before
             animation-play-state: paused
 
 
@@ -85,15 +90,10 @@ main
 
 
 @starting-style
-    .loading-indicator-container
-        display: none
-        z-index: -1
-        opacity: 0
+    #pageload-curtain .loading-indicator #pcs-card
+        rotate: 0deg
 
-        & #pcs-card
-            rotate: 0deg
-
-        & p::before
+    .loading-indicator p::before
             content: ""
 
     #tableau .playing-card

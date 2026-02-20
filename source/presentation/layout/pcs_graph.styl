@@ -14,10 +14,33 @@ $card-wspace = $card-width * 0.25
         width: 24px
 
 
-main
-    & .loading-indicator-container
-        height: 100%
-        width: 100%
+#pageload-curtain
+    display: flex
+    position: relative
+    height: 100%
+    width: 100%
+    opacity: 1
+    z-index: 10
+    justify-content: center
+    align-items: center
+
+    & .loading-indicator
+        display: flex
+        flex-flow: column nowrap
+        justify-content: center
+        align-items: center
+
+        & #pcs-card
+            height: 54px
+            width: fit-content
+            aspect-ratio: 3/4
+            padding: 1.5px 2px
+            border-radius: 4.5%
+
+        & p
+            height: 24px
+            padding: 1.5px 4.5px
+
 
 #tableau
     display: flex
