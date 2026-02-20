@@ -13,7 +13,7 @@ tasks:
       BUILD_OBJECTIVE: '{{.DEV_VER}}'
       BUILD_AREA: prod
     cmds:
-      - pnpm stylus {{.PRESENTATION_DIR}}/pcs.main.styl -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
+      - pnpm stylus {{.PRESENTATION_DIR}}/index.main.styl -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
       - pnpm postcss {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}} --config {{.PROJECT_DIR}} -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
 
   rear-content:

@@ -15,8 +15,8 @@ tasks:
       BUILD_AREA: fhost
       FHOST_URL: '{{.FHOST_URL_ROOT}}/{{.DEV_VER}}/'
     cmds:
-      - pnpm stylus {{.PRESENTATION_REL}}/pcs.main.styl -m --sourcemap-base {{.DEV_REL}} -o {{.DEV_DIR}}
-      - pnpm postcss {{.DEV_DIR}}/pcs.main.css --config {{.PROJECT_DIR}} -o {{.DEV_DIR}}/{{.CSS_MAIN_NAME}}
+      - pnpm stylus {{.PRESENTATION_REL}}/index.main.styl -m --sourcemap-base {{.DEV_REL}} -o {{.DEV_DIR}}
+      - pnpm postcss {{.DEV_DIR}}/index.main.css --config {{.PROJECT_DIR}} -o {{.DEV_DIR}}/{{.CSS_MAIN_NAME}}
 
   rear-content:
     desc: Pug to HTML
@@ -56,12 +56,12 @@ tasks:
   nit-behavior:
     desc: Keeping js/mjs consistent
     cmds:
-      - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs {{.BEHAVIOR_DIR}}/pcs.main.mjs
+      - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs {{.BEHAVIOR_DIR}}/index.main.mjs
 
   nit-presentation:
     desc: Keeping stylus/css consistent
     cmds:
-      - pnpm stylelint -c {{.PROJECT_DIR}}/stylelint.config.mjs {{.PRESENTATION_DIR}}/pcs.main.styl
+      - pnpm stylelint -c {{.PROJECT_DIR}}/stylelint.config.mjs {{.PRESENTATION_DIR}}/index.main.styl
 
   # Moving things around
   put-vendor:
@@ -105,7 +105,7 @@ tasks:
     desc: Remove generated files
     cmds:
       - rm -f {{.DEV_DIR}}/main.{css,css.map}
-      - rm -f {{.DEV_DIR}}/pcs.main.{css,css.map}
+      - rm -f {{.DEV_DIR}}/index.main.{css,css.map}
 
   sweep-behavior:
     desc: Remove generated files
