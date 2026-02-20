@@ -28,7 +28,11 @@ block html_body
         main
             #pageload-curtain
                 include document/partials/loading-indicator.pug
+
             include document/partials/tableau.pug
+
+            .dust-cover(popover)
+                include document/partials/turntable.pug
 
         block html_body_scripts
             footer
