@@ -43,6 +43,58 @@ main
         rotate: 0deg
 
 
+#turntable
+    background-color: inherit
+    border-color: var(--turntable-dustcover-mix)
+
+    &::backdrop
+        background-color: var(--turntable-dustcover)
+        backdrop-filter: blur(3px)
+
+    & button
+        cursor: pointer
+
+    & .turntable-off
+        color: var(--card-base)
+        background-color: transparent
+        border-color: transparent
+
+    & .turntable-pickup
+        cursor: default
+        user-select: none
+
+    & .turntable-cue-lever
+        background-color: transparent
+
+        & button
+            background-color: var(--card-base)
+            border-color: var(--turntable-dustcover-mix)
+            border-radius: 18%
+            border-width: 2px
+
+        & .turntable-cue-lever-spacer
+            display: none
+            visibility: hidden
+            color: var(--card-base)
+
+        & .turntable-cue-lever-regression:disabled + .turntable-cue-lever-spacer:has(+ .turntable-cue-lever-progression:disabled)
+            display: inline-block
+            visibility: visible
+            margin: 0 4.5px
+
+            &::before
+                content: "\2234"
+
+            &::after
+                content: "\1F382"
+
+        & .turntable-cue-lever-regression:disabled:has(+ .turntable-cue-lever-spacer + .turntable-cue-lever-progression:disabled)
+            visibility: hidden
+
+        & .turntable-cue-lever-regression:disabled + .turntable-cue-lever-spacer + .turntable-cue-lever-progression:disabled
+            visibility: hidden
+
+
 /* setup transitions & animations */
 
 #pageload-curtain
