@@ -33,15 +33,18 @@ $card-wspace = $card-width * 0.25
 
     & .loading-indicator
         display: flex
+        width: $card-height // to keep spinny within while rotating
+        aspect-ratio: 1/1
         flex-flow: column nowrap
         justify-content: center
         align-items: center
+        row-gap: 4.5px
 
         & #pcs-card
             height: 54px
             width: fit-content
             aspect-ratio: 3/4
-            padding: 1.5px 2px
+            padding: 4.5px
             border-radius: 4.5%
 
         & .loading-indicator-dots
