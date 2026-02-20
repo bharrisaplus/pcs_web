@@ -4,6 +4,13 @@ $card-width = $card-height * $card-whratio
 $card-hspace = $card-height * (1/3)
 $card-wspace = $card-width * 0.25
 
+:root
+    --card-ratio: $card-whratio
+    --card-height: $card-height
+    --card-width: $card-width
+    --card-hspace: $card-hspace
+    --card-wspace: $card-wspace
+
 #title-marquee
     display: flex
     gap: 9px
@@ -53,11 +60,6 @@ $card-wspace = $card-width * 0.25
     overflow-y: scroll
     justify-content: center
     align-content: center
-    --card-ratio: $card-whratio
-    --card-height: $card-height
-    --card-width: $card-width
-    --card-hspace: $card-hspace
-    --card-wspace: $card-wspace
 
     & .playing-card
         height: var(--card-height)
