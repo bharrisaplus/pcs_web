@@ -19,34 +19,34 @@ main
         height: 100%
         width: 100%
 
-    & #tableau
+#tableau
+    display: flex
+    width: 100%
+    height: 100%
+    justify-content: center
+    overflow: hidden
+    --card-ratio: $card-whratio
+    --card-height: $card-height
+    --card-width: $card-width
+    --card-hspace: $card-hspace
+    --card-wspace: $card-wspace
+
+    & ol
         display: flex
-        width: 100%
-        height: 100%
+        width: calc(100% - var(--card-hspace))
+        height: calc(100% - var(--card-wspace))
+        column-gap: var(--card-hspace)
+        row-gap: var(--card-wspace)
+        flex-flow: row wrap;
+        padding: calc(var(--card-hspace) / 2) calc(var(--card-wspace) / 2)
+        overflow-y: scroll;
         justify-content: center
-        overflow: hidden
-        --card-ratio: $card-whratio
-        --card-height: $card-height
-        --card-width: $card-width
-        --card-hspace: $card-hspace
-        --card-wspace: $card-wspace
+        align-content: center
 
-        & ol
-            display: flex
-            width: calc(100% - var(--card-hspace))
-            height: calc(100% - var(--card-wspace))
-            column-gap: var(--card-hspace)
-            row-gap: var(--card-wspace)
-            flex-flow: row wrap;
-            padding: calc(var(--card-hspace) / 2) calc(var(--card-wspace) / 2)
-            overflow-y: scroll;
-            justify-content: center
-            align-content: center
-
-            & .playing-card
-                height: var(--card-height)
-                aspect-ratio: var(--card-ratio)
-            
-                & svg
-                    height: 100%
-                    width: 100%
+        & .playing-card
+            height: var(--card-height)
+            aspect-ratio: var(--card-ratio)
+        
+            & svg
+                height: 100%
+                width: 100%

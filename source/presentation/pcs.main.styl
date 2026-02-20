@@ -27,17 +27,17 @@ main
             user-select: none
             pointer-events: none
 
-    & #tableau
+#tableau
+    background-color: inherit;
+    border-radius: inherit;
+
+    & ol
         background-color: inherit;
-        border-radius: inherit;
+        list-style: none
 
-        & ol
-            background-color: inherit;
-            list-style: none
-
-            & playing-card
-                cursor: pointer
-                rotate: 0deg
+        & playing-card
+            cursor: pointer
+            rotate: 0deg
 
 
 /* setup transitions & animations */
