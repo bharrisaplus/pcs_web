@@ -20,7 +20,10 @@ block html_body
         header
             #title-marquee
                 h2 (P)seudo (C)ard (S)huffler
-                include graphic/misc/pcs-logo.svg
+                svg.markl(role="img" aria-labelledby="pcs-logo-title pcs-logo-description")
+                    title(id="pcs-logo-title") pcs logo
+                    desc(id="pcs-logo-description") A scribbly sqwiggle
+                    use(href="#pcs-logo")
 
         main
             #pageload-curtain
@@ -30,6 +33,7 @@ block html_body
         block html_body_scripts
             footer
                 div.inline-svg-assets-here(style="display: none; visibility: hidden;")
+                    include graphic/misc/pcs-logo.svg
                     include graphic/misc/pcs-card.svg
 
                 if ON_FILE_HOST
