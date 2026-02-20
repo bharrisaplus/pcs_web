@@ -24,12 +24,14 @@ main
 
         & #pcs-card
             background-color: var(--card-base)
+            rotate: 0deg
 
-        & p
+        & .loading-indicator-dots
             color: var(--card-base)
             background-color: inherit
             user-select: none
             pointer-events: none
+
 
 #tableau
     background-color: inherit
@@ -56,17 +58,21 @@ main
         animation-iteration-count: 36
         animation-timing-function: ease-in-out
         animation-direction: alternate
-        rotate: 0deg
 
-    & .loading-indicator p::before
-        animation-name: dotdot-dot
+    & .loading-indicator .loading-indicator-dots span
         animation-delay: 0.4s
         animation-duration: 1.5s
         animation-iteration-count: 36
         animation-timing-function: ease-out
         animation-direction: alternate
         color: var(--card-base)
-        content: ""
+
+        &:nth-child(1)
+            animation-name: dotdot-dot
+        &:nth-child(2)
+            animation-name: dotdot-dotdot
+        &:nth-child(3)
+            animation-name: dotdot-dotdotdot
 
     &.loading-done
         visibility: hidden
@@ -74,7 +80,7 @@ main
         z-index: -1
 
         /* Or just glob like '& > *' */
-        & .loading-indicator #pcs-card, & .loading-indicator p::before
+        & .loading-indicator #pcs-card, & .loading-indicator .loading-indicator-dots span
             animation-play-state: paused
 
 
@@ -94,12 +100,12 @@ main
     #pageload-curtain .loading-indicator #pcs-card
         rotate: 0deg
 
-    .loading-indicator p::before
-            content: ""
+    .loading-indicator .loading-indicator-dots span
+        opacity: 0
 
     #tableau .playing-card
         rotate: 0deg
-        opacity: 0
+        opacity: 1
 
 
 @media (hover: hover)

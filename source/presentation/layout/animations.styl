@@ -12,13 +12,21 @@
 
 @keyframes dotdot-dot
     0%
-        content: ""
-    25%
-        content: "."
-    50%
-        content: ".."
+        opacity: 0
+    25%, 50%, 100%
+        opacity: 1
+
+@keyframes dotdot-dotdot
+    0%, 25%
+        opacity: 0
+    50%, 100%
+        opacity: 1
+
+@keyframes dotdot-dotdotdot
+    0%, 25%, 50%
+        opacity: 0
     100%
-        content: "..."
+        opacity: 1
 
 @keyframes card-drop
     0%
