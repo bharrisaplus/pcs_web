@@ -20,10 +20,12 @@ const MiscHands = () => {
 			const $indicator = document.querySelector(indicatorSelector);
 
 			// Once loading is done, disconnect loading indicator from DOM
-			$indicator.addEventListener('transitionend', () => {
-				console.log("Loaded, removing indicator");
-				$indicator.remove();
-				window.dispatchEvent(new CustomEvent(startEvtName));
+			$indicator.addEventListener('transitionend', (transEvt) => {
+        if (transEvt.propertyName == 'opacity') {
+          console.log("Loaded, removing indicator");
+          $indicator.remove();
+          window.dispatchEvent(new CustomEvent(startEvtName));
+        }
 			}, { once: true });
 
 			// Let the loading animation show off a bit before starting
@@ -31,7 +33,7 @@ const MiscHands = () => {
 			    cycleCount++;
 
 			    if (cycleCount >= 3) {
-			        $indicator.classList.add('loading-done');
+			      $indicator.classList.add('loading-done');
 			    }
 			}, { passive: true });
 		};
