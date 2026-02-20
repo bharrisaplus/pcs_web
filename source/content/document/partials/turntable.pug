@@ -1,7 +1,9 @@
-#turntable
+#turntable(popover)
     button.turntable-off
         | ✘
-    svg.turntable-pickup
+    svg.turntable-pickup(role="img" aria-labelledby="turntable-pickup-title turntable-pickup-description")
+        title(id="turntable-pickup-title") magnified view of card
+        desc(id="turntable-pickup-description") A single card up close and personal
         use(href="#pcs-card")
     div.turntable-cue-lever
         button.turntable-cue-lever-regression
