@@ -7,7 +7,7 @@ import { default as RollupTerser } from '@rollup/plugin-terser';
 import { default as buildShared } from '../manifest.mjs';
 
 
-const inputFilePath = NodePath.resolve(buildShared.behavior_path, 'pcs.main.mjs')
+const inputFilePath = NodePath.resolve(buildShared.behavior_path, 'index.main.mjs')
 
 let config;
 
