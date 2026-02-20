@@ -23,7 +23,8 @@ block html_body
                 include graphic/misc/pcs-logo.svg
 
         main
-            include document/partials/loading-indicator.pug
+            #pageload-curtain
+                include document/partials/loading-indicator.pug
             include document/partials/tableau.pug
 
         block html_body_scripts
