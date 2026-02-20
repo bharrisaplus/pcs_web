@@ -14,7 +14,7 @@
 main
     background: var(--bg-emerald)
     border-radius: 18px
-    
+
     & .loading-indicator-container
         border-radius: inherit;
         background-color: var(--loading-curtain)
@@ -81,9 +81,9 @@ main
         animation-timing-function: ease-out
         animation-fill-mode: backwards
 
-    & .hide-before-load
+    &.hide-before-load
         display: none
-    
+
 
 @starting-style
     .loading-indicator-container
@@ -96,6 +96,6 @@ main
 
         & p::before
             content: ""
-    
+
     #tableau .playing-card
         opacity: 0
