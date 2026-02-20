@@ -2,8 +2,8 @@ import miscHands from './hands/misc.hand.mjs';
 
 
 const
-	loadingContainerSelector = '#pageload-curtain',
-	loadingSpinnySelector = '#pcs-card',
+	startOverlay = '#pageload-curtain',
+	startOverlayImage = '.loading-spinny',
 	tableauSelector = '#tableau',
 	startEventName = 'pcsStart';
 
@@ -17,5 +17,5 @@ document.addEventListener('DOMContentLoaded', () => {
 		console.log("pcs started");
 	});
 
-	miscHands.startAfter(loadingContainerSelector, loadingSpinnySelector, startEventName);
+	miscHands.startAfter(startOverlay, startOverlayImage, startEventName);
 });
