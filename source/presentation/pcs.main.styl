@@ -37,6 +37,7 @@ main
 
             & playing-card
                 cursor: pointer
+                rotate: 0deg
 
 
 /* setup transitions & animations */
@@ -80,6 +81,7 @@ main
         animation-duration: 0.5s
         animation-timing-function: ease-out
         animation-fill-mode: backwards
+        transition: rotate 0.2s
 
     &.hide-before-load
         display: none
@@ -98,4 +100,10 @@ main
             content: ""
 
     #tableau .playing-card
+        rotate: 0deg
         opacity: 0
+
+
+@media (hover: hover)
+    .playing-card:hover
+        rotate: -9deg
