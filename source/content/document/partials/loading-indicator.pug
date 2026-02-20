@@ -1,6 +1,10 @@
 figure.loading-indicator(role="status" aria-live="polite")
-    include ../../graphic/misc/pcs-card.svg
-    figcaption.loading-indicator-dots
+    svg(role="img" aria-labelledby="pcs-card-title pcs-card-description").loading-spinny
+        title(id="pcs-card-title") pcs card
+        desc(id="pcs-card-description") A card with a scribbly sqwiggle
+        use(href="#pcs-card")
+
+    figcaption.loading-dots
         span="."
         span="."
         span="."

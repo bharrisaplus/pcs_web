@@ -22,11 +22,11 @@ main
     & .loading-indicator
         background-color: transparent
 
-        & #pcs-card
+        & .loading-spinny
             background-color: var(--card-base)
             rotate: 0deg
 
-        & .loading-indicator-dots
+        & .loading-dots
             color: var(--card-base)
             background-color: inherit
             user-select: none
@@ -51,7 +51,7 @@ main
     transition-duration: 0.2s
     transition-behavior: allow-discrete
 
-    & .loading-indicator #pcs-card
+    & .loading-indicator .loading-spinny
         animation-name: yo-yo
         animation-delay: 0.4s
         animation-duration: 1.5s
@@ -59,7 +59,7 @@ main
         animation-timing-function: ease-in-out
         animation-direction: alternate
 
-    & .loading-indicator .loading-indicator-dots span
+    & .loading-indicator .loading-dots span
         animation-delay: 0.4s
         animation-duration: 1.5s
         animation-iteration-count: 36
@@ -80,7 +80,8 @@ main
         z-index: -1
 
         /* Or just glob like '& > *' */
-        & .loading-indicator #pcs-card, & .loading-indicator .loading-indicator-dots span
+        & .loading-indicator .loading-spinny,
+        & .loading-indicator .loading-dots span
             animation-play-state: paused
 
 
@@ -97,10 +98,10 @@ main
 
 
 @starting-style
-    #pageload-curtain .loading-indicator #pcs-card
+    #pageload-curtain .loading-indicator .loading-spinny
         rotate: 0deg
 
-    .loading-indicator .loading-indicator-dots span
+    .loading-indicator .loading-dots span
         opacity: 0
 
     #tableau .playing-card
