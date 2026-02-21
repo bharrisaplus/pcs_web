@@ -74,3 +74,4 @@ const makeMiscHand = () => {
 const singleMiscHand = makeMiscHand();
 
 export default singleMiscHand;
+export const debugName = "pcs:hand:mischand";
