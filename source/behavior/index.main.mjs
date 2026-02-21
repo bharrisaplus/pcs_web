@@ -1,4 +1,4 @@
-import miscHands from './hands/misc.hand.mjs';
+import appCustodian from './hands/misc.hand.mjs';
 
 
 const
@@ -8,6 +8,6 @@ const
 	kickOffEventName = 'pcsStart';
 
 document.addEventListener('DOMContentLoaded', () => {
-	miscHands.afterStart(centerPiece, kickOffEventName)
-	miscHands.startAfter(bootOverlay, bootOverlaySpinner, kickOffEventName);
+	appCustodian.afterStart(centerPiece, kickOffEventName)
+	appCustodian.startAfter(bootOverlay, bootOverlaySpinner, kickOffEventName);
 });
