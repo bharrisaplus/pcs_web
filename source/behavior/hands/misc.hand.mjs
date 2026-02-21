@@ -22,10 +22,10 @@ const makeMiscHand = () => {
    * 		<indicator> <- this will transition out of view
    * 			<tick/> <- this is animating and we'll let it run a bit
    * 	  </indicator>
-   * 
-   * @param  {string} finishSelector For container element of tick
-   * @param  {string} finishInnerSelector The animating element relative to the container
-   * @param  {string} finishEventName      The event to fire
+   *
+   * @param  {string} finishSelector For container element of tick - {@link CSSStyleRule.selectorText}
+   * @param  {string} finishInnerSelector The animating element relative to the container - {@link CSSStyleRule.selectorText}
+   * @param  {string} finishEventName The event to fire - {@link CustomEvent.type}
    */
 	const finish_loading_then = (finishSelector, finishInnerSelector, finishEventName) => {
     const $finish = document.querySelector(finishSelector);
@@ -51,8 +51,8 @@ const makeMiscHand = () => {
 
   /**
    * Putting things in place for the app to begin
-   * @param  {string} startSelector  Element to reveal
-   * @param  {string} startEventName Event to wait for
+   * @param  {string} startSelector  Element to reveal - {@link CSSStyleRule.selectorText}
+   * @param  {string} startEventName Event to wait for - {@link CustomEvent.type}
    */
 	const start_setup = (startSelector, startEventName) => {
     window.addEventListener(startEventName, () => {
