@@ -38,6 +38,10 @@ main
     border-radius: inherit
     list-style: none
 
+    &:has(+ :popover-open) .playing-card
+        cursor: default
+        pointer-events: none
+
     & .playing-card
         cursor: pointer
         rotate: 0deg
@@ -46,10 +50,19 @@ main
 #turntable
     background-color: inherit
     border-color: var(--turntable-dustcover-mix)
+    border-radius: inherit
+    opacity: 0
 
     &::backdrop
-        background-color: var(--turntable-dustcover)
-        backdrop-filter: blur(3px)
+        background-color: transparent
+        backdrop-filter: none
+
+    &:popover-open
+        opacity: 1
+
+        &::backdrop
+            background-color: var(--turntable-dustcover)
+            backdrop-filter: blur(3px)
 
     & button
         cursor: pointer
@@ -72,27 +85,27 @@ main
             border-radius: 18%
             border-width: 2px
 
-        & .turntable-cue-lever-spacer
-            display: none
-            visibility: hidden
-            color: var(--card-base)
+    & .turntable-cue-lever-spacer
+        display: none
+        visibility: hidden
+        color: var(--card-base)
 
-        & .turntable-cue-lever-regression:disabled + .turntable-cue-lever-spacer:has(+ .turntable-cue-lever-progression:disabled)
-            display: inline-block
-            visibility: visible
-            margin: 0 4.5px
+    & .turntable-cue-lever-regression:disabled + .turntable-cue-lever-spacer:has(+ .turntable-cue-lever-progression:disabled)
+        display: inline-block
+        visibility: visible
+        margin: 0 4.5px
 
-            &::before
-                content: "\2234"
+        &::before
+            content: "\2234"
 
-            &::after
-                content: "\1F382"
+        &::after
+            content: "\1F382"
 
-        & .turntable-cue-lever-regression:disabled:has(+ .turntable-cue-lever-spacer + .turntable-cue-lever-progression:disabled)
-            visibility: hidden
+    & .turntable-cue-lever-regression:disabled:has(+ .turntable-cue-lever-spacer + .turntable-cue-lever-progression:disabled)
+        visibility: hidden
 
-        & .turntable-cue-lever-regression:disabled + .turntable-cue-lever-spacer + .turntable-cue-lever-progression:disabled
-            visibility: hidden
+    & .turntable-cue-lever-regression:disabled + .turntable-cue-lever-spacer + .turntable-cue-lever-progression:disabled
+        visibility: hidden
 
 
 /* setup transitions & animations */
@@ -148,6 +161,11 @@ main
     &.hide-before-load
         display: none
 
+#turntable
+    transition: all 0.7s ease-in-out allow-discrete
+
+    &::backdrop
+        transition: all 0.7s ease-in-out allow-discrete
 
 @starting-style
     #pageload-curtain .loading-indicator .loading-spinny
@@ -159,6 +177,13 @@ main
     #tableau .playing-card
         rotate: 0deg
         opacity: 1
+
+    #turntable:popover-open
+        opacity: 0
+
+        &::backdrop
+            background-color: transparent
+            backdrop-filter: none
 
 
 @media (hover: hover)
