@@ -108,7 +108,9 @@ main
         visibility: hidden
 
 
-/* setup transitions & animations */
+/*
+    setup transitions & animations
+ */
 
 #pageload-curtain
     transition-property: opacity
@@ -144,7 +146,6 @@ main
         opacity: 0
         z-index: -1
 
-        /* Or just glob like '& > *' */
         & .loading-indicator .loading-spinny,
         & .loading-indicator .loading-dots span
             animation-play-state: paused

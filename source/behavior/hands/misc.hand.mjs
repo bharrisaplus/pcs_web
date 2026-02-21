@@ -10,36 +10,53 @@ const MiscHands = () => {
 		 *
 		 * 		<indicator> <- this will transition out of view
 		 * 			<tick/> <- this is animating and we'll let it run a bit
-		 * 	  	</indicator>
+		 * 	  </indicator>
 		 * 
-		 * @param  {string} indicatorSelector For container element of tick
-		 * @param  {string} tickSelector      Thr animating element relative to the container
-		 * @param  {string} startEvtName      The event to fire
+		 * @param  {string} finishSelector For container element of tick
+		 * @param  {string} finishInnerSelector The animating element relative to the container
+		 * @param  {string} finishEventName      The event to fire
 		 */
-		finish_loading_then_start = (indicatorSelector, tickSelector, startEvtName) => {
-			const $indicator = document.querySelector(indicatorSelector);
+		finish_loading_then = (finishSelector, finishInnerSelector, finishEventName) => {
+			const $finish = document.querySelector(finishSelector);
 
 			// Once loading is done, disconnect loading indicator from DOM
-			$indicator.addEventListener('transitionend', (transEvt) => {
+			$finish.addEventListener('transitionend', (transEvt) => {
         if (transEvt.propertyName == 'opacity') {
           console.log("Loaded, removing indicator");
-          $indicator.remove();
-          window.dispatchEvent(new CustomEvent(startEvtName));
+          $finish.remove();
+          window.dispatchEvent(new CustomEvent(finishEventName));
         }
 			}, { once: true });
 
 			// Let the loading animation show off a bit before starting
-			$indicator.querySelector(tickSelector).addEventListener('animationiteration', () => {
+			$finish.querySelector(finishInnerSelector).addEventListener('animationiteration', () => {
 			    cycleCount++;
 
 			    if (cycleCount >= 3) {
-			      $indicator.classList.add('loading-done');
+			      $finish.classList.add('loading-done');
 			    }
 			}, { passive: true });
+		},
+
+		/**
+		 * Putting things in place for the app to begin
+		 * @param  {string} startSelector  Element to reveal
+		 * @param  {string} startEventName Event to wait for
+		 */
+		start_setup = (startSelector, startEventName) => {
+			window.addEventListener(startEventName, () => {
+				const $start = document.querySelector(startSelector);
+
+				$start.setAttribute('style', '');
+				$start.classList.remove('hide-before-load');
+
+				console.log("pcs started");
+			});
 		};
 
 	return Object.freeze({
-		startAfter: finish_loading_then_start
+		startAfter: finish_loading_then,
+		afterStart: start_setup
 	});
 };
 
