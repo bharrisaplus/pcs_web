@@ -6,7 +6,12 @@ const
 	bootOverlaySpinner = '.loading-spinny',
 	cardView = '#tableau',
 	cardOverlay = '#turntable',
-	kickOffEventName = 'pcsStart';
+	kickOffEventName = 'pcsStart',
+  /** @type Map.<string, string> */
+  preloadThings = new Map([
+    ["dump", ".inline-svg-assets-here"],
+    ["#card-sot", "#card-sheet"]
+  ]);
 
 document.addEventListener('DOMContentLoaded', () => {
 	const appScreen = buildAppScreen(cardOverlay);
@@ -17,5 +22,5 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	appCustodian.afterStart(cardView, kickOffEventName);
-	appCustodian.startAfter(bootOverlay, bootOverlaySpinner, kickOffEventName);
+	appCustodian.startAfter(preloadThings, bootOverlay, bootOverlaySpinner, kickOffEventName);
 });
