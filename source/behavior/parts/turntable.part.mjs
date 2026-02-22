@@ -1,22 +1,8 @@
 
 /**
- * Component for card turntable/lazy-suzan/carousel
- *
- *    <turntable>
- *      <off /> <- close btn
- *      <pickup /> <- main view
- *      <cueLever> <- controls
- *        <cuePrevious /> <- back one
- *        <cueNext /> <- forward one
- *      </cueLever>
- *    </turntable>
- *
- * @typedef {Object} Turntable
- * @property {boolean} isOpen
- * @property {function(ToggleEvent)} _tidy
- * @property {function(PointerEvent)} loadTurntable
- * @property {function(PointerEvent)} spinTurntable
+ * @import {Turntable} from "../_meta/_typedefs.mjs"
  */
+
 
 /**
  * @param  {string} containerID - {@link CSSStyleRule.selectorText}
@@ -24,9 +10,7 @@
  * @return {Turntable}
  */
 const makeTurntable = (containerID) => {
-	let
-    isOpen = false,
-    _tccount = 0;
+	let _tccount = 0;
 
   const containerName = containerID.split('#').join('');
 
@@ -114,13 +98,13 @@ let singleTurntable = null;
 
 /**
  * Ensure single turntable per page
- * @param {string} turntableSelector - {@link CSSStyleRule.selectorText}
+ * @param {string} getTurntableContainerID - {@link CSSStyleRule.selectorText}
  *
  * @returns {Turntable}
  */
-const getTurntable = (turntableSelector) => {
+const getTurntable = (getTurntableContainerID) => {
 	if (!singleTurntable) {
-		singleTurntable = makeTurntable(turntableSelector);
+		singleTurntable = makeTurntable(getTurntableContainerID);
 	}
 
 	return singleTurntable;

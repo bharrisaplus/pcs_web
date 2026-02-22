@@ -1,11 +1,6 @@
 
 /**
- * Handles various tasks
- *
- * @typedef {Object} MiscHand
- * @property {function(string, string, string)} startAfter
- * @property {function(string, string)} afterStart
- * @property {boolean} yapFriendly
+ * @import {MiscHand} from "../_meta/_typedefs.mjs"
  */
 
 /**
@@ -27,7 +22,7 @@ const makeMiscHand = () => {
    *
    * @param  {string} finishSelector For container element of tick - {@link CSSStyleRule.selectorText}
    * @param  {string} finishInnerSelector The animating element relative to the container - {@link CSSStyleRule.selectorText}
-   * @param  {string} finishEventName The event to fire - {@link CustomEvent.type}
+   * @param  {string} finishEventName The event to fire when done - {@link CustomEvent.type}
    */
 	const finish_loading_then = (finishSelector, finishInnerSelector, finishEventName) => {
     const $finish = document.querySelector(finishSelector);

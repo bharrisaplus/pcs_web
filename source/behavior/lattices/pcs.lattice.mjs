@@ -1,29 +1,16 @@
 import getTurntable from '../parts/turntable.part.mjs';
 
 /**
- * @import {Turntable} from "../parts/turntable.part.mjs"
+ * @import {PCSLattice} from "../_meta/_typedefs.mjs"
  */
 
 /**
- * Layout for app
- *
- *    <lattice>
- *    	<panel /> <- controls
- *      <content /> <- view
- *      <hud /> <- popover
- *    </lattice>
- *
- * @typedef {Object} PCSLattice
- * @property {Turntable} pcsHUD
- */
-
-/**
- * @param  {string} hudID - {@link CSSStyleRule.selectorText}
+ * @param  {string} turntableID The popover element - {@link CSSStyleRule.selectorText}
  *
  * @return {PCSLattice}
  */
-const makePCSLattice = (hudID) => {
-	const $hud = getTurntable(hudID);
+const makePCSLattice = (turntableID) => {
+	const $hud = getTurntable(turntableID);
 
 	return Object.freeze({
 		pcsHUD: $hud
