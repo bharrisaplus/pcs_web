@@ -10,11 +10,11 @@ import getTurntable from '../parts/turntable.part.mjs';
  * @return {PCSLattice}
  */
 const makePCSLattice = (turntableID) => {
-	const $hud = getTurntable(turntableID);
+  const $hud = getTurntable(turntableID);
 
-	return Object.freeze({
-		pcsHUD: $hud
-	});
+  return Object.freeze({
+    pcsHUD: $hud
+  });
 };
 
 

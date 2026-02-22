@@ -10,16 +10,16 @@
  * @return {Turntable}
  */
 const makeTurntable = (containerID) => {
-	let _tccount = 0;
+  let _tccount = 0;
 
   const containerName = containerID.split('#').join('');
 
-	const
-		$container = document.querySelector(containerID),
-		$pickup = $container.querySelector(`.${containerName}-pickup`),
-		$turnOff = $container.querySelector(`.${containerName}-off`),
-		$cuePrevious = $container.querySelector(`.${containerName}-cue-lever-regression`),
-		$cueNext = $container.querySelector(`.${containerName}-cue-lever-progression`);
+  const
+    $container = document.querySelector(containerID),
+    $pickup = $container.querySelector(`.${containerName}-pickup`),
+    $turnOff = $container.querySelector(`.${containerName}-off`),
+    $cuePrevious = $container.querySelector(`.${containerName}-cue-lever-regression`),
+    $cueNext = $container.querySelector(`.${containerName}-cue-lever-progression`);
 
   /**
    * Clean up between state changes
@@ -81,13 +81,13 @@ const makeTurntable = (containerID) => {
   });
 
 
-	return Object.freeze({
-		loadTurntable: set_pickup,
-		// Computed-s
-		get isOpen() {
-			return $container.matches(':popover-open');
-		}
-	});
+  return Object.freeze({
+    loadTurntable: set_pickup,
+    // Computed-s
+    get isOpen() {
+      return $container.matches(':popover-open');
+    }
+  });
 };
 
 /**
@@ -103,11 +103,11 @@ let singleTurntable = null;
  * @returns {Turntable}
  */
 const getTurntable = (getTurntableContainerID) => {
-	if (!singleTurntable) {
-		singleTurntable = makeTurntable(getTurntableContainerID);
-	}
+  if (!singleTurntable) {
+    singleTurntable = makeTurntable(getTurntableContainerID);
+  }
 
-	return singleTurntable;
+  return singleTurntable;
 };
 
 export default getTurntable;
