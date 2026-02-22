@@ -27,10 +27,11 @@
  * @typedef {Object} MiscHand
  *
  * Handles various tasks
- *
- * @property {function(string, string, string)} startAfter
- * @property {function(string, string)} afterStart
  * @property {boolean} yapFriendly
+ * @property {function (string, string) :void} afterStart
+ * @property {function (string, string, string) :void} startAfter
+ * @property {function (Map.<string, string>, string) :void} warmUp
+ * @property {function (Map.<string, string>, string, string, string, string, string) :void} startRoutine
  */
 
 /**
@@ -87,7 +88,7 @@
  * Layout for main screen
  *
  *    <lattice>
- *    	<panel /> <- controls
+ *      <panel /> <- controls
  *      <content /> <- view
  *      <hud /> <- popover
  *    </lattice>

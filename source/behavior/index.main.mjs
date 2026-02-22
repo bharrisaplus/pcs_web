@@ -18,7 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
     console.debug(appScreen);
   }
 
-  appCustodian.warmUp(preloadThings, preloadDest);
-  appCustodian.afterStart(cardView, kickOffEventName);
-  appCustodian.startAfter(bootOverlay, bootOverlaySpinner, kickOffEventName);
+  appCustodian.startRoutine(
+    preloadThings, preloadDest
+    cardView, kickOffEventName,
+    bootOverlay, bootOverlaySpinner
+  );
 });

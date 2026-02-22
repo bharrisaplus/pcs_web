@@ -17,6 +17,7 @@ const makeMiscHand = () => {
 
   /**
    * Grab svg assets and inline them.
+   *
    *   <html>
    *     <head>
    *       <prefetchLink /> <- element with an id that has an href to fetch
@@ -30,7 +31,6 @@ const makeMiscHand = () => {
    *     </body>
    *   </html>
    *
-   * 
    * @param  {Map.<string, string>} assetMap The ids for elements to fetch and check for - {@link CSSStyleRule.selectorText}
    * @param  {string} assetDump - {@link CSSStyleRule.selectorText}
    */
@@ -68,7 +68,6 @@ const makeMiscHand = () => {
   /**
    * Looking at some container with animated child for a cue. Once the child is done with
    *  it's animation the container will be removed from view then the event will trigger.
-   *  Intended as a oneoff at pageload so the indicator will be removed from the DOM as well.
    *
    *    <indicator> <- this will transition out of view
    *      <tick/> <- this is animating and we'll let it run a bit
@@ -127,7 +126,13 @@ const makeMiscHand = () => {
     warmUp: load_assets,
     startAfter: watch_for_indicator_tick,
     afterStart: setup_reveal,
-    yapFriendly: console_free
+    yapFriendly: console_free,
+    // Convenience shortcut
+    startRoutine: (a,b,c,d,e,f) => {
+      load_assets(a, b);
+      setup_reveal(c, d);
+      startAfter(e, f, d);
+    }
   });
 };
 
