@@ -17,6 +17,8 @@
  *
  * State of the cards
  *
+ * @property {Uint8Array} ndoUcards
+ * @property {number[]} ndoCards
  * @property {Uint8Array} ucards
  * @property {number[]} cards
  * @property {function(Uint8Array | number[]): void} updateCards
@@ -32,6 +34,14 @@
  * @property {function (string, string, string) :void} startAfter
  * @property {function (Map.<string, string>, string) :void} warmUp
  * @property {function (Map.<string, string>, string, string, string, string, string) :void} startRoutine
+ */
+
+/**
+ * @typedef {Object} DealerHand
+ *
+ * Handles cards
+ *
+ * @property {function(number, DeckBank) :Map.<string, string>} posRelLabels
  */
 
 /**

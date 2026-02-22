@@ -3,8 +3,8 @@
  * @import {DeckBank} from "../_meta/_typedefs.mjs"
  */
 
-
 import _globals from '../_meta/_glods.mjs';
+
 
 /**
  *  @type {Uint8Array}
@@ -16,9 +16,11 @@ let card_id_order = null;
  *
  * @returns {DeckBank}
  */
-export const getDeckBank = () => {
+const getDeckBank = () => {
+  const default_order = Uint8Array.from({length: _globals.cardMax}, (_, card_idx) => card_idx);
+
   const new_deck_order = () => {
-    card_id_order = Uint8Array.from({ length: _globals.cardMax }, (_, card_idx) => { return card_idx });
+    card_id_order = Uint8Array.from(default_order);
   }
 
 
@@ -43,9 +45,20 @@ export const getDeckBank = () => {
 
     get ucards () {
       return card_id_order.slice(0);
+    },
+
+    get ndoCards () {
+      return [...default_order];
+    },
+
+    get ndoUCards () {
+      return default_order.slice(0);
     }
   });
 };
 
 
-export const debugName = "pcs:part:turntable";
+const singleDeckBank = getDeckBank();
+
+export default singleDeckBank;
+export const debugName = "pcs:bank:deck";

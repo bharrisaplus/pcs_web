@@ -1,5 +1,7 @@
 import appCustodian from './hands/misc.hand.mjs';
 import buildAppScreen from './lattices/pcs.lattice.mjs';
+import cardManager from './banks/deck.bank.mjs';
+
 
 const
   bootOverlay = '#pageload-curtain',
@@ -11,7 +13,7 @@ const
   preloadThings = new Map([["#card-sot", "#card-sheet"]]);
 
 document.addEventListener('DOMContentLoaded', () => {
-  const appScreen = buildAppScreen(cardOverlay);
+  const appScreen = buildAppScreen(cardView, cardOverlay, cardManager);
 
   if (appCustodian.yapFriendly) {
     console.debug('console friendly environment');
@@ -19,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   appCustodian.startRoutine(
-    preloadThings, preloadDest
+    preloadThings, preloadDest,
     cardView, kickOffEventName,
     bootOverlay, bootOverlaySpinner
   );

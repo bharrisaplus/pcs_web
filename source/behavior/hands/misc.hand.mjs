@@ -131,7 +131,7 @@ const makeMiscHand = () => {
     startRoutine: (a,b,c,d,e,f) => {
       load_assets(a, b);
       setup_reveal(c, d);
-      startAfter(e, f, d);
+      watch_for_indicator_tick(e, f, d);
     }
   });
 };
