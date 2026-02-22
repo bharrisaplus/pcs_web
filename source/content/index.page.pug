@@ -6,7 +6,7 @@ block html_head_title
 block html_head
     include document/partials/_base/_head.pug
     if !ON_FILE_HOST
-        link(rel="prefetch" href=CARD_SOT_URL)
+        link(id="card-sot" rel="prefetch" href=CARD_SOT_URL)
 
 block html_head_styles
     link(rel="stylesheet" href=VENDOR_CSS_RESET_URL)
