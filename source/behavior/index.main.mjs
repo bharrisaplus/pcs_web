@@ -11,10 +11,11 @@ const
 document.addEventListener('DOMContentLoaded', () => {
 	const appScreen = buildAppScreen(cardOverlay);
 
-	if (appScreen.pcsHUD.isOpen) {
-		console.log("Turntable open early?");
+	if (appCustodian.yapFriendly) {
+		console.log('Dev-ish environment');
+		console.debug(appScreen);
 	}
 
-	appCustodian.afterStart(cardView, kickOffEventName)
+	appCustodian.afterStart(cardView, kickOffEventName);
 	appCustodian.startAfter(bootOverlay, bootOverlaySpinner, kickOffEventName);
 });

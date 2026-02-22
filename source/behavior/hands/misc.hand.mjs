@@ -5,6 +5,7 @@
  * @typedef {Object} MiscHand
  * @property {function(string, string, string)} startAfter
  * @property {function(string, string)} afterStart
+ * @property {boolean} yapFriendly
  */
 
 /**
@@ -12,6 +13,7 @@
  */
 const makeMiscHand = () => {
 	let cycleCount = 0;
+  const currentLoc = window.location.href;
 
 
   /**
@@ -49,6 +51,7 @@ const makeMiscHand = () => {
     }, { passive: true });
   };
 
+
   /**
    * Putting things in place for the app to begin
    * @param  {string} startSelector  Element to reveal - {@link CSSStyleRule.selectorText}
@@ -65,9 +68,14 @@ const makeMiscHand = () => {
     });
   };
 
+
 	return Object.freeze({
 		startAfter: finish_loading_then,
-		afterStart: start_setup
+		afterStart: start_setup,
+    // Computed-s
+    get yapFriendly () {
+      return currentLoc.startsWith('http://localhost:') || currentLoc.startsWith('file://')
+    }
 	});
 };
 
