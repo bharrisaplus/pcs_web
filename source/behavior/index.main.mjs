@@ -1,5 +1,5 @@
 import appCustodian from './hands/misc.hand.mjs';
-import buildLandingPage from './lattices/landing.lattice.mjs';
+import cobbleLanding from './lattices/landing.lattice.mjs';
 import cardManager from './banks/deck.bank.mjs';
 
 
@@ -13,7 +13,7 @@ const
   preloadThings = new Map([["#card-sot", "#card-sheet"]]);
 
 document.addEventListener('DOMContentLoaded', () => {
-  const landingPage = buildLandingPage(cardView, cardOverlay, cardManager);
+  const landingPage = cobbleLanding(cardView, cardOverlay, cardManager);
 
   if (appCustodian.yapFriendly) {
     console.debug('console friendly environment');

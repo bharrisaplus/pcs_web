@@ -13,6 +13,22 @@
  */
 
 /**
+ * @readonly
+ * @enum {string}
+ */
+const ListEdge = {"BEGINNING": "beg", "END": "fin"};
+
+/**
+ * @typedef {Object} CardIntri
+ * 
+ * A card
+ * 
+ * @property {ListEdge} specialPos
+ * @property {string} title
+ * @property {string} description
+ */
+
+/**
  * @typedef {Object} DeckBank
  *
  * State of the cards
@@ -59,9 +75,10 @@
  *    </turntable>
  *
  * @property {boolean} isOpen
- * @property {function(ToggleEvent)} _tidy
- * @property {function(PointerEvent)} loadTurntable
- * @property {function(PointerEvent)} spinTurntable
+ * @property {string} nextBtn
+ * @property {string} prevBtn
+ * @property {function(CardIntri)} loadTurntable
+ * @property {function(boolean, CardIntri)} spinTurntable
  */
 
 /**
@@ -95,15 +112,15 @@
 /**
  * @typedef {Object} PCSLattice
  *
- * Layout for main screen
+ * Landing page layout
  *
  *    <lattice>
- *      <panel /> <- controls
- *      <content /> <- view
- *      <hud /> <- popover
+ *      <ribbon /> <- panel for controls - {@link Ribbon}
+ *      <tableau /> <- dingus for cards - {@link Tableau}
+ *      <turntable /> <- hud for card closeup {@link Turntable}
  *    </lattice>
  *
- * @property {Turntable} pcsHUD
+ * @property {Turntable} landingHUD
  */
 
 
