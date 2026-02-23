@@ -1,6 +1,6 @@
 
 /**
- * @import {DealerHand, DeckBank} from '../_meta/_typedefs.mjs'
+ * @import {CardIntri, DealerHand, DeckBank} from '../_meta/_typedefs.mjs'
  */
 
 import _glob from '../_meta/_glods.mjs';
@@ -16,19 +16,17 @@ const makeDealerHand = () => {
    *   description: "Card in position {CURRENT_DECK_POSITION}"
    * 
    * @param  {number} card_id usually the 'oid' data attribute - {@link HTMLElement.dataset}
-   * @param  {DeckBank} deckVault [description]
+   * @param  {DeckBank} deckVault
    *
-   * @return {Map.<string, string>}
+   * @return {CardIntri}
    */
-  const generate_card_title_and_desc = (card_id, deckVault) => {
+  const generate_card_intri = (card_id, deckVault) => {
+    let _name = "";
     const
-      result = {"title": "", "desc": ""},
       uiPos = deckVault.cards.indexOf(card_id) + 1,
       ndoPos = deckVault.ndoCards.indexOf(card_id);
 
     if ((uiPos > 0 && uiPos <= _glob.cardMax) && (ndoPos > -1 && ndoPos < _glob.cardMax)) {
-      let _name = "";
-
       switch(true) {
         case (ndoPos < 13): _name = `${_glob.cnames[ndoPos]} of ${_glob.suites[0]}`; break;
         case (ndoPos < 26): _name = `${_glob.cnames[ndoPos % 13]} of ${_glob.suites[1]}`; break;
@@ -36,16 +34,17 @@ const makeDealerHand = () => {
         case (ndoPos < 52): _name = `${_glob.rcnames[ndoPos % 13]} of ${_glob.suites[3]}`; break;
         default: _name = "A Card";
       }
-
-      result.title = `${_glob.ctitlePrefix} ${uiPos}: ${_name}`;
-      result.desc = `${_glob.cdescPrefix} ${uiPos}`;
     }
 
-    return result;
-  }
+    return Object.freeze({
+      currentPos: uiPos,
+      title: `${_glob.ctitlePrefix} ${uiPos}: ${_name}`,
+      desc: `${_glob.cdescPrefix} ${uiPos}`
+    });
+  };
 
   return Object.freeze({
-    posRelLabels: generate_card_title_and_desc
+    getCard: generate_card_intri
   });
 };
 

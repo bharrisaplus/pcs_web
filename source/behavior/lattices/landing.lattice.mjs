@@ -25,25 +25,17 @@ const scaffoldLattice = (tableauID, turntableID, itemVault) => {
     let
       firstCardID = 0,
       lastCardID = 51,
-      cardOneLabels = latticeDealer.posRelLabels(firstCardID, itemVault),
-      cardTwoLabels = latticeDealer.posRelLabels(lastCardID, itemVault);
+      cardOne = latticeDealer.getCard(firstCardID, itemVault),
+      cardTwo = latticeDealer.getCard(lastCardID, itemVault);
 
     $dingus.querySelectorAll(`li.playing-card`)[firstCardID]?.addEventListener('click', () => {
-      console.debug(cardOneLabels);
-      hud.loadTurntable({
-        specialPos: "beg",
-        title: cardOneLabels.title,
-        description: cardOneLabels.desc
-      });
+      console.debug(cardOne);
+      hud.loadTurntable(cardOne);
     });
 
     $dingus.querySelectorAll(`li.playing-card`)[lastCardID]?.addEventListener('click', () => {
-      console.debug(cardTwoLabels);
-      hud.loadTurntable({
-        specialPos: "",
-        title: cardTwoLabels.title,
-        description: cardTwoLabels.desc
-      })
+      console.debug(cardTwo);
+      hud.loadTurntable(cardTwo)
     });
 
   } else {
