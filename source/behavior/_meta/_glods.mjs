@@ -3,6 +3,7 @@
  * @import {GlobalDeclarations} from './_typedefs.mjs'
  */
 
+
 const
   card_cap = 52,
   card_suites = ["Spade", "Diamond", "Club", "Heart"],
@@ -13,7 +14,7 @@ const
 
 
 /** @type GlobalDeclarations */
-export default Object.freeze({
+const _globals = Object.freeze({
   cardMax: card_cap,
   suites: card_suites,
   cnames: card_names,
@@ -21,3 +22,5 @@ export default Object.freeze({
   ctitlePrefix: card_title_prefix,
   cdescPrefix: card_desc_prefix
 });
+
+export default _globals;

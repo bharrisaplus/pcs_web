@@ -14,17 +14,17 @@
  */
 
 /**
- * @readonly
- * @enum {string}
+ * @typedef {Map<string, string>} VerifynLoad
+ *
+ * The ids for elements to possibly fetch if not found in dom
  */
-const ListEdge = {"BEGINNING": "beg", "END": "fin"};
 
 /**
  * @typedef {Object} CardIntri
- * 
+ *
  * A card
- * 
- * @property {ListEdge} specialPos
+ *
+ * @property {number} currentPos
  * @property {string} title
  * @property {string} description
  */
@@ -49,8 +49,8 @@ const ListEdge = {"BEGINNING": "beg", "END": "fin"};
  * @property {boolean} yapFriendly
  * @property {function (string, string) :void} afterStart
  * @property {function (string, string, string) :void} startAfter
- * @property {function (Map.<string, string>, string) :void} warmUp
- * @property {function (Map.<string, string>, string, string, string, string, string) :void} startRoutine
+ * @property {function (VerifynLoad, string) :void} warmUp
+ * @property {function (VerifynLoad, string, string, string, string, string) :void} startRoutine
  */
 
 /**
@@ -58,7 +58,7 @@ const ListEdge = {"BEGINNING": "beg", "END": "fin"};
  *
  * Handles cards
  *
- * @property {function(number, DeckBank) :Map.<string, string>} posRelLabels
+ * @property {function(number, DeckBank) :CardIntri} getCard
  */
 
 /**
