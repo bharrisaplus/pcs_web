@@ -1,6 +1,3 @@
-import { default as NodeProcess } from 'node:process';
-import { default as NodePath } from 'node:path';
-
 import { default as ESLintJS } from '@eslint/js';
 import { defineConfig } from "eslint/config";
 
@@ -14,7 +11,11 @@ const demoLintConfig = defineConfig([
     		window: "readonly",
         html2canvas: "readonly",
         chance: "readonly",
-        HTMLElement: "readonly"
+        HTMLElement: "readonly",
+        console: "readonly",
+        DOMParser: "readonly",
+        fetch: "readonly",
+        CustomEvent: "readonly"
     	}
     }
   }

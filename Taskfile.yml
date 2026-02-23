@@ -28,6 +28,10 @@ tasks:
       - echo "Unix timestamp {{now | unixEpoch}}"
       - echo $VERSION_NUM
 
+  nitJS:
+    cmds:
+      - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs {{.CLI_ARGS}}
+
   # Top level aliases for convenience
 
   rear-octocat-demo-fhost:

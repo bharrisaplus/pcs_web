@@ -43,8 +43,9 @@ const makeMiscHand = () => {
         let assetUrl = document.querySelector(assetGrab)?.getAttribute('href');
 
         if (assetUrl) {
-          assetResponse = await fetch(assetUrl),
-          assetInnards = await assetResponse.text();
+          let
+            assetResponse = await fetch(assetUrl),
+            assetInnards = await assetResponse.text();
 
           if (assetInnards.length > 0) {
             if (console_free) {
