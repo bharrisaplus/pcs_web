@@ -24,48 +24,18 @@ const scaffoldLattice = (tableauID, turntableID, itemVault) => {
     _$turntable = document.querySelector(turntableID);
 
   if (tableauID) {
-    let
-      firstCardID = 0,
-      secondCardID = 13,
-      thirdCardID = 38,
-      lastCardID = 51,
-      cardOne = latticeDealer.getCard(firstCardID, itemVault),
-      cardTwo = latticeDealer.getCard(secondCardID, itemVault),
-      cardThree = latticeDealer.getCard(thirdCardID, itemVault),
-      cardFour = latticeDealer.getCard(lastCardID, itemVault);
-
-    _$tableau.querySelectorAll(`li.playing-card`)[firstCardID]?.addEventListener('click', () => {
-      console.debug(cardOne);
-      hud.loadTurntable(cardOne);
-    });
-
-    _$tableau.querySelectorAll(`li.playing-card`)[secondCardID]?.addEventListener('click', () => {
-      console.debug(cardTwo);
-      hud.loadTurntable(cardTwo)
-    });
-
-    _$tableau.querySelectorAll(`li.playing-card`)[thirdCardID]?.addEventListener('click', () => {
-      console.debug(cardThree);
-      hud.loadTurntable(cardThree)
-    });
-
-    _$tableau.querySelectorAll(`li.playing-card`)[lastCardID]?.addEventListener('click', () => {
-      console.debug(cardFour);
-      hud.loadTurntable(cardFour)
+    _$tableau.querySelectorAll(`li.playing-card`).forEach(($elm) => {
+      $elm.addEventListener('click', (_clickEvt) => {
+        hud.loadTurntable(latticeDealer.getCard(Number.parseInt($elm.dataset.oid), itemVault));
+      })
     });
 
     _$turntable.querySelector(hud.nextBtn).addEventListener('click', () => {
-      let nextCard = latticeDealer.getCard(hud.cursor + 1, itemVault);
-
-      console.debug(nextCard);
-      hud.spinTurntable(nextCard, false);
+      hud.spinTurntable(latticeDealer.getCard(hud.cursor + 1, itemVault), false);
     });
 
     _$turntable.querySelector(hud.prevBtn).addEventListener('click', () => {
-      let prevCard = latticeDealer.getCard(hud.cursor - 1, itemVault);
-
-      console.debug(prevCard);
-      hud.spinTurntable(prevCard, true);
+      hud.spinTurntable(latticeDealer.getCard(hud.cursor - 1, itemVault), true);
     });
 
   } else {
