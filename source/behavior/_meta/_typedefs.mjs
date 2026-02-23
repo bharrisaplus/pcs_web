@@ -24,7 +24,7 @@
  *
  * A card
  *
- * @property {number} currentPos
+ * @property {number} spot
  * @property {string} title
  * @property {string} description
  * @property {string} symbolRef - {@link CSSStyleRule.selectorText}

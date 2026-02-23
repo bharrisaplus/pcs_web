@@ -64,7 +64,7 @@ const makeDealerHand = () => {
     }
 
     return Object.freeze({
-      currentPos: uiPos,
+      spot: uiPos,
       title: `${_glob.ctitlePrefix} ${uiPos}: ${_name}`,
       desc: `${_glob.cdescPrefix} ${uiPos}`,
       symbolRef: `#${_symbl}`

@@ -17,8 +17,11 @@ const makePart = (containerID) => {
   const containerName = containerID.split('#').join('');
 
   const
+    /** @type {HTMLElement} */
     $container = document.querySelector(containerID),
+    /** @type {HTMLElement} */
     $pickup = $container.querySelector(`.${containerName}-pickup`),
+    /** @type {HTMLButtonElement} */
     $turnOff = $container.querySelector(`.${containerName}-off`),
     /** @type {HTMLButtonElement} */
     $cuePrevious = $container.querySelector(`.${containerName}-cue-lever-regression`),
@@ -32,6 +35,7 @@ const makePart = (containerID) => {
   const _tidy = (_toggleEvt) => {
     if (_toggleEvt.oldState === 'open' && _toggleEvt.newState === 'closed') {
       console.log("closing turntable");
+      $pickup.setAttribute('data-cid', 54);
       $pickup.querySelector('use').setAttribute('href', _glods.pcscardRef);
       $pickup.querySelector('title').textContent = _glods.pcscardTitle;
       $pickup.querySelector('desc').textContent = _glods.pcsCardDesc;
@@ -51,13 +55,14 @@ const makePart = (containerID) => {
    */
   const set_pickup = (pickupInfo) => {
     if (!$container.matches(':popover-open')) {
+      $pickup.setAttribute('data-cid', pickupInfo.spot);
       $pickup.querySelector('use').setAttribute('href', pickupInfo.symbolRef);
       $pickup.querySelector('title').textContent = pickupInfo.title;
       $pickup.querySelector('desc').textContent = pickupInfo.desc;
 
-      if (pickupInfo.currentPos == 0) {
+      if (pickupInfo.spot == 0) {
         $cuePrevious.disabled = true;
-      } else if (pickupInfo.currentPos == _glods.cardMax) {
+      } else if (pickupInfo.spot == _glods.cardMax) {
         $cueNext.disabled = true;
       }
 
@@ -108,6 +113,9 @@ const makePart = (containerID) => {
     // Computed-s
     get isOpen() {
       return $container.matches(':popover-open');
+    },
+    get cursor() {
+      return Number.parseInt($pickup.dataset.cid) - 1;
     },
     /** @type {string} - {@link CSSStyleRule.selectorText} */
     get nextBtn() {
