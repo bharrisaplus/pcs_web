@@ -24,18 +24,32 @@ const scaffoldLattice = (tableauID, turntableID, itemVault) => {
   if ($dingus) {
     let
       firstCardID = 0,
+      secondCardID = 13,
+      thirdCardID = 38,
       lastCardID = 51,
       cardOne = latticeDealer.getCard(firstCardID, itemVault),
-      cardTwo = latticeDealer.getCard(lastCardID, itemVault);
+      cardTwo = latticeDealer.getCard(secondCardID, itemVault),
+      cardThree = latticeDealer.getCard(thirdCardID, itemVault),
+      cardFour = latticeDealer.getCard(lastCardID, itemVault);
 
     $dingus.querySelectorAll(`li.playing-card`)[firstCardID]?.addEventListener('click', () => {
       console.debug(cardOne);
       hud.loadTurntable(cardOne);
     });
 
-    $dingus.querySelectorAll(`li.playing-card`)[lastCardID]?.addEventListener('click', () => {
+    $dingus.querySelectorAll(`li.playing-card`)[secondCardID]?.addEventListener('click', () => {
       console.debug(cardTwo);
       hud.loadTurntable(cardTwo)
+    });
+
+    $dingus.querySelectorAll(`li.playing-card`)[thirdCardID]?.addEventListener('click', () => {
+      console.debug(cardThree);
+      hud.loadTurntable(cardThree)
+    });
+
+    $dingus.querySelectorAll(`li.playing-card`)[lastCardID]?.addEventListener('click', () => {
+      console.debug(cardFour);
+      hud.loadTurntable(cardFour)
     });
 
   } else {

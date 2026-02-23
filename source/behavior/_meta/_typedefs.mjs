@@ -16,7 +16,7 @@
 /**
  * @typedef {Map<string, string>} VerifynLoad
  *
- * The ids for elements to possibly fetch if not found in dom
+ * The ids for elements to possibly fetch if not found in dom - {@link CSSStyleRule.selectorText}
  */
 
 /**
@@ -27,6 +27,7 @@
  * @property {number} currentPos
  * @property {string} title
  * @property {string} description
+ * @property {string} symbolRef - {@link CSSStyleRule.selectorText}
  */
 
 /**
@@ -68,7 +69,7 @@
  *
  *    <turntable>
  *      <off /> <- close btn
- *      <pickup /> <- main view
+ *      <pickup /> <- main view - {@link CardIntri}
  *      <cueLever> <- controls
  *        <cuePrevious /> <- back one
  *        <cueNext /> <- forward one
@@ -90,7 +91,7 @@
  *    <tableau>
  *      <card />
  *      .
- *      . <- (1-52)
+ *      . <- (1-52) - {@link CardIntri}
  *      .
  *    </tableau>
  *
