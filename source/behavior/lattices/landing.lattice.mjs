@@ -23,10 +23,14 @@ const scaffoldLattice = (tableauID, turntableID, itemVault) => {
     _$tableau = document.querySelector(tableauID),
     _$turntable = document.querySelector(turntableID);
 
-  if (tableauID) {
+  if (_$tableau) {
+    _$tableau.addEventListener('pcsTurntableLoad', (/** @type {CustomEvent<string>} */ _evt) => {
+      hud.loadTurntable(latticeDealer.getCard(Number.parseInt(_evt.detail), itemVault));
+    });
+
     _$tableau.querySelectorAll(`li.playing-card`).forEach(($elm) => {
-      $elm.addEventListener('click', (_clickEvt) => {
-        hud.loadTurntable(latticeDealer.getCard(Number.parseInt($elm.dataset.oid), itemVault));
+      $elm.addEventListener('click', () => {
+        _$tableau.dispatchEvent(new CustomEvent('pcsTurntableLoad', { "detail": $elm.dataset.oid }));
       })
     });
 

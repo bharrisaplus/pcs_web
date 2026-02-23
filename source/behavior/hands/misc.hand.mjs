@@ -96,7 +96,7 @@ const makeMiscHand = () => {
     }, { once: true });
 
     // Let the loading animation show off a bit before starting
-    $indicator.querySelector(tickSelector)?.addEventListener('animationiteration', () => {
+    $tick?.addEventListener('animationiteration', () => {
         cycleCount++;
 
         if (cycleCount >= 3) {
