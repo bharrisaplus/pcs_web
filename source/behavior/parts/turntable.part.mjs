@@ -1,6 +1,6 @@
 
 /**
- * @import {Turntable} from "../_meta/_typedefs.mjs"
+ * @import {Turntable, CardIntri} from "../_meta/_typedefs.mjs"
  */
 
 
@@ -9,7 +9,7 @@
  *
  * @return {Turntable}
  */
-const makeTurntable = (containerID) => {
+const makePart = (containerID) => {
   let _tccount = 0;
 
   const containerName = containerID.split('#').join('');
@@ -18,7 +18,9 @@ const makeTurntable = (containerID) => {
     $container = document.querySelector(containerID),
     $pickup = $container.querySelector(`.${containerName}-pickup`),
     $turnOff = $container.querySelector(`.${containerName}-off`),
+    /** @type {HTMLButtonElement} */
     $cuePrevious = $container.querySelector(`.${containerName}-cue-lever-regression`),
+    /** @type {HTMLButtonElement} */
     $cueNext = $container.querySelector(`.${containerName}-cue-lever-progression`);
 
   /**
@@ -35,40 +37,37 @@ const makeTurntable = (containerID) => {
 
   /**
    * Place new item in the view
-   * @param  {PointerEvent} clickEvt
+   * @param  {CardIntri} pickupInfo
    */
-  const set_pickup = (clickEvt) => {
+  const set_pickup = (pickupInfo) => {
     if ($container.matches(':popover-open')) {
-      const $pickupItem = clickEvt.target;
-
-      if ($pickupItem) {
-        console.log(`loading turntable for ${$pickupItem.getAttribute('aria-description')}`);
-      }
+      console.info(`loading turntable for ${pickupInfo.title}`);
     }
   };
 
   /**
    * Update item in the view
-   * @param  {PointerEvent} clickEvt
+   * @param  {boolean} backDirection
+   * @param  {CardIntri} _cueInfo
    */
-  const _move_arm = (_clickEvt) => {
+  const _move_arm = (backDirection, _cueInfo) => {
     if ($container.matches(':popover-open')) {
-      const moveBack = _clickEvt.target === $cuePrevious;
-
-      if (moveBack) {
-        console.log("updating turntable to previous");
+      if (backDirection) {
+        $cueNext.disabled = false;
+        console.log("rotating turntable to previous");
       } else {
-        console.log("updating turntable to next");
+        $cuePrevious.disabled = false;
+        console.log("rotating turntable to next");
       }
+
+      set_pickup(_cueInfo);
     }
   };
 
 
-  $container.setAttribute('popover', 'manual'); // only close via turnOff
+  $container.setAttribute('popover', 'manual'); // only close via $turnOff
   $container.addEventListener('beforetoggle', _tidy);
   $turnOff.addEventListener("click", () => $container.hidePopover());
-  $cueNext.addEventListener('click', () => _move_arm);
-  $cueNext.addEventListener('click', () => _move_arm);
 
   document.querySelector('#title-marquee')?.addEventListener('click', () => {
     if (_tccount++ >= 7) {
@@ -83,9 +82,18 @@ const makeTurntable = (containerID) => {
 
   return Object.freeze({
     loadTurntable: set_pickup,
+    spinTurntable: _move_arm,
     // Computed-s
     get isOpen() {
       return $container.matches(':popover-open');
+    },
+    /** @type {string} - {@link CSSStyleRule.selectorText} */
+    get nextBtn() {
+      return `${containerID} .${$cueNext.getAttribute('class').join('.')}`;
+    },
+    /** @type {string} - {@link CSSStyleRule.selectorText} */
+    get prevBtn() {
+      return `${containerID} .${$cuePrevious.getAttribute('class').join('.')}`;
     }
   });
 };
@@ -94,7 +102,7 @@ const makeTurntable = (containerID) => {
  * main Turntable instance
  * @type {Turntable}
  */
-let singleTurntable = null;
+let singlePart = null;
 
 /**
  * Ensure single turntable per page
@@ -102,13 +110,13 @@ let singleTurntable = null;
  *
  * @returns {Turntable}
  */
-const getTurntable = (getTurntableContainerID) => {
-  if (!singleTurntable) {
-    singleTurntable = makeTurntable(getTurntableContainerID);
+const getPart = (getTurntableContainerID) => {
+  if (!singlePart) {
+    singlePart = makePart(getTurntableContainerID);
   }
 
-  return singleTurntable;
+  return singlePart;
 };
 
-export default getTurntable;
+export default getPart;
 export const debugName = "pcs:part:turntable";
