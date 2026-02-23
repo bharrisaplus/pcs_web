@@ -32,10 +32,18 @@ const makePart = (containerID) => {
   const _tidy = (_toggleEvt) => {
     if (_toggleEvt.oldState === 'open' && _toggleEvt.newState === 'closed') {
       console.log("closing turntable");
+      $pickup.querySelector('use').setAttribute('href', _glods.pcscardRef);
+      $pickup.querySelector('title').textContent = _glods.pcscardTitle;
+      $pickup.querySelector('desc').textContent = _glods.pcsCardDesc;
+      $cueNext.disabled = true;
+      $cuePrevious.disabled = true;
     } else if (_toggleEvt.oldState === 'closed' && _toggleEvt.newState === 'open') {
       console.log("opening turntable");
+      $cueNext.disabled = true;
+      $cuePrevious.disabled = true;
     }
   };
+
 
   /**
    * Place new item in the view
@@ -43,15 +51,21 @@ const makePart = (containerID) => {
    */
   const set_pickup = (pickupInfo) => {
     if (!$container.matches(':popover-open')) {
+      $pickup.querySelector('use').setAttribute('href', pickupInfo.symbolRef);
+      $pickup.querySelector('title').textContent = pickupInfo.title;
+      $pickup.querySelector('desc').textContent = pickupInfo.desc;
+
       if (pickupInfo.currentPos == 0) {
         $cuePrevious.disabled = true;
       } else if (pickupInfo.currentPos == _glods.cardMax) {
         $cueNext.disabled = true;
       }
 
+      $container.showPopover();
       console.info(`loading turntable for ${pickupInfo.title}`);
     }
   };
+
 
   /**
    * Update item in the view
