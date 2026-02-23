@@ -1,7 +1,8 @@
 
 /**
- * @import {MiscHand} from "../_meta/_typedefs.mjs"
+ * @import {MiscHand, VerifynLoad} from "../_meta/_typedefs.mjs"
  */
+
 
 /**
  * @returns {MiscHand}
@@ -31,7 +32,7 @@ const makeMiscHand = () => {
    *     </body>
    *   </html>
    *
-   * @param  {Map.<string, string>} assetMap The ids for elements to fetch and check for - {@link CSSStyleRule.selectorText}
+   * @param  {VerifynLoad} assetMap - {@link CSSStyleRule.selectorText}
    * @param  {string} assetDump - {@link CSSStyleRule.selectorText}
    */
   const load_assets = (assetMap, assetDump) => {

@@ -1,3 +1,8 @@
+
+/**
+ * @import {VerifynLoad} from './_meta/_typedefs.mjs'
+ */
+
 import appCustodian from './hands/misc.hand.mjs';
 import cobbleLanding from './lattices/landing.lattice.mjs';
 import cardManager from './banks/deck.bank.mjs';
@@ -10,6 +15,7 @@ const
   cardOverlay = '#turntable',
   kickOffEventName = 'pcsStart',
   preloadDest = ".inline-svg-assets-here",
+  /** @type VerifynLoad */
   preloadThings = new Map([["#card-sot", "#card-sheet"]]);
 
 document.addEventListener('DOMContentLoaded', () => {
