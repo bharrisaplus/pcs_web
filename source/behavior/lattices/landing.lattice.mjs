@@ -22,11 +22,29 @@ const scaffoldLattice = (tableauID, turntableID, itemVault) => {
     hud = getTurntable(turntableID);
 
   if ($dingus) {
-    $dingus.querySelectorAll(`li.playing-card`)[0]?.addEventListener('click', hud.loadTurntable);
-    $dingus.querySelectorAll(`li.playing-card`)[51]?.addEventListener('click', hud.loadTurntable);
+    let
+      firstCardID = 0,
+      lastCardID = 51,
+      cardOneLabels = latticeDealer.posRelLabels(firstCardID, itemVault),
+      cardTwoLabels = latticeDealer.posRelLabels(lastCardID, itemVault);
 
-    console.debug(latticeDealer.posRelLabels(0, itemVault));
-    console.debug(latticeDealer.posRelLabels(1, itemVault));
+    $dingus.querySelectorAll(`li.playing-card`)[firstCardID]?.addEventListener('click', () => {
+      console.debug(cardOneLabels);
+      hud.loadTurntable({
+        specialPos: "beg",
+        title: cardOneLabels.title,
+        description: cardOneLabels.desc
+      });
+    });
+
+    $dingus.querySelectorAll(`li.playing-card`)[lastCardID]?.addEventListener('click', () => {
+      console.debug(cardTwoLabels);
+      hud.loadTurntable({
+        specialPos: "",
+        title: cardTwoLabels.title,
+        description: cardTwoLabels.desc
+      })
+    });
 
   } else {
     console.error("Could not find the tableau");
