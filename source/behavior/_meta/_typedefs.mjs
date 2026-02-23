@@ -8,7 +8,6 @@
  * @property {number} cardMax
  * @property {string[]} suites
  * @property {string[]} cnames
- * @property {string[]} rcnames
  * @property {string} ctitlePrefix
  * @property {string} cdescPrefix
  */
