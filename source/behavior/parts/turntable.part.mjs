@@ -3,6 +3,8 @@
  * @import {Turntable, CardIntri} from "../_meta/_typedefs.mjs"
  */
 
+import _glods from "../_meta/_glods.mjs";
+
 
 /**
  * @param  {string} containerID - {@link CSSStyleRule.selectorText}
@@ -40,7 +42,13 @@ const makePart = (containerID) => {
    * @param  {CardIntri} pickupInfo
    */
   const set_pickup = (pickupInfo) => {
-    if ($container.matches(':popover-open')) {
+    if (!$container.matches(':popover-open')) {
+      if (pickupInfo.currentPos == 0) {
+        $cuePrevious.disabled = true;
+      } else if (pickupInfo.currentPos == _glods.cardMax) {
+        $cueNext.disabled = true;
+      }
+
       console.info(`loading turntable for ${pickupInfo.title}`);
     }
   };
