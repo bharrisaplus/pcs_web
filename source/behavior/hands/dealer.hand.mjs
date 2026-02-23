@@ -31,7 +31,7 @@ const makeDealerHand = () => {
           let _suite = _glob.suites[Math.floor(ndoPos / 13)];
 
           _name = `${_glob.cnames[ndoPos]} of ${_suite}`;
-          _symbl = `${_suite[0].toLowerCase()}0${ndoPos}`;
+          _symbl = `${_suite[0].toLowerCase()}${ndoPos < 10 ? "0" : ""}${ndoPos}`;
           break;
         }
         case (ndoPos < 26): { // Diamonds
