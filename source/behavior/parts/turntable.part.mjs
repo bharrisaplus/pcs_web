@@ -82,7 +82,7 @@ const makePart = (containerID) => {
       _tccount = 0;
       $cuePrevious.disabled = true;
       $cueNext.disabled = true;
-      $pickup.querySelector('use').setAttribute('href', '#pcs-card');
+      $pickup.querySelector('use').setAttribute('href', _glods.pcscardRef);
       $container.showPopover();
     }
   });

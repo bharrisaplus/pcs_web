@@ -10,6 +10,7 @@
  * @property {string[]} cnames
  * @property {string} ctitlePrefix
  * @property {string} cdescPrefix
+ * @property {string} pcscardRef
  */
 
 /**
