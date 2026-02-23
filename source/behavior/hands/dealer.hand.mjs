@@ -26,14 +26,14 @@ const makeDealerHand = () => {
       uiPos = deckVault.cards.indexOf(card_id) + 1,
       ndoPos = deckVault.ndoCards.indexOf(card_id);
 
-    if ((uiPos > 0 && uiPos < _glob.cardMax) && (ndoPos > -1 && ndoPos < _glob.cardMax)) {
+    if ((uiPos > 0 && uiPos <= _glob.cardMax) && (ndoPos > -1 && ndoPos < _glob.cardMax)) {
       let _name = "";
 
       switch(true) {
         case (ndoPos < 13): _name = `${_glob.cnames[ndoPos]} of ${_glob.suites[0]}`; break;
         case (ndoPos < 26): _name = `${_glob.cnames[ndoPos % 13]} of ${_glob.suites[1]}`; break;
-        case (ndoPos < 39): _name = `${_glob.cnames[ndoPos % 13]} of ${_glob.suites[2]}`; break;
-        case (ndoPos < 52): _name = `${_glob.cnames[ndoPos % 13]} of ${_glob.suites[3]}`; break;
+        case (ndoPos < 39): _name = `${_glob.rcnames[ndoPos % 13]} of ${_glob.suites[2]}`; break;
+        case (ndoPos < 52): _name = `${_glob.rcnames[ndoPos % 13]} of ${_glob.suites[3]}`; break;
         default: _name = "A Card";
       }
 
