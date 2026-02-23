@@ -43,51 +43,52 @@ const makePart = (containerID) => {
       $cuePrevious.disabled = true;
     } else if (_toggleEvt.oldState === 'closed' && _toggleEvt.newState === 'open') {
       console.log("opening turntable");
-      $cueNext.disabled = true;
-      $cuePrevious.disabled = true;
     }
   };
-
 
   /**
    * Place new item in the view
    * @param  {CardIntri} pickupInfo
    */
-  const set_pickup = (pickupInfo) => {
-    if (!$container.matches(':popover-open')) {
-      $pickup.setAttribute('data-cid', pickupInfo.spot);
-      $pickup.querySelector('use').setAttribute('href', pickupInfo.symbolRef);
-      $pickup.querySelector('title').textContent = pickupInfo.title;
-      $pickup.querySelector('desc').textContent = pickupInfo.desc;
+  const _update_inner = (_updateInfo) => {
+    if (_updateInfo.spot > 0 && _updateInfo.spot <= _glods.cardMax) {
+      $pickup.setAttribute('data-cid', _updateInfo.spot);
+      $pickup.querySelector('use').setAttribute('href', _updateInfo.symbolRef);
+      $pickup.querySelector('title').textContent = _updateInfo.title;
+      $pickup.querySelector('desc').textContent = _updateInfo.desc;
 
-      if (pickupInfo.spot == 0) {
-        $cuePrevious.disabled = true;
-      } else if (pickupInfo.spot == _glods.cardMax) {
-        $cueNext.disabled = true;
-      }
+      $cuePrevious.disabled = _updateInfo.spot == 1;
+      $cueNext.disabled = _updateInfo.spot == _glods.cardMax;
 
-      $container.showPopover();
-      console.info(`loading turntable for ${pickupInfo.title}`);
+      console.info(`loading turntable for ${_updateInfo.title}`);
     }
   };
 
 
   /**
-   * Update item in the view
-   * @param  {boolean} backDirection
-   * @param  {CardIntri} _cueInfo
+   * Called when opening
+   * @param {CardIntri} pickupInfo 
    */
-  const _move_arm = (backDirection, _cueInfo) => {
-    if ($container.matches(':popover-open')) {
-      if (backDirection) {
-        $cueNext.disabled = false;
-        console.log("rotating turntable to previous");
-      } else {
-        $cuePrevious.disabled = false;
-        console.log("rotating turntable to next");
-      }
+  const set_pickup = (pickupInfo) => {
+    if (!$container.matches(':popover-open')) {
+      _update_inner(pickupInfo);
+      $container.showPopover();
+    }
+  };
 
-      set_pickup(_cueInfo);
+
+  /**
+   * Called when moving between items
+   * @param  {CardIntri} _cueInfo
+   * @param  {boolean} backDirection
+   */
+  const move_arm = (cueInfo, backDirection) => {
+    if ($container.matches(':popover-open')) {
+      _update_inner(cueInfo);
+
+      backDirection ? $cueNext.disabled = false : $cuePrevious.disabled = false;
+
+      console.log(`rotating turntable to ${backDirection ? "previous" : "next"}`);
     }
   };
 
@@ -109,21 +110,21 @@ const makePart = (containerID) => {
 
   return Object.freeze({
     loadTurntable: set_pickup,
-    spinTurntable: _move_arm,
+    spinTurntable: move_arm,
     // Computed-s
     get isOpen() {
       return $container.matches(':popover-open');
     },
     get cursor() {
-      return Number.parseInt($pickup.dataset.cid) - 1;
+      return $pickup.dataset.cid ? Number.parseInt($pickup.dataset.cid) - 1 : 53;
     },
     /** @type {string} - {@link CSSStyleRule.selectorText} */
     get nextBtn() {
-      return `${containerID} .${$cueNext.getAttribute('class').join('.')}`;
+      return `${containerID} .${$cueNext.className.split(" ").join('.')}`;
     },
     /** @type {string} - {@link CSSStyleRule.selectorText} */
     get prevBtn() {
-      return `${containerID} .${$cuePrevious.getAttribute('class').join('.')}`;
+      return `${containerID} .${$cuePrevious.className.split(" ").join('.')}`;
     }
   });
 };

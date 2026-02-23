@@ -77,10 +77,11 @@
  *    </turntable>
  *
  * @property {boolean} isOpen
+ * @property {number} cursor
  * @property {string} nextBtn
  * @property {string} prevBtn
  * @property {function(CardIntri)} loadTurntable
- * @property {function(boolean, CardIntri)} spinTurntable
+ * @property {function(CardIntri, boolean)} spinTurntable
  */
 
 /**

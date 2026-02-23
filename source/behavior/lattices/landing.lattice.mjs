@@ -17,11 +17,13 @@ const latticeDealer = getDealer();
  * @return {PCSLattice}
  */
 const scaffoldLattice = (tableauID, turntableID, itemVault) => {
-  const
-    $dingus = document.querySelector(tableauID),
-    hud = getTurntable(turntableID);
+  const hud = getTurntable(turntableID);
 
-  if ($dingus) {
+  let
+    _$tableau = document.querySelector(tableauID),
+    _$turntable = document.querySelector(turntableID);
+
+  if (tableauID) {
     let
       firstCardID = 0,
       secondCardID = 13,
@@ -32,24 +34,38 @@ const scaffoldLattice = (tableauID, turntableID, itemVault) => {
       cardThree = latticeDealer.getCard(thirdCardID, itemVault),
       cardFour = latticeDealer.getCard(lastCardID, itemVault);
 
-    $dingus.querySelectorAll(`li.playing-card`)[firstCardID]?.addEventListener('click', () => {
+    _$tableau.querySelectorAll(`li.playing-card`)[firstCardID]?.addEventListener('click', () => {
       console.debug(cardOne);
       hud.loadTurntable(cardOne);
     });
 
-    $dingus.querySelectorAll(`li.playing-card`)[secondCardID]?.addEventListener('click', () => {
+    _$tableau.querySelectorAll(`li.playing-card`)[secondCardID]?.addEventListener('click', () => {
       console.debug(cardTwo);
       hud.loadTurntable(cardTwo)
     });
 
-    $dingus.querySelectorAll(`li.playing-card`)[thirdCardID]?.addEventListener('click', () => {
+    _$tableau.querySelectorAll(`li.playing-card`)[thirdCardID]?.addEventListener('click', () => {
       console.debug(cardThree);
       hud.loadTurntable(cardThree)
     });
 
-    $dingus.querySelectorAll(`li.playing-card`)[lastCardID]?.addEventListener('click', () => {
+    _$tableau.querySelectorAll(`li.playing-card`)[lastCardID]?.addEventListener('click', () => {
       console.debug(cardFour);
       hud.loadTurntable(cardFour)
+    });
+
+    _$turntable.querySelector(hud.nextBtn).addEventListener('click', () => {
+      let nextCard = latticeDealer.getCard(hud.cursor + 1, itemVault);
+
+      console.debug(nextCard);
+      hud.spinTurntable(nextCard, false);
+    });
+
+    _$turntable.querySelector(hud.prevBtn).addEventListener('click', () => {
+      let prevCard = latticeDealer.getCard(hud.cursor - 1, itemVault);
+
+      console.debug(prevCard);
+      hud.spinTurntable(prevCard, true);
     });
 
   } else {
