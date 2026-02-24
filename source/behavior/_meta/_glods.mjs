@@ -5,6 +5,7 @@
 
 
 const
+  root_id = "pcs-shell",
   card_cap = 52,
   card_suites = ["Spade", "Diamond", "Club", "Heart"],
   card_names = ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King'],
@@ -25,6 +26,7 @@ const
 
 /** @type {GlobalDeclarations} */
 const _globals = {
+  appID: root_id,
   cardMax: card_cap,
   suites: card_suites,
   cnames: card_names,
