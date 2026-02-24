@@ -3,10 +3,10 @@
  * @import {VerifynLoad} from './_meta/_typedefs.mjs'
  */
 
-import _g from './_meta/_glods.mjs';
-import appCustodian from './hands/misc.hand.mjs';
-import cobbleLanding from './lattices/landing.lattice.mjs';
-import cardManager from './banks/deck.bank.mjs';
+import { default as _g } from './_meta/_glods.mjs';
+import { default as appCustodian } from './hands/misc.hand.mjs';
+import { default as cobbleLanding } from './lattices/landing.lattice.mjs';
+import { default as cardManager } from './banks/deck.bank.mjs';
 
 
 const

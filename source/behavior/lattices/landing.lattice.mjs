@@ -3,9 +3,9 @@
  * @import {PCSEvent, Lattice, Part, Bank} from "../_meta/_typedefs.mjs"
  */
 
-import _g from '../_meta/_glods.mjs';
-import getTurntable from '../parts/turntable.part.mjs';
-import getDealer from '../hands/dealer.hand.mjs';
+import { default as _g } from '../_meta/_glods.mjs';
+import { default as getTurntable } from '../parts/turntable.part.mjs';
+import { default as getDealer } from '../hands/dealer.hand.mjs';
 
 
 const cardShark = getDealer();
@@ -15,7 +15,7 @@ const cardShark = getDealer();
  * @param  {string} turntableID The hud element - {@link Part.Turntable}
  * @param  {Bank.Deck} itemVault The card state
  *
- * @return {Lattice.Landing} home screen manager - {@link Lattice.Landing}
+ * @return {Readonly<Lattice.Landing>} home screen manager - {@link Lattice.Landing}
  */
 const scaffoldLandingLattice = (tableauID, turntableID, itemVault) => {
   const hud = getTurntable(turntableID);

@@ -3,21 +3,17 @@
  * @import {Bank} from "../_meta/_typedefs.mjs"
  */
 
-import _globals from '../_meta/_glods.mjs';
+import { default as _g } from '../_meta/_glods.mjs';
 
 
-/**
- *  @type {Uint8Array}
- */
-let card_id_order = null;
-
+const default_order = Uint8Array.from({length: _g.cardMax}, (_, card_idx) => card_idx);
 
 /**
  *
- * @returns {Bank.Deck} a packet of cards {@link Bank.Deck}
+ * @returns {Readonly<Bank.Deck>} a packet of cards {@link Bank.Deck}
  */
 const makeDeckBank = () => {
-  const default_order = Uint8Array.from({length: _globals.cardMax}, (_, card_idx) => card_idx);
+  let card_id_order = default_order;
 
   const new_deck_order = () => {
     card_id_order = Uint8Array.from(default_order);
@@ -25,15 +21,11 @@ const makeDeckBank = () => {
 
 
   const replace_card_id_order_with = (allNewCards) => {
-    if (allNewCards.length == _globals.cardMax) {
+    if (allNewCards.length == _g.cardMax) {
       card_id_order = Uint8Array.from(allNewCards);
     }
   };
 
-
-  if (card_id_order == null) {
-    new_deck_order();
-  }
 
   return Object.freeze({
     updateCards: replace_card_id_order_with,

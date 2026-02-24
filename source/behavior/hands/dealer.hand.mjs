@@ -3,22 +3,18 @@
  * @import {CardIntri, Hand, Bank} from '../_meta/_typedefs.mjs'
  */
 
-import _g from '../_meta/_glods.mjs';
+import { default as _g } from '../_meta/_glods.mjs';
 
 
 /**
- * @return {Hand.Dealer} a helper for cards
+ * @return {Readonly<Hand.Dealer>} a helper for cards
  */
 const makeDealerHand = () => {
   /**
-   * Looks like:
-   *   title: "Number {CURRENT_DECK_POSITION}: {VALUE} of {SUITE}"
-   *   description: "Card in position {CURRENT_DECK_POSITION}"
-   *
    * @param  {number} ndoPos usually the 'oid' data attribute - {@link HTMLElement.dataset}
-   * @param  {Bank.Deck} deckVault
+   * @param  {Bank.Deck} deckVault - {@link Bank.Deck}
    *
-   * @return {CardIntri} a card - {@link CardIntri}
+   * @return {Readonly<CardIntri>} a card - {@link CardIntri}
    */
   const generate_card_intri = (ndoPos, deckVault) => {
     let _name = "", _symbl = "";

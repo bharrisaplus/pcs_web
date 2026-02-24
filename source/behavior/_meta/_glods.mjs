@@ -15,16 +15,16 @@ const
   card_pcs_desc = "A single card up close and personal",
 
   /** @type {PCSEventTypes} */
-  all_events = Object.freeze({
+  all_events = {
     kick: "kick", // app start
     needle: "needle", // popover/hud loading
     scratch: "scratch", // popover/hud updating
     mix: "mix", // shuffling
     chop: "chop" // image render and export
-  });
+  };
 
 /** @type {GlobalDeclarations} */
-const _globals = Object.freeze({
+const _globals = {
   cardMax: card_cap,
   suites: card_suites,
   cnames: card_names,
@@ -33,7 +33,9 @@ const _globals = Object.freeze({
   pcscardRef: card_pcs_symbol,
   pcsCardTitle: card_pcs_title,
   pcsCardDesc: card_pcs_desc,
-  notices: all_events
-});
+  notices: Object.freeze(all_events)
+};
 
-export default _globals;
+const ro_g = Object.freeze(_globals);
+
+export default ro_g;

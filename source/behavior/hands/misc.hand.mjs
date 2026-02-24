@@ -3,11 +3,11 @@
  * @import {Hand, VerifynLoad} from "../_meta/_typedefs.mjs"
  */
 
-import _g from '../_meta/_glods.mjs';
+import { default as _g } from '../_meta/_glods.mjs';
 
 
 /**
- * @returns {Hand.Misc} a helper - {@link Hand.Misc}
+ * @returns {Readonly<Hand.Misc>} a helper - {@link Hand.Misc}
  */
 const makeMiscHand = () => {
   let cycleCount = 0;
@@ -21,50 +21,41 @@ const makeMiscHand = () => {
   /**
    * Grab svg assets and inline them.
    *
-   *   <html>
-   *     <head>
-   *       <prefetchLink /> <- element with an id that has an href to fetch
-   *     </head>
-   *     <body>
-   *       <footer>
-   *         <dump> <- element for appending to
-   *           <someAsset /> <- element may already be there
-   *         </dump>
-   *       </footer>
-   *     </body>
-   *   </html>
-   *
    * @param  {VerifynLoad} assetMap - {@link CSSStyleRule.selectorText}
    * @param  {string} assetDump - {@link CSSStyleRule.selectorText}
    */
   const load_assets = (assetMap, assetDump) => {
+    const $assetDump = document.querySelector(assetDump);
+
+    if (!$assetDump || assetMap.size == 0) return;
+
     const assetParser = new DOMParser();
 
     assetMap.forEach(async (assetCheck, assetGrab) => {
-      if (document.querySelectorAll(assetCheck).length < 1) {
-        let assetUrl = document.querySelector(assetGrab)?.getAttribute('href');
-
-        if (assetUrl) {
-          let
-            assetResponse = await fetch(assetUrl),
-            assetInnards = await assetResponse.text();
-
-          if (assetInnards.length > 0) {
-            if (console_free) {
-              console.log(`Loading asset ${assetUrl}`);
-              console.log(`Placing within ${assetDump}`);
-            }
-
-            document.querySelector(assetMap.get("dump"))?.appendChild(
-              assetParser.parseFromString(assetInnards, 'image/svg+xml')
-            )
-          } else if (console_free) {
-            console.warn(`Failed loading asset ${assetUrl}`);
-          }
-        }
-      } else if (console_free) {
-        console.log(`Found ${assetCheck} asset inlined already`);
+      if (document.querySelectorAll(assetCheck).length > 0) {
+        if (console_free) console.log(`Found ${assetCheck} asset inlined already`);
+        return;
       }
+
+      let assetUrl = document.querySelector(assetGrab)?.getAttribute('href');
+
+      if (!assetUrl) {
+        if (console_free) console.log(`No url to fetch for ${assetGrab}`);
+        return;
+      }
+
+      let
+        assetResponse = await fetch(assetUrl),
+        assetInnards = await assetResponse.text();
+
+      if (!assetInnards) {
+        if (console_free) console.log(`Empty response from ${assetUrl}`);
+        return;
+      }
+
+      if (console_free) console.log(`Loading asset ${assetUrl}\nPlacing within ${assetDump}`);
+
+      $assetDump.appendChild(assetParser.parseFromString(assetInnards, 'image/svg+xml'));
     });
   };
 

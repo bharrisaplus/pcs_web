@@ -21,13 +21,26 @@
  * @property {string} ctitlePrefix
  * @property {string} cdescPrefix
  * @property {string} pcscardRef
- * @property {PCSEventTypes} notices
+ * @property {Readonly<PCSEventTypes} notices
  */
 
 /**
  * @typedef {Map<string, string>} VerifynLoad
  *
- * The ids for elements to possibly fetch if not found in dom - {@link CSSStyleRule.selectorText}
+ * Elements ids for assets to possibly fetch - {@link CSSStyleRule.selectorText}
+ *
+ *   <html>
+ *     <head>
+ *       <prefetchLink /> <- element with an id that has an href to fetch
+ *     </head>
+ *     <body>
+ *       <footer>
+ *         <dump> <- element for appending to
+ *           <someAsset /> <- element may already be there
+ *         </dump>
+ *       </footer>
+ *     </body>
+ *   </html>
  */
 
 /**
@@ -80,7 +93,7 @@
  * @typedef {Object} Hand.Dealer
  * Card tricks
  *
- * @property {function(number, Deck) :CardIntri} getCard
+ * @property {function(number, Bank.Deck) :Readonly<CardIntri>} getCard
  * @memberof Hand
  */
 
@@ -96,7 +109,7 @@
  *
  *    <turntable>
  *      <off /> <- close btn
- *      <pickup /> <- main view - {@link CardIntri}
+ *      <pickup /> <- main view
  *      <cueLever> <- controls
  *        <cuePrevious /> <- back one
  *        <cueNext /> <- forward one
@@ -119,7 +132,7 @@
  *    <tableau>
  *      <card />
  *      .
- *      . <- (1-52) - {@link CardIntri}
+ *      . <- (1-52)
  *      .
  *    </tableau>
  *
@@ -149,15 +162,15 @@
 
 /**
  * @typedef {Object} Lattice.Landing
- * Landing page layout
+ * Home page orchestration
  *
  *    <lattice>
- *      <ribbon /> <- panel for controls - {@link Ribbon}
- *      <tableau /> <- dingus for cards - {@link Tableau}
- *      <turntable /> <- hud for card closeup {@link Turntable}
+ *      <ribbon /> <- panel for controls - {@link Part.Ribbon}
+ *      <tableau /> <- dingus for cards - {@link Part.Tableau}
+ *      <turntable /> <- hud for card closeup - {@link Part.Turntable}
  *    </lattice>
  *
- * @property {Turntable} landingHUD
+ * @property {Readonly<Turntable>} landingHUD
  * @memberof Lattice
  */
 

@@ -3,7 +3,7 @@
  * @import {Part, CardIntri} from "../_meta/_typedefs.mjs"
  */
 
-import _glods from "../_meta/_glods.mjs";
+import { default as _g } from "../_meta/_glods.mjs";
 
 
 const
@@ -14,7 +14,7 @@ const
 /**
  * @param  {string} containerID - {@link CSSStyleRule.selectorText}
  *
- * @return {Part.Turntable} a card closeup popover - {@link Part.Turntable}
+ * @return {Readonly<Part.Turntable>} a card closeup popover - {@link Part.Turntable}
  */
 const makeTurntablePart = (containerID) => {
   let _tccount = 0;
@@ -41,9 +41,9 @@ const makeTurntablePart = (containerID) => {
     if (_toggleEvt.oldState === 'open' && _toggleEvt.newState === 'closed') {
       console.log("closing turntable");
       $pickup.setAttribute('data-cid', 54);
-      $pickup.querySelector('use').setAttribute('href', _glods.pcscardRef);
-      $pickup.querySelector('title').textContent = _glods.pcscardTitle;
-      $pickup.querySelector('desc').textContent = _glods.pcsCardDesc;
+      $pickup.querySelector('use').setAttribute('href', _g.pcscardRef);
+      $pickup.querySelector('title').textContent = _g.pcscardTitle;
+      $pickup.querySelector('desc').textContent = _g.pcsCardDesc;
       $cueNext.disabled = true;
       $cuePrevious.disabled = true;
     } else if (_toggleEvt.oldState === 'closed' && _toggleEvt.newState === 'open') {
@@ -56,14 +56,14 @@ const makeTurntablePart = (containerID) => {
    * @param  {CardIntri} pickupInfo
    */
   const _update_inner = (_updateInfo) => {
-    if (_updateInfo.spot > 0 && _updateInfo.spot <= _glods.cardMax) {
+    if (_updateInfo.spot > 0 && _updateInfo.spot <= _g.cardMax) {
       $pickup.setAttribute('data-cid', _updateInfo.spot);
       $pickup.querySelector('use').setAttribute('href', _updateInfo.symbolRef);
       $pickup.querySelector('title').textContent = _updateInfo.title;
       $pickup.querySelector('desc').textContent = _updateInfo.desc;
 
       $cuePrevious.disabled = _updateInfo.spot == 1;
-      $cueNext.disabled = _updateInfo.spot == _glods.cardMax;
+      $cueNext.disabled = _updateInfo.spot == _g.cardMax;
 
       console.info(`loading turntable for ${_updateInfo.title}`);
     }
@@ -109,7 +109,7 @@ const makeTurntablePart = (containerID) => {
       _tccount = 0;
       $cuePrevious.disabled = true;
       $cueNext.disabled = true;
-      $pickup.querySelector('use').setAttribute('href', _glods.pcscardRef);
+      $pickup.querySelector('use').setAttribute('href', _g.pcscardRef);
       $container.showPopover();
     }
   }, {signal: turntableAbortSignal});
@@ -140,24 +140,24 @@ const makeTurntablePart = (containerID) => {
  * main Turntable instance
  * @type {Part.Turntable}
  */
-let singlePart = null;
+let reuseablePart = null;
 
 /**
  * Ensure single turntable per page but allow reuse
  * @param {string} getTurntableContainerID - {@link CSSStyleRule.selectorText}
  *
- * @returns {Part.Turntable} fresh Turntable for the page - {@link Part.Turntable}
+ * @returns {Readonly<Part.Turntable>} fresh Turntable for the page - {@link Part.Turntable}
  */
-const rinseRepeat = (getTurntableContainerID) => {
-  if (!singlePart) {
-    singlePart = makeTurntablePart(getTurntableContainerID);
+const rinseRepeatTurntable = (getTurntableContainerID) => {
+  if (!reuseablePart) {
+    reuseablePart = makeTurntablePart(getTurntableContainerID);
   } else {
     turntableAbortController.abort();
-    singlePart = makeTurntablePart(getTurntableContainerID);
+    reuseablePart = makeTurntablePart(getTurntableContainerID);
   }
 
-  return singlePart;
+  return reuseablePart;
 };
 
-export default rinseRepeat;
+export default rinseRepeatTurntable;
 export const debugName = "pcs:part:turntable";
