@@ -1,11 +1,13 @@
 
 /**
- * @import {MiscHand, VerifynLoad} from "../_meta/_typedefs.mjs"
+ * @import {Hand, VerifynLoad} from "../_meta/_typedefs.mjs"
  */
+
+import _g from '../_meta/_glods.mjs';
 
 
 /**
- * @returns {MiscHand}
+ * @returns {Hand.Misc} a helper
  */
 const makeMiscHand = () => {
   let cycleCount = 0;
@@ -77,14 +79,13 @@ const makeMiscHand = () => {
    *
    * @param  {string} indicatorSelector For container element of tick - {@link CSSStyleRule.selectorText}
    * @param  {string} tickSelector The animating element relative to the container - {@link CSSStyleRule.selectorText}
-   * @param  {string} evtName The event to fire when done - {@link CustomEvent.type}
    */
-  const watch_for_indicator_tick = (indicatorSelector, tickSelector, evtName) => {
+  const watch_for_indicator_tick = (indicatorSelector, tickSelector) => {
     const
       $indicator = document.querySelector(indicatorSelector),
       $tick = $indicator?.querySelector(tickSelector);
 
-    if (!$indicator || !$tick) window.dispatchEvent(new CustomEvent(evtName));
+    if (!$indicator || !$tick) window.dispatchEvent(new CustomEvent(_g.notices.kick));
 
     // Once loading is done, disconnect loading indicator from DOM
     $indicator?.addEventListener('transitionend', (transEvt) => {
@@ -92,7 +93,7 @@ const makeMiscHand = () => {
         if (console_free) console.log("Loaded, removing indicator");
 
         $indicator.remove();
-        window.dispatchEvent(new CustomEvent(evtName));
+        window.dispatchEvent(new CustomEvent(_g.notices.kick));
       }
     }, { once: true });
 
@@ -107,33 +108,14 @@ const makeMiscHand = () => {
   };
 
 
-  /**
-   * Putting things in place for the app to begin
-   * @param  {string} centerpieceSelector Element to reveal - {@link CSSStyleRule.selectorText}
-   * @param  {string} revealEventName Event to wait for - {@link CustomEvent.type}
-   */
-  const setup_reveal = (centerpieceSelector, revealEventName) => {
-    window.addEventListener(revealEventName, () => {
-      const $start = document.querySelector(centerpieceSelector);
-
-      $start.setAttribute('style', '');
-      $start.classList.remove('hide-before-load');
-
-      console.info("pcs started");
-    });
-  };
-
-
   return Object.freeze({
     warmUp: load_assets,
     startAfter: watch_for_indicator_tick,
-    afterStart: setup_reveal,
     yapFriendly: console_free,
     // Convenience shortcut
-    startRoutine: (a,b,c,d,e,f) => {
+    startRoutine: (a,b,c,d) => {
       load_assets(a, b);
-      setup_reveal(c, d);
-      watch_for_indicator_tick(e, f, d);
+      watch_for_indicator_tick(c, d);
     }
   });
 };

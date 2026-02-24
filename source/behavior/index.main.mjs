@@ -3,6 +3,7 @@
  * @import {VerifynLoad} from './_meta/_typedefs.mjs'
  */
 
+import _g from './_meta/_glods.mjs';
 import appCustodian from './hands/misc.hand.mjs';
 import cobbleLanding from './lattices/landing.lattice.mjs';
 import cardManager from './banks/deck.bank.mjs';
@@ -13,7 +14,6 @@ const
   bootOverlaySpinner = '.loading-spinny',
   cardView = '#tableau',
   cardOverlay = '#turntable',
-  kickOffEventName = 'pcsStart',
   preloadDest = ".inline-svg-assets-here",
   /** @type VerifynLoad */
   preloadThings = new Map([["#card-sot", "#card-sheet"]]);
@@ -26,9 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
     console.debug(landingPage);
   }
 
-  appCustodian.startRoutine(
-    preloadThings, preloadDest,
-    cardView, kickOffEventName,
-    bootOverlay, bootOverlaySpinner
-  );
+  window.addEventListener(_g.notices.kick, () => {
+    const $reveal = document.querySelector(cardView);
+
+    $reveal.setAttribute('style', '');
+    $reveal.classList.remove('hide-before-load');
+
+    console.info("pcs started");
+  }, { once: true });
+
+  appCustodian.startRoutine(preloadThings, preloadDest, bootOverlay, bootOverlaySpinner);
 });
