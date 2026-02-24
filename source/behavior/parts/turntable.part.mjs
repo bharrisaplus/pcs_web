@@ -14,7 +14,7 @@ const
 /**
  * @param  {string} containerID - {@link CSSStyleRule.selectorText}
  *
- * @return {Part.Turntable} a card closeup popover
+ * @return {Part.Turntable} a card closeup popover - {@link Part.Turntable}
  */
 const makeTurntablePart = (containerID) => {
   let _tccount = 0;
@@ -138,15 +138,15 @@ const makeTurntablePart = (containerID) => {
 
 /**
  * main Turntable instance
- * @type {Hand.Turntable}
+ * @type {Part.Turntable}
  */
 let singlePart = null;
 
 /**
- * Ensure single turntable per page
+ * Ensure single turntable per page but allow reuse
  * @param {string} getTurntableContainerID - {@link CSSStyleRule.selectorText}
  *
- * @returns {Hand.Turntable} fresh Turntable for the page
+ * @returns {Part.Turntable} fresh Turntable for the page - {@link Part.Turntable}
  */
 const rinseRepeat = (getTurntableContainerID) => {
   if (!singlePart) {

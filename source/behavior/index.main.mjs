@@ -15,7 +15,7 @@ const
   cardView = '#tableau',
   cardOverlay = '#turntable',
   preloadDest = ".inline-svg-assets-here",
-  /** @type VerifynLoad */
+  /** @type {VerifynLoad} */
   preloadThings = new Map([["#card-sot", "#card-sheet"]]);
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -14,14 +14,14 @@ let card_id_order = null;
 
 /**
  *
- * @returns {Bank.Deck}
+ * @returns {Bank.Deck} a packet of cards {@link Bank.Deck}
  */
-const getDeck = () => {
+const makeDeckBank = () => {
   const default_order = Uint8Array.from({length: _globals.cardMax}, (_, card_idx) => card_idx);
 
   const new_deck_order = () => {
     card_id_order = Uint8Array.from(default_order);
-  }
+  };
 
 
   const replace_card_id_order_with = (allNewCards) => {
@@ -58,7 +58,7 @@ const getDeck = () => {
 };
 
 
-const singleDeck = getDeck();
+const singleDeck = makeDeckBank();
 
 export default singleDeck;
 export const debugName = "pcs:bank:deck";

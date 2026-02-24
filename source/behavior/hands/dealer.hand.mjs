@@ -18,7 +18,7 @@ const makeDealerHand = () => {
    * @param  {number} ndoPos usually the 'oid' data attribute - {@link HTMLElement.dataset}
    * @param  {Bank.Deck} deckVault
    *
-   * @return {CardIntri}
+   * @return {CardIntri} a card - {@link CardIntri}
    */
   const generate_card_intri = (ndoPos, deckVault) => {
     let _name = "", _symbl = "";

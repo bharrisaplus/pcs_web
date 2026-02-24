@@ -7,7 +7,7 @@ import _g from '../_meta/_glods.mjs';
 
 
 /**
- * @returns {Hand.Misc} a helper
+ * @returns {Hand.Misc} a helper - {@link Hand.Misc}
  */
 const makeMiscHand = () => {
   let cycleCount = 0;

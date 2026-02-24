@@ -15,9 +15,9 @@ const cardShark = getDealer();
  * @param  {string} turntableID The hud element - {@link Part.Turntable}
  * @param  {Bank.Deck} itemVault The card state
  *
- * @return {Lattice.Landing}
+ * @return {Lattice.Landing} home screen manager - {@link Lattice.Landing}
  */
-const scaffoldLattice = (tableauID, turntableID, itemVault) => {
+const scaffoldLandingLattice = (tableauID, turntableID, itemVault) => {
   const hud = getTurntable(turntableID);
 
   let
@@ -57,5 +57,5 @@ const scaffoldLattice = (tableauID, turntableID, itemVault) => {
 };
 
 
-export default scaffoldLattice;
+export default scaffoldLandingLattice;
 export const debugName = "pcs:lattice:pcs";
