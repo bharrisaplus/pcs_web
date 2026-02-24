@@ -50,7 +50,7 @@ const makeDeckBank = () => {
 };
 
 
-const singleDeck = makeDeckBank();
+const singleDeckHand = makeDeckBank();
 
-export default singleDeck;
+export default singleDeckHand;
 export const debugName = "pcs:bank:deck";
