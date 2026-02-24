@@ -14,7 +14,7 @@ const
 /**
  * @param  {string} containerID - {@link CSSStyleRule.selectorText}
  *
- * @return {Part.Turntable}
+ * @return {Part.Turntable} a card closeup popover
  */
 const makeTurntablePart = (containerID) => {
   let _tccount = 0;
