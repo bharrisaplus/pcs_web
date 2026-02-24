@@ -6,12 +6,17 @@
 import _glods from "../_meta/_glods.mjs";
 
 
+const
+  turntableAbortController = new AbortController(),
+  {signal: turntableAbortSignal} = turntableAbortController;
+
+
 /**
  * @param  {string} containerID - {@link CSSStyleRule.selectorText}
  *
  * @return {Part.Turntable}
  */
-const makePart = (containerID) => {
+const makeTurntablePart = (containerID) => {
   let _tccount = 0;
 
   const containerName = containerID.split('#').join('');
@@ -67,7 +72,7 @@ const makePart = (containerID) => {
 
   /**
    * Called when opening
-   * @param {CardIntri} pickupInfo 
+   * @param {CardIntri} pickupInfo
    */
   const set_pickup = (pickupInfo) => {
     if (!$container.matches(':popover-open')) {
@@ -94,8 +99,10 @@ const makePart = (containerID) => {
 
 
   $container.setAttribute('popover', 'manual'); // only close via $turnOff
-  $container.addEventListener('beforetoggle', _tidy);
-  $turnOff.addEventListener("click", () => $container.hidePopover());
+  $container.addEventListener('beforetoggle', _tidy, {signal: turntableAbortSignal});
+  $turnOff.addEventListener("click", () => {
+    $container.hidePopover();
+  }, {signal: turntableAbortSignal});
 
   document.querySelector('#title-marquee')?.addEventListener('click', () => {
     if (_tccount++ >= 7) {
@@ -105,7 +112,7 @@ const makePart = (containerID) => {
       $pickup.querySelector('use').setAttribute('href', _glods.pcscardRef);
       $container.showPopover();
     }
-  });
+  }, {signal: turntableAbortSignal});
 
 
   return Object.freeze({
@@ -139,15 +146,18 @@ let singlePart = null;
  * Ensure single turntable per page
  * @param {string} getTurntableContainerID - {@link CSSStyleRule.selectorText}
  *
- * @returns {Hand.Turntable}
+ * @returns {Hand.Turntable} fresh Turntable for the page
  */
-const getPart = (getTurntableContainerID) => {
+const rinseRepeat = (getTurntableContainerID) => {
   if (!singlePart) {
-    singlePart = makePart(getTurntableContainerID);
+    singlePart = makeTurntablePart(getTurntableContainerID);
+  } else {
+    turntableAbortController.abort();
+    singlePart = makeTurntablePart(getTurntableContainerID);
   }
 
   return singlePart;
 };
 
-export default getPart;
+export default rinseRepeat;
 export const debugName = "pcs:part:turntable";

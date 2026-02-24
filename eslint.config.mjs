@@ -15,7 +15,8 @@ const demoLintConfig = defineConfig([
         console: "readonly",
         DOMParser: "readonly",
         fetch: "readonly",
-        CustomEvent: "readonly"
+        CustomEvent: "readonly",
+        AbortController: "readonly"
     	}
     }
   }
