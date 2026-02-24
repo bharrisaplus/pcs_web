@@ -1,10 +1,18 @@
-// jsDoc or (fb:meta)flow
-
+// tsDoc, jsDoc or (fb:meta)flow
 
 
 /**
+ * @typedef { 'kick' | 'needle' | 'scratch' | 'mix' | 'chop' } PCSEventTypes - {@link CustomEvent.type}
+ */
+
+/**
+ * @typedef {CustomEvent<string>} PCSEvent
+ * Use like:
+ * 	`new CustomEvent(<PCSEventType>, {detail: "DATA_FOR_RECIPIENT"});`
+ */
+
+/**
  * @typedef {Object} GlobalDeclarations
- *
  * Constants
  *
  * @property {number} cardMax
@@ -13,16 +21,7 @@
  * @property {string} ctitlePrefix
  * @property {string} cdescPrefix
  * @property {string} pcscardRef
- * @property {pcsEvents} notices
- */
-
-/**
- * @typedef {Object} pcsEvents - {@link CustomEvent.type}
- * @property {string} kick
- * @property {string} needle
- * @property {string} scratch
- * @property {string} mix
- * @property {string} chop
+ * @property {PCSEventTypes} notices
  */
 
 /**
@@ -33,7 +32,6 @@
 
 /**
  * @typedef {Object} CardIntri
- *
  * A card
  *
  * @property {number} spot
@@ -42,9 +40,14 @@
  * @property {string} symbolRef - {@link CSSStyleRule.selectorText}
  */
 
+
 /**
- * @typedef {Object} DeckBank
- *
+ * @namespace Bank
+ * Where and How data is stored; Vaults/Stores
+ */
+
+/**
+ * @typedef {Object} Bank.Deck
  * State of the cards
  *
  * @property {Uint8Array} ndoUcards
@@ -53,31 +56,43 @@
  * @property {number[]} cards
  * @property {function(Uint8Array | number[]): void} updateCards
  * @property {function(): void} resetCards
+ * @memberof Bank
+ */
+
+
+/**
+ * @namespace Hand
+ * Domain methods and implementations for various things; Tools/Utilities
  */
 
 /**
- * @typedef {Object} MiscHand
- *
+ * @typedef {Object} Hand.Misc
  * Handles various tasks
+ *
  * @property {boolean} yapFriendly
- * @property {function (string, string) :void} afterStart
- * @property {function (string, string, string) :void} startAfter
+ * @property {function (string, string) :void} startAfter
  * @property {function (VerifynLoad, string) :void} warmUp
- * @property {function (VerifynLoad, string, string, string, string, string) :void} startRoutine
+ * @property {function (VerifynLoad, string, string, string) :void} startRoutine
+ * @memberof Hand
  */
 
 /**
- * @typedef {Object} DealerHand
+ * @typedef {Object} Hand.Dealer
+ * Card tricks
  *
- * Handles cards
- *
- * @property {function(number, DeckBank) :CardIntri} getCard
+ * @property {function(number, Deck) :CardIntri} getCard
+ * @memberof Hand
+ */
+
+
+/**
+ * @namespace Part
+ * The building blocks; Components/Widgets
  */
 
 /**
- * @typedef {Object} Turntable
- *
- * Component for card turntable/lazy-suzan/carousel
+ * @typedef {Object} Part.Turntable
+ * Component for lazy-suzan/carousel
  *
  *    <turntable>
  *      <off /> <- close btn
@@ -94,12 +109,12 @@
  * @property {string} prevBtn
  * @property {function(CardIntri)} loadTurntable
  * @property {function(CardIntri, boolean)} spinTurntable
+ * @memberof Part
  */
 
 /**
- * @typedef {Object} Tableau
- *
- * Component for cards
+ * @typedef {Object} Part.Tableau
+ * Viewing all the cards
  *
  *    <tableau>
  *      <card />
@@ -109,12 +124,13 @@
  *    </tableau>
  *
  * @property {[number]} currentOrder
+ * @memberof Part
  */
 
 /**
- * @typedef {Object} Ribbon
+ * @typedef {Object} Part.Ribbon
+ * Controls for the card view
  *
- * Component for controls
  *    <ribbon>
  *      <claw /> <- grab cards for image or text download
  *      <brush /> <- changing background color
@@ -122,11 +138,17 @@
  *
  * @property {string} lastPaste
  * @property {string} lastRender
+ * @memberof Part
+ */
+
+
+/**
+ * @namespace Lattice
+ * Where multiple parts come together; Junctions/Managers/Orchestrators
  */
 
 /**
- * @typedef {Object} PCSLattice
- *
+ * @typedef {Object} Lattice.Landing
  * Landing page layout
  *
  *    <lattice>
@@ -136,6 +158,7 @@
  *    </lattice>
  *
  * @property {Turntable} landingHUD
+ * @memberof Lattice
  */
 
 

@@ -1,6 +1,6 @@
 
 /**
- * @import {pcsEvents, GlobalDeclarations} from './_typedefs.mjs'
+ * @import {PCSEventTypes, GlobalDeclarations} from './_typedefs.mjs'
  */
 
 
@@ -14,14 +14,13 @@ const
   card_pcs_title = "magnified view of card",
   card_pcs_desc = "A single card up close and personal",
 
-  evt_prfx = "pcs",
-  /** @type {pcsEvents} */
+  /** @type {PCSEventTypes} */
   all_events = Object.freeze({
-    kick: evt_prfx + "Kick", // app start
-    needle: evt_prfx + "Needle", // popover/hud loading
-    scratch: evt_prfx + "Scratch", // popover/hud updating
-    mix: evt_prfx + "Mix", // shuffling
-    chop: evt_prfx + "Chop" // image render and export
+    kick: "kick", // app start
+    needle: "needle", // popover/hud loading
+    scratch: "scratch", // popover/hud updating
+    mix: "mix", // shuffling
+    chop: "chop" // image render and export
   });
 
 /** @type {GlobalDeclarations} */

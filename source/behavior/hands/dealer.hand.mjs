@@ -1,13 +1,13 @@
 
 /**
- * @import {CardIntri, DealerHand, DeckBank} from '../_meta/_typedefs.mjs'
+ * @import {CardIntri, Hand, Bank} from '../_meta/_typedefs.mjs'
  */
 
 import _g from '../_meta/_glods.mjs';
 
 
 /**
- * @return {DealerHand}
+ * @return {Hand.Dealer} a helper for cards
  */
 const makeDealerHand = () => {
   /**
@@ -16,7 +16,7 @@ const makeDealerHand = () => {
    *   description: "Card in position {CURRENT_DECK_POSITION}"
    *
    * @param  {number} ndoPos usually the 'oid' data attribute - {@link HTMLElement.dataset}
-   * @param  {DeckBank} deckVault
+   * @param  {Bank.Deck} deckVault
    *
    * @return {CardIntri}
    */

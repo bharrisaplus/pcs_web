@@ -1,6 +1,6 @@
 
 /**
- * @import {DeckBank} from "../_meta/_typedefs.mjs"
+ * @import {Bank} from "../_meta/_typedefs.mjs"
  */
 
 import _globals from '../_meta/_glods.mjs';
@@ -14,9 +14,9 @@ let card_id_order = null;
 
 /**
  *
- * @returns {DeckBank}
+ * @returns {Bank.Deck}
  */
-const getDeckBank = () => {
+const getDeck = () => {
   const default_order = Uint8Array.from({length: _globals.cardMax}, (_, card_idx) => card_idx);
 
   const new_deck_order = () => {
@@ -58,7 +58,7 @@ const getDeckBank = () => {
 };
 
 
-const singleDeckBank = getDeckBank();
+const singleDeck = getDeck();
 
-export default singleDeckBank;
+export default singleDeck;
 export const debugName = "pcs:bank:deck";

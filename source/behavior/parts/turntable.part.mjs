@@ -1,6 +1,6 @@
 
 /**
- * @import {Turntable, CardIntri} from "../_meta/_typedefs.mjs"
+ * @import {Part, CardIntri} from "../_meta/_typedefs.mjs"
  */
 
 import _glods from "../_meta/_glods.mjs";
@@ -9,7 +9,7 @@ import _glods from "../_meta/_glods.mjs";
 /**
  * @param  {string} containerID - {@link CSSStyleRule.selectorText}
  *
- * @return {Turntable}
+ * @return {Part.Turntable}
  */
 const makePart = (containerID) => {
   let _tccount = 0;
@@ -131,7 +131,7 @@ const makePart = (containerID) => {
 
 /**
  * main Turntable instance
- * @type {Turntable}
+ * @type {Hand.Turntable}
  */
 let singlePart = null;
 
@@ -139,7 +139,7 @@ let singlePart = null;
  * Ensure single turntable per page
  * @param {string} getTurntableContainerID - {@link CSSStyleRule.selectorText}
  *
- * @returns {Turntable}
+ * @returns {Hand.Turntable}
  */
 const getPart = (getTurntableContainerID) => {
   if (!singlePart) {
