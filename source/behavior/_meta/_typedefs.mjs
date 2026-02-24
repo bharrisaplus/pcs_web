@@ -1,5 +1,7 @@
 // jsDoc or (fb:meta)flow
 
+
+
 /**
  * @typedef {Object} GlobalDeclarations
  *
@@ -11,6 +13,16 @@
  * @property {string} ctitlePrefix
  * @property {string} cdescPrefix
  * @property {string} pcscardRef
+ * @property {pcsEvents} notices
+ */
+
+/**
+ * @typedef {Object} pcsEvents - {@link CustomEvent.type}
+ * @property {string} kick
+ * @property {string} needle
+ * @property {string} scratch
+ * @property {string} mix
+ * @property {string} chop
  */
 
 /**
