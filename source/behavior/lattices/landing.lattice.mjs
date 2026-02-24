@@ -1,6 +1,6 @@
 
 /**
- * @import {PCSEvent, Lattice, Part, Bank} from "../_meta/_typedefs.mjs"
+ * @import {CSSelector, PCSEvent, Lattice, Part, Bank} from "../_meta/_typedefs.mjs"
  */
 
 import { default as _g } from '../_meta/_glods.mjs';
@@ -11,42 +11,63 @@ import { default as getDealer } from '../hands/dealer.hand.mjs';
 const cardShark = getDealer();
 
 /**
- * @param  {string} tableauID The dingus element - {@link Part.Tableau}
- * @param  {string} turntableID The hud element - {@link Part.Turntable}
+ * @param  {CSSelector} tableauID The dingus element - {@link Part.Tableau}
+ * @param  {CSSelector} turntableID The hud element - {@link Part.Turntable}
  * @param  {Bank.Deck} itemVault The card state
  *
  * @return {Readonly<Lattice.Landing>} home screen manager - {@link Lattice.Landing}
  */
 const scaffoldLandingLattice = (tableauID, turntableID, itemVault) => {
+  let _$tableau = document.querySelector(tableauID);
   const hud = getTurntable(turntableID);
 
-  let
-    _$tableau = document.querySelector(tableauID),
-    _$turntable = document.querySelector(turntableID);
-
   if (_$tableau) {
-    _$tableau.addEventListener(_g.notices.needle,
-      (/** @type {PCSEvent} */ _evt) => {
-        hud.loadTurntable(cardShark.getCard(Number.parseInt(_evt.detail), itemVault));
+    document.querySelector(`#${_g.appID}`).addEventListener(_g.notices.needle,
+      (/** @type {PCSEvent} */ _pcsevt) => {
+        hud.loadTurntable(cardShark.getCard(
+          _pcsevt.detail.msg, _pcsevt.detail.$dispatcher?.dataset.oid
+        ));
       }
     );
 
-    _$tableau.querySelectorAll(`li.playing-card`).forEach(($elm) => {
+    _$tableau.querySelectorAll(`li.playing-card`).forEach(($elm, elemIdx) => {
       $elm.addEventListener('click', () => {
-        _$tableau.dispatchEvent(new CustomEvent(
-          _g.notices.needle, { "detail": $elm.dataset.oid }
-        ));
-      })
+        console.log(`Value from click event element: ${$elm.dataset.oid}`);
+        console.log(`Index of click event element: ${elemIdx}`);
+        /** @type {PCSEvent} */
+        const needleDown = new CustomEvent(_g.notices.needle, { detail: {
+          msg: elemIdx.toString(),
+          $dispatcher: $elm
+        }});
+
+        document.querySelector(`#${_g.appID}`).dispatchEvent(needleDown);
+      });
     });
 
-    _$turntable.querySelector(hud.nextBtn).addEventListener('click', () => {
-      hud.spinTurntable(cardShark.getCard(hud.cursor + 1, itemVault), false);
-    });
+    document.querySelector(`#${_g.appID}`).addEventListener(_g.notices.scratch,
+      (/** @type {PCSEvent} */ _pcsevt) => {
+        let hudBits = [];
+        const msgBits = _pcsevt.detail.msg.split("[::|::]").map((itm) => Number.parseInt(itm));
 
-    _$turntable.querySelector(hud.prevBtn).addEventListener('click', () => {
-      hud.spinTurntable(cardShark.getCard(hud.cursor - 1, itemVault), true);
-    });
+        if (_pcsevt.detail.$dispatcher == document.querySelector(hud.prevBtn)) {
+          hudBits = hud.cursor.split("[::|::]").map((itm) => {
+            return Math.max(Number.parseInt(itm), -1) - 1;
+          });
 
+          if (msgBits[0] == (hudBits[0]) && msgBits[1] == (hudBits[1])) {
+            hud.spinTurntable(cardShark.getCard(msgBits[0], msgBits[1]), true);
+          }
+        } else if (_pcsevt.detail.$dispatcher == document.querySelector(hud.nextBtn)) {
+          hudBits = hud.cursor.split("[::|::]").map((itm) => {
+            return Math.min(Number.parseInt(itm), _g.cardMax) + 1;
+          });
+
+          if (msgBits[0] == (hudBits[0]) && msgBits[1] == (hudBits[1])) {
+            hud.spinTurntable(cardShark.getCard(msgBits[0], msgBits[1]), false);
+          }
+        }
+      }
+    );
   } else {
     console.error("Could not find the tableau");
   }

@@ -1,6 +1,6 @@
 
 /**
- * @import {Hand, VerifynLoad} from "../_meta/_typedefs.mjs"
+ * @import {CSSelector, VerifynLoad, Hand} from "../_meta/_typedefs.mjs"
  */
 
 import { default as _g } from '../_meta/_glods.mjs';
@@ -22,7 +22,7 @@ const makeMiscHand = () => {
    * Grab svg assets and inline them.
    *
    * @param  {VerifynLoad} assetMap - {@link CSSStyleRule.selectorText}
-   * @param  {string} assetDump - {@link CSSStyleRule.selectorText}
+   * @param  {CSSelector} assetDump - {@link CSSStyleRule.selectorText}
    */
   const load_assets = (assetMap, assetDump) => {
     const $assetDump = document.querySelector(assetDump);
@@ -68,8 +68,8 @@ const makeMiscHand = () => {
    *      <tick/> <- this is animating and we'll let it run a bit
    *    </indicator>
    *
-   * @param  {string} indicatorSelector For container element of tick - {@link CSSStyleRule.selectorText}
-   * @param  {string} tickSelector The animating element relative to the container - {@link CSSStyleRule.selectorText}
+   * @param  {CSSelector} indicatorSelector - {@link CSSStyleRule.selectorText}
+   * @param  {CSSelector} tickSelector - {@link CSSStyleRule.selectorText}
    */
   const watch_for_indicator_tick = (indicatorSelector, tickSelector) => {
     const

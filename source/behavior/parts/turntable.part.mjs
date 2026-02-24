@@ -1,6 +1,6 @@
 
 /**
- * @import {Part, CardIntri} from "../_meta/_typedefs.mjs"
+ * @import {CSSelector, PCSEvent, Part, CardIntri} from "../_meta/_typedefs.mjs"
  */
 
 import { default as _g } from "../_meta/_glods.mjs";
@@ -12,7 +12,7 @@ const
 
 
 /**
- * @param  {string} containerID - {@link CSSStyleRule.selectorText}
+ * @param  {CSSelector} containerID - {@link CSSStyleRule.selectorText}
  *
  * @return {Readonly<Part.Turntable>} a card closeup popover - {@link Part.Turntable}
  */
@@ -54,19 +54,26 @@ const makeTurntablePart = (containerID) => {
   /**
    * Place new item in the view
    * @param  {CardIntri} pickupInfo
+   * @returns {boolean}
    */
   const _update_inner = (_updateInfo) => {
-    if (_updateInfo.spot > 0 && _updateInfo.spot <= _g.cardMax) {
-      $pickup.setAttribute('data-cid', _updateInfo.spot);
+    let result = false;
+
+    if (_updateInfo.spot > -1 && _updateInfo.spot < _g.cardMax) {
+      $pickup.setAttribute('data-spot', _updateInfo.spot);
+      $pickup.setAttribute('data-oglo', _updateInfo.oglo);
       $pickup.querySelector('use').setAttribute('href', _updateInfo.symbolRef);
       $pickup.querySelector('title').textContent = _updateInfo.title;
       $pickup.querySelector('desc').textContent = _updateInfo.desc;
 
-      $cuePrevious.disabled = _updateInfo.spot == 1;
-      $cueNext.disabled = _updateInfo.spot == _g.cardMax;
+      $cuePrevious.disabled = _updateInfo.spot < 1;
+      $cueNext.disabled = _updateInfo.spot >= _g.cardMax - 1;
 
       console.info(`loading turntable for ${_updateInfo.title}`);
+      result = true
     }
+
+    return result;
   };
 
 
@@ -76,8 +83,9 @@ const makeTurntablePart = (containerID) => {
    */
   const set_pickup = (pickupInfo) => {
     if (!$container.matches(':popover-open')) {
-      _update_inner(pickupInfo);
-      $container.showPopover();
+      if(_update_inner(pickupInfo)) {
+        $container.showPopover();
+      }
     }
   };
 
@@ -89,17 +97,45 @@ const makeTurntablePart = (containerID) => {
    */
   const move_arm = (cueInfo, backDirection) => {
     if ($container.matches(':popover-open')) {
-      _update_inner(cueInfo);
+      if(_update_inner(cueInfo)) {
+        backDirection ? $cueNext.disabled = false : $cuePrevious.disabled = false;
 
-      backDirection ? $cueNext.disabled = false : $cuePrevious.disabled = false;
-
-      console.log(`rotating turntable to ${backDirection ? "previous" : "next"}`);
+        console.log(`rotating turntable to ${backDirection ? "previous" : "next"} for:`);
+        console.debug(cueInfo);
+      }
     }
   };
 
 
   $container.setAttribute('popover', 'manual'); // only close via $turnOff
   $container.addEventListener('beforetoggle', _tidy, {signal: turntableAbortSignal});
+
+  $cueNext.addEventListener('click', () => {
+    const
+      incID = Math.min(Number.parseInt($pickup.dataset.oglo), _g.cardMax) + 1,
+      incPS = Math.min(Number.parseInt($pickup.dataset.spot), _g.cardMax) + 1,
+      /** @type {PCSEvent} */
+      scratchNxt = new CustomEvent(_g.notices.scratch, { detail: {
+        msg: `${incPS}[::|::]${incID}`,
+        $dispatcher: $cueNext
+      }});
+
+    document.querySelector(`#${_g.appID}`).dispatchEvent(scratchNxt);
+  }, {signal: turntableAbortSignal});
+
+  $cuePrevious.addEventListener('click', () => {
+    const
+      decID = Math.max(Number.parseInt($pickup.dataset.oglo), -1) - 1,
+      decPS = Math.max(Number.parseInt($pickup.dataset.spot), -1) - 1,
+      /** @type {PCSEvent} */
+      scratchPrv = new CustomEvent(_g.notices.scratch, { detail: {
+        msg: `${decPS}[::|::]${decID}`,
+        $dispatcher: $cuePrevious
+      }});
+
+    document.querySelector(`#${_g.appID}`).dispatchEvent(scratchPrv);
+  }, {signal: turntableAbortSignal});
+
   $turnOff.addEventListener("click", () => {
     $container.hidePopover();
   }, {signal: turntableAbortSignal});
@@ -123,7 +159,7 @@ const makeTurntablePart = (containerID) => {
       return $container.matches(':popover-open');
     },
     get cursor() {
-      return $pickup.dataset.cid ? Number.parseInt($pickup.dataset.cid) - 1 : 53;
+      return `${$pickup.dataset.spot || _g.cardMax}[::|::]${$pickup.dataset.oglo || _g.cardMax}`;
     },
     /** @type {string} - {@link CSSStyleRule.selectorText} */
     get nextBtn() {

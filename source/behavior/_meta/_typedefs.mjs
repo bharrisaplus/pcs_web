@@ -2,30 +2,56 @@
 
 
 /**
- * @typedef { 'kick' | 'needle' | 'scratch' | 'mix' | 'chop' } PCSEventTypes - {@link CustomEvent.type}
+ * @typedef {string} CSSelector - {@link CSSStyleRule.selectorText}
+ * - {@link document.querySelector}
  */
 
 /**
- * @typedef {CustomEvent<string>} PCSEvent
- * Use like:
- * 	`new CustomEvent(<PCSEventType>, {detail: "DATA_FOR_RECIPIENT"});`
+ * @typedef {' kick' | 'needle' | 'scratch' | 'mix' | 'chop'} PCSEventType
+ *
+ * @typedef {Object} PCSEventTypes - {@link CustomEvent.type}
+ * @property {'kick'} kick Start app
+ * @property {'needle'} needle Open Popover
+ * @property {'scratch'} scratch Update Popover
+ * @property {'mix'} mix Shuffle
+ * @property {'chop'} chop Cut and Paste
+ * @see CustomEvent.type
+ */
+
+/**
+ * @typedef {Object} PCSEventOpts
+ * - {@link CustomEvent} - {@link PCSEventType} - {@link PCSEvent}
+ * `new CustomEvent(<PCSEventType>,<PCSEventOpts>)`
+ * @property {{msg :string, $dispatcher :Element}} detail
+ */
+
+/**
+ * @typedef {CustomEvent<PCSEventOpts>} PCSEvent
+ * - {@link CustomEvent} - {@link PCSEventType} - {@link PCSEventOpts}
+ * `new CustomEvent(<PCSEventType>, {detail: <PCSEventDetail}>)`
  */
 
 /**
  * @typedef {Object} GlobalDeclarations
  * Constants
  *
- * @property {number} cardMax
- * @property {string[]} suites
- * @property {string[]} cnames
- * @property {string} ctitlePrefix
- * @property {string} cdescPrefix
- * @property {string} pcscardRef
- * @property {Readonly<PCSEventTypes} notices
+ * @property {'pcs-shell'} appID
+ * @property {52} cardMax
+ * @property {['Spade', 'Diamond', 'Club', 'Heart']} suites
+ * @property {"Number"} ctitlePrefix
+ * @property {'Card in position'} cdescPrefix
+ * @property {'#pcs-card'} pcscardRef
+ * @property {'magnified view of card'} pcsCardTitle
+ * @property {'A single card up close and personal'} pcsCardDesc
+ * @property {Readonly<PCSEventTypes>} notices
+ * @property {[
+ *  'Ace', 'Two', 'Three', 'Four', 'Five', 'Six',
+ *  'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King'
+ * ]} cnames
  */
 
 /**
- * @typedef {Map<string, string>} VerifynLoad
+ * @typedef {Map<CSSelector, CSSelector>} VerifynLoad
  *
  * Elements ids for assets to possibly fetch - {@link CSSStyleRule.selectorText}
  *
@@ -47,10 +73,11 @@
  * @typedef {Object} CardIntri
  * A card
  *
+ * @property {number} oglo
  * @property {number} spot
  * @property {string} title
  * @property {string} description
- * @property {string} symbolRef - {@link CSSStyleRule.selectorText}
+ * @property {CSSelector} symbolRef
  */
 
 
@@ -93,7 +120,7 @@
  * @typedef {Object} Hand.Dealer
  * Card tricks
  *
- * @property {function(number, Bank.Deck) :Readonly<CardIntri>} getCard
+ * @property {function((number|string), (number|string)) :Readonly<CardIntri>} getCard
  * @memberof Hand
  */
 
