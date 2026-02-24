@@ -1,6 +1,6 @@
 
 /**
- * @import {CSSelector, PCSEvent, Part, CardIntri} from "../_meta/_typedefs.mjs"
+ * @import {CSSelector, PCSEventOpts, PCSEvent, Part, CardIntri} from "../_meta/_typedefs.mjs"
  */
 
 import { default as _g } from "../_meta/_glods.mjs";
@@ -34,7 +34,6 @@ const makeTurntablePart = (containerID) => {
     $cueNext = $container.querySelector(`.${containerName}-cue-lever-progression`);
 
   /**
-   * Clean up between state changes
    * @param  {ToggleEvent} _toggleEvt
    */
   const _tidy = (_toggleEvt) => {
@@ -52,21 +51,23 @@ const makeTurntablePart = (containerID) => {
   };
 
   /**
-   * Place new item in the view
    * @param  {CardIntri} pickupInfo
    * @returns {boolean}
    */
-  const _update_inner = (_updateInfo) => {
+  const _update = (_updateInfo) => {
     let result = false;
 
-    if (_updateInfo.spot > -1 && _updateInfo.spot < _g.cardMax) {
+    if (
+      _updateInfo.oglo > -1 || _updateInfo.oglo < _g.cardMax ||
+      _updateInfo.spot > -1 || _updateInfo.spot < _g.cardMax
+    ){
       $pickup.setAttribute('data-spot', _updateInfo.spot);
       $pickup.setAttribute('data-oglo', _updateInfo.oglo);
       $pickup.querySelector('use').setAttribute('href', _updateInfo.symbolRef);
       $pickup.querySelector('title').textContent = _updateInfo.title;
       $pickup.querySelector('desc').textContent = _updateInfo.desc;
 
-      $cuePrevious.disabled = _updateInfo.spot < 1;
+      $cuePrevious.disabled = _updateInfo.spot <= 0;
       $cueNext.disabled = _updateInfo.spot >= _g.cardMax - 1;
 
       console.info(`loading turntable for ${_updateInfo.title}`);
@@ -78,12 +79,11 @@ const makeTurntablePart = (containerID) => {
 
 
   /**
-   * Called when opening
    * @param {CardIntri} pickupInfo
    */
   const set_pickup = (pickupInfo) => {
     if (!$container.matches(':popover-open')) {
-      if(_update_inner(pickupInfo)) {
+      if(_update(pickupInfo)) {
         $container.showPopover();
       }
     }
@@ -91,13 +91,48 @@ const makeTurntablePart = (containerID) => {
 
 
   /**
-   * Called when moving between items
+   * @param  {PointerEvent} _clickEvent
+   */
+  const _itch = (_clickEvt) => {
+    let
+      itchID, itchSpot,
+    /** @type {Element} */
+      itch$dsptchr = null;
+
+    if (_clickEvt.target == $cueNext) {
+      itchID = Math.min(Number.parseInt($pickup.dataset.oglo), _g.cardMax) + 1;
+      itchSpot = Math.min(Number.parseInt($pickup.dataset.spot), _g.cardMax) + 1;
+      itch$dsptchr = $cueNext;
+    } else if (_clickEvt.target == $cuePrevious) {
+      itchID = Math.max(Number.parseInt($pickup.dataset.oglo), -1) - 1;
+      itchSpot = Math.max(Number.parseInt($pickup.dataset.spot), -1) - 1;
+      itch$dsptchr = $cuePrevious;
+    }
+
+    if (
+      itchID < 0 || itchID >= _g.cardMax ||
+      itchSpot < 0 || itchSpot >= _g.cardMax
+      ) { return; }
+
+    if (itch$dsptchr) {
+      const
+        /** @type {PCSEventOpts} */
+        itchEvtOpt = { detail: { msg: `${itchSpot}[::|::]${itchID}`, $dispatcher: itch$dsptchr } },
+        /** @type {PCSEvent} */
+        itchEvt = new CustomEvent(_g.notices.scratch, itchEvtOpt);
+
+      document.querySelector(`#${_g.appID}`).dispatchEvent(itchEvt);
+    }
+  };
+
+
+  /**
    * @param  {CardIntri} _cueInfo
    * @param  {boolean} backDirection
    */
   const move_arm = (cueInfo, backDirection) => {
     if ($container.matches(':popover-open')) {
-      if(_update_inner(cueInfo)) {
+      if(_update(cueInfo)) {
         backDirection ? $cueNext.disabled = false : $cuePrevious.disabled = false;
 
         console.log(`rotating turntable to ${backDirection ? "previous" : "next"} for:`);
@@ -107,34 +142,11 @@ const makeTurntablePart = (containerID) => {
   };
 
 
+
   $container.setAttribute('popover', 'manual'); // only close via $turnOff
   $container.addEventListener('beforetoggle', _tidy, {signal: turntableAbortSignal});
-
-  $cueNext.addEventListener('click', () => {
-    const
-      incID = Math.min(Number.parseInt($pickup.dataset.oglo), _g.cardMax) + 1,
-      incPS = Math.min(Number.parseInt($pickup.dataset.spot), _g.cardMax) + 1,
-      /** @type {PCSEvent} */
-      scratchNxt = new CustomEvent(_g.notices.scratch, { detail: {
-        msg: `${incPS}[::|::]${incID}`,
-        $dispatcher: $cueNext
-      }});
-
-    document.querySelector(`#${_g.appID}`).dispatchEvent(scratchNxt);
-  }, {signal: turntableAbortSignal});
-
-  $cuePrevious.addEventListener('click', () => {
-    const
-      decID = Math.max(Number.parseInt($pickup.dataset.oglo), -1) - 1,
-      decPS = Math.max(Number.parseInt($pickup.dataset.spot), -1) - 1,
-      /** @type {PCSEvent} */
-      scratchPrv = new CustomEvent(_g.notices.scratch, { detail: {
-        msg: `${decPS}[::|::]${decID}`,
-        $dispatcher: $cuePrevious
-      }});
-
-    document.querySelector(`#${_g.appID}`).dispatchEvent(scratchPrv);
-  }, {signal: turntableAbortSignal});
+  $cueNext.addEventListener('click', _itch, {signal: turntableAbortSignal});
+  $cuePrevious.addEventListener('click', _itch, {signal: turntableAbortSignal});
 
   $turnOff.addEventListener("click", () => {
     $container.hidePopover();

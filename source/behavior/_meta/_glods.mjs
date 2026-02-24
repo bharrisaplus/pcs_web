@@ -4,14 +4,14 @@
  */
 
 
-  /** @type {PCSEventTypes} */
-  all_events = {
-    kick: 'kick',
-    needle: 'needle',
-    scratch: 'scratch',
-    mix: "mix",
-    chop: "chop"
-  };
+/** @type {PCSEventTypes} */
+const all_events = {
+  kick: 'kick',
+  needle: 'needle',
+  scratch: 'scratch',
+  mix: "mix",
+  chop: "chop"
+};
 
 /** @type {GlobalDeclarations} */
 const _globals = {

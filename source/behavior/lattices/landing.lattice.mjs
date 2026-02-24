@@ -22,15 +22,25 @@ const scaffoldLandingLattice = (tableauID, turntableID, itemVault) => {
   const hud = getTurntable(turntableID);
 
   if (_$tableau) {
+    /** @type {number[]} */
+    let _landingCards = [];
+
     document.querySelector(`#${_g.appID}`).addEventListener(_g.notices.needle,
       (/** @type {PCSEvent} */ _pcsevt) => {
+        _$tableau.querySelectorAll(`li.playing-card`).forEach(($elm) => {
+          _landingCards.push($elm.dataset.oid);
+        });
+
         hud.loadTurntable(cardShark.getCard(
           _pcsevt.detail.msg, _pcsevt.detail.$dispatcher?.dataset.oid
         ));
       }
     );
 
+
     _$tableau.querySelectorAll(`li.playing-card`).forEach(($elm, elemIdx) => {
+      _landingCards.push($elm.dataset.oid);
+
       $elm.addEventListener('click', () => {
         console.log(`Value from click event element: ${$elm.dataset.oid}`);
         console.log(`Index of click event element: ${elemIdx}`);
@@ -44,28 +54,31 @@ const scaffoldLandingLattice = (tableauID, turntableID, itemVault) => {
       });
     });
 
+
     document.querySelector(`#${_g.appID}`).addEventListener(_g.notices.scratch,
       (/** @type {PCSEvent} */ _pcsevt) => {
-        let hudBits = [];
+        let
+          goBack = false,
+          hudBits = [];
+
         const msgBits = _pcsevt.detail.msg.split("[::|::]").map((itm) => Number.parseInt(itm));
 
         if (_pcsevt.detail.$dispatcher == document.querySelector(hud.prevBtn)) {
+          goBack = true;
           hudBits = hud.cursor.split("[::|::]").map((itm) => {
             return Math.max(Number.parseInt(itm), -1) - 1;
           });
-
-          if (msgBits[0] == (hudBits[0]) && msgBits[1] == (hudBits[1])) {
-            hud.spinTurntable(cardShark.getCard(msgBits[0], msgBits[1]), true);
-          }
         } else if (_pcsevt.detail.$dispatcher == document.querySelector(hud.nextBtn)) {
           hudBits = hud.cursor.split("[::|::]").map((itm) => {
             return Math.min(Number.parseInt(itm), _g.cardMax) + 1;
           });
-
-          if (msgBits[0] == (hudBits[0]) && msgBits[1] == (hudBits[1])) {
-            hud.spinTurntable(cardShark.getCard(msgBits[0], msgBits[1]), false);
-          }
         }
+
+        if (hudBits.length > 0 && msgBits[0] == hudBits[0] && msgBits[1] == hudBits[1]) {
+          hud.spinTurntable(cardShark.getCard(msgBits[0], msgBits[1]), goBack);
+        }
+
+        itemVault.updateCards(_landingCards);
       }
     );
   } else {
