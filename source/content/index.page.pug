@@ -24,6 +24,24 @@ block html_body
                     title(id="pcs-logo-title") pcs logo
                     desc(id="pcs-logo-description") A scribbly sqwiggle
                     use(href="#pcs-logo")
+            #ribbon(style="background-color:var(--debug-1-color);")
+                .ribbon-swish(style="background-color:var(--debug-2-color);")
+                    .brush
+                        select
+                            option(value=0 selected)="Default"
+                .ribbon-bow(style="background-color:var(--debug-3-color);")
+                    button
+                        | ⧢
+                .ribbon-flourish(style="background-color:var(--debug-4-color);")
+                    .claw
+                        button
+                            | ⮺
+                        div
+                            button
+                                | 🖫
+                            a
+                                | &nbsp;
+
 
         main
             #pageload-curtain
