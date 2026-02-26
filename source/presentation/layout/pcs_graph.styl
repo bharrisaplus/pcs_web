@@ -16,35 +16,60 @@ $card-wspace = $card-width * 0.25
 #pcs-shell
     & main
         height: 85%
+        border-radius: 18px
 
     & header
         height: 13%
         min-height: 81px
         flex-flow: column nowrap
+        justify-content: space-around
         align-items: flex-start
 
 
 #ribbon
     display: flex
-    width: 100%
+    width: calc(100% - 9px)
+    padding: 4.5px
     justify-content: space-around
-    background-color: var(--debug-1-color);
+    align-items: center
 
-    & .ribbon-bow
-        background-color: var(--debug-3-color)
+    & .ribbon-bow, & .ribbon-swish, & .ribbon-flourish
+        display: inline-flex
+        align-items: center
 
     & .ribbon-swish, & .ribbon-flourish
-        display: flex
-        background-color: var(--debug-2-color)
         width: 45%
+
+    & .ribbon-swish
+        justify-content: flex-end
+
+        & > :first-child
+            margin: 0 15% 0 0
+
+    & .ribbon-flourish
+        justify-content: flex-start
+
+        & > :first-child
+            margin: 0 0 0 15%
+
+
+#brush
+    & select
+        padding: 4.5px
+        border-radius: 4.5px
+        border-width: 2.5px
 
 
 #claw
-    display: flex
+    display: inline-flex
+    column-gap: 18px
 
     & button
         height: 40px
+        max-height: 40px
         aspect-ratio: 1/1
+        border-width: 0
+        border-radius: 4.5px
 
 
 #pageload-curtain

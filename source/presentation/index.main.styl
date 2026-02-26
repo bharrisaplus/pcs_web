@@ -7,14 +7,28 @@
 @import 'layout/pcs_graph.styl'
 
 
+#pcs-shell
+    & main
+        background: var(--bg-emerald)
+
+
 #title-marquee h2
     user-select: none
     pointer-events: none
 
-#pcs-shell
-    & main
-        background: var(--bg-emerald)
-        border-radius: 18px
+#ribbon
+    background-color: var(--debug-1-color)
+
+    & .ribbon-swish, & .ribbon-flourish
+        background-color: var(--debug-2-color)
+
+    & .ribbon-bow
+        background-color: var(--debug-3-color)
+
+#brush
+    & select
+        border-style: ridge
+
 
 #pageload-curtain
     border-radius: inherit
