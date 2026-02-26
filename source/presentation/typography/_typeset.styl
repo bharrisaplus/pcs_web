@@ -1,11 +1,15 @@
 $base-font-size = 16px
+$base-font-families = 'Monaco', monospace
 
 :root
-	font-size: $base-font-size /* 1rem */
-	
-	--medium-size: 1.125rem // 18px
+    --normal-size: 16px
+    --medium-size: 1.125rem // 16 * 1.125 = 18px
 
-	--regular-weight: 400
-	--light-weight: 300
-	--medium-weight: 500
-	--heavy-weight: 700
+    --basic-font-stack: $base-font-families
+
+    --regular-weight: 400
+    --light-weight: 300
+    --medium-weight: 550
+    --heavy-weight: 700
+
+    font: normal var(--normal-size)/1 var(--basic-font-stack)
