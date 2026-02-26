@@ -42,10 +42,13 @@
             rotate: 0deg
 
         & .loading-dots
-            color: var(--card-base)
             background-color: inherit
             user-select: none
             pointer-events: none
+
+            & span
+                color: var(--card-base)
+                opacity: 0
 
 
 #tableau
@@ -60,6 +63,7 @@
     & .playing-card
         cursor: pointer
         rotate: 0deg
+        box-shadow: none
 
 
 #turntable
@@ -98,59 +102,41 @@
             background-color: var(--card-base)
             border-color: var(--turntable-dustcover-mix)
             border-radius: 18%
-            border-width: 2px
 
             &:disabled
                 cursor not-allowed
 
     & .turntable-cue-lever-spacer
-        display: none
-        visibility: hidden
         color: var(--card-base)
 
     & .turntable-cue-lever-regression:disabled + .turntable-cue-lever-spacer:has(+ .turntable-cue-lever-progression:disabled)
-        display: inline-block
-        visibility: visible
-        margin: 0 4.5px
-
         &::before
             content: "\2234"
 
         &::after
             content: "\1F382"
 
-    & .turntable-cue-lever-regression:disabled:has(+ .turntable-cue-lever-spacer + .turntable-cue-lever-progression:disabled)
-        visibility: hidden
-
-    & .turntable-cue-lever-regression:disabled + .turntable-cue-lever-spacer + .turntable-cue-lever-progression:disabled
-        visibility: hidden
-
 
 /*
-    setup transitions & animations
+    transitions & animations
  */
 
 #pageload-curtain
-    transition-property: opacity
-    transition-delay: 0.1s
-    transition-duration: 0.2s
-    transition-behavior: allow-discrete
+    /* property | duration | delay | behavior */
+    transition: opacity 0.2s 0.1s allow-discrete
+
+    &.loading-done
+        & .loading-indicator .loading-spinny,
+        & .loading-indicator .loading-dots span
+            animation-play-state: paused
 
     & .loading-indicator .loading-spinny
-        animation-name: yo-yo
-        animation-delay: 0.4s
-        animation-duration: 1.5s
-        animation-iteration-count: 36
-        animation-timing-function: ease-in-out
-        animation-direction: alternate
+        /* duration | delay | iteration | timing | direction | name */
+        animation: 1.5s 0.4s 36 ease-in-out alternate yo-yo
 
     & .loading-indicator .loading-dots span
-        animation-delay: 0.4s
-        animation-duration: 1.5s
-        animation-iteration-count: 36
-        animation-timing-function: ease-out
-        animation-direction: alternate
-        color: var(--card-base)
+        /* duration | delay | iteration | timing | direction */
+        animation: 1.5s 0.4s 36 ease-out alternate
 
         &:nth-child(1)
             animation-name: dotdot-dot
@@ -159,15 +145,6 @@
         &:nth-child(3)
             animation-name: dotdot-dotdotdot
 
-    &.loading-done
-        visibility: hidden
-        opacity: 0
-        z-index: -1
-
-        & .loading-indicator .loading-spinny,
-        & .loading-indicator .loading-dots span
-            animation-play-state: paused
-
 
 #tableau
     & .playing-card
@@ -175,27 +152,33 @@
         animation-duration: 0.25s
         animation-timing-function: ease-out
         animation-fill-mode: backwards
-        transition: rotate 0.2s
+        transition: /* property | duration */
+            rotate 0.2s,
+            box-shadow 0.25s
+        transition-delay: 0.15s
 
-    &.hide-before-load
-        display: none
 
 #turntable
+    /* property | duration | easing | behavior */
     transition: all 0.7s ease-in-out allow-discrete
 
     &::backdrop
+        /* property | duration | easing | behavior */
         transition: all 0.7s ease-in-out allow-discrete
 
-@starting-style
-    #pageload-curtain .loading-indicator .loading-spinny
-        rotate: 0deg
 
-    .loading-indicator .loading-dots span
-        opacity: 0
+@starting-style
+    #pageload-curtain .loading-indicator
+        & .loading-spinny
+            rotate: 0deg
+
+        & .loading-dots span
+            opacity: 0
 
     #tableau .playing-card
         rotate: 0deg
         opacity: 1
+        box-shadow: none
 
     #turntable:popover-open
         opacity: 0
@@ -205,6 +188,13 @@
             backdrop-filter: none
 
 
+/*
+    device responsive styles
+ */
+
 @media (hover: hover)
     #tableau .playing-card:hover
         rotate: -9deg
+        box-shadow: /* x|y|blur|spread|color */
+            3px 3px 5px 3px var(--card-shimmer),
+            0px 0px 2.5px 1.5px var(--card-shimmer)

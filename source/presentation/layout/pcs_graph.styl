@@ -82,6 +82,10 @@ $card-wspace = $card-width * 0.25
     justify-content: center
     align-items: center
 
+    &.loading-done
+        visibility: hidden
+        opacity: 0
+
     & .loading-indicator
         display: flex
         width: $card-height // to keep spinny within while rotating
@@ -114,6 +118,9 @@ $card-wspace = $card-width * 0.25
     overflow-y: auto
     justify-content: center
     align-content: space-around
+
+    &.hide-before-load
+        display: none
 
     & .playing-card
         height: var(--card-height)
@@ -151,5 +158,23 @@ $card-wspace = $card-width * 0.25
         justify-content: center
         column-gap: 18px
 
+        & .turntable-cue-lever-spacer
+            display: none
+            visibility: hidden
+
         & button
+            height: 30px
+            width: 35px
+            border-width: 2px
             padding: 3px 9px
+
+        & .turntable-cue-lever-regression:disabled + .turntable-cue-lever-spacer:has(+ .turntable-cue-lever-progression:disabled)
+            display: inline-block
+            visibility: visible
+            margin: 0 4.5px
+
+        & .turntable-cue-lever-regression:disabled:has(+ .turntable-cue-lever-spacer + .turntable-cue-lever-progression:disabled)
+            visibility: hidden
+
+        & .turntable-cue-lever-regression:disabled + .turntable-cue-lever-spacer + .turntable-cue-lever-progression:disabled
+            visibility: hidden
