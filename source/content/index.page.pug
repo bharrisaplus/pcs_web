@@ -19,14 +19,24 @@ block html_body
     body#pcs-shell
         header
             #title-marquee
-                h2 (P)seudo (C)ard (S)huffler
+                h2 
+                    b
+                        |(P)
+                    | seudo&nbsp;
+                    b
+                        | (C)
+                    | ard&nbsp;
+                    b
+                        | (S)
+                    | huffler
+
                 svg.markl(role="img" aria-labelledby="pcs-logo-title pcs-logo-description")
                     title(id="pcs-logo-title") pcs logo
                     desc(id="pcs-logo-description") A scribbly sqwiggle
                     use(href="#pcs-logo")
             #ribbon
                 .ribbon-swish
-                    .brush
+                    #brush
                         select
                             option(value=0 selected)="Default"
                 .ribbon-bow
