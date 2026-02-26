@@ -34,6 +34,12 @@
         outline-width: 2px
         outline-style: ridge
         outline-color: var(--button-sob)
+        translate: 0 0
+        box-shadow: @css { 3px 2.5px rgba(var(--common-dark-rgb), 0.5); }
+
+        &:active
+            box-shadow: @css { 1.5px 1px rgba(var(--common-dark-rgb), 0.5); }
+            translate: 0 1.5px
 
 
 #pageload-curtain
