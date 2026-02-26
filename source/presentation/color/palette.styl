@@ -9,14 +9,18 @@ $peach = #FFE6A7
 $fl-cyan = #81F0E5
 
 :root
-	--loading-curtain: rgba($pcs-black, 0.36)
-	--turntable-dustcover: rgba($pcs-black, 0.75)
-	--turntable-dustcover-mix: rgba($pcs-black, 0.375)
-	--card-base: $card-stock
-	--card-shimmer: rgba($card-stock, 0.5)
-	--bg-emerald: $card-table-green
+    --common-dark: $pcs-black
+    --common-dark-rgb: red($pcs-black), green($pcs-black), blue($pcs-black)
+    --loading-curtain: @css { rgba(var(--common-dark-rgb), 0.36); }
+    --turntable-dustcover: @css { rgba(var(--common-dark-rgb), 0.75); }
+    --turntable-dustcover-mix: @css { rgba(var(--common-dark-rgb), 0.375); }
+    --button-sob: @css { rgba(var(--common-dark-rgb), 0.3); }
+    --card-base: $card-stock
+    --card-base-rgb: red($card-stock), green($card-stock), blue($card-stock)
+    --card-shimmer: @css { rgba(var(--card-base-rgb), 0.5); }
+    --bg-emerald: $card-table-green
 
-	--debug-1-color: $cool-grey
-	--debug-2-color: $lion
-	--debug-3-color: $peach
-	--debug-4-color: $fl-cyan
+    --debug-1-color: $cool-grey
+    --debug-2-color: $lion
+    --debug-3-color: $peach
+    --debug-4-color: $fl-cyan
