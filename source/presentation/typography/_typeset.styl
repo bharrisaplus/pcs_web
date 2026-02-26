@@ -1,11 +1,14 @@
 $base-font-size = 16px
 $base-font-families = 'Monaco', monospace
 
+$userinput-font-families = system-ui, Georgia, serif
+
 :root
     --normal-size: 16px
     --medium-size: 1.125rem // 16 * 1.125 = 18px
 
     --basic-font-stack: $base-font-families
+    --ctrls-font-stack: $userinput-font-families
 
     --regular-weight: 400
     --light-weight: 300
@@ -19,3 +22,6 @@ $base-font-families = 'Monaco', monospace
 
     & b
         font-weight: var(--medium-weight)
+
+textarea, input, button, select, option
+    font-family: var(--ctrls-font-stack)
