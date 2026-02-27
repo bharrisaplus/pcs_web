@@ -94,27 +94,24 @@ const makeTurntablePart = (containerID) => {
     let
       itchID, itchSpot,
       /** @type {Element} */
-      itch$dsptchr = null;
+      $itchr = null;
 
     if (_clickEvt.target == $cueNext) {
       itchID = Math.min(Number.parseInt($pickup.dataset.oglo), _g.cardMax) + 1;
       itchSpot = Math.min(Number.parseInt($pickup.dataset.spot), _g.cardMax) + 1;
-      itch$dsptchr = $cueNext;
+      $itchr = $cueNext;
     } else if (_clickEvt.target == $cuePrevious) {
       itchID = Math.max(Number.parseInt($pickup.dataset.oglo), -1) - 1;
       itchSpot = Math.max(Number.parseInt($pickup.dataset.spot), -1) - 1;
-      itch$dsptchr = $cuePrevious;
+      $itchr = $cuePrevious;
     }
 
-    if (
-      itchID < 0 || itchID >= _g.cardMax ||
-      itchSpot < 0 || itchSpot >= _g.cardMax
-      ) { return; }
+    if (itchID < 0 || itchID >= _g.cardMax || itchSpot < 0 || itchSpot >= _g.cardMax) { return; }
 
-    if (itch$dsptchr) {
+    if ($itchr) {
       const
         /** @type {PCSEventOpts} */
-        itchEvtOpt = { detail: { msg: `${itchSpot}[::|::]${itchID}`, $dispatcher: itch$dsptchr } },
+        itchEvtOpt = { detail: { msg: `${itchSpot}[::|::]${itchID}`, $dispatcher: $itchr } },
         /** @type {PCSEvent} */
         itchEvt = new CustomEvent(_g.notices.scratch, itchEvtOpt);
 
@@ -127,7 +124,6 @@ const makeTurntablePart = (containerID) => {
   const move_arm = (cueInfo) => {
     if ($container.matches(':popover-open')) {
       _update(cueInfo);
-      console.debug(cueInfo);
     }
   };
 
