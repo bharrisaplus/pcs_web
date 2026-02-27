@@ -145,8 +145,8 @@
  *
  * @property {boolean} isOpen
  * @property {number} cursor
- * @property {string} nextBtn
- * @property {string} prevBtn
+ * @property {string} nextBtn - {@link CSSStyleRule.selectorText}
+ * @property {string} prevBtn - {@link CSSStyleRule.selectorText}
  * @property {function(CardIntri)} loadTurntable
  * @property {function(CardIntri, boolean)} spinTurntable
  * @memberof Part
@@ -164,6 +164,7 @@
  *    </tableau>
  *
  * @property {[number]} currentOrder
+ * @property {function() :void} prepareTableau
  * @memberof Part
  */
 
@@ -197,6 +198,7 @@
  *      <turntable /> <- hud for card closeup - {@link Part.Turntable}
  *    </lattice>
  *
+ * @property {Readonly<Tableau>} landingDingus
  * @property {Readonly<Turntable>} landingHUD
  * @memberof Lattice
  */
