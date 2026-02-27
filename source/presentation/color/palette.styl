@@ -11,10 +11,12 @@ $fl-cyan = #81F0E5
 :root
     --common-dark: $pcs-black
     --common-dark-rgb: red($pcs-black), green($pcs-black), blue($pcs-black)
+    --common-dark-fade: @css { rgba(var(--common-dark-rgb), 0.5); }
+
     --loading-curtain: @css { rgba(var(--common-dark-rgb), 0.36); }
     --turntable-dustcover: @css { rgba(var(--common-dark-rgb), 0.75); }
     --turntable-dustcover-mix: @css { rgba(var(--common-dark-rgb), 0.375); }
-    --button-sob: @css { rgba(var(--common-dark-rgb), 0.3); }
+    --claw-button-sob: @css { rgba(var(--common-dark-rgb), 0.3); }
     --card-base: $card-stock
     --card-base-rgb: red($card-stock), green($card-stock), blue($card-stock)
     --card-shimmer: @css { rgba(var(--card-base-rgb), 0.5); }
