@@ -14,12 +14,13 @@ const
   bootOverlaySpinner = '.loading-spinny',
   cardView = '#tableau',
   cardOverlay = '#turntable',
+  cardMenu = '#ribbon',
   preloadDest = ".inline-svg-assets-here",
   /** @type {VerifynLoad} */
   preloadThings = new Map([["#card-sot", "#card-sheet"]]);
 
 document.addEventListener('DOMContentLoaded', () => {
-  const landingPage = cobbleLanding(cardView, cardOverlay, cardManager);
+  const landingPage = cobbleLanding(cardView, cardOverlay, cardMenu, cardManager);
 
   if (appCustodian.yapFriendly) {
     console.debug('console friendly environment');

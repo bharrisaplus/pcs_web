@@ -10,15 +10,16 @@ const all_events = {
   needle: 'needle',
   scratch: 'scratch',
   mix: "mix",
-  chop: "chop"
+  chop: "chop",
+  splash: "splash"
 };
 
 /** @type {GlobalDeclarations} */
 const _globals = {
   appID: "pcs-shell",
   cardMax: 52,
-  suites: ["Spade", "Diamond", "Club", "Heart"],
-  cnames: ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King'],
+  suites: Object.freeze(["Spade", "Diamond", "Club", "Heart"]),
+  cnames: Object.freeze(['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']),
   ctitlePrefix: 'Number',
   cdescPrefix: "Card in position",
   pcscardRef: '#pcs-card',

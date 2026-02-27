@@ -7,7 +7,7 @@
  */
 
 /**
- * @typedef {' kick' | 'needle' | 'scratch' | 'mix' | 'chop'} PCSEventType
+ * @typedef {' kick' | 'needle' | 'scratch' | 'mix' | 'chop' | 'splash'} PCSEventType
  *
  * @typedef {Object} PCSEventTypes - {@link CustomEvent.type}
  * @property {'kick'} kick Start app
@@ -15,6 +15,7 @@
  * @property {'scratch'} scratch Update Popover
  * @property {'mix'} mix Shuffle
  * @property {'chop'} chop Cut and Paste
+ * @property {'splash'} splash Change Background Color
  * @see CustomEvent.type
  */
 
@@ -44,10 +45,7 @@
  * @property {'magnified view of card'} pcsCardTitle
  * @property {'A single card up close and personal'} pcsCardDesc
  * @property {Readonly<PCSEventTypes>} notices
- * @property {[
- *  'Ace', 'Two', 'Three', 'Four', 'Five', 'Six',
- *  'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King'
- * ]} cnames
+ * @property {['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']} cnames
  */
 
 /**
@@ -177,8 +175,8 @@
  *      <brush /> <- changing background color
  *    </ribbon>
  *
- * @property {string} lastPaste
- * @property {string} lastRender
+ * @property {boolean} isBusy
+ * @property {CSSelector} dyeInput
  * @memberof Part
  */
 

@@ -7,6 +7,7 @@ import { default as _g } from '../_meta/_glods.mjs';
 import { default as getTurntable } from '../parts/turntable.part.mjs';
 import { default as getDealer } from '../hands/dealer.hand.mjs';
 import { default as getTableau } from '../parts/tableau.part.mjs';
+import { default as getRibbon } from '../parts/ribbon.part.mjs';
 
 
 const cardShark = getDealer();
@@ -14,15 +15,17 @@ const cardShark = getDealer();
 /**
  * @param  {CSSelector} tableauID The dingus element - {@link Part.Tableau}
  * @param  {CSSelector} turntableID The hud element - {@link Part.Turntable}
+ * @param  {CSSelector} ribbonID the panel element - {@link Part.Ribbon}
  * @param  {Bank.Deck} itemVault The card state
  *
  * @return {Readonly<Lattice.Landing>} home screen manager - {@link Lattice.Landing}
  */
-const scaffoldLandingLattice = (tableauID, turntableID, itemVault) => {
+const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => {
   /** @type {number[]} */
   let _landingCards = [];
 
   const
+    panel = getRibbon(ribbonID),
     dingus = getTableau(tableauID),
     hud = getTurntable(turntableID);
 
@@ -62,6 +65,17 @@ const scaffoldLandingLattice = (tableauID, turntableID, itemVault) => {
     itemVault.updateCards(_landingCards);
   };
 
+  /** @param {PCSEvent} _pcsevt */
+  const maybe_change_color = (_pcsevt) => {
+    if (
+      _pcsevt.detail?.$dispatcher == document.querySelector(panel.dyeInput) &&
+      _pcsevt.detail?.msg
+    ) {
+      document.querySelector(tableauID).className = `${_pcsevt.detail.msg}-dye`;
+      console.debug(`Changing color to ${_pcsevt.detail?.msg}`);
+    }
+  };
+
 
   _landingCards = dingus.currentOrder;
 
@@ -73,6 +87,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, itemVault) => {
   } else {
     document.querySelector(`#${_g.appID}`)?.addEventListener(_g.notices.needle, maybe_open_hud);
     document.querySelector(`#${_g.appID}`)?.addEventListener(_g.notices.scratch, maybe_update_hud);
+    document.querySelector(`#${_g.appID}`)?.addEventListener(_g.notices.splash, maybe_change_color);
 
     dingus.prepareTableau();
     itemVault.updateCards(_landingCards);
