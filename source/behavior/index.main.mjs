@@ -22,18 +22,12 @@ const
 document.addEventListener('DOMContentLoaded', () => {
   const landingPage = cobbleLanding(cardView, cardOverlay, cardMenu, cardManager);
 
-  if (appCustodian.yapFriendly) {
-    console.debug('console friendly environment');
-    console.debug(landingPage);
-  }
+  if (appCustodian.yapFriendly) { console.debug('console friendly environment'); }
 
   window.addEventListener(_g.notices.kick, () => {
-    const $reveal = document.querySelector(cardView);
+    landingPage.hookUp();
 
-    $reveal.setAttribute('style', '');
-    $reveal.classList.remove('hide-before-load');
-
-    console.info("pcs started");
+    if (appCustodian.yapFriendly) { console.info("pcs started"); }
   }, { once: true });
 
   appCustodian.startRoutine(preloadThings, preloadDest, bootOverlay, bootOverlaySpinner);

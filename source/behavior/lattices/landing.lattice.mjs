@@ -42,7 +42,9 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
 
   /** @param {PCSEvent} _pcsevt */
   const maybe_update_hud = (_pcsevt) => {
-    let hudBits = [];
+    let
+      goBack = false;
+      hudBits = [];
 
     const msgBits = _pcsevt.detail.msg.split("[::|::]").map((itm) => Number.parseInt(itm));
 
@@ -65,6 +67,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
     itemVault.updateCards(_landingCards);
   };
 
+
   /** @param {PCSEvent} _pcsevt */
   const maybe_change_color = (_pcsevt) => {
     if (
@@ -77,25 +80,39 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
   };
 
 
+  /** @returns {boolean} */
+  const tap_in = () => {
+    /** @type {boolean} */
+    let maybe_success;
+    const
+      $appShell = document.querySelector(`#${_g.appID}`),
+      $tableau = document.querySelector(tableauID);
+
+    $tableau.setAttribute('style', '');
+    $tableau.classList.remove('hide-before-load');
+
+    if (!$appShell) { maybe_success = false; }
+
+    $appShell.addEventListener(_g.notices.needle, maybe_open_hud);
+    $appShell.addEventListener(_g.notices.scratch, maybe_update_hud);
+    $appShell.addEventListener(_g.notices.splash, maybe_change_color);
+    maybe_success = true;
+
+    return maybe_success;
+  };
+
+
   _landingCards = dingus.currentOrder;
 
   if (_landingCards.length < _g.cardMax) {
     console.error("Issue with Tableau. Cancelling setup");
-    console.debug(_landingCards);
-    console.debug(dingus);
-    console.debug(hud);
   } else {
-    document.querySelector(`#${_g.appID}`)?.addEventListener(_g.notices.needle, maybe_open_hud);
-    document.querySelector(`#${_g.appID}`)?.addEventListener(_g.notices.scratch, maybe_update_hud);
-    document.querySelector(`#${_g.appID}`)?.addEventListener(_g.notices.splash, maybe_change_color);
-
     dingus.prepareTableau();
     itemVault.updateCards(_landingCards);
   }
 
   return Object.freeze({
-    landingDingus: dingus,
-    landingHUD: hud
+    hookUp: tap_in
   });
 };
 

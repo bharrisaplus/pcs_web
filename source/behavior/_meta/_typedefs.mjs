@@ -196,8 +196,7 @@
  *      <turntable /> <- hud for card closeup - {@link Part.Turntable}
  *    </lattice>
  *
- * @property {Readonly<Tableau>} landingDingus
- * @property {Readonly<Turntable>} landingHUD
+ * @property {function() :void} hookUp
  * @memberof Lattice
  */
 
