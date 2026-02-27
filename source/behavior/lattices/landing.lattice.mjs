@@ -25,9 +25,43 @@ const scaffoldLandingLattice = (tableauID, turntableID, itemVault) => {
   const
     dingus = getTableau(tableauID),
     hud = getTurntable(turntableID);
-  
-  const maybe_open_hud = () => {};
-  const maybe_update_hud = () => {};
+
+
+  /** @param {PCSEvent} _pcsevt */
+  const maybe_open_hud = (_pcsevt) => {
+    hud.loadTurntable(cardShark.getCard(
+      _pcsevt.detail.msg, _pcsevt.detail.$dispatcher?.dataset.oid
+    ));
+
+    _landingCards = dingus.currentOrder;
+  };
+
+
+  /** @param {PCSEvent} _pcsevt */
+  const maybe_update_hud = (_pcsevt) => {
+    let hudBits = [];
+
+    const msgBits = _pcsevt.detail.msg.split("[::|::]").map((itm) => Number.parseInt(itm));
+
+    if (_pcsevt.detail.$dispatcher == document.querySelector(hud.prevBtn)) {
+      goBack = true;
+      hudBits = hud.cursor.split("[::|::]").map((itm) => {
+        return Math.max(Number.parseInt(itm), -1) - 1;
+      });
+    } else if (_pcsevt.detail.$dispatcher == document.querySelector(hud.nextBtn)) {
+      hudBits = hud.cursor.split("[::|::]").map((itm) => {
+        return Math.min(Number.parseInt(itm), _g.cardMax) + 1;
+      });
+    }
+
+    if (hudBits.length > 0 && msgBits[0] == hudBits[0] && msgBits[1] == hudBits[1]) {
+      hud.spinTurntable(cardShark.getCard(msgBits[0], msgBits[1]));
+      console.log(`rotating turntable to ${goBack ? "previous" : "next"}`);
+    }
+
+    itemVault.updateCards(_landingCards);
+  };
+
 
   _landingCards = dingus.currentOrder;
 
@@ -37,41 +71,8 @@ const scaffoldLandingLattice = (tableauID, turntableID, itemVault) => {
     console.debug(dingus);
     console.debug(hud);
   } else {
-    document.querySelector(`#${_g.appID}`)?.addEventListener(_g.notices.needle,
-      (/** @type {PCSEvent} */ _pcsevt) => {
-        hud.loadTurntable(cardShark.getCard(
-          _pcsevt.detail.msg, _pcsevt.detail.$dispatcher?.dataset.oid
-        ));
-
-        _landingCards = dingus.currentOrder;
-      }
-    );
-
-    document.querySelector(`#${_g.appID}`)?.addEventListener(_g.notices.scratch,
-      (/** @type {PCSEvent} */ _pcsevt) => {
-        let hudBits = [];
-
-        const msgBits = _pcsevt.detail.msg.split("[::|::]").map((itm) => Number.parseInt(itm));
-
-        if (_pcsevt.detail.$dispatcher == document.querySelector(hud.prevBtn)) {
-          goBack = true;
-          hudBits = hud.cursor.split("[::|::]").map((itm) => {
-            return Math.max(Number.parseInt(itm), -1) - 1;
-          });
-        } else if (_pcsevt.detail.$dispatcher == document.querySelector(hud.nextBtn)) {
-          hudBits = hud.cursor.split("[::|::]").map((itm) => {
-            return Math.min(Number.parseInt(itm), _g.cardMax) + 1;
-          });
-        }
-
-        if (hudBits.length > 0 && msgBits[0] == hudBits[0] && msgBits[1] == hudBits[1]) {
-          hud.spinTurntable(cardShark.getCard(msgBits[0], msgBits[1]));
-          console.log(`rotating turntable to ${goBack ? "previous" : "next"}`);
-        }
-
-        itemVault.updateCards(_landingCards);
-      }
-    );
+    document.querySelector(`#${_g.appID}`)?.addEventListener(_g.notices.needle, maybe_open_hud);
+    document.querySelector(`#${_g.appID}`)?.addEventListener(_g.notices.scratch, maybe_update_hud);
 
     dingus.prepareTableau();
     itemVault.updateCards(_landingCards);

@@ -33,9 +33,8 @@ const makeTurntablePart = (containerID) => {
     /** @type {HTMLButtonElement} */
     $cueNext = $container.querySelector(`.${containerName}-cue-lever-progression`);
 
-  /**
-   * @param  {ToggleEvent} _toggleEvt
-   */
+
+  /** @param  {ToggleEvent} _toggleEvt */
   const _tidy = (_toggleEvt) => {
     if (_toggleEvt.oldState === 'open' && _toggleEvt.newState === 'closed') {
       console.log("closing turntable");
@@ -50,8 +49,10 @@ const makeTurntablePart = (containerID) => {
     }
   };
 
+
   /**
    * @param  {CardIntri} pickupInfo
+   *
    * @returns {boolean}
    */
   const _update = (_updateInfo) => {
@@ -78,9 +79,7 @@ const makeTurntablePart = (containerID) => {
   };
 
 
-  /**
-   * @param {CardIntri} pickupInfo
-   */
+  /** @param {CardIntri} pickupInfo */
   const set_pickup = (pickupInfo) => {
     if (!$container.matches(':popover-open')) {
       if(_update(pickupInfo)) {
@@ -90,13 +89,11 @@ const makeTurntablePart = (containerID) => {
   };
 
 
-  /**
-   * @param  {PointerEvent} _clickEvent
-   */
+  /** @param  {PointerEvent} _clickEvent */
   const _determine_followup = (_clickEvt) => {
     let
       itchID, itchSpot,
-    /** @type {Element} */
+      /** @type {Element} */
       itch$dsptchr = null;
 
     if (_clickEvt.target == $cueNext) {
@@ -126,16 +123,13 @@ const makeTurntablePart = (containerID) => {
   };
 
 
-  /**
-   * @param  {CardIntri} _cueInfo
-   */
+  /** @param  {CardIntri} _cueInfo */
   const move_arm = (cueInfo) => {
     if ($container.matches(':popover-open')) {
       _update(cueInfo);
       console.debug(cueInfo);
     }
   };
-
 
 
   $container.setAttribute('popover', 'manual'); // only close via $turnOff
@@ -170,12 +164,10 @@ const makeTurntablePart = (containerID) => {
       return `${$pickup.dataset.spot || _g.cardMax}[::|::]${$pickup.dataset.oglo || _g.cardMax}`;
     },
 
-    /** @type {string} - {@link CSSStyleRule.selectorText} */
     get nextBtn() {
       return `${containerID} .${$cueNext.className.split(" ").join('.')}`;
     },
 
-    /** @type {string} - {@link CSSStyleRule.selectorText} */
     get prevBtn() {
       return `${containerID} .${$cuePrevious.className.split(" ").join('.')}`;
     }
