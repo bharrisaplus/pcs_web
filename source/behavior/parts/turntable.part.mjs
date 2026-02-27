@@ -40,11 +40,14 @@ const makeTurntablePart = (containerID) => {
       console.log("closing turntable");
       $pickup.removeAttribute('data-spot');
       $pickup.removeAttribute('data-oglo');
-      $pickup.querySelector('use').setAttribute('href', _g.pcscardRef);
-      $pickup.querySelector('title').textContent = _g.pcscardTitle;
+      $pickup.querySelector('title').textContent = _g.pcsCardTitle;
       $pickup.querySelector('desc').textContent = _g.pcsCardDesc;
-      $cueNext.disabled = true;
-      $cuePrevious.disabled = true;
+
+      window.setTimeout(() => {
+        $pickup.querySelector('use').setAttribute('href', _g.pcscardRef);
+        $cueNext.disabled = true;
+        $cuePrevious.disabled = true;
+      }, 650);
     } else if (_toggleEvt.oldState === 'closed' && _toggleEvt.newState === 'open') {
       console.log("opening turntable");
     }
