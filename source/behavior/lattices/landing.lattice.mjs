@@ -44,27 +44,33 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
   const maybe_update_hud = (_pcsevt) => {
     let
       goBack = false;
-      hudBits = [];
-
-    const msgBits = _pcsevt.detail.msg.split("[::|::]").map((itm) => Number.parseInt(itm));
+      hudBits = [],
+      msgBits = [];
 
     if (_pcsevt.detail.$dispatcher == document.querySelector(hud.prevBtn)) {
       goBack = true;
-      hudBits = hud.cursor.split("[::|::]").map((itm) => {
-        return Math.max(Number.parseInt(itm), -1) - 1;
+      hudBits = hud.cursor.split("[::|::]").map((hudBit) => {
+        return Math.max(Number.parseInt(hudBit), -1) - 1;
       });
+
+      msgBits = _pcsevt.detail.msg.split("[::|::]").map((msgBit) => {
+        return Math.max(Number.parseInt(msgBit), -1) - 1;
+      })
     } else if (_pcsevt.detail.$dispatcher == document.querySelector(hud.nextBtn)) {
-      hudBits = hud.cursor.split("[::|::]").map((itm) => {
-        return Math.min(Number.parseInt(itm), _g.cardMax) + 1;
+      hudBits = hud.cursor.split("[::|::]").map((hudBit) => {
+        return Math.min(Number.parseInt(hudBit), _g.cardMax) + 1;
+      });
+
+      msgBits = _pcsevt.detail.msg.split("[::|::]").map((msgBit) => {
+        return Math.min(Number.parseInt(msgBit), _g.cardMax) + 1;
       });
     }
 
     if (hudBits.length > 0 && msgBits[0] == hudBits[0] && msgBits[1] == hudBits[1]) {
       hud.spinTurntable(cardShark.getCard(msgBits[0], msgBits[1]));
+      itemVault.updateCards(_landingCards);
       console.log(`rotating turntable to ${goBack ? "previous" : "next"}`);
     }
-
-    itemVault.updateCards(_landingCards);
   };
 
 

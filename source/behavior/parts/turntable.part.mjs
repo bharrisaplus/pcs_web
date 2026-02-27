@@ -38,7 +38,8 @@ const makeTurntablePart = (containerID) => {
   const _tidy = (_toggleEvt) => {
     if (_toggleEvt.oldState === 'open' && _toggleEvt.newState === 'closed') {
       console.log("closing turntable");
-      $pickup.setAttribute('data-cid', 54);
+      $pickup.removeAttribute('data-spot');
+      $pickup.removeAttribute('data-oglo');
       $pickup.querySelector('use').setAttribute('href', _g.pcscardRef);
       $pickup.querySelector('title').textContent = _g.pcscardTitle;
       $pickup.querySelector('desc').textContent = _g.pcsCardDesc;
@@ -89,31 +90,24 @@ const makeTurntablePart = (containerID) => {
   };
 
 
-  /** @param  {PointerEvent} _clickEvent */
+  /** @param  {PointerEvent} _clickEvt */
   const _determine_followup = (_clickEvt) => {
-    let
-      itchID, itchSpot,
-      /** @type {Element} */
-      $itchr = null;
+    let $itchr;
 
     if (_clickEvt.target == $cueNext) {
-      itchID = Math.min(Number.parseInt($pickup.dataset.oglo), _g.cardMax) + 1;
-      itchSpot = Math.min(Number.parseInt($pickup.dataset.spot), _g.cardMax) + 1;
       $itchr = $cueNext;
     } else if (_clickEvt.target == $cuePrevious) {
-      itchID = Math.max(Number.parseInt($pickup.dataset.oglo), -1) - 1;
-      itchSpot = Math.max(Number.parseInt($pickup.dataset.spot), -1) - 1;
       $itchr = $cuePrevious;
     }
 
-    if (itchID < 0 || itchID >= _g.cardMax || itchSpot < 0 || itchSpot >= _g.cardMax) { return; }
-
     if ($itchr) {
-      const
-        /** @type {PCSEventOpts} */
-        itchEvtOpt = { detail: { msg: `${itchSpot}[::|::]${itchID}`, $dispatcher: $itchr } },
-        /** @type {PCSEvent} */
-        itchEvt = new CustomEvent(_g.notices.scratch, itchEvtOpt);
+      /** @type {PCSEvent} */
+      const itchEvt = new CustomEvent(_g.notices.scratch, {
+        detail: {
+          msg: `${$pickup.dataset.spot || '-1'}[::|::]${$pickup.dataset.oglo || '-1'}`,
+          $dispatcher: $itchr
+        }
+      });
 
       document.querySelector(`#${_g.appID}`).dispatchEvent(itchEvt);
     }
