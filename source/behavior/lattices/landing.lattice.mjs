@@ -70,13 +70,12 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
 
   /** @param {PCSEvent} _pcsevt */
   const maybe_change_color = (_pcsevt) => {
-    if (
-      _pcsevt.detail?.$dispatcher == document.querySelector(panel.dyeInput) &&
-      _pcsevt.detail?.msg
-    ) {
-      document.querySelector(tableauID).className = `${_pcsevt.detail.msg}-dye`;
-      console.debug(`Changing color to ${_pcsevt.detail?.msg}`);
-    }
+    if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.dyeInput) ||
+      !_pcsevt.detail?.msg
+    ) { return; }
+
+    document.querySelector(tableauID).className = `${_pcsevt.detail.msg}-dye`;
+    console.debug(`Changing color to ${_pcsevt.detail?.msg}`);
   };
 
 
@@ -107,7 +106,6 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
   if (_landingCards.length < _g.cardMax) {
     console.error("Issue with Tableau. Cancelling setup");
   } else {
-    dingus.prepareTableau();
     itemVault.updateCards(_landingCards);
   }
 

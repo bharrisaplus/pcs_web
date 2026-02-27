@@ -162,7 +162,6 @@
  *    </tableau>
  *
  * @property {[number]} currentOrder
- * @property {function() :void} prepareTableau
  * @memberof Part
  */
 

@@ -1,6 +1,6 @@
 
 /**
- * @import {CSSelector, Part} from '../_meta/_typedefs.mjs'
+ * @import {PCSEvent, CSSelector, Part} from '../_meta/_typedefs.mjs'
  */
 
 import { default as _g } from '../_meta/_glods.mjs';
@@ -14,33 +14,22 @@ import { default as _g } from '../_meta/_glods.mjs';
 const makeTableauPart = (containerID) => {
   const itemSelector = `${containerID} .playing-card`;
 
-  let pinCallCount = 0;
+  document.querySelectorAll(itemSelector)?.forEach(($item, itemIdx) => {
+    $item.addEventListener('click', (_clickEvt) => {
+      if ($item != _clickEvt.target && $item != _clickEvt.target?.parentElement) { return; }
 
-  const pin_items = () => {
-    if (pinCallCount == 0) {
-      document.querySelectorAll(itemSelector)?.forEach(($item, itemIdx) => {
-        $item.addEventListener('click', (_clickEvt) => {
-          console.log(`Clicked card ${itemIdx}: ${$item.dataset.oid}`);
-          if ($item == _clickEvt.target || $item == _clickEvt.target?.parentElement) {
-            /** @type {PCSEvent} */
-            const needleDown = new CustomEvent(_g.notices.needle, { detail: {
-              msg: itemIdx.toString(),
-              $dispatcher: $item
-            }});
+      /** @type {PCSEvent} */
+      const needleDown = new CustomEvent(_g.notices.needle, { detail: {
+        msg: itemIdx.toString(),
+        $dispatcher: $item
+      }});
 
-            document.querySelector(`#${_g.appID}`)?.dispatchEvent(needleDown);
-          }
-        });
-      });
-
-      pinCallCount++;
-    }
-  };
+      document.querySelector(`#${_g.appID}`)?.dispatchEvent(needleDown);
+    });
+  });
 
 
   return Object.freeze({
-    prepareTableau: pin_items,
-
     /** @returns {number[]} */
     get currentOrder () {
       return Array.from(
@@ -53,6 +42,7 @@ const makeTableauPart = (containerID) => {
     }
   });
 };
+
 
 /** @type {Part.Tableau} */
 let singleTableau;
@@ -70,6 +60,7 @@ const getTableau = (getTableauContainerID) => {
 
   return singleTableau
 };
+
 
 export default getTableau;
 
