@@ -80,7 +80,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
       !_pcsevt.detail?.msg
     ) { return; }
 
-    document.querySelector(tableauID).className = `${_pcsevt.detail.msg}-dye`;
+    document.querySelector(`#${_g.appID} main`)?.setAttribute('data-dye', _pcsevt.detail.msg);
     console.debug(`Changing color to ${_pcsevt.detail?.msg}`);
   };
 

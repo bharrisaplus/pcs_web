@@ -10,6 +10,14 @@
 #pcs-shell
     & main
         background: var(--bg-emerald)
+    & main[data-dye="green-dye"]
+        background: var(--bg-emerald)
+    & main[data-dye="red-dye"]
+        background: var(--bg-cherry)
+    & main[data-dye="blue-dye"]
+        background: var(--bg-twilight)
+    & main[data-dye="purple-dye"]
+        background: var(--bg-amethyst)
 
 
 #title-marquee h2
@@ -26,8 +34,21 @@
         background-color: var(--debug-3-color)
 
 #brush
-    & select
+    & select[name="brush-wells"]
         border-style: ridge
+
+        & option:nth-of-type(2)
+            background-color: var(--emerald-fade)
+
+        & option:nth-of-type(3)
+            background-color: var(--cherry-fade)
+
+        & option:nth-of-type(4)
+            background-color: var(--twilight-fade)
+
+        & option:nth-of-type(5)
+            background-color: var(--amethyst-fade)
+
 
 #claw
     & button
