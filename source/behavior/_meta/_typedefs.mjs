@@ -148,7 +148,7 @@
  * @property {string} nextBtn - {@link CSSStyleRule.selectorText}
  * @property {string} prevBtn - {@link CSSStyleRule.selectorText}
  * @property {function(CardIntri)} loadTurntable
- * @property {function(CardIntri, boolean)} spinTurntable
+ * @property {function(CardIntri)} spinTurntable
  * @memberof Part
  */
 

@@ -93,7 +93,7 @@ const makeTurntablePart = (containerID) => {
   /**
    * @param  {PointerEvent} _clickEvent
    */
-  const _itch = (_clickEvt) => {
+  const _determine_followup = (_clickEvt) => {
     let
       itchID, itchSpot,
     /** @type {Element} */
@@ -128,16 +128,11 @@ const makeTurntablePart = (containerID) => {
 
   /**
    * @param  {CardIntri} _cueInfo
-   * @param  {boolean} backDirection
    */
-  const move_arm = (cueInfo, backDirection) => {
+  const move_arm = (cueInfo) => {
     if ($container.matches(':popover-open')) {
-      if(_update(cueInfo)) {
-        backDirection ? $cueNext.disabled = false : $cuePrevious.disabled = false;
-
-        console.log(`rotating turntable to ${backDirection ? "previous" : "next"} for:`);
-        console.debug(cueInfo);
-      }
+      _update(cueInfo);
+      console.debug(cueInfo);
     }
   };
 
@@ -145,8 +140,8 @@ const makeTurntablePart = (containerID) => {
 
   $container.setAttribute('popover', 'manual'); // only close via $turnOff
   $container.addEventListener('beforetoggle', _tidy, {signal: turntableAbortSignal});
-  $cueNext.addEventListener('click', _itch, {signal: turntableAbortSignal});
-  $cuePrevious.addEventListener('click', _itch, {signal: turntableAbortSignal});
+  $cueNext.addEventListener('click', _determine_followup, {signal: turntableAbortSignal});
+  $cuePrevious.addEventListener('click', _determine_followup, {signal: turntableAbortSignal});
 
   $turnOff.addEventListener("click", () => {
     $container.hidePopover();
@@ -170,13 +165,16 @@ const makeTurntablePart = (containerID) => {
     get isOpen() {
       return $container.matches(':popover-open');
     },
+
     get cursor() {
       return `${$pickup.dataset.spot || _g.cardMax}[::|::]${$pickup.dataset.oglo || _g.cardMax}`;
     },
+
     /** @type {string} - {@link CSSStyleRule.selectorText} */
     get nextBtn() {
       return `${containerID} .${$cueNext.className.split(" ").join('.')}`;
     },
+
     /** @type {string} - {@link CSSStyleRule.selectorText} */
     get prevBtn() {
       return `${containerID} .${$cuePrevious.className.split(" ").join('.')}`;
@@ -188,7 +186,7 @@ const makeTurntablePart = (containerID) => {
  * main Turntable instance
  * @type {Part.Turntable}
  */
-let reuseablePart = null;
+let reuseablePart;
 
 /**
  * Ensure single turntable per page but allow reuse

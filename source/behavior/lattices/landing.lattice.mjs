@@ -49,9 +49,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, itemVault) => {
 
     document.querySelector(`#${_g.appID}`)?.addEventListener(_g.notices.scratch,
       (/** @type {PCSEvent} */ _pcsevt) => {
-        let
-          goBack = false,
-          hudBits = [];
+        let hudBits = [];
 
         const msgBits = _pcsevt.detail.msg.split("[::|::]").map((itm) => Number.parseInt(itm));
 
@@ -67,7 +65,8 @@ const scaffoldLandingLattice = (tableauID, turntableID, itemVault) => {
         }
 
         if (hudBits.length > 0 && msgBits[0] == hudBits[0] && msgBits[1] == hudBits[1]) {
-          hud.spinTurntable(cardShark.getCard(msgBits[0], msgBits[1]), goBack);
+          hud.spinTurntable(cardShark.getCard(msgBits[0], msgBits[1]));
+          console.log(`rotating turntable to ${goBack ? "previous" : "next"}`);
         }
 
         itemVault.updateCards(_landingCards);
