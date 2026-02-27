@@ -33,13 +33,18 @@
     & button
         outline-width: 2px
         outline-style: ridge
-        outline-color: var(--button-sob)
+        outline-color: var(--claw-button-sob)
         translate: 0 0
-        box-shadow: @css { 3px 2.5px rgba(var(--common-dark-rgb), 0.5); }
+        box-shadow: @css { 3px 2.5px var(--common-dark-fade); }
 
         &:active
-            box-shadow: @css { 1.5px 1px rgba(var(--common-dark-rgb), 0.5); }
+            box-shadow: @css { 1.5px 1px var(--common-dark-fade); }
             translate: 0 1.5px
+
+    & .claw-drop
+        border-radius: 18px
+        border-style: dashed
+        border-color: var(--common-dark-fade)
 
 
 #pageload-curtain

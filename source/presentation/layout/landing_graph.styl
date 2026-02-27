@@ -63,6 +63,7 @@ $card-wspace = $card-width * 0.25
 #claw
     display: inline-flex
     column-gap: 18px
+    align-items: center
 
     & button
         height: 40px
@@ -70,6 +71,13 @@ $card-wspace = $card-width * 0.25
         aspect-ratio: 1/1
         border-width: 0
         border-radius: 4.5px
+
+    & .claw-drop
+        height: 25px
+        aspect-ratio: 5/1
+        margin-left: 18px
+        border-width: 1px
+        padding: 1px
 
 
 #pageload-curtain
@@ -154,7 +162,6 @@ $card-wspace = $card-width * 0.25
     & .turntable-cue-lever
         display: flex
         width: 100%
-        flex-flow: row nowrap
         justify-content: center
         column-gap: 18px
 
