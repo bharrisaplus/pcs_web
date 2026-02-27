@@ -1,17 +1,20 @@
 #ribbon
     .ribbon-swish
         #brush
-            select
-                option(value=0 selected)="Default"
+            select(name="brush-wells" aria-label="Background Color Change" aria-description="Pick a color for the area behind cards")
+                option(value=0 selected) Choose 🎨
+                option(value=1) Emerald
+                option(value=2) Cherry
+                option(value=3) Twilight
+                option(value=4) Amethyst
     .ribbon-bow
-        button
+        button(aria-label="Shuffle Cards" aria-descriptoin="Arranges the cards in random order")
             | ⧢
     .ribbon-flourish
         #claw
-            button
+            button.claw-txt(aria-label="Clipboard Copy" aria-description="Copies cards as text to clipboard")
                 | ⮺
-            div
-                button
-                    | 🖫
-                a
-                    | &nbsp;
+            button.claw-img(aria-label="Save Image" aria-description="Snaps cards as image for download")
+                | 🖫
+            a.claw-drop
+                | &nbsp;

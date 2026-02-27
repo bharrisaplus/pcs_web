@@ -20,14 +20,11 @@ block html_body
         header
             #title-marquee
                 h2 
-                    b
-                        |(P)
+                    b (P)
                     | seudo&nbsp;
-                    b
-                        | (C)
+                    b (C)
                     | ard&nbsp;
-                    b
-                        | (S)
+                    b (S)
                     | huffler
 
                 svg.markl(role="img" aria-labelledby="pcs-logo-title pcs-logo-description")
@@ -50,9 +47,10 @@ block html_body
                 div.inline-svg-assets-here(style="display: none; visibility: hidden;")
                     include graphic/misc/pcs-logo.svg
                     include graphic/misc/pcs-card.svg
+                    if ON_FILE_HOST
+                        include graphic/misc/carddeck.svg
 
                 if ON_FILE_HOST
                     script(src=ES_MAIN_URL defer)
-                    include graphic/misc/carddeck.svg
                 else
                     script(src=ES_MAIN_URL type="module" defer)
