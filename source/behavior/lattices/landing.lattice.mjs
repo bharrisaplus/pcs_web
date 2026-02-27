@@ -6,6 +6,7 @@
 import { default as _g } from '../_meta/_glods.mjs';
 import { default as getTurntable } from '../parts/turntable.part.mjs';
 import { default as getDealer } from '../hands/dealer.hand.mjs';
+import { default as getTableau } from '../parts/tableau.part.mjs';
 
 
 const cardShark = getDealer();
@@ -18,44 +19,35 @@ const cardShark = getDealer();
  * @return {Readonly<Lattice.Landing>} home screen manager - {@link Lattice.Landing}
  */
 const scaffoldLandingLattice = (tableauID, turntableID, itemVault) => {
-  let _$tableau = document.querySelector(tableauID);
-  const hud = getTurntable(turntableID);
+  /** @type {number[]} */
+  let _landingCards = [];
 
-  if (_$tableau) {
-    /** @type {number[]} */
-    let _landingCards = [];
+  const
+    dingus = getTableau(tableauID),
+    hud = getTurntable(turntableID);
+  
+  const maybe_open_hud = () => {};
+  const maybe_update_hud = () => {};
 
-    document.querySelector(`#${_g.appID}`).addEventListener(_g.notices.needle,
+  _landingCards = dingus.currentOrder;
+
+  if (_landingCards.length < _g.cardMax) {
+    console.error("Issue with Tableau. Cancelling setup");
+    console.debug(_landingCards);
+    console.debug(dingus);
+    console.debug(hud);
+  } else {
+    document.querySelector(`#${_g.appID}`)?.addEventListener(_g.notices.needle,
       (/** @type {PCSEvent} */ _pcsevt) => {
-        _$tableau.querySelectorAll(`li.playing-card`).forEach(($elm) => {
-          _landingCards.push($elm.dataset.oid);
-        });
-
         hud.loadTurntable(cardShark.getCard(
           _pcsevt.detail.msg, _pcsevt.detail.$dispatcher?.dataset.oid
         ));
+
+        _landingCards = dingus.currentOrder;
       }
     );
 
-
-    _$tableau.querySelectorAll(`li.playing-card`).forEach(($elm, elemIdx) => {
-      _landingCards.push($elm.dataset.oid);
-
-      $elm.addEventListener('click', () => {
-        console.log(`Value from click event element: ${$elm.dataset.oid}`);
-        console.log(`Index of click event element: ${elemIdx}`);
-        /** @type {PCSEvent} */
-        const needleDown = new CustomEvent(_g.notices.needle, { detail: {
-          msg: elemIdx.toString(),
-          $dispatcher: $elm
-        }});
-
-        document.querySelector(`#${_g.appID}`).dispatchEvent(needleDown);
-      });
-    });
-
-
-    document.querySelector(`#${_g.appID}`).addEventListener(_g.notices.scratch,
+    document.querySelector(`#${_g.appID}`)?.addEventListener(_g.notices.scratch,
       (/** @type {PCSEvent} */ _pcsevt) => {
         let
           goBack = false,
@@ -81,11 +73,13 @@ const scaffoldLandingLattice = (tableauID, turntableID, itemVault) => {
         itemVault.updateCards(_landingCards);
       }
     );
-  } else {
-    console.error("Could not find the tableau");
+
+    dingus.prepareTableau();
+    itemVault.updateCards(_landingCards);
   }
 
   return Object.freeze({
+    landingDingus: dingus,
     landingHUD: hud
   });
 };
