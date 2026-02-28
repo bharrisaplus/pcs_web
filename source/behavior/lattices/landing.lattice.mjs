@@ -43,7 +43,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
   /** @param {PCSEvent} _pcsevt */
   const maybe_update_hud = (_pcsevt) => {
     let
-      goBack = false;
+      goBack = false,
       hudBits = [],
       msgBits = [];
 
@@ -58,11 +58,11 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
       })
     } else if (_pcsevt.detail.$dispatcher == document.querySelector(hud.nextBtn)) {
       hudBits = hud.cursor.split("[::|::]").map((hudBit) => {
-        return Math.min(Number.parseInt(hudBit), _g.cardMax) + 1;
+        return Math.min(Number.parseInt(hudBit), _g.c_Max) + 1;
       });
 
       msgBits = _pcsevt.detail.msg.split("[::|::]").map((msgBit) => {
-        return Math.min(Number.parseInt(msgBit), _g.cardMax) + 1;
+        return Math.min(Number.parseInt(msgBit), _g.c_Max) + 1;
       });
     }
 
@@ -109,7 +109,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
 
   _landingCards = dingus.currentOrder;
 
-  if (_landingCards.length < _g.cardMax) {
+  if (_landingCards.length < _g.c_Max) {
     console.error("Issue with Tableau. Cancelling setup");
   } else {
     itemVault.updateCards(_landingCards);

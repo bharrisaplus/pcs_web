@@ -6,9 +6,7 @@
 import { default as _g } from '../_meta/_glods.mjs';
 
 
-/**
- * @returns {Readonly<Hand.Misc>} a helper - {@link Hand.Misc}
- */
+/** @returns {Readonly<Hand.Misc>} a helper - {@link Hand.Misc} */
 const makeMiscHand = () => {
   let cycleCount = 0;
   const console_free = (
@@ -110,6 +108,7 @@ const makeMiscHand = () => {
     }
   });
 };
+
 
 const singleMiscHand = makeMiscHand();
 

@@ -48,7 +48,6 @@ const makeTableauPart = (containerID) => {
 let singleTableau;
 
 /**
- *
  * @param {string} getTableauContainerID - {@link CSSStyleRule.selectorText}
  *
  * @returns {Readonly<Part.Tableau>} sole Tableau for the page - {@link Part.Turntable}

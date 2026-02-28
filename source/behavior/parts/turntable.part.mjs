@@ -40,11 +40,11 @@ const makeTurntablePart = (containerID) => {
       console.log("closing turntable");
       $pickup.removeAttribute('data-spot');
       $pickup.removeAttribute('data-oglo');
-      $pickup.querySelector('title').textContent = _g.pcsCardTitle;
-      $pickup.querySelector('desc').textContent = _g.pcsCardDesc;
+      $pickup.querySelector('title').textContent = _g.pcs_cardTitle;
+      $pickup.querySelector('desc').textContent = _g.pcs_cardDesc;
 
       window.setTimeout(() => {
-        $pickup.querySelector('use').setAttribute('href', _g.pcscardRef);
+        $pickup.querySelector('use').setAttribute('href', _g.pcs_cardRef);
         $cueNext.disabled = true;
         $cuePrevious.disabled = true;
       }, 650);
@@ -63,8 +63,8 @@ const makeTurntablePart = (containerID) => {
     let result = false;
 
     if (
-      _updateInfo.oglo > -1 || _updateInfo.oglo < _g.cardMax ||
-      _updateInfo.spot > -1 || _updateInfo.spot < _g.cardMax
+      _updateInfo.oglo > -1 || _updateInfo.oglo < _g.c_Max ||
+      _updateInfo.spot > -1 || _updateInfo.spot < _g.c_Max
     ){
       $pickup.setAttribute('data-spot', _updateInfo.spot);
       $pickup.setAttribute('data-oglo', _updateInfo.oglo);
@@ -73,7 +73,7 @@ const makeTurntablePart = (containerID) => {
       $pickup.querySelector('desc').textContent = _updateInfo.desc;
 
       $cuePrevious.disabled = _updateInfo.spot <= 0;
-      $cueNext.disabled = _updateInfo.spot >= _g.cardMax - 1;
+      $cueNext.disabled = _updateInfo.spot >= _g.c_Max - 1;
 
       console.info(`loading turntable for ${_updateInfo.title}`);
       result = true
@@ -139,7 +139,7 @@ const makeTurntablePart = (containerID) => {
       _tccount = 0;
       $cuePrevious.disabled = true;
       $cueNext.disabled = true;
-      $pickup.querySelector('use').setAttribute('href', _g.pcscardRef);
+      $pickup.querySelector('use').setAttribute('href', _g.pcs_cardRef);
       $container.showPopover();
     }
   }, {signal: turntableAbortSignal});
@@ -154,7 +154,7 @@ const makeTurntablePart = (containerID) => {
     },
 
     get cursor() {
-      return `${$pickup.dataset.spot || _g.cardMax}[::|::]${$pickup.dataset.oglo || _g.cardMax}`;
+      return `${$pickup.dataset.spot || _g.c_Max}[::|::]${$pickup.dataset.oglo || _g.c_Max}`;
     },
 
     get nextBtn() {
@@ -189,6 +189,7 @@ const rinseRepeatTurntable = (getTurntableContainerID) => {
 
   return reuseablePart;
 };
+
 
 export default rinseRepeatTurntable;
 export const debugName = "pcs:part:turntable";

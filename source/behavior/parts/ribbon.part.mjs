@@ -7,8 +7,8 @@ import { default as _g } from '../_meta/_glods.mjs';
 
 
 /**
- * 
  * @param {CSSelector} containerID - {@link CSSStyleRule.selectorText}
+ *
  * @returns {Readonly<Part.Ribbon>} the control panel
  */
 const makeRibbonPart = (containerID) => {
@@ -66,7 +66,7 @@ const makeRibbonPart = (containerID) => {
 /** @type {Part.Ribbon} */
 let singleRibbon;
 
-/** 
+/**
  * @param {CSSelector} getRibbonContainerID - {@link CSSStyleRule.selectorText}
  *
  * @return {Readonly<Part.Ribbon>}
@@ -78,6 +78,7 @@ const getRibbon = (getRibbonContainerID) => {
 
   return singleRibbon;
 };
+
 
 export default getRibbon;
 

@@ -18,15 +18,15 @@ const all_events = {
 /** @type {GlobalDeclarations} */
 const _globals = {
   appID: "pcs-shell",
-  cardMax: 52,
-  suites: Object.freeze(["Spade", "Diamond", "Club", "Heart"]),
-  cnames: Object.freeze(['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']),
-  ctitlePrefix: 'Number',
-  cdescPrefix: "Card in position",
-  pcscardRef: '#pcs-card',
-  pcsCardTitle: 'Magnified view of card',
-  pcsCardDesc: 'A single card up close and personal',
-  notices: Object.freeze(all_events)
+  notices: Object.freeze(all_events),
+  pcs_cardTitle: 'Magnified view of card',
+  pcs_cardDesc: 'A single card up close and personal',
+  pcs_cardRef: '#pcs-card',
+  c_Max: 52,
+  c_TitlePrefix: 'Number',
+  c_DescPrefix: "Card in position",
+  c_SuiteList: Object.freeze(["Spade", "Diamond", "Club", "Heart"]),
+  c_NameList: Object.freeze(['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King'])
 };
 
 const ro_g = Object.freeze(_globals);

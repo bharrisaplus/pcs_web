@@ -38,15 +38,15 @@
  * Constants
  *
  * @property {'pcs-shell'} appID
- * @property {52} cardMax
- * @property {['Spade', 'Diamond', 'Club', 'Heart']} suites
- * @property {"Number"} ctitlePrefix
- * @property {'Card in position'} cdescPrefix
- * @property {'#pcs-card'} pcscardRef
- * @property {'magnified view of card'} pcsCardTitle
- * @property {'A single card up close and personal'} pcsCardDesc
  * @property {Readonly<PCSEventTypes>} notices
- * @property {['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']} cnames
+ * @property {'magnified view of card'} pcs_cardTitle
+ * @property {'A single card up close and personal'} pcs_cardDesc
+ * @property {'#pcs-card'} pcs_cardRef
+ * @property {52} c_Max
+ * @property {"Number"} c_TitlePrefix
+ * @property {'Card in position'} c_DescPrefix
+ * @property {['Spade', 'Diamond', 'Club', 'Heart']} c_SuiteList
+ * @property {['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']} c_NameList
  */
 
 /**
