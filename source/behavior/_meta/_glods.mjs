@@ -11,6 +11,7 @@ const all_events = {
   scratch: 'scratch',
   mix: "mix",
   chop: "chop",
+  trace: "trace",
   splash: "splash"
 };
 

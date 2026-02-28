@@ -14,7 +14,8 @@
  * @property {'needle'} needle Open Popover
  * @property {'scratch'} scratch Update Popover
  * @property {'mix'} mix Shuffle
- * @property {'chop'} chop Cut and Paste
+ * @property {'chop'} chop Copy and Paste
+ * @property {'trace'} trace Generate Image
  * @property {'splash'} splash Change Background Color
  * @see CustomEvent.type
  */
