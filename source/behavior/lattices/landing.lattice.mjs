@@ -32,6 +32,8 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
 
   /** @param {PCSEvent} _pcsevt */
   const maybe_open_hud = (_pcsevt) => {
+    if (panel.isBusy || hud.isOpen) { return; }
+
     hud.loadTurntable(cardShark.getCard(
       _pcsevt.detail.msg, _pcsevt.detail.$dispatcher?.dataset.oid
     ));
@@ -76,6 +78,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
 
   /** @param {PCSEvent} _pcsevt */
   const maybe_change_color = (_pcsevt) => {
+    if (panel.isBusy || hud.isOpen) { return; }
     if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.dyeInput) ||
       !_pcsevt.detail?.msg
     ) { return; }
@@ -86,8 +89,8 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
 
   /** @param {PCSEvent} _pcsevt */
   const maybe_output_txt = async (_pcsevt) => {
-    if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.copyBtn)) { return; }
     if (panel.isBusy || hud.isOpen) { return; }
+    if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.copyBtn)) { return; }
 
     await panel.composeTxt("[::|::]");
     console.debug(`Copying to clipboard`);

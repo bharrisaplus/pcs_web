@@ -7,7 +7,7 @@
  */
 
 /**
- * @typedef {' kick' | 'needle' | 'scratch' | 'mix' | 'chop' | 'splash'} PCSEventType
+ * @typedef {'kick' | 'needle' | 'scratch' | 'mix' | 'chop' | 'splash'} PCSEventType
  *
  * @typedef {Object} PCSEventTypes - {@link CustomEvent.type}
  * @property {'kick'} kick Start app

@@ -24,43 +24,34 @@ const makeRibbonPart = (containerID) => {
     $clawImgBtn = document.querySelector(`${containerID} #claw button.claw-img`);
 
 
-  /** @param {Event} _changeEvt */
-  const dip_brush = (_changeEvt) => {
+  /** @param {'0' | '1' | '2' | '3' | '4'} colorOption */
+  const dip_brush = (colorOption) => {
+    if (is_grabbing) return;
+
     /** @type {string} */
-    let brushColor;
+    let dipColor;
 
-    _changeEvt.preventDefault();
-
-    if (is_grabbing || _changeEvt.target != $brushWell) return;
-
-    is_grabbing = true;
-    $clawTxtBtn.disabled = true;
-    $clawImgBtn.disabled = true;
-
-    switch(_changeEvt.target?.value) {
-      case '1': brushColor = `green-dye`; break;
-      case '2': brushColor = `red-dye`; break;
-      case '3': brushColor = `blue-dye`; break;
-      case '4': brushColor = `purple-dye`; break;
+    switch(colorOption) {
+      case '1': dipColor = `green-dye`; break;
+      case '2': dipColor = `red-dye`; break;
+      case '3': dipColor = `blue-dye`; break;
+      case '4': dipColor = `purple-dye`; break;
       case '0':
       default: break;
     }
 
-    if (brushColor) {
-      const
-        /** @type {PCSEventOpts} */
-        splashEvtOpt = { detail: { msg: brushColor, $dispatcher: $brushWell } },
-        /** @type {PCSEvent} */
-        splashEvt = new CustomEvent(_g.notices.splash, splashEvtOpt);
+    if (dipColor) {
+      /** @type {PCSEvent} */
+      const splashEvt = new CustomEvent(_g.notices.splash, {
+        detail: { msg: dipColor, $dispatcher: $brushWell }
+      });
 
       document.querySelector(`#${_g.appID}`)?.dispatchEvent(splashEvt);
     }
 
-    is_grabbing = false;
     $brushWell.value = 0;
-    $clawTxtBtn.disabled = false;
-    $clawImgBtn.disabled = false;
   };
+
 
   const write_out = async (txtExport) => {
     let result;
@@ -77,32 +68,43 @@ const makeRibbonPart = (containerID) => {
     $brushWell.disabled = false;
     $clawTxtBtn.disabled = false;
     $clawImgBtn.disabled = false;
+
     return result;
   };
 
 
   $brushWell.value = '0';
-  $brushWell.addEventListener('change', dip_brush);
-  $clawTxtBtn.addEventListener('click', (_clickEvt) => {
-    if (_clickEvt.target == $clawTxtBtn) {
-      /** @type {PCSEvent} */
-      const copyOutEvent = new CustomEvent(_g.notices.chop, {
-        detail: { $dispatcher: $clawTxtBtn }
-      });
 
-      document.querySelector(`#${_g.appID}`).dispatchEvent(copyOutEvent);
-    }
+  $brushWell.addEventListener('change', (_changeEvt) => {
+    if (is_grabbing || _changeEvt.target != $brushWell) { return; }
+
+    _changeEvt.preventDefault();
+    dip_brush(_changeEvt.target.value);
+  });
+
+  $clawTxtBtn.addEventListener('click', (_clickEvt) => {
+    if (_clickEvt.target != $clawTxtBtn) { return; }
+
+    /** @type {PCSEvent} */
+    const copyOutEvent = new CustomEvent(_g.notices.chop, {
+      detail: { $dispatcher: $clawTxtBtn }
+    });
+
+    document.querySelector(`#${_g.appID}`)?.dispatchEvent(copyOutEvent);
   });
 
 
   return Object.freeze({
     composeTxt: write_out,
+
     get dyeInput () {
       return `${containerID} #brush select[name='brush-wells']`;
     },
+
     get isBusy () {
       return is_grabbing;
     },
+
     get copyBtn () {
       return `${containerID} .${$clawTxtBtn.className.split(" ").join('.')}`;
     }
