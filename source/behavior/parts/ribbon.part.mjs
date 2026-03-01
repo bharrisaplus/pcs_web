@@ -53,7 +53,8 @@ const makeRibbonPart = (containerID) => {
   };
 
 
-  const write_out = async (txtExport) => {
+  /** @param {string[]} txtExports */
+  const write_out = async (txtExports) => {
     let result;
 
     if (!is_grabbing) {
@@ -61,7 +62,7 @@ const makeRibbonPart = (containerID) => {
       $brushWell.disabled = true;
       $clawTxtBtn.disabled = true;
       $clawImgBtn.disabled = true;
-      result = await outHand.exportText(txtExport);
+      result = await outHand.exportText(txtExports.join("\n"));
     }
 
     is_grabbing = false;

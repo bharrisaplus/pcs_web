@@ -84,7 +84,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
     ) { return; }
 
     document.querySelector(`#${_g.appID} main`)?.setAttribute('data-dye', _pcsevt.detail.msg);
-    console.debug(`Changing color to ${_pcsevt.detail?.msg}`);
+    console.log(`Changing color to ${_pcsevt.detail?.msg}`);
   };
 
   /** @param {PCSEvent} _pcsevt */
@@ -92,8 +92,8 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
     if (panel.isBusy || hud.isOpen) { return; }
     if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.copyBtn)) { return; }
 
-    await panel.composeTxt("[::|::]");
-    console.debug(`Copying to clipboard`);
+    await panel.composeTxt(dingus.itemLabels);
+    console.log(`Copying to clipboard`);
   };
 
 

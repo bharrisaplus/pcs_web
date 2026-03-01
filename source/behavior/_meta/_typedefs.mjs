@@ -171,7 +171,8 @@
  *      .
  *    </tableau>
  *
- * @property {[number]} currentOrder
+ * @property {number[]} currentOrder
+ * @property {string[]} itemLabels
  * @memberof Part
  */
 
