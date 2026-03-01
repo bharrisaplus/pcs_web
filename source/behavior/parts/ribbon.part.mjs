@@ -16,8 +16,11 @@ const makeRibbonPart = (containerID) => {
   let is_grabbing = false;
 
   const
+    /** @type {HTMLSelectElement} */
     $brushWell = document.querySelector(`${containerID} #brush select[name='brush-wells']`),
+    /** @type {HTMLButtonElement} */
     $clawTxtBtn = document.querySelector(`${containerID} #claw button.claw-txt`),
+    /** @type {HTMLButtonElement} */
     $clawImgBtn = document.querySelector(`${containerID} #claw button.claw-img`);
 
 
@@ -28,7 +31,11 @@ const makeRibbonPart = (containerID) => {
 
     _changeEvt.preventDefault();
 
-    if (_changeEvt.target != $brushWell) return;
+    if (is_grabbing || _changeEvt.target != $brushWell) return;
+
+    is_grabbing = true;
+    $clawTxtBtn.disabled = true;
+    $clawImgBtn.disabled = true;
 
     switch(_changeEvt.target?.value) {
       case '1': brushColor = `green-dye`; break;
@@ -49,25 +56,55 @@ const makeRibbonPart = (containerID) => {
       document.querySelector(`#${_g.appID}`)?.dispatchEvent(splashEvt);
     }
 
+    is_grabbing = false;
     $brushWell.value = 0;
-  }
+    $clawTxtBtn.disabled = false;
+    $clawImgBtn.disabled = false;
+  };
+
+  const write_out = async (txtExport) => {
+    let result;
+
+    if (!is_grabbing) {
+      is_grabbing = true;
+      $brushWell.disabled = true;
+      $clawTxtBtn.disabled = true;
+      $clawImgBtn.disabled = true;
+      result = await outHand.exportText(txtExport);
+    }
+
+    is_grabbing = false;
+    $brushWell.disabled = false;
+    $clawTxtBtn.disabled = false;
+    $clawImgBtn.disabled = false;
+    return result;
+  };
 
 
   $brushWell.value = '0';
   $brushWell.addEventListener('change', dip_brush);
   $clawTxtBtn.addEventListener('click', (_clickEvt) => {
     if (_clickEvt.target == $clawTxtBtn) {
-      outHand.exportText("[::|::]");
+      /** @type {PCSEvent} */
+      const copyOutEvent = new CustomEvent(_g.notices.chop, {
+        detail: { $dispatcher: $clawTxtBtn }
+      });
+
+      document.querySelector(`#${_g.appID}`).dispatchEvent(copyOutEvent);
     }
   });
 
 
   return Object.freeze({
+    composeTxt: write_out,
     get dyeInput () {
       return `${containerID} #brush select[name='brush-wells']`;
     },
     get isBusy () {
       return is_grabbing;
+    },
+    get copyBtn () {
+      return `${containerID} .${$clawTxtBtn.className.split(" ").join('.')}`;
     }
   });
 }

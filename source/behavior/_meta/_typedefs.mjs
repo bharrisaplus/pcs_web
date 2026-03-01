@@ -186,6 +186,8 @@
  *
  * @property {boolean} isBusy
  * @property {CSSelector} dyeInput
+ * @property {function(string) :boolean} composeTxt
+ * @property {CSSelector} copyBtn
  * @memberof Part
  */
 

@@ -84,6 +84,15 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
     console.debug(`Changing color to ${_pcsevt.detail?.msg}`);
   };
 
+  /** @param {PCSEvent} _pcsevt */
+  const maybe_output_txt = async (_pcsevt) => {
+    if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.copyBtn)) { return; }
+    if (panel.isBusy || hud.isOpen) { return; }
+
+    await panel.composeTxt("[::|::]");
+    console.debug(`Copying to clipboard`);
+  };
+
 
   /** @returns {boolean} */
   const tap_in = () => {
@@ -101,6 +110,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
     $appShell.addEventListener(_g.notices.needle, maybe_open_hud);
     $appShell.addEventListener(_g.notices.scratch, maybe_update_hud);
     $appShell.addEventListener(_g.notices.splash, maybe_change_color);
+    $appShell.addEventListener(_g.notices.chop, maybe_output_txt);
     maybe_success = true;
 
     return maybe_success;
