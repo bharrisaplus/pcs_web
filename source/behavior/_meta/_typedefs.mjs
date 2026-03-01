@@ -42,6 +42,7 @@
  * @property {'magnified view of card'} pcs_cardTitle
  * @property {'A single card up close and personal'} pcs_cardDesc
  * @property {'#pcs-card'} pcs_cardRef
+ * @property {'Cards:\n====\n'} pcs_clippre
  * @property {52} c_Max
  * @property {"Number"} c_TitlePrefix
  * @property {'Card in position'} c_DescPrefix
@@ -120,6 +121,14 @@
  * Card tricks
  *
  * @property {function((number|string), (number|string)) :Readonly<CardIntri>} getCard
+ * @memberof Hand
+ */
+
+/**
+ * @typedef {Object} Hand.Egress
+ * Exports
+ *
+ * @property {function(string) :bool} exportText
  * @memberof Hand
  */
 

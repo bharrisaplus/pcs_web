@@ -4,6 +4,7 @@
  */
 
 import { default as _g } from '../_meta/_glods.mjs';
+import { default as outHand } from '../hands/egress.hand.mjs';
 
 
 /**
@@ -14,9 +15,11 @@ import { default as _g } from '../_meta/_glods.mjs';
 const makeRibbonPart = (containerID) => {
   let is_grabbing = false;
 
-  const $brushWell = document.querySelector(`${containerID} #brush select[name='brush-wells']`);
+  const
+    $brushWell = document.querySelector(`${containerID} #brush select[name='brush-wells']`),
+    $clawTxtBtn = document.querySelector(`${containerID} #claw button.claw-txt`),
+    $clawImgBtn = document.querySelector(`${containerID} #claw button.claw-img`);
 
-  $brushWell.value = '0';
 
   /** @param {Event} _changeEvt */
   const dip_brush = (_changeEvt) => {
@@ -50,7 +53,13 @@ const makeRibbonPart = (containerID) => {
   }
 
 
+  $brushWell.value = '0';
   $brushWell.addEventListener('change', dip_brush);
+  $clawTxtBtn.addEventListener('click', (_clickEvt) => {
+    if (_clickEvt.target == $clawTxtBtn) {
+      outHand.exportText("[::|::]");
+    }
+  });
 
 
   return Object.freeze({

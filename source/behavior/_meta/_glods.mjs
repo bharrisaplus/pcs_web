@@ -22,6 +22,7 @@ const _globals = {
   pcs_cardTitle: 'Magnified view of card',
   pcs_cardDesc: 'A single card up close and personal',
   pcs_cardRef: '#pcs-card',
+  pcs_clippre: "Cards:\n====\n",
   c_Max: 52,
   c_TitlePrefix: 'Number',
   c_DescPrefix: "Card in position",
