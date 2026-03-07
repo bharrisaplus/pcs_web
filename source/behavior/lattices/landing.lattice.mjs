@@ -84,8 +84,9 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
     ) { return; }
 
     document.querySelector(`#${_g.appID} main`)?.setAttribute('data-dye', _pcsevt.detail.msg);
-    console.log(`Changing color to ${_pcsevt.detail?.msg}`);
+    console.info(`Changed color to ${_pcsevt.detail?.msg}`);
   };
+
 
   /** @param {PCSEvent} _pcsevt */
   const maybe_output_txt = async (_pcsevt) => {
@@ -93,13 +94,27 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
     if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.copyBtn)) { return; }
 
     await panel.composeTxt(dingus.itemLabels);
-    console.log(`Copying to clipboard`);
+    console.info(`Copied text to clipboard`);
   };
 
 
-  /** @returns {boolean} */
+  /** @param {PCSEvent} _pcsevt */
+  const maybe_download_img = (_pcsevt) => {
+    const currentColor = window.getComputedStyle(
+      document.querySelector(`#${_g.appID} main`)
+    ).getPropertyValue('background-color');
+
+    if (panel.isBusy || hud.isOpen) { return; }
+    if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.downloadBtn)) { return; }
+
+    panel.prepareImg(currentColor, dingus.currentOrder, "#card-sheet");
+    console.info(`Downloaded image`);
+  };
+
+
+  /** @returns {Boolean} */
   const tap_in = () => {
-    /** @type {boolean} */
+    /** @type {Boolean} */
     let maybe_success;
     const
       $appShell = document.querySelector(`#${_g.appID}`),
@@ -108,13 +123,19 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
     $tableau.setAttribute('style', '');
     $tableau.classList.remove('hide-before-load');
 
-    if (!$appShell) { maybe_success = false; }
+    if (!$appShell) {
+      maybe_success = false;
+      console.log("Startup issue");
+    } else {
+      $appShell.addEventListener(_g.notices.needle, maybe_open_hud);
+      $appShell.addEventListener(_g.notices.scratch, maybe_update_hud);
+      $appShell.addEventListener(_g.notices.splash, maybe_change_color);
+      $appShell.addEventListener(_g.notices.chop, maybe_output_txt);
+      $appShell.addEventListener(_g.notices.trace, maybe_download_img);
 
-    $appShell.addEventListener(_g.notices.needle, maybe_open_hud);
-    $appShell.addEventListener(_g.notices.scratch, maybe_update_hud);
-    $appShell.addEventListener(_g.notices.splash, maybe_change_color);
-    $appShell.addEventListener(_g.notices.chop, maybe_output_txt);
-    maybe_success = true;
+      maybe_success = true;
+      console.log("Ready!");
+    }
 
     return maybe_success;
   };
