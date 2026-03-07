@@ -1,6 +1,6 @@
 
 /**
- * @import {Part, CSSelector} from '../_meta/_typedefs.mjs'
+ * @import {Part, PCSEvent, CSSelector} from '../_meta/_typedefs.mjs'
  */
 
 import { default as _g } from '../_meta/_glods.mjs';
@@ -21,12 +21,14 @@ const makeRibbonPart = (containerID) => {
     /** @type {HTMLButtonElement} */
     $clawTxtBtn = document.querySelector(`${containerID} #claw button.claw-txt`),
     /** @type {HTMLButtonElement} */
-    $clawImgBtn = document.querySelector(`${containerID} #claw button.claw-img`);
+    $clawImgBtn = document.querySelector(`${containerID} #claw button.claw-img`),
+    /** @type {HTMLAnchorElement} */
+    $clawDrop = document.querySelector(`${containerID} #claw a.claw-drop`);
 
 
   /** @param {'0' | '1' | '2' | '3' | '4'} colorOption */
   const dip_brush = (colorOption) => {
-    if (is_grabbing) return;
+    if (is_grabbing) { return; }
 
     /** @type {string} */
     let dipColor;
@@ -74,7 +76,46 @@ const makeRibbonPart = (containerID) => {
   };
 
 
+  /**
+   * @param {string} renderColor
+   * @param  {string[]} renderExports
+   * @param  {CSSelector} renderBase
+   *
+   * @return {Boolean}
+   */
+  const render_out = (renderColor, renderExports, renderBase) => {
+    let result;
+
+    if (!is_grabbing) {
+      is_grabbing = true;
+      $brushWell.disabled = true;
+      $clawTxtBtn.disabled = true;
+      $clawImgBtn.disabled = true;
+
+      result = outHand.generateImage(
+        renderColor, renderExports, renderBase,
+        `${containerID} .${$clawDrop.className.split(' ').join('.')}`
+      )
+    }
+
+    window.setTimeout(() => {
+      is_grabbing = false;
+      $brushWell.disabled = false;
+      $clawTxtBtn.disabled = false;
+      $clawImgBtn.disabled = false;
+    }, 5000);
+
+    window.setTimeout(() => {
+      $clawDrop.removeAttribute("href");
+      $clawDrop.textContent = "";
+    }, 10000);
+
+    return result;
+  };
+
+
   $brushWell.value = '0';
+  dip_brush(1);
 
   $brushWell.addEventListener('change', (_changeEvt) => {
     if (is_grabbing || _changeEvt.target != $brushWell) { return; }
@@ -83,8 +124,9 @@ const makeRibbonPart = (containerID) => {
     dip_brush(_changeEvt.target.value);
   });
 
+
   $clawTxtBtn.addEventListener('click', (_clickEvt) => {
-    if (_clickEvt.target != $clawTxtBtn) { return; }
+    if (is_grabbing || _clickEvt.target != $clawTxtBtn) { return; }
 
     /** @type {PCSEvent} */
     const copyOutEvent = new CustomEvent(_g.notices.chop, {
@@ -95,9 +137,23 @@ const makeRibbonPart = (containerID) => {
   });
 
 
+  $clawImgBtn.addEventListener('click', (_clickEvt) => {
+    if (is_grabbing || _clickEvt.target != $clawImgBtn) { return; }
+
+    /** @type {PCSEvent} */
+    const genGraphicEvent = new CustomEvent(_g.notices.trace, {
+      detail: { $dispatcher: $clawImgBtn }
+    });
+
+    document.querySelector(`#${_g.appID}`)?.dispatchEvent(genGraphicEvent);
+  });
+
+
   return Object.freeze({
     composeTxt: write_out,
+    prepareImg: render_out,
 
+    /** @type {CSSelector} */
     get dyeInput () {
       return `${containerID} #brush select[name='brush-wells']`;
     },
@@ -106,8 +162,14 @@ const makeRibbonPart = (containerID) => {
       return is_grabbing;
     },
 
+    /** @type {CSSelector} */
     get copyBtn () {
       return `${containerID} .${$clawTxtBtn.className.split(" ").join('.')}`;
+    },
+
+    /** @type {CSSelector} */
+    get downloadBtn () {
+      return `${containerID} .${$clawImgBtn.className.split(' ').join('.')}`;
     }
   });
 }

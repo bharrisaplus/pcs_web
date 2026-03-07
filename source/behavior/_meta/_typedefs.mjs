@@ -109,7 +109,7 @@
  * @typedef {Object} Hand.Misc
  * Handles various tasks
  *
- * @property {boolean} yapFriendly
+ * @property {Boolean} yapFriendly
  * @property {function (string, string) :void} startAfter
  * @property {function (VerifynLoad, string) :void} warmUp
  * @property {function (VerifynLoad, string, string, string) :void} startRoutine
@@ -128,7 +128,8 @@
  * @typedef {Object} Hand.Egress
  * Exports
  *
- * @property {function(string) :bool} exportText
+ * @property {function(string) :Boolean} exportText
+ * @property {function(string, string[], CSSelector, CSSelector) :Boolean} generateImage
  * @memberof Hand
  */
 
@@ -151,7 +152,7 @@
  *      </cueLever>
  *    </turntable>
  *
- * @property {boolean} isOpen
+ * @property {Boolean} isOpen
  * @property {number} cursor
  * @property {string} nextBtn - {@link CSSStyleRule.selectorText}
  * @property {string} prevBtn - {@link CSSStyleRule.selectorText}
@@ -185,10 +186,12 @@
  *      <brush /> <- changing background color
  *    </ribbon>
  *
- * @property {boolean} isBusy
+ * @property {Boolean} isBusy
  * @property {CSSelector} dyeInput
- * @property {function(string) :boolean} composeTxt
+ * @property {function(string[]) :Boolean} composeTxt
+ * @property {function(string[], CSSelector) :Boolean} prepareImg
  * @property {CSSelector} copyBtn
+ * @property {CSSelector} downloadBtn
  * @memberof Part
  */
 

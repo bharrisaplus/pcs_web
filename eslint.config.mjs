@@ -18,7 +18,11 @@ const demoLintConfig = defineConfig([
         CustomEvent: "readonly",
         AbortController: "readonly",
         navigator: "readonly",
-        DOMException: "readonly"
+        DOMException: "readonly",
+        URL: "readonly",
+        Image: "readonly",
+        XMLSerializer: "readonly",
+        Blob: "readonly"
     	}
     }
   }
