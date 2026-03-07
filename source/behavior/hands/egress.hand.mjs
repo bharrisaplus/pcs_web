@@ -73,6 +73,13 @@ const makeEgressHand = () => {
 			$itemGroup.setAttribute('id', `${dropZone}-items`);
 			$backdrop?.setAttribute('fill', backdropColor);
 
+			//spriteOrder.forEach((spriteItm) => {
+			//	_$useItem = document.createElementNS("http://www.w3.org/2000/svg", "use");
+			//	
+			//	_$useItem.setAttribute('href', spriteItem) 
+			//	$itmGroup.appendChild()
+			//});
+
 			$spriteSheet.appendChild($itemGroup);
 
 			svgDataUrl = URL.createObjectURL(new Blob(

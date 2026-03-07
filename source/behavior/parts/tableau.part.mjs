@@ -34,7 +34,7 @@ const makeTableauPart = (containerID) => {
       return Array.from(
         document.querySelectorAll(itemSelector)
       ).map(($item) => {
-        return ($item.getAttribute("aria-description")?.split(":")[1]).trim() || "Missing";
+        return $item.getAttribute("aria-description")?.split(":")[1].trim() || "Missing";
       });
     },
 
