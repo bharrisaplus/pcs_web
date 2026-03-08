@@ -55,22 +55,29 @@ const makeRibbonPart = (containerID) => {
   };
 
 
-  /** @param {string[]} txtExports */
+  /**
+   * @param  {string[]} txtExports
+   *
+   * @return {Promise<Boolean>}
+   */
   const write_out = async (txtExports) => {
-    let result;
+    let result = false;
 
     if (!is_grabbing) {
       is_grabbing = true;
       $brushWell.disabled = true;
       $clawTxtBtn.disabled = true;
       $clawImgBtn.disabled = true;
-      result = await outHand.exportText(txtExports.join("\n"));
-    }
 
-    is_grabbing = false;
-    $brushWell.disabled = false;
-    $clawTxtBtn.disabled = false;
-    $clawImgBtn.disabled = false;
+      result = await outHand.exportText(txtExports.join("\n"));
+
+      window.setTimeout(() => {
+        is_grabbing = false;
+        $brushWell.disabled = false;
+        $clawTxtBtn.disabled = false;
+        $clawImgBtn.disabled = false;
+      }, 2000);
+    }
 
     return result;
   };
@@ -81,10 +88,12 @@ const makeRibbonPart = (containerID) => {
    * @param  {string[]} renderExports
    * @param  {CSSelector} renderBase
    *
-   * @return {Boolean}
+   * @return {Promise<Boolean>}
    */
-  const render_out = (renderColor, renderExports, renderBase) => {
-    let result;
+  const render_out = async (renderColor, renderExports, renderBase) => {
+    let
+      result = false,
+      _imgUrl = "";
 
     if (!is_grabbing) {
       is_grabbing = true;
@@ -92,23 +101,26 @@ const makeRibbonPart = (containerID) => {
       $clawTxtBtn.disabled = true;
       $clawImgBtn.disabled = true;
 
-      result = outHand.generateImage(
-        renderColor, renderExports, renderBase,
-        `${containerID} .${$clawDrop.className.split(' ').join('.')}`
-      )
+      _imgUrl = await outHand.generateImage(renderColor, renderExports, renderBase);
+
+      result = true;
+      $clawDrop.download = 'pcs_cards.svg';
+      $clawDrop.href = _imgUrl;
+      $clawDrop.click();
+      $clawDrop.textContent = ">redownload here<";
+
+      window.setTimeout(() => {
+        is_grabbing = false;
+        $brushWell.disabled = false;
+        $clawTxtBtn.disabled = false;
+        $clawImgBtn.disabled = false;
+      }, 4000);
+
+      window.setTimeout(() => {
+        $clawDrop.removeAttribute("href");
+        $clawDrop.textContent = "";
+      }, 8000);
     }
-
-    window.setTimeout(() => {
-      is_grabbing = false;
-      $brushWell.disabled = false;
-      $clawTxtBtn.disabled = false;
-      $clawImgBtn.disabled = false;
-    }, 5000);
-
-    window.setTimeout(() => {
-      $clawDrop.removeAttribute("href");
-      $clawDrop.textContent = "";
-    }, 10000);
 
     return result;
   };

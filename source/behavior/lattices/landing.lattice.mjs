@@ -99,7 +99,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
 
 
   /** @param {PCSEvent} _pcsevt */
-  const maybe_download_img = (_pcsevt) => {
+  const maybe_download_img = async (_pcsevt) => {
     const currentColor = window.getComputedStyle(
       document.querySelector(`#${_g.appID} main`)
     ).getPropertyValue('background-color');
@@ -107,7 +107,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
     if (panel.isBusy || hud.isOpen) { return; }
     if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.downloadBtn)) { return; }
 
-    panel.prepareImg(currentColor, dingus.currentOrder, "#card-sheet");
+    await panel.prepareImg(currentColor, dingus.currentOrder, "#card-sheet");
     console.info(`Downloaded image`);
   };
 

@@ -128,8 +128,8 @@
  * @typedef {Object} Hand.Egress
  * Exports
  *
- * @property {function(string) :Boolean} exportText
- * @property {function(string, string[], CSSelector, CSSelector) :Boolean} generateImage
+ * @property {function(string) :Promise<Boolean>} exportText
+ * @property {function(string, string[], CSSelector) :Promise<string>} generateImage
  * @memberof Hand
  */
 
@@ -188,8 +188,8 @@
  *
  * @property {Boolean} isBusy
  * @property {CSSelector} dyeInput
- * @property {function(string[]) :Boolean} composeTxt
- * @property {function(string[], CSSelector) :Boolean} prepareImg
+ * @property {function(string[]) :Promise<Boolean>} composeTxt
+ * @property {function(string[], CSSelector) :Promise<Boolean>} prepareImg
  * @property {CSSelector} copyBtn
  * @property {CSSelector} downloadBtn
  * @memberof Part

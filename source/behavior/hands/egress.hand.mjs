@@ -6,30 +6,25 @@
 import { default as _g } from '../_meta/_glods.mjs';
 
 
-const egressSerializer = new XMLSerializer();
-
-
 /**
  * @return {Readonly<Hand.Egress>} - {@link Hand.Egress}
  */
 const makeEgressHand = () => {
+	const egressSerializer = new XMLSerializer();
+
 	/**
 	 * @param  {string} cpyTxt
 	 *
-	 * @return {Boolean}
+	 * @return {Promise<Boolean>}
 	 */
 	const copy_to_clipboard = async (cpyTxt) => {
-		let result;
+		let result = false;
 
 		try {
 			await navigator.clipboard.writeText(`${_g.pcs_clippre}${cpyTxt}`);
 			result = true
 		} catch (clipboardError) {
-			result = false;
-
-			if (clipboardError instanceof DOMException &&
-				clipboardError.name == "NotAllowedError"
-			){
+			if (clipboardError instanceof DOMException && clipboardError.name == "NotAllowedError"){
 				console.warn("Clipboard permission needed");
 			} else {
 				console.error("Issue occured copying to clipboard");
@@ -45,32 +40,33 @@ const makeEgressHand = () => {
 	 * @param  {string} backdropColor an acceptable value for fill
 	 * @param  {string[]} spriteOrder
 	 * @param  {CSSelector} spriteSheet
-	 * @param  {CSSelector} dropZone
 	 *
-	 * @return {Boolean}
+	 * @return {Promise<string>} The data url for the generated image
 	 */
-	const canvasyze_rasterize = (backdropColor, spriteOrder, spriteSheet, dropZone) => {
-		let result, svgDataUrl;
+	const canvasyze_rasterize = async (backdropColor, spriteOrder, spriteSheet) => {
+		let 
+			imgDataUrl = "",
+			svgObjUrl = "";
+
 		const
-			/** @type {Node} also see {@link SVGElement} */
+			/** @type {SVGElement} */
 			$spriteSheet = document.querySelector(spriteSheet)?.cloneNode(true),
 			/** @type {SVGRectElement} */
-			$backdrop = $spriteSheet.querySelector(`defs rect`),
-			/** @type {HTMLAnchorElement} */
-			$dropZone = document.querySelector(dropZone),
-			$canvas = document.createElement('canvas'),
+			$backdrop = $spriteSheet.querySelector(`defs symbol rect`),
 			/** @type {SVGGElement} */
 			$itemGroup = document.createElementNS("http://www.w3.org/2000/svg", "g"),
+
+			$canvas = document.createElement('canvas'),
 			canvas_ctx_2d = $canvas.getContext('2d'),
 			tmpImage = new Image();
 
-		if (!$spriteSheet || !$dropZone) {
-			console.log("Missing componenets for image download")
-			console.debug(spriteOrder);
-			result = false;
+		if (!$spriteSheet || spriteOrder.length < 52) {
+			console.error("Missing componenets for image download");
+			console.debug(arguments);
+			imgDataUrl = "";
 		} else {
-			$spriteSheet?.setAttribute('style', '');
-			$itemGroup.setAttribute('id', `${dropZone}-items`);
+			$spriteSheet.setAttribute('style', '');
+			$itemGroup.setAttribute('id', 'group-items');
 			$backdrop?.setAttribute('fill', backdropColor);
 
 			//spriteOrder.forEach((spriteItm) => {
@@ -82,7 +78,7 @@ const makeEgressHand = () => {
 
 			$spriteSheet.appendChild($itemGroup);
 
-			svgDataUrl = URL.createObjectURL(new Blob(
+			svgObjUrl = URL.createObjectURL(new Blob(
 				[egressSerializer.serializeToString($spriteSheet)],
 				{type: 'image/svg+xml;charset=utf-8'}
 			));
@@ -90,22 +86,31 @@ const makeEgressHand = () => {
 			$canvas.width = 1000;
 			$canvas.height = 400;
 
-			tmpImage.onload = () => {
+			try {
+				tmpImage.src = svgObjUrl;
+				await tmpImage.decode();
+
 				canvas_ctx_2d.drawImage(tmpImage, 0, 0, $canvas.width, $canvas.height);
+				URL.revokeObjectURL(svgObjUrl);
 
-				URL.revokeObjectURL(svgDataUrl);
+				imgDataUrl = $canvas.toDataURL();
+			} catch(imgError) {
+				if (imgError instanceof DOMException) {
+					switch (imgError.name) {
+						case "EncodingError": console.error("Issue with image decode"); break;
+						case "SecurityError": console.error("Issue with canvas"); break;
+						default: console.error("Issue during image generation");
+					}
+				} else {
+					console.error("Issue during image generation");
+				}
 
-				$dropZone.download = 'pcs_cards.svg';
-				$dropZone.href = $canvas.toDataURL();
-				$dropZone.click();
-				$dropZone.textContent = ">redownload here<";
-			};
-
-			tmpImage.src = svgDataUrl;
-			result = true;
+				console.debug(imgError);
+				imgDataUrl = "";
+			}
 		}
 
-		return result;
+		return imgDataUrl;
 	};
 
 
