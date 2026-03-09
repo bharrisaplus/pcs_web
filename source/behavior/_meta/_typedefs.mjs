@@ -90,7 +90,7 @@
  * @typedef {Object} Bank.Deck
  * State of the cards
  *
- * @property {Uint8Array} ndoUcards
+ * @property {Uint8Array} ndoUCards
  * @property {number[]} ndoCards
  * @property {Uint8Array} ucards
  * @property {number[]} cards
@@ -175,7 +175,6 @@
  *    </tableau>
  *
  * @property {number[]} currentOrder
- * @property {string[]} itemLabels
  * @memberof Part
  */
 

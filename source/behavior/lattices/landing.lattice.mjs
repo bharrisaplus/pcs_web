@@ -76,10 +76,16 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
 
   /** @param {PCSEvent} _pcsevt */
   const maybe_output_txt = async (_pcsevt) => {
+    const itemLabels = itemVault.cards.map((_itm, _idx) => {
+      return cardShark.getCard(
+        _idx, itemVault.ndoCards.indexOf(_itm)
+      ).title.split(":")[1].trim();
+    });
+
     if (panel.isBusy || hud.isOpen) { return; }
     if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.copyBtn)) { return; }
 
-    await panel.composeTxt(dingus.itemLabels);
+    await panel.composeTxt(itemLabels);
     console.info(`Copied text to clipboard`);
   };
 

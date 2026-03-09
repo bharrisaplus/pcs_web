@@ -30,14 +30,6 @@ const makeTableauPart = (containerID) => {
 
 
   return Object.freeze({
-    get itemLabels () {
-      return Array.from(
-        document.querySelectorAll(itemSelector)
-      ).map(($item) => {
-        return $item.getAttribute("aria-description")?.split(":")[1].trim() || "Missing";
-      });
-    },
-
     get currentOrder () {
       return Array.from(
         document.querySelectorAll(itemSelector)
