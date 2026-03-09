@@ -21,9 +21,6 @@ const cardShark = getDealer();
  * @return {Readonly<Lattice.Landing>} home screen manager - {@link Lattice.Landing}
  */
 const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => {
-  /** @type {number[]} */
-  let _landingCards = [];
-
   const
     panel = getRibbon(ribbonID),
     dingus = getTableau(tableauID),
@@ -130,12 +127,10 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
   };
 
 
-  _landingCards = dingus.currentOrder;
-
-  if (_landingCards.length < _g.c_Max) {
+  if (dingus.currentOrder < _g.c_Max) {
     console.error("Issue with Tableau. Cancelling setup");
   } else {
-    itemVault.updateCards(_landingCards);
+    itemVault.updateCards(dingus.currentOrder);
   }
 
   return Object.freeze({
