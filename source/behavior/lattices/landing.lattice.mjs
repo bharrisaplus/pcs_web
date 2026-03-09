@@ -92,9 +92,18 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
 
   /** @param {PCSEvent} _pcsevt */
   const maybe_download_img = async (_pcsevt) => {
-    const currentColor = window.getComputedStyle(
-      document.querySelector(`#${_g.appID} main`)
-    ).getPropertyValue('background-color');
+    const
+      currentColor = window.getComputedStyle(
+        document.querySelector(`#${_g.appID} main`)
+      ).getPropertyValue('background-color'),
+
+      itemRefs = itemVault.cards.map((_itm, _idx) => {
+        return cardShark.getCard(
+          _idx, itemVault.ndoCards.indexOf(_itm)
+        ).symbolRef;
+      });
+
+    console.debug(itemRefs);
 
     if (panel.isBusy || hud.isOpen) { return; }
     if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.downloadBtn)) { return; }
