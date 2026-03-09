@@ -53,7 +53,7 @@ const makeDealerHand = () => {
 
           let _suite = _g.c_SuiteList[Math.floor(_oglo / 13)]
 
-          _name = `${_g.c_nameList.slice(rNamePos - 1, rNamePos)} of ${_suite}`;
+          _name = `${_g.c_NameList.slice(rNamePos - 1, rNamePos)} of ${_suite}`;
           _symbl = `${_suite[0].toLowerCase()}${_oglo}`
           break;
         }
