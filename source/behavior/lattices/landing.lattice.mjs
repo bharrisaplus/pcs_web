@@ -16,11 +16,12 @@ const cardShark = getDealer();
  * @param  {CSSelector} tableauID The dingus element - {@link Part.Tableau}
  * @param  {CSSelector} turntableID The hud element - {@link Part.Turntable}
  * @param  {CSSelector} ribbonID the panel element - {@link Part.Ribbon}
+ * @param  {CSSelector} exportBaseID the svg "spritesheet"
  * @param  {Bank.Deck} itemVault The card state
  *
  * @return {Readonly<Lattice.Landing>} home screen manager - {@link Lattice.Landing}
  */
-const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => {
+const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, itemVault) => {
   const
     panel = getRibbon(ribbonID),
     dingus = getTableau(tableauID),
@@ -104,6 +105,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
       });
 
     console.debug(itemRefs);
+    console.log(exportBaseID);
 
     if (panel.isBusy || hud.isOpen) { return; }
     if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.downloadBtn)) { return; }

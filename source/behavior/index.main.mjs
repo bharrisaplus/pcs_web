@@ -15,12 +15,15 @@ const
   cardView = '#tableau',
   cardOverlay = '#turntable',
   cardMenu = '#ribbon',
+  cardRef = '#card-sheet',
   preloadDest = ".inline-svg-assets-here",
   /** @type {VerifynLoad} */
-  preloadThings = new Map([["#card-sot", "#card-sheet"]]);
+  preloadThings = new Map([["#card-sot", cardRef]]);
 
 document.addEventListener('DOMContentLoaded', () => {
-  const landingPage = cobbleLanding(cardView, cardOverlay, cardMenu, cardManager);
+  const landingPage = cobbleLanding(
+    cardView, cardOverlay, cardMenu, cardRef, cardManager
+  );
 
   if (appCustodian.yapFriendly) { console.debug('console friendly environment'); }
 
