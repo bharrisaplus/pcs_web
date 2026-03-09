@@ -34,45 +34,34 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, itemVault) => 
   const maybe_open_hud = (_pcsevt) => {
     if (panel.isBusy || hud.isOpen) { return; }
 
-    hud.loadTurntable(cardShark.getCard(
-      _pcsevt.detail.msg, _pcsevt.detail.$dispatcher?.dataset.oid
-    ));
+    itemVault.updateChoice(Number.parseInt(_pcsevt.detail.$dispatcher?.dataset.oid));
 
-    _landingCards = dingus.currentOrder;
+    if (itemVault.choice[0] == -1 || itemVault.choice[1] == -1) { return; }
+
+    hud.loadTurntable(cardShark.getCard(...itemVault.choice));
   };
 
 
   /** @param {PCSEvent} _pcsevt */
   const maybe_update_hud = (_pcsevt) => {
-    let
-      goBack = false,
-      hudBits = [],
-      msgBits = [];
+    let maybeChoose = -1;
+
+    if (!_pcsevt.detail.msg || !_pcsevt.detail.$dispatcher) { return; }
 
     if (_pcsevt.detail.$dispatcher == document.querySelector(hud.prevBtn)) {
-      goBack = true;
-      hudBits = hud.cursor.split("[::|::]").map((hudBit) => {
-        return Math.max(Number.parseInt(hudBit), -1) - 1;
-      });
-
-      msgBits = _pcsevt.detail.msg.split("[::|::]").map((msgBit) => {
-        return Math.max(Number.parseInt(msgBit), -1) - 1;
-      })
+      maybeChoose = itemVault.choice[0] - 1;
     } else if (_pcsevt.detail.$dispatcher == document.querySelector(hud.nextBtn)) {
-      hudBits = hud.cursor.split("[::|::]").map((hudBit) => {
-        return Math.min(Number.parseInt(hudBit), _g.c_Max) + 1;
-      });
-
-      msgBits = _pcsevt.detail.msg.split("[::|::]").map((msgBit) => {
-        return Math.min(Number.parseInt(msgBit), _g.c_Max) + 1;
-      });
+      maybeChoose = itemVault.choice[0] + 1;
     }
 
-    if (hudBits.length > 0 && msgBits[0] == hudBits[0] && msgBits[1] == hudBits[1]) {
-      hud.spinTurntable(cardShark.getCard(msgBits[0], msgBits[1]));
-      itemVault.updateCards(_landingCards);
-      console.log(`rotating turntable to ${goBack ? "previous" : "next"}`);
-    }
+    if (maybeChoose <= -1 || maybeChoose >= _g.c_Max) { return; }
+
+    itemVault.updateChoice(itemVault.ucards[maybeChoose]);
+
+    if (itemVault.choice[0] == -1 || itemVault.choice[1] == -1) { return; }
+
+    hud.spinTurntable(cardShark.getCard(...itemVault.choice));
+    console.info(`rotated turntable to ${_pcsevt.detail.msg == 'prv' ? "previous" : "next"}`);
   };
 
 

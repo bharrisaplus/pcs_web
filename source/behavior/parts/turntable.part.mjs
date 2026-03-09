@@ -1,6 +1,6 @@
 
 /**
- * @import {CSSelector, PCSEventOpts, PCSEvent, Part, CardIntri} from "../_meta/_typedefs.mjs"
+ * @import {CSSelector, PCSEvent, Part, CardIntri} from "../_meta/_typedefs.mjs"
  */
 
 import { default as _g } from "../_meta/_glods.mjs";
@@ -17,7 +17,9 @@ const
  * @return {Readonly<Part.Turntable>} a card closeup popover - {@link Part.Turntable}
  */
 const makeTurntablePart = (containerID) => {
-  let _tccount = 0;
+  let
+    _tccount = 0,
+    _tidyTimeout;
 
   const containerName = containerID.split('#').join('');
 
@@ -37,19 +39,20 @@ const makeTurntablePart = (containerID) => {
   /** @param  {ToggleEvent} _toggleEvt */
   const _tidy = (_toggleEvt) => {
     if (_toggleEvt.oldState === 'open' && _toggleEvt.newState === 'closed') {
-      console.log("closing turntable");
+      console.info("closing turntable");
       $pickup.removeAttribute('data-spot');
       $pickup.removeAttribute('data-oglo');
       $pickup.querySelector('title').textContent = _g.pcs_cardTitle;
       $pickup.querySelector('desc').textContent = _g.pcs_cardDesc;
 
-      window.setTimeout(() => {
-        $pickup.querySelector('use').setAttribute('href', _g.pcs_cardRef);
+      _tidyTimeout = window.setTimeout(() => {
+        $pickup.querySelector('use').removeAttribute('href');
         $cueNext.disabled = true;
         $cuePrevious.disabled = true;
-      }, 650);
+      }, 700);
     } else if (_toggleEvt.oldState === 'closed' && _toggleEvt.newState === 'open') {
-      console.log("opening turntable");
+      console.info("opening turntable");
+      window.clearTimeout(_tidyTimeout);
     }
   };
 
@@ -85,43 +88,49 @@ const makeTurntablePart = (containerID) => {
 
   /** @param {CardIntri} pickupInfo */
   const set_pickup = (pickupInfo) => {
-    if (!$container.matches(':popover-open')) {
-      if(_update(pickupInfo)) {
-        $container.showPopover();
-      }
+    if ($container.matches(':popover-open')) { return; }
+
+    if(_update(pickupInfo)) {
+      $container.showPopover();
     }
   };
 
 
   /** @param  {PointerEvent} _clickEvt */
   const _determine_followup = (_clickEvt) => {
-    let $itchr;
+    let
+      direction,
+      $itchr;
+
+    if (!$container.matches(':popover-open')) { return; }
 
     if (_clickEvt.target == $cueNext) {
+      direction = "nxt";
       $itchr = $cueNext;
     } else if (_clickEvt.target == $cuePrevious) {
+      direction = "prv";
       $itchr = $cuePrevious;
     }
 
-    if ($itchr) {
-      /** @type {PCSEvent} */
-      const itchEvt = new CustomEvent(_g.notices.scratch, {
-        detail: {
-          msg: `${$pickup.dataset.spot || '-1'}[::|::]${$pickup.dataset.oglo || '-1'}`,
-          $dispatcher: $itchr
-        }
-      });
+    if (!direction || !$itchr) { return; }
 
-      document.querySelector(`#${_g.appID}`).dispatchEvent(itchEvt);
-    }
+    /** @type {PCSEvent} */
+    const itchEvt = new CustomEvent(_g.notices.scratch, {
+      detail: {
+        msg: direction,
+        $dispatcher: $itchr
+      }
+    });
+
+    document.querySelector(`#${_g.appID}`).dispatchEvent(itchEvt);
   };
 
 
   /** @param  {CardIntri} _cueInfo */
   const move_arm = (cueInfo) => {
-    if ($container.matches(':popover-open')) {
-      _update(cueInfo);
-    }
+    if (!$container.matches(':popover-open')) { return; }
+
+    _update(cueInfo);
   };
 
 
@@ -135,13 +144,13 @@ const makeTurntablePart = (containerID) => {
   }, {signal: turntableAbortSignal});
 
   document.querySelector('#title-marquee')?.addEventListener('click', () => {
-    if (_tccount++ >= 7) {
-      _tccount = 0;
-      $cuePrevious.disabled = true;
-      $cueNext.disabled = true;
-      $pickup.querySelector('use').setAttribute('href', _g.pcs_cardRef);
-      $container.showPopover();
-    }
+    if (_tccount++ < 7) { return; }
+
+    _tccount = 0;
+    $cuePrevious.disabled = true;
+    $cueNext.disabled = true;
+    $pickup.querySelector('use').setAttribute('href', _g.pcs_cardRef);
+    $container.showPopover();
   }, {signal: turntableAbortSignal});
 
 
@@ -154,7 +163,7 @@ const makeTurntablePart = (containerID) => {
     },
 
     get cursor() {
-      return `${$pickup.dataset.spot || _g.c_Max}[::|::]${$pickup.dataset.oglo || _g.c_Max}`;
+      return [Number.parseInt($pickup.dataset.spot), Number.parseInt($pickup.dataset.oglo)];
     },
 
     get nextBtn() {

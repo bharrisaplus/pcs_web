@@ -155,7 +155,7 @@
  *    </turntable>
  *
  * @property {Boolean} isOpen
- * @property {number} cursor
+ * @property {number[]} cursor
  * @property {string} nextBtn - {@link CSSStyleRule.selectorText}
  * @property {string} prevBtn - {@link CSSStyleRule.selectorText}
  * @property {function(CardIntri)} loadTurntable
