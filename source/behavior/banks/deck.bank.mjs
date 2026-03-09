@@ -10,30 +10,43 @@ const default_order = Uint8Array.from({length: _g.c_Max}, (_, card_idx) => card_
 
 /** @returns {Readonly<Bank.Deck>} a packet of cards {@link Bank.Deck} */
 const makeDeckBank = () => {
-  let card_id_order = default_order;
+  let
+    topical_order = Uint8Array.from(default_order),
+    choosenCard;
 
   const new_deck_order = () => {
-    card_id_order = Uint8Array.from(default_order);
+    topical_order = Uint8Array.from(default_order);
   };
 
 
-  const replace_card_id_order_with = (allNewCards) => {
+  const replace_topical_order_with = (allNewCards) => {
     if (allNewCards.length == _g.c_Max) {
-      card_id_order = Uint8Array.from(allNewCards);
+      topical_order = Uint8Array.from(allNewCards);
+    }
+  };
+
+  const choose_new_card = (cardID) => {
+    if (topical_order.indexOf(cardID) > -1 && default_order.indexOf(cardID) > -1) {
+      choosenCard = cardID;
     }
   };
 
 
   return Object.freeze({
-    updateCards: replace_card_id_order_with,
+    updateCards: replace_topical_order_with,
+    updateChoice: choose_new_card,
     resetCards: new_deck_order,
     // Computed-s
+    get choice () {
+      return [topical_order.indexOf(choosenCard), default_order.indexOf(choosenCard)];
+    },
+
     get cards () {
-      return [...card_id_order];
+      return [...topical_order];
     },
 
     get ucards () {
-      return card_id_order.slice(0);
+      return topical_order.slice(0);
     },
 
     get ndoCards () {

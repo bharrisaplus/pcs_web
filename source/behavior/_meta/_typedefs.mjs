@@ -94,7 +94,9 @@
  * @property {number[]} ndoCards
  * @property {Uint8Array} ucards
  * @property {number[]} cards
- * @property {function(Uint8Array | number[]): void} updateCards
+ * @property {number[]} choice
+ * @property {function(Uint8Array | number[]) :void} updateCards
+ * @property {function(number) :void} updateChoice
  * @property {function(): void} resetCards
  * @memberof Bank
  */
