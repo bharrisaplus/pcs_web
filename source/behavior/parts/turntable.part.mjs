@@ -21,9 +21,9 @@ const makeTurntablePart = (containerID) => {
     _tccount = 0,
     _tidyTimeout;
 
-  const containerName = containerID.split('#').join('');
-
   const
+    containerName = containerID.split('#').join(''),
+
     /** @type {HTMLElement} */
     $container = document.querySelector(containerID),
     /** @type {HTMLElement} */
@@ -52,47 +52,34 @@ const makeTurntablePart = (containerID) => {
       }, 700);
     } else if (_toggleEvt.oldState === 'closed' && _toggleEvt.newState === 'open') {
       console.info("opening turntable");
-      window.clearTimeout(_tidyTimeout);
     }
   };
 
 
   /**
-   * @param  {CardIntri} pickupInfo
+   * @param  {CardIntri} _updateInfo
    *
    * @returns {boolean}
    */
   const _update = (_updateInfo) => {
-    let result = false;
+    let result;
 
-    if (
-      _updateInfo.oglo > -1 || _updateInfo.oglo < _g.c_Max ||
-      _updateInfo.spot > -1 || _updateInfo.spot < _g.c_Max
-    ){
-      $pickup.setAttribute('data-spot', _updateInfo.spot);
-      $pickup.setAttribute('data-oglo', _updateInfo.oglo);
-      $pickup.querySelector('use').setAttribute('href', _updateInfo.symbolRef);
-      $pickup.querySelector('title').textContent = _updateInfo.title;
-      $pickup.querySelector('desc').textContent = _updateInfo.desc;
+    if (_updateInfo.oglo <= -1 || _updateInfo.oglo >= _g.c_Max) { result = false; }
+    if (_updateInfo.spot <= -1 || _updateInfo.spot >= _g.c_Max) { result = false; }
 
-      $cuePrevious.disabled = _updateInfo.spot <= 0;
-      $cueNext.disabled = _updateInfo.spot >= _g.c_Max - 1;
+    $pickup.setAttribute('data-spot', _updateInfo.spot);
+    $pickup.setAttribute('data-oglo', _updateInfo.oglo);
+    $pickup.querySelector('use').setAttribute('href', _updateInfo.symbolRef);
+    $pickup.querySelector('title').textContent = _updateInfo.title;
+    $pickup.querySelector('desc').textContent = _updateInfo.desc;
 
-      console.info(`loading turntable for ${_updateInfo.title}`);
-      result = true
-    }
+    $cuePrevious.disabled = _updateInfo.spot == 0;
+    $cueNext.disabled = _updateInfo.spot == _g.c_Max - 1;
+
+    console.info(`loading turntable for ${_updateInfo.title}`);
+    result = true
 
     return result;
-  };
-
-
-  /** @param {CardIntri} pickupInfo */
-  const set_pickup = (pickupInfo) => {
-    if ($container.matches(':popover-open')) { return; }
-
-    if(_update(pickupInfo)) {
-      $container.showPopover();
-    }
   };
 
 
@@ -100,29 +87,41 @@ const makeTurntablePart = (containerID) => {
   const _determine_followup = (_clickEvt) => {
     let
       direction,
-      $itchr;
+      $scratcher;
 
     if (!$container.matches(':popover-open')) { return; }
 
     if (_clickEvt.target == $cueNext) {
       direction = "nxt";
-      $itchr = $cueNext;
+      $scratcher = $cueNext;
     } else if (_clickEvt.target == $cuePrevious) {
       direction = "prv";
-      $itchr = $cuePrevious;
+      $scratcher = $cuePrevious;
     }
 
-    if (!direction || !$itchr) { return; }
+    if (!direction || !$scratcher) { return; }
 
     /** @type {PCSEvent} */
-    const itchEvt = new CustomEvent(_g.notices.scratch, {
+    const scrtchEvt = new CustomEvent(_g.notices.scratch, {
       detail: {
         msg: direction,
-        $dispatcher: $itchr
+        $dispatcher: $scratcher
       }
     });
 
-    document.querySelector(`#${_g.appID}`).dispatchEvent(itchEvt);
+    document.querySelector(`#${_g.appID}`).dispatchEvent(scrtchEvt);
+  };
+
+
+  /** @param {CardIntri} pickupInfo */
+  const set_pickup = (pickupInfo) => {
+    if ($container.matches(':popover-open')) { return; }
+
+    window.clearTimeout(_tidyTimeout);
+
+    if(_update(pickupInfo)) {
+      $container.showPopover();
+    }
   };
 
 
@@ -158,19 +157,19 @@ const makeTurntablePart = (containerID) => {
     loadTurntable: set_pickup,
     spinTurntable: move_arm,
     // Computed-s
-    get isOpen() {
+    get isOpen () {
       return $container.matches(':popover-open');
     },
 
-    get cursor() {
+    get cursor () {
       return [Number.parseInt($pickup.dataset.spot), Number.parseInt($pickup.dataset.oglo)];
     },
 
-    get nextBtn() {
+    get nextBtn () {
       return `${containerID} .${$cueNext.className.split(" ").join('.')}`;
     },
 
-    get prevBtn() {
+    get prevBtn () {
       return `${containerID} .${$cuePrevious.className.split(" ").join('.')}`;
     }
   });
