@@ -70,8 +70,38 @@ const makeDealerHand = () => {
     });
   };
 
+
+  /**
+   * @param  {Uint8Array} cardList
+   * @param  {Uint8Array} positionList
+   *
+   * @return {Uint8Array}
+   */
+  const pcs_shuffle = (cardList, positionList) => {
+    const
+      card_sample = chance.pickset(cardList, cardList.length),
+      position_sample = chance.pickset(positionList, positionList.length);
+
+    const result = Uint8Array.from({length: cardList.length});
+
+    for (let _ = 0; _ < positionList.length; _++) {
+      const
+        _card_idx = Math.floor(Math.random() * card_sample.length),
+        _pos_idx = Math.floor(Math.random() * position_sample.length);
+
+      result[position_sample[_pos_idx]] = card_sample[_card_idx];
+
+      card_sample.splice(_card_idx, 1);
+      position_sample.splice(_pos_idx, 1);
+    }
+
+    return result;
+  };
+
+
   return Object.freeze({
-    getCard: generate_card_intri
+    getCard: generate_card_intri,
+    mixUp: pcs_shuffle
   });
 };
 
