@@ -122,7 +122,7 @@
  * @typedef {Object} Hand.Dealer
  * Card tricks
  *
- * @property {function((number|string), (number|string)) :Readonly<CardIntri>} getCard
+ * @property {function(number, number) :Readonly<CardIntri>} getCard
  * @property {function(Uint8Array, Uint8Array) :Uint8Array} mixUp
  * @memberof Hand
  */

@@ -9,52 +9,45 @@ import { default as _g } from '../_meta/_glods.mjs';
 /** @return {Readonly<Hand.Dealer>} a helper for cards */
 const makeDealerHand = () => {
   /**
-   * @param  {number | string} curPos from the list as it stands
-   * @param  {number | string} ndoPos usually the 'oid' data attribute - {@link HTMLElement.dataset}
+   * @param  {number} curPos from the list as it stands
+   * @param  {number} ndoPos usually the 'oid' data attribute - {@link HTMLElement.dataset}
    *
    * @return {Readonly<CardIntri>} a card - {@link CardIntri}
    */
   const generate_card_intri = (curPos, ndoPos) => {
     let _name = "A Card";
-    /** @type {CSSelector} */
     let _symbl = "";
 
-    const
-      _spot = Number.parseInt(curPos),
-      _oglo = Number.parseInt(ndoPos);
+    if ((curPos > -1 && curPos < _g.c_Max) && (ndoPos > -1 && ndoPos < _g.c_Max)) {
+      let _suite = _g.c_SuiteList[Math.floor(ndoPos / 13)];
 
-    if ((_spot > -1 && _spot < _g.c_Max) && (_oglo > -1 && _oglo < _g.c_Max)) {
       switch(true) {
-        case (_oglo < 13): { // Spades
-          let _suite = _g.c_SuiteList[Math.floor(_oglo / 13)];
-
-          _name = `${_g.c_NameList[_oglo]} of ${_suite}`;
-          _symbl = `${_suite[0].toLowerCase()}${_oglo < 10 ? "0" : ""}${_oglo}`;
+        case (ndoPos < 13): { // Spades
+          _name = `${_g.c_NameList[ndoPos]} of ${_suite}`;
+          _symbl = `${_suite[0].toLowerCase()}${ndoPos < 10 ? "0" : ""}${ndoPos}`;
           break;
         }
-        case (_oglo < 26): { // Diamonds
-          let _suite = _g.c_SuiteList[Math.floor(_oglo / 13)]
-
-          _name = `${_g.c_NameList[_oglo % _g.c_NameList.length]} of ${_suite}`;
-          _symbl = `${_suite[0].toLowerCase()}${_oglo}`
+        case (ndoPos < 26): { // Diamonds
+          _name = `${_g.c_NameList[ndoPos % _g.c_NameList.length]} of ${_suite}`;
+          _symbl = `${_suite[0].toLowerCase()}${ndoPos}`;
           break;
         }
-        case (_oglo < 39): { // Clubs
-          let rNamePos = (_oglo % _g.c_NameList.length) * -1;
+        case (ndoPos < 39): { // Clubs
+          let
+            _rStartIdx = (ndoPos % _g.c_NameList.length) * -1,
+            _rEndIdx = Object.is(_rStartIdx, -0) ? _g.c_NameList.length : _rStartIdx;
 
-          let _suite = _g.c_SuiteList[Math.floor(_oglo / 13)]
-
-          _name = `${_g.c_NameList.slice(rNamePos - 1, rNamePos)} of ${_suite}`;
-          _symbl = `${_suite[0].toLowerCase()}${_oglo}`
+          _name = `${_g.c_NameList.slice(_rStartIdx - 1, _rEndIdx)[0]} of ${_suite}`;
+          _symbl = `${_suite[0].toLowerCase()}${ndoPos}`;
           break;
         }
-        case (_oglo < 52): { // Hearts
-          let rNamePos = (_oglo % _g.c_NameList.length) * -1;
+        case (ndoPos < 52): { // Hearts
+          let
+            _rStartIdx = (ndoPos % _g.c_NameList.length) * -1,
+            _rEndIdx = Object.is(_rStartIdx, -0) ? _g.c_NameList.length : _rStartIdx;
 
-          let _suite = _g.c_SuiteList[Math.floor(_oglo / 13)]
-
-          _name = `${_g.c_NameList.slice(rNamePos - 1, rNamePos)} of ${_suite}`;
-          _symbl = `${_suite[0].toLowerCase()}${_oglo}`
+          _name = `${_g.c_NameList.slice(_rStartIdx - 1, _rEndIdx)[0]} of ${_suite}`;
+          _symbl = `${_suite[0].toLowerCase()}${ndoPos}`;
           break;
         }
         default: console.warn("Card index outside range");
@@ -62,10 +55,10 @@ const makeDealerHand = () => {
     }
 
     return Object.freeze({
-      oglo: _oglo,
-      spot: _spot,
-      title: `${_g.c_TitlePrefix} ${_spot + 1}: ${_name}`,
-      desc: `${_g.c_DescPrefix} ${_spot + 1}`,
+      oglo: ndoPos,
+      spot: curPos,
+      title: `${_g.c_TitlePrefix} ${curPos + 1}: ${_name}`,
+      desc: `${_g.c_DescPrefix} ${curPos + 1}`,
       symbolRef: `#${_symbl}`
     });
   };
