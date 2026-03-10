@@ -19,6 +19,8 @@ const makeRibbonPart = (containerID) => {
     /** @type {HTMLSelectElement} */
     $brushWell = document.querySelector(`${containerID} #brush select[name='brush-wells']`),
     /** @type {HTMLButtonElement} */
+    $shuffleBtn = document.querySelector(`${containerID} button#shuffle`),
+    /** @type {HTMLButtonElement} */
     $clawTxtBtn = document.querySelector(`${containerID} #claw button.claw-txt`),
     /** @type {HTMLButtonElement} */
     $clawImgBtn = document.querySelector(`${containerID} #claw button.claw-img`),
@@ -68,6 +70,7 @@ const makeRibbonPart = (containerID) => {
       $brushWell.disabled = true;
       $clawTxtBtn.disabled = true;
       $clawImgBtn.disabled = true;
+      $shuffleBtn.disabled = true;
 
       result = await outHand.exportText(txtExports.join("\n"));
 
@@ -76,6 +79,7 @@ const makeRibbonPart = (containerID) => {
         $brushWell.disabled = false;
         $clawTxtBtn.disabled = false;
         $clawImgBtn.disabled = false;
+        $shuffleBtn.disabled = false;
       }, 2000);
     }
 
@@ -100,6 +104,7 @@ const makeRibbonPart = (containerID) => {
       $brushWell.disabled = true;
       $clawTxtBtn.disabled = true;
       $clawImgBtn.disabled = true;
+      $shuffleBtn.disabled = true;
 
       _imgUrl = await outHand.generateImage(renderColor, renderExports, renderBase);
 
@@ -114,6 +119,7 @@ const makeRibbonPart = (containerID) => {
         $brushWell.disabled = false;
         $clawTxtBtn.disabled = false;
         $clawImgBtn.disabled = false;
+        $shuffleBtn.disabled = false;
       }, 4000);
 
       window.setTimeout(() => {
@@ -123,6 +129,27 @@ const makeRibbonPart = (containerID) => {
     }
 
     return result;
+  };
+
+
+  const generic_cool_down = () => {
+    if (is_grabbing) { return; }
+
+    is_grabbing = true;
+    $brushWell.disabled = true;
+    $clawTxtBtn.disabled = true;
+    $clawImgBtn.disabled = true;
+    $shuffleBtn.disabled = true;
+    $clawDrop.removeAttribute("href");
+    $clawDrop.textContent = "";
+
+    window.setTimeout(() => {
+      is_grabbing = false;
+      $brushWell.disabled = false;
+      $clawTxtBtn.disabled = false;
+      $clawImgBtn.disabled = false;
+      $shuffleBtn.disabled = false;
+    }, 3000);
   };
 
 
@@ -161,9 +188,22 @@ const makeRibbonPart = (containerID) => {
   });
 
 
+  $shuffleBtn.addEventListener('click', (_clickEvt) => {
+    if (is_grabbing || _clickEvt.target != $shuffleBtn) { return; }
+
+    /** @type {PCSEvent} */
+    const stirAroundEvent = new CustomEvent(_g.notices.mix, {
+      detail: { $dispatcher: $shuffleBtn }
+    });
+
+    document.querySelector(`#${_g.appID}`)?.dispatchEvent(stirAroundEvent);
+  });
+
+
   return Object.freeze({
     composeTxt: write_out,
     prepareImg: render_out,
+    resetCtrls: generic_cool_down,
 
     /** @type {CSSelector} */
     get dyeInput () {
@@ -182,6 +222,11 @@ const makeRibbonPart = (containerID) => {
     /** @type {CSSelector} */
     get downloadBtn () {
       return `${containerID} .${$clawImgBtn.className.split(' ').join('.')}`;
+    },
+
+    /** @type {CSSelector} */
+    get mingleBtn () {
+      return `${containerID} #${$shuffleBtn.id}`;
     }
   });
 }

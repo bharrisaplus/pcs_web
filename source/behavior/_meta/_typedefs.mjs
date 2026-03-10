@@ -192,8 +192,10 @@
  * @property {CSSelector} dyeInput
  * @property {function(string[]) :Promise<Boolean>} composeTxt
  * @property {function(string[], CSSelector) :Promise<Boolean>} prepareImg
+ * @property {function() :void} resetCtrls
  * @property {CSSelector} copyBtn
  * @property {CSSelector} downloadBtn
+ * @property {CSSelector} mingleBtn
  * @memberof Part
  */
 
