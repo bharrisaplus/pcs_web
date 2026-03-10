@@ -104,13 +104,10 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
         ).symbolRef;
       });
 
-    console.debug(itemRefs);
-    console.log(exportBaseID);
-
     if (panel.isBusy || hud.isOpen) { return; }
     if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.downloadBtn)) { return; }
 
-    await panel.prepareImg(currentColor, dingus.currentOrder, "#card-sheet");
+    await panel.prepareImg(currentColor, itemRefs, exportBaseID);
     console.info(`Downloaded image`);
   };
 

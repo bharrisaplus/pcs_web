@@ -38,29 +38,30 @@ const makeEgressHand = () => {
 
 	/**
 	 * @param  {string} backdropColor an acceptable value for fill
-	 * @param  {string[]} spriteOrder
+	 * @param  {string[]} spriteList
 	 * @param  {CSSelector} spriteSheet
 	 *
 	 * @return {Promise<string>} The data url for the generated image
 	 */
-	const canvasyze_rasterize = async (backdropColor, spriteOrder, spriteSheet) => {
-		let 
+	const canvasyze_rasterize = async (backdropColor, spriteList, spriteSheet) => {
+		let
 			imgDataUrl = "",
-			svgObjUrl = "";
+			svgObjUrl = "",
+			/** @type {SVGUseElement[]} */
+			$useItems = [];
 
 		const
 			/** @type {SVGElement} */
 			$spriteSheet = document.querySelector(spriteSheet)?.cloneNode(true),
 			/** @type {SVGRectElement} */
 			$backdrop = $spriteSheet.querySelector(`defs symbol rect`),
-			/** @type {SVGGElement} */
-			$itemGroup = document.createElementNS("http://www.w3.org/2000/svg", "g"),
 
+			$itemGroup = document.createElementNS("http://www.w3.org/2000/svg", "g"),
 			$canvas = document.createElement('canvas'),
 			canvas_ctx_2d = $canvas.getContext('2d'),
 			tmpImage = new Image();
 
-		if (!$spriteSheet || spriteOrder.length < 52) {
+		if (!$spriteSheet || spriteList.length < 52) {
 			console.error("Missing componenets for image download");
 			console.debug(arguments);
 			imgDataUrl = "";
@@ -69,13 +70,19 @@ const makeEgressHand = () => {
 			$itemGroup.setAttribute('id', 'group-items');
 			$backdrop?.setAttribute('fill', backdropColor);
 
-			//spriteOrder.forEach((spriteItm) => {
-			//	_$useItem = document.createElementNS("http://www.w3.org/2000/svg", "use");
-			//	
-			//	_$useItem.setAttribute('href', spriteItem) 
-			//	$itmGroup.appendChild()
-			//});
+			$useItems = spriteList.map((_itm, _idx) => {
+				const _sprite = document.createElementNS("http://www.w3.org/2000/svg", "use");
 
+				_sprite.setAttribute('href', _itm);
+				_sprite.setAttribute('width','30');
+				_sprite.setAttribute('height','40');
+				_sprite.setAttribute('x', `${4.32 + (Math.floor(_idx % 13) * 38.46)}`);
+				_sprite.setAttribute('y', `${5 + (Math.floor(_idx / 13) * 50)}`);
+
+				return _sprite;
+			});
+
+			$itemGroup.replaceChildren(...$useItems);
 			$spriteSheet.appendChild($itemGroup);
 
 			svgObjUrl = URL.createObjectURL(new Blob(
