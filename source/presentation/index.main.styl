@@ -17,8 +17,19 @@
     & main[data-dye="purple-dye"]
         background: var(--bg-amethyst)
 
+    &:has(main :popover-open) #ribbon,
+    &:has(main .hide-before-load) #ribbon
+        cursor: default
+        pointer-events: none
 
-#title-marquee h2
+    &:has(#brush select:disabled) main #tableau .playing-card,
+    &:has(#ribbon button:disabled) main #tableau .playing-card
+        cursor: default
+        pointer-events: none
+        
+
+
+#title-marquee
     user-select: none
     pointer-events: none
 
@@ -31,9 +42,11 @@
     & .ribbon-bow
         background-color: var(--debug-3-color)
 
+
 #brush
     & select[name="brush-wells"]
         border-style: ridge
+        cursor: pointer
 
         & option:nth-of-type(2)
             background-color: var(--emerald-fade)
@@ -51,6 +64,7 @@
 #shuffle
     border-color: var(--common-dark-fade)
     border-style: ridge
+    cursor: pointer
 
 #claw
     & button
@@ -59,6 +73,7 @@
         outline-color: var(--claw-button-sob)
         translate: 0 0
         box-shadow: @css { 3px 2.5px var(--common-dark-fade); }
+        cursor: pointer
 
         &:active
             box-shadow: @css { 1.5px 1px var(--common-dark-fade); }
