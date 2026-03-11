@@ -9,7 +9,7 @@ const all_events = {
   kick: 'kick',
   needle: 'needle',
   scratch: 'scratch',
-  mix: "mix",
+  blend: "blend",
   chop: "chop",
   trace: "trace",
   splash: "splash"

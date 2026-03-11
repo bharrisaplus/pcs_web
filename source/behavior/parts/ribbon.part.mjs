@@ -80,7 +80,7 @@ const makeRibbonPart = (containerID) => {
         $clawTxtBtn.disabled = false;
         $clawImgBtn.disabled = false;
         $shuffleBtn.disabled = false;
-      }, 2000);
+      }, 1500);
     }
 
     return result;
@@ -149,7 +149,7 @@ const makeRibbonPart = (containerID) => {
       $clawTxtBtn.disabled = false;
       $clawImgBtn.disabled = false;
       $shuffleBtn.disabled = false;
-    }, 3000);
+    }, 1500);
   };
 
 
@@ -192,7 +192,7 @@ const makeRibbonPart = (containerID) => {
     if (is_grabbing || _clickEvt.target != $shuffleBtn) { return; }
 
     /** @type {PCSEvent} */
-    const stirAroundEvent = new CustomEvent(_g.notices.mix, {
+    const stirAroundEvent = new CustomEvent(_g.notices.blend, {
       detail: { $dispatcher: $shuffleBtn }
     });
 

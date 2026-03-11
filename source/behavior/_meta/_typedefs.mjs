@@ -7,13 +7,13 @@
  */
 
 /**
- * @typedef {'kick' | 'needle' | 'scratch' | 'mix' | 'chop' | 'splash'} PCSEventType
+ * @typedef {'kick' | 'needle' | 'scratch' | 'blend' | 'chop' | 'splash'} PCSEventType
  *
  * @typedef {Object} PCSEventTypes - {@link CustomEvent.type}
  * @property {'kick'} kick Start app
  * @property {'needle'} needle Open Popover
  * @property {'scratch'} scratch Update Popover
- * @property {'mix'} mix Shuffle
+ * @property {'blend'} mix Shuffle
  * @property {'chop'} chop Copy and Paste
  * @property {'trace'} trace Generate Image
  * @property {'splash'} splash Change Background Color
