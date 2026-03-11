@@ -6,9 +6,7 @@
 import { default as _g } from "../_meta/_glods.mjs";
 
 
-const
-  turntableAbortController = new AbortController(),
-  {signal: turntableAbortSignal} = turntableAbortController;
+let turntableAbortController = new AbortController();
 
 
 /**
@@ -134,13 +132,13 @@ const makeTurntablePart = (containerID) => {
 
 
   $container.setAttribute('popover', 'manual'); // only close via $turnOff
-  $container.addEventListener('beforetoggle', _tidy, {signal: turntableAbortSignal});
-  $cueNext.addEventListener('click', _determine_followup, {signal: turntableAbortSignal});
-  $cuePrevious.addEventListener('click', _determine_followup, {signal: turntableAbortSignal});
+  $container.addEventListener('beforetoggle', _tidy, {signal: turntableAbortController.signal});
+  $cueNext.addEventListener('click', _determine_followup, {signal: turntableAbortController.signal});
+  $cuePrevious.addEventListener('click', _determine_followup, {signal: turntableAbortController.signal});
 
   $turnOff.addEventListener("click", () => {
     $container.hidePopover();
-  }, {signal: turntableAbortSignal});
+  }, {signal: turntableAbortController.signal});
 
   document.querySelector('#title-marquee')?.addEventListener('click', () => {
     if (_tccount++ < 7) { return; }
@@ -150,7 +148,7 @@ const makeTurntablePart = (containerID) => {
     $cueNext.disabled = true;
     $pickup.querySelector('use').setAttribute('href', _g.pcs_cardRef);
     $container.showPopover();
-  }, {signal: turntableAbortSignal});
+  }, {signal: turntableAbortController.signal});
 
 
   return Object.freeze({
@@ -192,6 +190,7 @@ const rinseRepeatTurntable = (getTurntableContainerID) => {
     reuseablePart = makeTurntablePart(getTurntableContainerID);
   } else {
     turntableAbortController.abort();
+    turntableAbortController = new AbortController();
     reuseablePart = makeTurntablePart(getTurntableContainerID);
   }
 
