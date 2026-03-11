@@ -53,7 +53,7 @@ const makeMiscHand = () => {
 
       if (console_free) console.log(`Loading asset ${assetUrl}\nPlacing within ${assetDump}`);
 
-      $assetDump.appendChild(assetParser.parseFromString(assetInnards, 'image/svg+xml'));
+      $assetDump.appendChild(assetParser.parseFromString(assetInnards, 'image/svg+xml').firstChild);
     });
   };
 
