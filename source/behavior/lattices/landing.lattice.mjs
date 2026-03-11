@@ -160,12 +160,6 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
   };
 
 
-  if (dingus.currentOrder < _g.c_Max) {
-    console.error("Issue with Tableau. Cancelling setup");
-  } else {
-    itemVault.updateCards(dingus.currentOrder);
-  }
-
   return Object.freeze({
     hookUp: tap_in
   });
