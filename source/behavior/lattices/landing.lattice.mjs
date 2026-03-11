@@ -1,6 +1,6 @@
 
 /**
- * @import {CSSelector, PCSEvent, Lattice, Part, Bank} from "../_meta/_typedefs.mjs"
+ * @import {CSSelector, PCSEvent, CardIntri, Lattice, Part, Bank} from "../_meta/_typedefs.mjs"
  */
 
 import { default as _g } from '../_meta/_glods.mjs';
@@ -112,19 +112,20 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
   };
 
 
-  const maybe_blend_items = (_pcsevt) => {
-    let blendList;
+  const maybe_mix_items = (_pcsevt) => {
+    /** @type {CardIntri[]} */
+    let mixList = [];
 
     if (panel.isBusy || hud.isOpen) { return; }
     if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.mingleBtn)) { return; }
 
-    blendList = cardShark.mixUp(itemVault.ucards, itemVault.ndoUCards);
+    itemVault.updateCards(cardShark.mixUp(itemVault.ucards, itemVault.ndoUCards));
 
-    console.debug(itemVault.ucards);
-    console.debug(blendList);
-    console.debug(cardShark.getCard(0, blendList[0]));
-    console.debug(cardShark.getCard(51, blendList[51]));
+    mixList = itemVault.cards.map((_itm, _idx) => {
+      return cardShark.getCard(_idx, itemVault.ndoCards.indexOf(_itm));
+    });
 
+    dingus.updateOrder(mixList);
     panel.resetCtrls();
   };
 
@@ -149,7 +150,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
       $appShell.addEventListener(_g.notices.splash, maybe_change_color);
       $appShell.addEventListener(_g.notices.chop, maybe_output_txt);
       $appShell.addEventListener(_g.notices.trace, maybe_download_img);
-      $appShell.addEventListener(_g.notices.mix, maybe_blend_items);
+      $appShell.addEventListener(_g.notices.blend, maybe_mix_items);
 
       maybe_success = true;
       console.log("Ready!");

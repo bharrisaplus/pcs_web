@@ -176,6 +176,7 @@
  *    </tableau>
  *
  * @property {number[]} currentOrder
+ * @property {CardIntri[]} updateOrder
  * @memberof Part
  */
 
