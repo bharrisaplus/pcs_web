@@ -36,6 +36,11 @@
 #ribbon
     background-color: var(--debug-1-color)
 
+    & [role="tooltip"]
+        color: var(--card-base)
+        background-color: var(--common-dark)
+        border-radius: 18px
+
     & .ribbon-swish, & .ribbon-flourish
         background-color: var(--debug-2-color)
 
@@ -175,6 +180,9 @@
 /*
     transitions & animations
  */
+ 
+ #ribbon [role="tooltip"]
+    transition: visibility 0.25s
 
 #pageload-curtain
     /* property | duration | delay | behavior */

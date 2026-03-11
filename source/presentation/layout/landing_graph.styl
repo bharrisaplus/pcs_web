@@ -32,6 +32,19 @@ $card-wspace = $card-width * 0.25
     padding: 4.5px
     justify-content: space-around
     align-items: center
+    
+    & [role="tooltip"]
+        visibility: hidden
+        position: absolute
+        top: 14%
+        right: 15%
+        width: 300px
+        padding: 7px
+        z-index: 2
+
+    & [aria-describedby]:hover + [role="tooltip"],
+    & [aria-describedby]:focus + [role="tooltip"]
+        visibility: visible
 
     & .ribbon-bow, & .ribbon-swish, & .ribbon-flourish
         display: inline-flex

@@ -8,13 +8,19 @@
                 option(value=3) Twilight
                 option(value=4) Amethyst
     .ribbon-bow
-        button#shuffle(aria-label="Shuffle Cards" aria-descriptoin="Arranges the cards in random order")
+        button#shuffle(aria-label="Shuffle Cards" aria-describedby="shuffle-desc")
             | ⧢
+        #shuffle-desc(role="tooltip")
+            | Arrange the cards in random order
     .ribbon-flourish
         #claw
-            button.claw-txt(aria-label="Clipboard Copy" aria-description="Copies cards as text to clipboard")
+            button.claw-txt(aria-label="Clipboard Copy" aria-describedby="clawtxt-desc")
                 | ⮺
-            button.claw-img(aria-label="Save Image" aria-description="Snaps cards as image for download")
+            #clawtxt-desc(role="tooltip")
+                | Copy cards as text to clipboard
+            button.claw-img(aria-label="Save Image" aria-describedby="clawimg-desc")
                 | 🖫
+            #clawimg-desc(role="tooltip")
+                | Generate image of cards for download
             a.claw-drop
                 | &nbsp;
