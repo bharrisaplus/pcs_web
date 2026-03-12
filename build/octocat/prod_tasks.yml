@@ -28,6 +28,7 @@ tasks:
           FAVICON_16_ALT_URL: '{{.OCTOCAT_URL}}{{.FAVICON_16_ALT_NAME}}'
           FAVICON_ICO_URL: '{{.OCTOCAT_URL}}{{.FAVICON_ICO_NAME}}'
           FAVICON_ICO_ALT_URL: '{{.OCTOCAT_URL}}{{.FAVICON_ICO_ALT_NAME}}'
+          FAVICON_MASK_URL: '{{.OCTOCAT_URL}}{{.FAVICON_MASK_NAME}}'
           VENDOR_CSS_RESET_URL: '{{.OCTOCAT_URL}}{{.VENDOR_CSS_RESET_NAME}}'
           VENDOR_CHANCEJS_URL: '{{.OCTOCAT_URL}}{{.VENDOR_CHANCEJS_NAME}}'
           VENDOR_HTML2CANVAS_URL: '{{.OCTOCAT_URL}}{{.VENDOR_HTML2CANVAS_NAME}}'
@@ -75,6 +76,7 @@ tasks:
       - cp {{.COMMON_DIR}}/favicons/sqwiggle_150.png {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_s150_NAME}}
       - cp {{.COMMON_DIR}}/favicons/sqwiggle_310.png {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_s310_NAME}}
       - cp {{.COMMON_DIR}}/favicons/sqwiggle_310x150.png {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_w310_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/icon-silhouette.svg {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MASK_NAME}}
       - cp {{.CONTENT_DIR}}/webmanifest.source.json {{.OCTOCAT_HOST_DIR}}/{{.WEBMANIFEST_NAME}}
       - echo "Favicon and Offline files placed with pages host files"
 

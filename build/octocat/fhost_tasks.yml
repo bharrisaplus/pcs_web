@@ -30,6 +30,7 @@ tasks:
           FAVICON_16_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_16_ALT_NAME}}'
           FAVICON_ICO_URL: '{{.FHOST_URL}}{{.FAVICON_ICO_NAME}}'
           FAVICON_ICO_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_ICO_ALT_NAME}}'
+          FAVICON_MASK_URL: '{{.FHOST_URL}}{{.FAVICON_MASK_NAME}}'
           VENDOR_CSS_RESET_URL: '{{.FHOST_URL}}{{.VENDOR_CSS_RESET_NAME}}'
           VENDOR_CHANCEJS_URL: '{{.FHOST_URL}}{{.VENDOR_CHANCEJS_NAME}}'
           VENDOR_HTML2CANVAS_URL: '{{.FHOST_URL}}{{.VENDOR_HTML2CANVAS_NAME}}'
@@ -90,6 +91,7 @@ tasks:
       - cp {{.COMMON_DIR}}/favicons/sqwiggle_150.png {{.DEV_DIR}}/{{.FAVICON_MSTILE_s150_NAME}}
       - cp {{.COMMON_DIR}}/favicons/sqwiggle_310.png {{.DEV_DIR}}/{{.FAVICON_MSTILE_s310_NAME}}
       - cp {{.COMMON_DIR}}/favicons/sqwiggle_310x150.png {{.DEV_DIR}}/{{.FAVICON_MSTILE_w310_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/icon-silhouette.svg {{.DEV_DIR}}/{{.FAVICON_MASK_NAME}}
       - cp {{.CONTENT_DIR}}/webmanifest.source.json {{.DEV_DIR}}/{{.WEBMANIFEST_NAME}}
       - echo "Favicon and Offline files placed with dev files"
 
