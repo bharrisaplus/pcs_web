@@ -36,19 +36,6 @@ $card-wspace = $card-width * 0.25
     justify-content: space-around
     align-items: center
 
-    & [role="tooltip"]
-        visibility: hidden
-        position: absolute
-        top: 14%
-        right: 15%
-        width: 300px
-        padding: 7px
-        z-index: 2
-
-    & [aria-describedby]:hover + [role="tooltip"],
-    & [aria-describedby]:focus + [role="tooltip"]
-        visibility: visible
-
     & .ribbon-bow,
     & .ribbon-swish,
     & .ribbon-flourish
@@ -225,6 +212,38 @@ $card-wspace = $card-width * 0.25
             visibility: hidden
 
 
+
+/*
+    Tooltips
+ */
+
+#ribbon
+    & [role="tooltip"]
+        visibility: hidden
+        position: absolute
+        top: 14%
+        right: 15%
+        width: 300px
+        padding: 7px
+        z-index: 2
+
+    &:has(#shuffle:hover) #shuffle-desc[role="tooltip"],
+    &:has(#shuffle:focus) #shuffle-desc[role="tooltip"]
+        visibility: visible
+
+    &:has(#claw .claw-txt:hover) #clawtxt-desc[role="tooltip"],
+    &:has(#claw .claw-txt:focus) #clawtxt-desc[role="tooltip"]
+        visibility: visible
+
+    &:has(#claw .claw-img:hover) #clawimg-desc[role="tooltip"],
+    &:has(#claw .claw-img:focus) #clawimg-desc[role="tooltip"]
+        visibility: visible
+
+
+/*
+    Ancestor/Parent responsive styles
+ */
+
 @container shell (width < 800px)
     #pcs-shell
         header
@@ -250,6 +269,10 @@ $card-wspace = $card-width * 0.25
         & .ribbon-bow
             align-self: flex-end
             margin: 0 4.5px 0 0
+
+        & [role="tooltip"]
+            top: 9.15%
+
 
     #tableau
         column-gap: calc(var(--card-hspace) / 2)
