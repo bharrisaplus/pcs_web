@@ -26,7 +26,6 @@
     &:has(#ribbon button:disabled) main #tableau .playing-card
         cursor: default
         pointer-events: none
-        
 
 
 #title-marquee
@@ -41,7 +40,8 @@
         background-color: var(--common-dark)
         border-radius: 18px
 
-    & .ribbon-swish, & .ribbon-flourish
+    & .ribbon-swish,
+    & .ribbon-flourish
         background-color: var(--debug-2-color)
 
     & .ribbon-bow
@@ -164,7 +164,7 @@
             border-radius: 18%
 
             &:disabled
-                cursor not-allowed
+                cursor: not-allowed
 
     & .turntable-cue-lever-spacer
         color: var(--card-base)
@@ -180,8 +180,8 @@
 /*
     transitions & animations
  */
- 
- #ribbon [role="tooltip"]
+
+#ribbon [role="tooltip"]
     transition: visibility 0.25s
 
 #pageload-curtain

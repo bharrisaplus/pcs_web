@@ -12,6 +12,8 @@ export default {
 		"stylus/indentation": 4,
 		"stylus/selector-list-comma": 'always',
 		"stylus/color-hex-case": null,
+		"stylus/media-feature-colon": "always",
+		"stylus/single-line-comment": null,
 		"plugin/no-unsupported-browser-features": [ true,
 			{
 				"ignore": ["css-nesting"],

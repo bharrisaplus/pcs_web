@@ -34,7 +34,7 @@ $card-wspace = $card-width * 0.25
     padding: 4.5px
     justify-content: space-around
     align-items: center
-    
+
     & [role="tooltip"]
         visibility: hidden
         position: absolute
@@ -48,11 +48,14 @@ $card-wspace = $card-width * 0.25
     & [aria-describedby]:focus + [role="tooltip"]
         visibility: visible
 
-    & .ribbon-bow, & .ribbon-swish, & .ribbon-flourish
+    & .ribbon-bow,
+    & .ribbon-swish,
+    & .ribbon-flourish
         display: inline-flex
         align-items: center
 
-    & .ribbon-swish, & .ribbon-flourish
+    & .ribbon-swish,
+    & .ribbon-flourish
         width: 45%
 
     & .ribbon-swish
@@ -139,7 +142,6 @@ $card-wspace = $card-width * 0.25
 
         & .loading-spinny
             height: 54px
-            width: fit-content
             aspect-ratio: 3/4
             padding: 4.5px
             border-radius: 4.5%
@@ -233,20 +235,19 @@ $card-wspace = $card-width * 0.25
     #ribbon
         flex-flow: column nowrap
         align-items: flex-start
-        
 
         & .ribbon-flourish,
         & .ribbon-swish
             width: 85%
             justify-content: flex-start
-            
+
         & .ribbon-swish :first-child,
         & .ribbon-flourish :first-child
             margin: 0
-            
+
         & .ribbon-bow
             align-self: flex-end
             margin: 0 4.5px 0 0
-    
+
     #tableau
         column-gap: calc(var(--card-hspace) / 2)
