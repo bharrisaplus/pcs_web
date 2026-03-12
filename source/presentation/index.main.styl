@@ -47,6 +47,12 @@
     & .ribbon-bow
         background-color: var(--debug-3-color)
 
+    & .ribbon-swish
+        clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 0% 100%)
+
+    & .ribbon-flourish
+        clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%)
+
 
 #brush
     & select[name="brush-wells"]
@@ -264,3 +270,12 @@
         box-shadow: /* x|y|blur|spread|color */
             3px 3px 5px 3px var(--card-shimmer),
             0px 0px 2.5px 1.5px var(--card-shimmer)
+
+
+/*
+    container responsive styles
+ */
+
+@container shell (width < 800px)
+    #ribbon .ribbon-flourish
+        clip-path: polygon(0% 0%, 85% 0%, 100% 100%, 0% 100%)
