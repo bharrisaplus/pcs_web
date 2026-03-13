@@ -4,16 +4,12 @@
  */
 
 import { default as _g } from '../_meta/_glods.mjs';
+import { default as appLogger } from '../hands/scribe.hand.mjs';
 
 
 /** @returns {Readonly<Hand.Misc>} a helper - {@link Hand.Misc} */
 const makeMiscHand = () => {
   let cycleCount = 0;
-  const console_free = (
-    window.location.href.startsWith('http://localhost:') ||
-    window.location.href.startsWith('https://localhost:') ||
-    window.location.href.startsWith('file:') // || whatever you like
-  );
 
 
   /**
@@ -31,14 +27,14 @@ const makeMiscHand = () => {
 
     assetMap.forEach(async (assetCheck, assetGrab) => {
       if (document.querySelectorAll(assetCheck).length > 0) {
-        if (console_free) console.log(`Found ${assetCheck} asset inlined already`);
+        appLogger.devlog(`Found ${assetCheck} asset inlined already`);
         return;
       }
 
       let assetUrl = document.querySelector(assetGrab)?.getAttribute('href');
 
       if (!assetUrl) {
-        if (console_free) console.log(`No url to fetch for ${assetGrab}`);
+        appLogger.issuelog(`No url to fetch for ${assetGrab}`, false, false, false);
         return;
       }
 
@@ -47,12 +43,11 @@ const makeMiscHand = () => {
         assetInnards = await assetResponse.text();
 
       if (!assetInnards) {
-        if (console_free) console.log(`Empty response from ${assetUrl}`);
+        appLogger.issuelog(`Empty response from ${assetUrl}`, false, false, false);
         return;
       }
 
-      if (console_free) console.log(`Loading asset ${assetUrl}\nPlacing within ${assetDump}`);
-
+      appLogger.devlog(`Loading asset ${assetUrl}\nPlacing within ${assetDump}`);
       $assetDump.appendChild(assetParser.parseFromString(assetInnards, 'image/svg+xml').firstChild);
     });
   };
@@ -79,8 +74,7 @@ const makeMiscHand = () => {
     // Once loading is done, disconnect loading indicator from DOM
     $indicator?.addEventListener('transitionend', (transEvt) => {
       if (transEvt.propertyName == 'opacity') {
-        if (console_free) console.log("Loaded, removing indicator");
-
+        appLogger.devlog("Loaded, removing indicator");
         $indicator.remove();
         window.dispatchEvent(new CustomEvent(_g.notices.kick));
       }
@@ -100,7 +94,6 @@ const makeMiscHand = () => {
   return Object.freeze({
     warmUp: load_assets,
     startAfter: watch_for_indicator_tick,
-    yapFriendly: console_free,
     // Convenience shortcut
     startRoutine: (a,b,c,d) => {
       load_assets(a, b);

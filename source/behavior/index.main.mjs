@@ -4,6 +4,7 @@
  */
 
 import { default as _g } from './_meta/_glods.mjs';
+import { default as appLogger } from './hands/scribe.hand.mjs';
 import { default as appCustodian } from './hands/misc.hand.mjs';
 import { default as cobbleLanding } from './lattices/landing.lattice.mjs';
 import { default as cardManager } from './banks/deck.bank.mjs';
@@ -25,12 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
     cardView, cardOverlay, cardMenu, cardRef, cardManager
   );
 
-  if (appCustodian.yapFriendly) { console.debug('console friendly environment'); }
+  appLogger.devlog('console friendly environment');
 
   window.addEventListener(_g.notices.kick, () => {
     landingPage.hookUp();
 
-    if (appCustodian.yapFriendly) { console.info("pcs started"); }
+    appLogger.devlog("pcs started");
   }, { once: true });
 
   appCustodian.startRoutine(preloadThings, preloadDest, bootOverlay, bootOverlaySpinner);

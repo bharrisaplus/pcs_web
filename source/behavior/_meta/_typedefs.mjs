@@ -111,7 +111,6 @@
  * @typedef {Object} Hand.Misc
  * Handles various tasks
  *
- * @property {Boolean} yapFriendly
  * @property {function (string, string) :void} startAfter
  * @property {function (VerifynLoad, string) :void} warmUp
  * @property {function (VerifynLoad, string, string, string) :void} startRoutine
@@ -133,6 +132,16 @@
  *
  * @property {function(string) :Promise<Boolean>} exportText
  * @property {function(string, string[], CSSelector) :Promise<string>} generateImage
+ * @memberof Hand
+ */
+
+/**
+ * @typedef {Object} Hand.Scribe
+ * Logging
+ *
+ * @property {function(string, Object) :void} devlog
+ * @property {function(string, Object, Exception, boolean) :void} issuelog
+ * @property {function(string) :void} notilog
  * @memberof Hand
  */
 
