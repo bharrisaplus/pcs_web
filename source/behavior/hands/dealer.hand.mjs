@@ -4,7 +4,7 @@
  */
 
 import { default as _g } from '../_meta/_glods.mjs';
-
+import { default as appLogger } from './scribe.hand.mjs';
 
 /** @return {Readonly<Hand.Dealer>} a helper for cards */
 const makeDealerHand = () => {
@@ -50,7 +50,7 @@ const makeDealerHand = () => {
           _symbl = `${_suite[0].toLowerCase()}${ndoPos}`;
           break;
         }
-        default: console.warn("Card index outside range");
+        default: appLogger.issuelog("Can't create card for position", arguments, false, false);
       }
     }
 

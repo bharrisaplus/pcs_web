@@ -4,13 +4,14 @@
  */
 
 import { default as _g } from '../_meta/_glods.mjs';
+import { default as appLogger } from '../hands/scribe.hand.mjs';
 import { default as getTurntable } from '../parts/turntable.part.mjs';
 import { default as getDealer } from '../hands/dealer.hand.mjs';
 import { default as getTableau } from '../parts/tableau.part.mjs';
 import { default as getRibbon } from '../parts/ribbon.part.mjs';
 
 
-const cardShark = getDealer();
+const lattice_name = "pcs:lattice:landing";
 
 /**
  * @param  {CSSelector} tableauID The dingus element - {@link Part.Tableau}
@@ -25,7 +26,8 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
   const
     panel = getRibbon(ribbonID),
     dingus = getTableau(tableauID),
-    hud = getTurntable(turntableID);
+    hud = getTurntable(turntableID),
+    shark = getDealer();
 
 
   /** @param {PCSEvent} _pcsevt */
@@ -36,7 +38,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
 
     if (itemVault.choice[0] == -1 || itemVault.choice[1] == -1) { return; }
 
-    hud.loadTurntable(cardShark.getCard(...itemVault.choice));
+    hud.loadTurntable(shark.getCard(...itemVault.choice));
   };
 
 
@@ -58,8 +60,9 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
 
     if (itemVault.choice[0] == -1 || itemVault.choice[1] == -1) { return; }
 
-    hud.spinTurntable(cardShark.getCard(...itemVault.choice));
-    console.info(`rotated turntable to ${_pcsevt.detail.msg == 'prv' ? "previous" : "next"}`);
+    hud.spinTurntable(shark.getCard(...itemVault.choice));
+
+    appLogger.devlog(`rotated turntable to ${_pcsevt.detail.msg == 'prv' ? "previous" : "next"}`);
   };
 
 
@@ -71,14 +74,14 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
     ) { return; }
 
     document.querySelector(`#${_g.appID} main`)?.setAttribute('data-dye', _pcsevt.detail.msg);
-    console.info(`Changed color to ${_pcsevt.detail?.msg}`);
+    appLogger.devlog(`Changed color to ${_pcsevt.detail?.msg}`);
   };
 
 
   /** @param {PCSEvent} _pcsevt */
   const maybe_output_txt = async (_pcsevt) => {
     const itemLabels = itemVault.cards.map((_itm, _idx) => {
-      return cardShark.getCard(
+      return shark.getCard(
         _idx, itemVault.ndoCards.indexOf(_itm)
       ).title.split(":")[1].trim();
     });
@@ -87,7 +90,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
     if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.copyBtn)) { return; }
 
     await panel.composeTxt(itemLabels);
-    console.info(`Copied text to clipboard`);
+    appLogger.notilog(`Copied text to clipboard`);
   };
 
 
@@ -99,7 +102,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
       ).getPropertyValue('background-color'),
 
       itemRefs = itemVault.cards.map((_itm, _idx) => {
-        return cardShark.getCard(
+        return shark.getCard(
           _idx, itemVault.ndoCards.indexOf(_itm)
         ).symbolRef;
       });
@@ -108,7 +111,8 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
     if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.downloadBtn)) { return; }
 
     await panel.prepareImg(currentColor, itemRefs, exportBaseID);
-    console.info(`Downloaded image`);
+
+    appLogger.notilog(`Downloaded image`);
   };
 
 
@@ -119,10 +123,10 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
     if (panel.isBusy || hud.isOpen) { return; }
     if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.mingleBtn)) { return; }
 
-    itemVault.updateCards(cardShark.mixUp(itemVault.ucards, itemVault.ndoUCards));
+    itemVault.updateCards(shark.mixUp(itemVault.ucards, itemVault.ndoUCards));
 
     mixList = itemVault.cards.map((_itm, _idx) => {
-      return cardShark.getCard(_idx, itemVault.ndoCards.indexOf(_itm));
+      return shark.getCard(_idx, itemVault.ndoCards.indexOf(_itm));
     });
 
     dingus.updateOrder(mixList);
@@ -143,7 +147,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
 
     if (!$appShell) {
       maybe_success = false;
-      console.log("Startup issue");
+      appLogger.issuelog(`Entry point not found for ${lattice_name}`, false, false, true);
     } else {
       $appShell.addEventListener(_g.notices.needle, maybe_open_hud);
       $appShell.addEventListener(_g.notices.scratch, maybe_update_hud);
@@ -153,12 +157,14 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
       $appShell.addEventListener(_g.notices.blend, maybe_mix_items);
 
       maybe_success = true;
-      console.log("Ready!");
+      appLogger.devlog(`Hooked up ${lattice_name}`);
     }
 
     return maybe_success;
   };
 
+
+  appLogger.devlog(`Built ${lattice_name}`);
 
   return Object.freeze({
     hookUp: tap_in
@@ -167,4 +173,4 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
 
 
 export default scaffoldLandingLattice;
-export const debugName = "pcs:lattice:pcs";
+export const debugName = lattice_name;

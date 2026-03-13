@@ -21,17 +21,21 @@ const
   /** @type {VerifynLoad} */
   preloadThings = new Map([["#card-sot", cardRef]]);
 
+
 document.addEventListener('DOMContentLoaded', () => {
+  appLogger.devlog('console friendly environment');
+
   const landingPage = cobbleLanding(
     cardView, cardOverlay, cardMenu, cardRef, cardManager
   );
 
-  appLogger.devlog('console friendly environment');
 
   window.addEventListener(_g.notices.kick, () => {
-    landingPage.hookUp();
-
-    appLogger.devlog("pcs started");
+    if (landingPage.hookUp()) {
+      appLogger.devlog("pcs started");
+    } else {
+      appLogger.issuelog("pcs won't start", landingPage, false);
+    }
   }, { once: true });
 
   appCustodian.startRoutine(preloadThings, preloadDest, bootOverlay, bootOverlaySpinner);

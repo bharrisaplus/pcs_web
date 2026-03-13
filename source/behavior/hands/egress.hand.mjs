@@ -4,6 +4,7 @@
  */
 
 import { default as _g } from '../_meta/_glods.mjs';
+import { default as appLogger } from '../hands/scribe.hand.mjs';
 
 
 /**
@@ -25,10 +26,9 @@ const makeEgressHand = () => {
 			result = true
 		} catch (clipboardError) {
 			if (clipboardError instanceof DOMException && clipboardError.name == "NotAllowedError"){
-				console.warn("Clipboard permission needed");
+				appLogger.issuelog("Clipboard permission needed", false, false, false);
 			} else {
-				console.error("Issue occured copying to clipboard");
-				console.debug(clipboardError);
+				appLogger.issuelog("Issue occured copying to clipboard", cpyTxt, clipboardError);
 			}
 		}
 
@@ -62,8 +62,7 @@ const makeEgressHand = () => {
 			tmpImage = new Image();
 
 		if (!$spriteSheet || spriteList.length < 52) {
-			console.error("Missing componenets for image download");
-			console.debug(arguments);
+			appLogger.issuelog("Missing componenets for image download", arguments, false);
 			imgDataUrl = "";
 		} else {
 			$spriteSheet.setAttribute('style', '');
@@ -102,17 +101,17 @@ const makeEgressHand = () => {
 
 				imgDataUrl = $canvas.toDataURL();
 			} catch(imgError) {
+				let imgErrorMsg = "Issue during image generation";
+
 				if (imgError instanceof DOMException) {
 					switch (imgError.name) {
-						case "EncodingError": console.error("Issue with image decode"); break;
-						case "SecurityError": console.error("Issue with canvas"); break;
-						default: console.error("Issue during image generation");
+						case "EncodingError": imgErrorMsg = "Issue with image decode"; break;
+						case "SecurityError": imgErrorMsg = "Issue with canvas"; break;
+						default: imgErrorMsg = "Issue with web API";
 					}
-				} else {
-					console.error("Issue during image generation");
 				}
 
-				console.debug(imgError);
+				appLogger.issuelog(imgErrorMsg, arguments, imgError);
 				imgDataUrl = "";
 			}
 		}

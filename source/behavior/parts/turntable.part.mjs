@@ -4,6 +4,7 @@
  */
 
 import { default as _g } from "../_meta/_glods.mjs";
+import { default as logger } from "../hands/scribe.hand.mjs";
 
 
 let turntableAbortController = new AbortController();
@@ -37,7 +38,7 @@ const makeTurntablePart = (containerID) => {
   /** @param  {ToggleEvent} _toggleEvt */
   const _tidy = (_toggleEvt) => {
     if (_toggleEvt.oldState === 'open' && _toggleEvt.newState === 'closed') {
-      console.info("closing turntable");
+      logger.devlog("closing turntable");
       $pickup.removeAttribute('data-spot');
       $pickup.removeAttribute('data-oglo');
       $pickup.querySelector('title').textContent = _g.pcs_cardTitle;
@@ -49,7 +50,7 @@ const makeTurntablePart = (containerID) => {
         $cuePrevious.disabled = true;
       }, 700);
     } else if (_toggleEvt.oldState === 'closed' && _toggleEvt.newState === 'open') {
-      console.info("opening turntable");
+      logger.devlog("opening turntable");
     }
   };
 
@@ -74,7 +75,7 @@ const makeTurntablePart = (containerID) => {
     $cuePrevious.disabled = _updateInfo.spot == 0;
     $cueNext.disabled = _updateInfo.spot == _g.c_Max - 1;
 
-    console.info(`loading turntable for ${_updateInfo.title}`);
+    logger.devlog(`loading turntable for ${_updateInfo.title}`);
     result = true
 
     return result;
