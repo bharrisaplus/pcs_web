@@ -59,6 +59,14 @@ $card-wspace = $card-width * 0.25
         & > :first-child
             margin: 0 0 0 15%
 
+    & [role="tooltip"]
+        position: absolute
+        top: 14%
+        right: 15%
+        width: 300px
+        padding: 7px
+        z-index: 2
+
 
 #brush
     & select[name="brush-wells"]
@@ -212,34 +220,6 @@ $card-wspace = $card-width * 0.25
             visibility: hidden
 
 
-
-/*
-    Tooltips
- */
-
-#ribbon
-    & [role="tooltip"]
-        visibility: hidden
-        position: absolute
-        top: 14%
-        right: 15%
-        width: 300px
-        padding: 7px
-        z-index: 2
-
-    &:has(#shuffle:hover) #shuffle-desc[role="tooltip"],
-    &:has(#shuffle:focus) #shuffle-desc[role="tooltip"]
-        visibility: visible
-
-    &:has(#claw .claw-txt:hover) #clawtxt-desc[role="tooltip"],
-    &:has(#claw .claw-txt:focus) #clawtxt-desc[role="tooltip"]
-        visibility: visible
-
-    &:has(#claw .claw-img:hover) #clawimg-desc[role="tooltip"],
-    &:has(#claw .claw-img:focus) #clawimg-desc[role="tooltip"]
-        visibility: visible
-
-
 /*
     Ancestor/Parent responsive styles
  */
@@ -271,7 +251,7 @@ $card-wspace = $card-width * 0.25
             margin: 0 4.5px 0 0
 
         & [role="tooltip"]
-            top: 9.15%
+            top: 9%
 
 
     #tableau

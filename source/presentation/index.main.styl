@@ -2,7 +2,7 @@
 @import 'typography/_typeset.styl'
 @import 'layout/_graph.styl'
 @import 'layout/animations.styl'
-
+// Page specific
 @import 'typography/landing_typeset.styl'
 @import 'layout/landing_graph.styl'
 
@@ -33,11 +33,6 @@
     pointer-events: none
 
 #ribbon
-    & [role="tooltip"]
-        color: var(--card-base)
-        background-color: var(--common-dark)
-        border-radius: 18px
-
     & .ribbon-swish,
     & .ribbon-flourish
         background-color: var(--common-dark-fade-alt)
@@ -50,6 +45,24 @@
 
     & .ribbon-flourish
         clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%)
+
+    & [role="tooltip"]
+        visibility: hidden
+        color: var(--card-base)
+        background-color: var(--common-dark)
+        border-radius: 18px
+
+    &:has(button:active) [role="tooltip"]
+        visibility: hidden
+
+    &:has(#shuffle:focus) #shuffle-desc[role="tooltip"]
+        visibility: visible
+
+    &:has(#claw .claw-txt:focus) #clawtxt-desc[role="tooltip"]
+        visibility: visible
+
+    &:has(#claw .claw-img:focus) #clawimg-desc[role="tooltip"]
+        visibility: visible
 
 
 #brush
@@ -263,6 +276,17 @@
  */
 
 @media (hover: hover)
+    #ribbon
+        &:has(#shuffle:hover) #shuffle-desc[role="tooltip"]
+            visibility: visible
+
+        &:has(#claw .claw-txt:hover) #clawtxt-desc[role="tooltip"]
+            visibility: visible
+
+        &:has(#claw .claw-img:hover) #clawimg-desc[role="tooltip"]
+            visibility: visible
+
+
     #tableau .playing-card:hover
         rotate: -9deg
         box-shadow: /* x|y|blur|spread|color */
