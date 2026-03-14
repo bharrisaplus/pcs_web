@@ -7,7 +7,7 @@ import { default as _g } from './_meta/_glods.mjs';
 import { default as appLogger } from './hands/scribe.hand.mjs';
 import { default as appCustodian } from './hands/misc.hand.mjs';
 import { default as cobbleLanding } from './lattices/landing.lattice.mjs';
-import { default as cardManager } from './banks/deck.bank.mjs';
+import { default as appStore } from './banks/deck.bank.mjs';
 
 
 const
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   appLogger.devlog('console friendly environment');
 
   const landingPage = cobbleLanding(
-    cardView, cardOverlay, cardMenu, cardRef, cardManager
+    cardView, cardOverlay, cardMenu, cardRef, appStore
   );
 
 
