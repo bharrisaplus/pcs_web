@@ -19,6 +19,7 @@ const all_events = {
 const _globals = {
   appID: "pcs-shell",
   notices: Object.freeze(all_events),
+  dyes: Object.freeze(['green-dye', 'red-dye', 'blue-dye', 'purple-dye']),
   pcs_cardTitle: 'Magnified view of card',
   pcs_cardDesc: 'A single card up close and personal',
   pcs_cardRef: '#pcs-card',
