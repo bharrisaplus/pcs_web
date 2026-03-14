@@ -23,7 +23,8 @@ const demoLintConfig = defineConfig([
         Image: "readonly",
         XMLSerializer: "readonly",
         Blob: "readonly",
-        arguments: "readonly"
+        arguments: "readonly",
+        localStorage: "readonly"
     	}
     }
   }

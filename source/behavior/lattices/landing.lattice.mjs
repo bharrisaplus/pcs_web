@@ -175,7 +175,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
       maybe_success = false;
       appLogger.issuelog(`Required components missing for ${lattice_name}`, args);
     } else {
-      $appShell.setAttribute('data-dye', _g.dyes[0]);
+      $appShell.querySelector('main').setAttribute('data-dye', _g.dyes[itemVault.backDrop || 0]);
       $tableau.setAttribute('style', '');
       $tableau.classList.remove('hide-before-load');
 
