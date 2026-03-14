@@ -21,16 +21,16 @@
  */
 
 /**
- * @typedef {Object} PCSEventOpts
- * - {@link CustomEvent} - {@link PCSEventType} - {@link PCSEvent}
- * `new CustomEvent(<PCSEventType>,<PCSEventOpts>)`
+ * @typedef {Object} PCSEventInit
+ * {@link CustomEvent} - {@link PCSEventType} - {@link PCSEvent}
+ * `new CustomEvent(<PCSEventType>,<PCSEventInit>)`
  * @property {{msg :string, $dispatcher :Element}} detail
  */
 
 /**
- * @typedef {CustomEvent<PCSEventOpts>} PCSEvent
- * - {@link CustomEvent} - {@link PCSEventType} - {@link PCSEventOpts}
- * `new CustomEvent(<PCSEventType>, {detail: <PCSEventDetail}>)`
+ * @typedef {CustomEvent<PCSEventInit>} PCSEvent
+ * {@link CustomEvent} - {@link PCSEventType} - {@link PCSEventInit}
+ * `new CustomEvent(<PCSEventType>, PCSEventInit)`
  */
 
 /**
@@ -39,6 +39,7 @@
  *
  * @property {'pcs-shell'} appID
  * @property {Readonly<PCSEventTypes>} notices
+ * @property {['green-dye', 'red-dye', 'blue-dye', 'purple-dye']} dyes
  * @property {'magnified view of card'} pcs_cardTitle
  * @property {'A single card up close and personal'} pcs_cardDesc
  * @property {'#pcs-card'} pcs_cardRef
@@ -95,8 +96,10 @@
  * @property {Uint8Array} ucards
  * @property {number[]} cards
  * @property {number[]} choice
+ * @property {number} backDrop
  * @property {function(Uint8Array | number[]) :void} updateCards
  * @property {function(number) :void} updateChoice
+ * @property {function(number) :void} updateBackDrop
  * @property {function(): void} resetCards
  * @memberof Bank
  */
