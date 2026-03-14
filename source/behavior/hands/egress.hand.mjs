@@ -25,7 +25,7 @@ const makeEgressHand = () => {
 			await navigator.clipboard.writeText(`${_g.pcs_clippre}${cpyTxt}`);
 			result = true
 		} catch (clipboardError) {
-			if (clipboardError instanceof DOMException && clipboardError.name == "NotAllowedError"){
+			if (clipboardError instanceof DOMException && clipboardError.name === "NotAllowedError"){
 				appLogger.issuelog("Clipboard permission needed", false, false, false);
 			} else {
 				appLogger.issuelog("Issue occured copying to clipboard", {cpyTxt}, clipboardError);

@@ -200,7 +200,7 @@ const makeRibbonPart = (containerID) => {
 
 
   $brushWell.addEventListener('change', (_changeEvt) => {
-    if (is_grabbing || _changeEvt.target != $brushWell) { return; }
+    if (is_grabbing || _changeEvt.target !== $brushWell) { return; }
 
     _changeEvt.preventDefault();
     dip_brush(_changeEvt.target.value);
@@ -208,7 +208,7 @@ const makeRibbonPart = (containerID) => {
 
 
   $clawTxtBtn.addEventListener('click', (_clickEvt) => {
-    if (is_grabbing || _clickEvt.target != $clawTxtBtn) { return; }
+    if (is_grabbing || _clickEvt.target !== $clawTxtBtn) { return; }
 
     /** @type {PCSEvent} */
     const copyOutEvent = new CustomEvent(_g.notices.chop, {
@@ -220,7 +220,7 @@ const makeRibbonPart = (containerID) => {
 
 
   $clawImgBtn.addEventListener('click', (_clickEvt) => {
-    if (is_grabbing || _clickEvt.target != $clawImgBtn) { return; }
+    if (is_grabbing || _clickEvt.target !== $clawImgBtn) { return; }
 
     /** @type {PCSEvent} */
     const genGraphicEvent = new CustomEvent(_g.notices.trace, {
@@ -232,7 +232,7 @@ const makeRibbonPart = (containerID) => {
 
 
   $shuffleBtn.addEventListener('click', (_clickEvt) => {
-    if (is_grabbing || _clickEvt.target != $shuffleBtn) { return; }
+    if (is_grabbing || _clickEvt.target !== $shuffleBtn) { return; }
 
     /** @type {PCSEvent} */
     const stirAroundEvent = new CustomEvent(_g.notices.blend, {

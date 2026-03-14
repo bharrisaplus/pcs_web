@@ -55,7 +55,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
 
     itemVault.updateChoice(Number.parseInt(_pcsevt.detail.$dispatcher?.dataset.oid));
 
-    if (itemVault.choice[0] == -1 || itemVault.choice[1] == -1) { return; }
+    if (itemVault.choice[0] === -1 || itemVault.choice[1] === -1) { return; }
 
     hud.loadTurntable(shark.getCard(...itemVault.choice));
   };
@@ -67,9 +67,9 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
 
     if (!_pcsevt.detail.msg || !_pcsevt.detail.$dispatcher) { return; }
 
-    if (_pcsevt.detail.$dispatcher == document.querySelector(hud.prevBtn)) {
+    if (_pcsevt.detail.$dispatcher === document.querySelector(hud.prevBtn)) {
       maybeChoose = itemVault.choice[0] - 1;
-    } else if (_pcsevt.detail.$dispatcher == document.querySelector(hud.nextBtn)) {
+    } else if (_pcsevt.detail.$dispatcher === document.querySelector(hud.nextBtn)) {
       maybeChoose = itemVault.choice[0] + 1;
     }
 
@@ -77,11 +77,11 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
 
     itemVault.updateChoice(itemVault.ucards[maybeChoose]);
 
-    if (itemVault.choice[0] == -1 || itemVault.choice[1] == -1) { return; }
+    if (itemVault.choice[0] === -1 || itemVault.choice[1] === -1) { return; }
 
     hud.spinTurntable(shark.getCard(...itemVault.choice));
 
-    appLogger.devlog(`rotated turntable to ${_pcsevt.detail.msg == 'prv' ? "previous" : "next"}`);
+    appLogger.devlog(`rotated turntable to ${_pcsevt.detail.msg === 'prv' ? "previous" : "next"}`);
   };
 
 
@@ -89,13 +89,18 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
   const maybe_change_color = (_pcsevt) => {
     let dyeIndex;
 
-    if (panel.isBusy || hud.isOpen) { return; }
-    if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.dyeInput)) { return; }
-    if (!_pcsevt.detail?.msg) { return; }
+    if (
+      panel.isBusy || hud.isOpen ||
+      _pcsevt.detail?.$dispatcher !== document.querySelector(panel.dyeInput) ||
+      !_pcsevt.detail?.msg
+    ) {
+      document.querySelector(panel.dyeInput).blur();
+      return;
+    }
 
     dyeIndex = _g.dyes.indexOf(_pcsevt.detail.msg);
 
-    if (dyeIndex == -1) { return; }
+    if (dyeIndex === -1) { return; }
 
     itemVault.updateBackDrop(dyeIndex);
     document.querySelector(`#${_g.appID} main`).setAttribute('data-dye', _pcsevt.detail.msg);
@@ -111,8 +116,13 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
       ).title.split(":")[1].trim();
     });
 
-    if (panel.isBusy || hud.isOpen) { return; }
-    if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.copyBtn)) { return; }
+    if (
+      panel.isBusy || hud.isOpen ||
+      _pcsevt.detail?.$dispatcher !== document.querySelector(panel.copyBtn)
+    ) {
+      document.querySelector(panel.copyBtn).blur();
+      return;
+    }
 
     await panel.composeTxt(itemLabels);
     appLogger.notilog(`Copied text to clipboard`);
@@ -132,8 +142,13 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
         ).symbolRef;
       });
 
-    if (panel.isBusy || hud.isOpen) { return; }
-    if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.downloadBtn)) { return; }
+    if (
+      panel.isBusy || hud.isOpen ||
+      _pcsevt.detail?.$dispatcher !== document.querySelector(panel.downloadBtn)
+      ) {
+      document.querySelector(panel.downloadBtn).blur();
+      return;
+    }
 
     await panel.prepareImg(currentColor, itemRefs, exportBaseID);
 
@@ -145,8 +160,13 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
     /** @type {CardIntri[]} */
     let mixList = [];
 
-    if (panel.isBusy || hud.isOpen) { return; }
-    if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.mingleBtn)) { return; }
+    if (
+      panel.isBusy || hud.isOpen ||
+      _pcsevt.detail?.$dispatcher !== document.querySelector(panel.mingleBtn)
+    ) {
+      document.querySelector(panel.mingleBtn).blur();
+      return;
+    }
 
     itemVault.updateCards(shark.mixUp(itemVault.ucards, itemVault.ndoUCards));
 

@@ -21,7 +21,7 @@ const makeMiscHand = () => {
   const load_assets = (assetMap, assetDump) => {
     const $assetDump = document.querySelector(assetDump);
 
-    if (!$assetDump || assetMap.size == 0) return;
+    if (!$assetDump || assetMap.size === 0) return;
 
     const assetParser = new DOMParser();
 
@@ -73,7 +73,7 @@ const makeMiscHand = () => {
 
     // Once loading is done, disconnect loading indicator from DOM
     $indicator?.addEventListener('transitionend', (transEvt) => {
-      if (transEvt.propertyName == 'opacity') {
+      if (transEvt.propertyName === 'opacity') {
         appLogger.devlog("Loaded, removing indicator");
         $indicator.remove();
         window.dispatchEvent(new CustomEvent(_g.notices.kick));

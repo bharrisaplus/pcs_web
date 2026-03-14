@@ -24,7 +24,7 @@ const canPersist = () => {
 
     ok = true;
   } catch (storageErr) {
-    if (storageErr instanceof DOMException && storageErr.name == "QuotaExceededError") {
+    if (storageErr instanceof DOMException && storageErr.name === "QuotaExceededError") {
       localStorage.clear();
     }
   }
@@ -47,7 +47,7 @@ const makeDeckBank = () => {
 
 
   const replace_topical_order_with = (allNewCards) => {
-    if (allNewCards.length != _g.c_Max) { return; }
+    if (allNewCards.length !== _g.c_Max) { return; }
 
     topical_order = Uint8Array.from(allNewCards);
   };
@@ -56,7 +56,7 @@ const makeDeckBank = () => {
   const swap_back_splash_for = (newPaintChoice) => {
     if (!newPaintChoice) { return; }
     if (newPaintChoice < 0 || newPaintChoice >= _g.dyes.length) { return; }
-    if (newPaintChoice == back_splash) { return; }
+    if (newPaintChoice === back_splash) { return; }
 
     back_splash = newPaintChoice;
 
@@ -67,7 +67,7 @@ const makeDeckBank = () => {
 
 
   const choose_new_card = (cardID) => {
-    if (topical_order.indexOf(cardID) == -1 || default_order.indexOf(cardID) == -1) { return; }
+    if (topical_order.indexOf(cardID) === -1 || default_order.indexOf(cardID) === -1) { return; }
 
     choosen_card = cardID;
   };

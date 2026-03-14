@@ -23,7 +23,7 @@ const makeTableauPart = (containerID) => {
    */
   const _setupItem = ($item, itemIdx) => {
     $item.addEventListener('click', (_clickEvt) => {
-      if ($item != _clickEvt.target && $item != _clickEvt.target?.parentElement) { return; }
+      if ($item !== _clickEvt.target && $item !== _clickEvt.target?.parentElement) { return; }
 
       /** @type {PCSEvent} */
       const needleDown = new CustomEvent(_g.notices.needle, {
