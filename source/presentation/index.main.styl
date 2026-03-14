@@ -52,10 +52,24 @@
         background-color: var(--common-dark)
         border-radius: 18px
 
-    &:has(button:active) [role="tooltip"]
+    & button:disabled,
+    & select:disabled
+        pointer-events: none
+
+    &:has(button:active) #shuffle-desc[role="tooltip"],
+    &:has(button:active) #reset-desc[role="tooltip"],
+    &:has(button:active) #clawtxt-desc[role="tooltip"],
+    &:has(button:active) #clawimg-desc[role="tooltip"],
+    &:has(button:disabled) #shuffle-desc[role="tooltip"],
+    &:has(button:disabled) #reset-desc[role="tooltip"],
+    &:has(button:disabled) #clawtxt-desc[role="tooltip"],
+    &:has(button:disabled) #clawimg-desc[role="tooltip"]
         visibility: hidden
 
     &:has(#shuffle:focus) #shuffle-desc[role="tooltip"]
+        visibility: visible
+
+    &:has(#reset button:focus) #reset-desc[role="tooltip"]
         visibility: visible
 
     &:has(#claw .claw-txt:focus) #clawtxt-desc[role="tooltip"]
@@ -88,26 +102,26 @@
     border-style: ridge
     cursor: pointer
 
-#claw
-    & button
-        outline-width: 2px
-        outline-style: ridge
-        outline-color: var(--claw-button-sob)
-        translate: 0 0
-        box-shadow: @css { 3px 2.5px var(--common-dark-fade); }
-        cursor: pointer
+#claw .claw-drop
+    border-radius: 18px
+    border-style: dashed
+    border-color: var(--common-dark-fade)
 
-        &:active
-            box-shadow: @css { 1.5px 1px var(--common-dark-fade); }
-            translate: 0 1.5px
+#reset button,
+#claw button
+    outline-width: 2px
+    outline-style: ridge
+    outline-color: var(--claw-button-sob)
+    translate: 0 0
+    box-shadow: @css { 3px 2.5px var(--common-dark-fade); }
+    cursor: pointer
 
-        & svg[role="img"]
-            pointer-events: none
+    &:active
+        box-shadow: @css { 1.5px 1px var(--common-dark-fade); }
+        translate: 0 1.5px
 
-    & .claw-drop
-        border-radius: 18px
-        border-style: dashed
-        border-color: var(--common-dark-fade)
+    & svg[role="img"]
+        pointer-events: none
 
 
 #pageload-curtain
@@ -281,6 +295,9 @@
 @media (hover: hover)
     #ribbon
         &:has(#shuffle:hover) #shuffle-desc[role="tooltip"]
+            visibility: visible
+
+        &:has(#reset button:hover) #reset-desc[role="tooltip"]
             visibility: visible
 
         &:has(#claw .claw-txt:hover) #clawtxt-desc[role="tooltip"]
