@@ -28,30 +28,29 @@ const makeRibbonPart = (containerID) => {
     $clawDrop = document.querySelector(`${containerID} #claw a.claw-drop`);
 
 
-  /** @param {'0' | '1' | '2' | '3' | '4'} colorOption */
-  const dip_brush = (colorOption) => {
-    if (is_grabbing) { return; }
-
+  /** @param {string} dipOption */
+  const dip_brush = (dipOption) => {
     /** @type {string} */
     let dipColor;
 
-    switch(colorOption) {
-      case '1': dipColor = `green-dye`; break;
-      case '2': dipColor = `red-dye`; break;
-      case '3': dipColor = `blue-dye`; break;
-      case '4': dipColor = `purple-dye`; break;
-      case '0':
+    if (is_grabbing) { return; }
+
+    switch(dipOption) {
+      case '1': dipColor = _g.dyes[0]; break;
+      case '2': dipColor = _g.dyes[1]; break;
+      case '3': dipColor = _g.dyes[2]; break;
+      case '4': dipColor = _g.dyes[3]; break;
       default: break;
     }
 
-    if (dipColor) {
-      /** @type {PCSEvent} */
-      const splashEvt = new CustomEvent(_g.notices.splash, {
-        detail: { msg: dipColor, $dispatcher: $brushWell }
-      });
+    if (!dipColor) { return; }
 
-      document.querySelector(`#${_g.appID}`)?.dispatchEvent(splashEvt);
-    }
+    /** @type {PCSEvent} */
+    const splashEvt = new CustomEvent(_g.notices.splash, {
+      detail: { msg: dipColor, $dispatcher: $brushWell }
+    });
+
+    document.querySelector(`#${_g.appID}`).dispatchEvent(splashEvt);
 
     $brushWell.value = 0;
   };
@@ -153,9 +152,6 @@ const makeRibbonPart = (containerID) => {
   };
 
 
-  $brushWell.value = '0';
-  dip_brush(1);
-
   $brushWell.addEventListener('change', (_changeEvt) => {
     if (is_grabbing || _changeEvt.target != $brushWell) { return; }
 
@@ -172,7 +168,7 @@ const makeRibbonPart = (containerID) => {
       detail: { $dispatcher: $clawTxtBtn }
     });
 
-    document.querySelector(`#${_g.appID}`)?.dispatchEvent(copyOutEvent);
+    document.querySelector(`#${_g.appID}`).dispatchEvent(copyOutEvent);
   });
 
 
@@ -184,7 +180,7 @@ const makeRibbonPart = (containerID) => {
       detail: { $dispatcher: $clawImgBtn }
     });
 
-    document.querySelector(`#${_g.appID}`)?.dispatchEvent(genGraphicEvent);
+    document.querySelector(`#${_g.appID}`).dispatchEvent(genGraphicEvent);
   });
 
 
@@ -196,7 +192,7 @@ const makeRibbonPart = (containerID) => {
       detail: { $dispatcher: $shuffleBtn }
     });
 
-    document.querySelector(`#${_g.appID}`)?.dispatchEvent(stirAroundEvent);
+    document.querySelector(`#${_g.appID}`).dispatchEvent(stirAroundEvent);
   });
 
 
