@@ -21,6 +21,8 @@ const makeRibbonPart = (containerID) => {
     /** @type {HTMLButtonElement} */
     $shuffleBtn = document.querySelector(`${containerID} button#shuffle`),
     /** @type {HTMLButtonElement} */
+    $resetBtn = document.querySelector(`${containerID} #reset button`),
+    /** @type {HTMLButtonElement} */
     $clawTxtBtn = document.querySelector(`${containerID} #claw button.claw-txt`),
     /** @type {HTMLButtonElement} */
     $clawImgBtn = document.querySelector(`${containerID} #claw button.claw-img`),
@@ -70,11 +72,13 @@ const makeRibbonPart = (containerID) => {
       $clawTxtBtn.disabled = true;
       $clawImgBtn.disabled = true;
       $shuffleBtn.disabled = true;
+      $resetBtn.disabled = true;
 
       $brushWell.blur();
       $clawTxtBtn.blur();
       $clawImgBtn.blur();
       $shuffleBtn.blur();
+      $resetBtn.blur();
 
       result = await outHand.exportText(txtExports.join("\n"));
 
@@ -84,11 +88,13 @@ const makeRibbonPart = (containerID) => {
         $clawTxtBtn.disabled = false;
         $clawImgBtn.disabled = false;
         $shuffleBtn.disabled = false;
+        $resetBtn.disabled = false;
 
         $brushWell.blur();
         $clawTxtBtn.blur();
         $clawImgBtn.blur();
         $shuffleBtn.blur();
+        $resetBtn.blur();
       }, 1500);
     }
 
@@ -114,11 +120,13 @@ const makeRibbonPart = (containerID) => {
       $clawTxtBtn.disabled = true;
       $clawImgBtn.disabled = true;
       $shuffleBtn.disabled = true;
+      $resetBtn.disabled = true;
 
       $brushWell.blur();
       $clawTxtBtn.blur();
       $clawImgBtn.blur();
       $shuffleBtn.blur();
+      $resetBtn.blur();
 
       _imgUrl = await outHand.generateImage(renderColor, renderExports, renderBase);
 
@@ -134,11 +142,13 @@ const makeRibbonPart = (containerID) => {
         $clawTxtBtn.disabled = false;
         $clawImgBtn.disabled = false;
         $shuffleBtn.disabled = false;
+        $resetBtn.disabled = false;
 
         $brushWell.blur();
         $clawTxtBtn.blur();
         $clawImgBtn.blur();
         $shuffleBtn.blur();
+        $resetBtn.blur();
       }, 4000);
 
       window.setTimeout(() => {
@@ -161,6 +171,7 @@ const makeRibbonPart = (containerID) => {
     $clawTxtBtn.disabled = true;
     $clawImgBtn.disabled = true;
     $shuffleBtn.disabled = true;
+    $resetBtn.disabled = true;
     $clawDrop.removeAttribute("href");
     $clawDrop.textContent = "";
 
@@ -169,6 +180,7 @@ const makeRibbonPart = (containerID) => {
     $clawImgBtn.blur();
     $shuffleBtn.blur();
     $clawDrop.blur();
+    $resetBtn.blur();
 
     window.setTimeout(() => {
       is_grabbing = false;
@@ -176,11 +188,13 @@ const makeRibbonPart = (containerID) => {
       $clawTxtBtn.disabled = false;
       $clawImgBtn.disabled = false;
       $shuffleBtn.disabled = false;
+      $resetBtn.disabled = false;
 
       $brushWell.blur();
       $clawTxtBtn.blur();
       $clawImgBtn.blur();
       $shuffleBtn.blur();
+      $resetBtn.blur();
     }, 1500);
   };
 
@@ -228,6 +242,17 @@ const makeRibbonPart = (containerID) => {
     document.querySelector(`#${_g.appID}`).dispatchEvent(stirAroundEvent);
   });
 
+  $resetBtn.addEventListener('click', (_clickEvt) => {
+    if (is_grabbing || _clickEvt.target !== $resetBtn) { return; }
+
+    /** @type {PCSEvent} */
+    const newAgainEvent = new CustomEvent(_g.notices.fresh, {
+      detail: { $dispatcher: $resetBtn }
+    });
+
+    document.querySelector(`#${_g.appID}`).dispatchEvent(newAgainEvent);
+  });
+
 
   return Object.freeze({
     composeTxt: write_out,
@@ -256,6 +281,11 @@ const makeRibbonPart = (containerID) => {
     /** @type {CSSelector} */
     get mingleBtn () {
       return `${containerID} #${$shuffleBtn.id}`;
+    },
+
+    /** @type {CSSelector} */
+    get clearBtn () {
+      return `${containerID} [aria-label="${$resetBtn.getAttribute('aria-label')}"]`;
     }
   });
 }

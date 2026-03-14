@@ -7,7 +7,7 @@
  */
 
 /**
- * @typedef {'kick' | 'needle' | 'scratch' | 'blend' | 'chop' | 'splash'} PCSEventType
+ * @typedef {'kick' | 'needle' | 'scratch' | 'blend' | 'chop' | 'trace' | 'splash' | 'fresh'} PCSEventType
  *
  * @typedef {Object} PCSEventTypes - {@link CustomEvent.type}
  * @property {'kick'} kick Start app
@@ -17,6 +17,7 @@
  * @property {'chop'} chop Copy and Paste
  * @property {'trace'} trace Generate Image
  * @property {'splash'} splash Change Background Color
+ * @property {'fresh'} fresh Reset
  * @see CustomEvent.type
  */
 
@@ -209,6 +210,7 @@
  * @property {CSSelector} copyBtn
  * @property {CSSelector} downloadBtn
  * @property {CSSelector} mingleBtn
+ * @property {CSSelector} clearBtn
  * @memberof Part
  */
 

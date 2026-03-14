@@ -12,7 +12,8 @@ const all_events = {
   blend: "blend",
   chop: "chop",
   trace: "trace",
-  splash: "splash"
+  splash: "splash",
+  fresh: "fresh"
 };
 
 /** @type {GlobalDeclarations} */

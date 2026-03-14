@@ -159,6 +159,29 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
   };
 
 
+  const maybe_refresh_items = (_pcsevt) => {
+    let freshList = [];
+
+    if (
+      panel.isBusy || hud.isOpen ||
+      _pcsevt.detail?.$dispatcher !== document.querySelector(panel.clearBtn) ||
+      itemVault.ucards.toString() === itemVault.ndoUCards.toString()
+    ) {
+      document.querySelector(panel.clearBtn).blur();
+      return;
+    }
+
+    itemVault.resetCards();
+
+    freshList = itemVault.cards.map((_itm, _idx) => {
+      return shark.getCard(_idx, itemVault.ndoCards.indexOf(_itm));
+    });
+
+    dingus.updateOrder(freshList);
+    panel.resetCtrls();
+  };
+
+
   /** @returns {Boolean} */
   const tap_in = () => {
     /** @type {Boolean} */
@@ -185,6 +208,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
       $appShell.addEventListener(_g.notices.chop, maybe_output_txt);
       $appShell.addEventListener(_g.notices.trace, maybe_download_img);
       $appShell.addEventListener(_g.notices.blend, maybe_mix_items);
+      $appShell.addEventListener(_g.notices.fresh, maybe_refresh_items);
 
       maybe_success = true;
       appLogger.devlog(`Hooked up ${lattice_name}`);
