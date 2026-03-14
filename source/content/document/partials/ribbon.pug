@@ -11,6 +11,9 @@
         button#shuffle(aria-label="Shuffle Cards" aria-describedby="shuffle-desc")
             | ⧢
     .ribbon-flourish
+        #reset
+            button(aria-label="Reset Cards" aria-describedby="reset-desc")
+                include ../../graphic/icon/lucide/reset-icon.svg
         #claw
             button.claw-txt(aria-label="Clipboard Copy" aria-describedby="clawtxt-desc")
                 include ../../graphic/icon/lucide/copy-icon.svg
@@ -21,6 +24,8 @@
 
     #shuffle-desc(role="tooltip")
         | Arrange the cards in random order
+    #reset-desc(role="tooltip")
+        | Return the cards to new deck order
     #clawimg-desc(role="tooltip")
         | Generate image of cards for download
     #clawtxt-desc(role="tooltip")
