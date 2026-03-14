@@ -87,13 +87,19 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
 
   /** @param {PCSEvent} _pcsevt */
   const maybe_change_color = (_pcsevt) => {
-    if (panel.isBusy || hud.isOpen) { return; }
-    if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.dyeInput) ||
-      !_pcsevt.detail?.msg
-    ) { return; }
+    let dyeIndex;
 
-    document.querySelector(`#${_g.appID} main`)?.setAttribute('data-dye', _pcsevt.detail.msg);
-    appLogger.devlog(`Changed color to ${_pcsevt.detail?.msg}`);
+    if (panel.isBusy || hud.isOpen) { return; }
+    if (_pcsevt.detail?.$dispatcher != document.querySelector(panel.dyeInput)) { return; }
+    if (!_pcsevt.detail?.msg) { return; }
+
+    dyeIndex = _g.dyes.indexOf(_pcsevt.detail.msg);
+
+    if (dyeIndex == -1) { return; }
+
+    itemVault.updateBackDrop(dyeIndex);
+    document.querySelector(`#${_g.appID} main`).setAttribute('data-dye', _pcsevt.detail.msg);
+    appLogger.devlog(`Changed color to ${_g.dyes[itemVault.backDrop]}`);
   };
 
 
@@ -169,6 +175,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
       maybe_success = false;
       appLogger.issuelog(`Required components missing for ${lattice_name}`, args);
     } else {
+      $appShell.setAttribute('data-dye', _g.dyes[0]);
       $tableau.setAttribute('style', '');
       $tableau.classList.remove('hide-before-load');
 
