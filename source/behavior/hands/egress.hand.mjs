@@ -28,7 +28,7 @@ const makeEgressHand = () => {
 			if (clipboardError instanceof DOMException && clipboardError.name == "NotAllowedError"){
 				appLogger.issuelog("Clipboard permission needed", false, false, false);
 			} else {
-				appLogger.issuelog("Issue occured copying to clipboard", cpyTxt, clipboardError);
+				appLogger.issuelog("Issue occured copying to clipboard", {cpyTxt}, clipboardError);
 			}
 		}
 
@@ -62,7 +62,7 @@ const makeEgressHand = () => {
 			tmpImage = new Image();
 
 		if (!$spriteSheet || spriteList.length < 52) {
-			appLogger.issuelog("Missing componenets for image download", arguments, false);
+			appLogger.issuelog("Missing componenets for image download", {spriteList, spriteSheet}, false);
 			imgDataUrl = "";
 		} else {
 			$spriteSheet.setAttribute('style', '');
@@ -111,7 +111,7 @@ const makeEgressHand = () => {
 					}
 				}
 
-				appLogger.issuelog(imgErrorMsg, arguments, imgError);
+				appLogger.issuelog(imgErrorMsg, {backdropColor, spriteList, spriteSheet}, imgError);
 				imgDataUrl = "";
 			}
 		}

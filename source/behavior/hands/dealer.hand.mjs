@@ -50,7 +50,7 @@ const makeDealerHand = () => {
           _symbl = `${_suite[0].toLowerCase()}${ndoPos}`;
           break;
         }
-        default: appLogger.issuelog("Can't create card for position", arguments, false, false);
+        default: appLogger.issuelog("Can't create card for position", {curPos, ndoPos}, false, false);
       }
     }
 
