@@ -71,6 +71,11 @@ const makeRibbonPart = (containerID) => {
       $clawImgBtn.disabled = true;
       $shuffleBtn.disabled = true;
 
+      $brushWell.blur();
+      $clawTxtBtn.blur();
+      $clawImgBtn.blur();
+      $shuffleBtn.blur();
+
       result = await outHand.exportText(txtExports.join("\n"));
 
       window.setTimeout(() => {
@@ -79,6 +84,11 @@ const makeRibbonPart = (containerID) => {
         $clawTxtBtn.disabled = false;
         $clawImgBtn.disabled = false;
         $shuffleBtn.disabled = false;
+
+        $brushWell.blur();
+        $clawTxtBtn.blur();
+        $clawImgBtn.blur();
+        $shuffleBtn.blur();
       }, 1500);
     }
 
@@ -105,6 +115,11 @@ const makeRibbonPart = (containerID) => {
       $clawImgBtn.disabled = true;
       $shuffleBtn.disabled = true;
 
+      $brushWell.blur();
+      $clawTxtBtn.blur();
+      $clawImgBtn.blur();
+      $shuffleBtn.blur();
+
       _imgUrl = await outHand.generateImage(renderColor, renderExports, renderBase);
 
       result = true;
@@ -119,11 +134,18 @@ const makeRibbonPart = (containerID) => {
         $clawTxtBtn.disabled = false;
         $clawImgBtn.disabled = false;
         $shuffleBtn.disabled = false;
+
+        $brushWell.blur();
+        $clawTxtBtn.blur();
+        $clawImgBtn.blur();
+        $shuffleBtn.blur();
       }, 4000);
 
       window.setTimeout(() => {
         $clawDrop.removeAttribute("href");
         $clawDrop.textContent = "";
+
+        $clawDrop.blur();
       }, 8000);
     }
 
@@ -142,12 +164,23 @@ const makeRibbonPart = (containerID) => {
     $clawDrop.removeAttribute("href");
     $clawDrop.textContent = "";
 
+    $brushWell.blur();
+    $clawTxtBtn.blur();
+    $clawImgBtn.blur();
+    $shuffleBtn.blur();
+    $clawDrop.blur();
+
     window.setTimeout(() => {
       is_grabbing = false;
       $brushWell.disabled = false;
       $clawTxtBtn.disabled = false;
       $clawImgBtn.disabled = false;
       $shuffleBtn.disabled = false;
+
+      $brushWell.blur();
+      $clawTxtBtn.blur();
+      $clawImgBtn.blur();
+      $shuffleBtn.blur();
     }, 1500);
   };
 
