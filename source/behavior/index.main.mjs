@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (landingPage.hookUp()) {
       appLogger.devlog("pcs started");
     } else {
-      appLogger.issuelog("pcs won't start", landingPage, false);
+      appLogger.issuelog("pcs won't start");
     }
   }, { once: true });
 

@@ -1,6 +1,6 @@
 
 /**
- * @import {CSSelector, PCSEvent, CardIntri, Lattice, Part, Bank} from "../_meta/_typedefs.mjs"
+ * @import {CSSelector, PCSEvent, CardIntri, Hand, Lattice, Part, Bank} from "../_meta/_typedefs.mjs"
  */
 
 import { default as _g } from '../_meta/_glods.mjs';
@@ -18,16 +18,35 @@ const lattice_name = "pcs:lattice:landing";
  * @param  {CSSelector} turntableID The hud element - {@link Part.Turntable}
  * @param  {CSSelector} ribbonID the panel element - {@link Part.Ribbon}
  * @param  {CSSelector} exportBaseID the svg "spritesheet"
- * @param  {Bank.Deck} itemVault The card state
  *
+ * @param  {Bank.Deck} itemVault The card state - {@link Bank.Deck}
  * @return {Readonly<Lattice.Landing>} home screen manager - {@link Lattice.Landing}
  */
 const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, itemVault) => {
-  const
-    panel = getRibbon(ribbonID),
-    dingus = getTableau(tableauID),
-    hud = getTurntable(turntableID),
+  let
+    /** @type {Readonly<Part.Ribbon>} */
+    panel,
+    /** @type {Readonly<Part.Tableau>} */
+    dingus,
+    /** @type {Readonly<Part.Turntable>} */
+    hud,
+    /** @type {Readonly<Hand.Dealer>} */
+    shark;
+  const args = { tableauID, turntableID, ribbonID, exportBaseID, itemVault };
+
+
+  try {
+    panel = getRibbon(ribbonID);
+    dingus = getTableau(tableauID);
+    hud = getTurntable(turntableID);
     shark = getDealer();
+  } catch (startErr) {
+    appLogger.issuelog(`Issue with build for ${lattice_name}`, args, startErr);
+    panel = null;
+    dingus = null;
+    hud = null;
+    shark = null;
+  }
 
 
   /** @param {PCSEvent} _pcsevt */
@@ -142,13 +161,17 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
       $appShell = document.querySelector(`#${_g.appID}`),
       $tableau = document.querySelector(tableauID);
 
-    $tableau.setAttribute('style', '');
-    $tableau.classList.remove('hide-before-load');
 
-    if (!$appShell) {
+    if (!$appShell || !$tableau) {
       maybe_success = false;
-      appLogger.issuelog(`Entry point not found for ${lattice_name}`, false, false, true);
+      appLogger.issuelog(`Entry point not found for ${lattice_name}`, args);
+    } else if (!panel || !dingus || !hud || !shark) {
+      maybe_success = false;
+      appLogger.issuelog(`Required components missing for ${lattice_name}`, args);
     } else {
+      $tableau.setAttribute('style', '');
+      $tableau.classList.remove('hide-before-load');
+
       $appShell.addEventListener(_g.notices.needle, maybe_open_hud);
       $appShell.addEventListener(_g.notices.scratch, maybe_update_hud);
       $appShell.addEventListener(_g.notices.splash, maybe_change_color);
