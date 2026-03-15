@@ -161,8 +161,7 @@ $card-wspace = $card-width * 0.25
     display: flex
     width: calc(100% - var(--card-hspace))
     height: calc(100% - var(--card-wspace))
-    gap: 0 var(--card-hspace)
-    row-gap: var(--card-wspace)
+    gap: var(--card-wspace) var(--card-hspace)
     flex-flow: row wrap
     padding: calc(var(--card-wspace) / 2) calc(var(--card-hspace) / 2)
     overflow-x: hidden
@@ -190,7 +189,7 @@ $card-wspace = $card-width * 0.25
     flex-flow: column wrap
     justify-content: center
     align-items: center
-    gap: 18px
+    gap: 18px 0
 
     &:popover-open
         display: flex
@@ -204,9 +203,8 @@ $card-wspace = $card-width * 0.25
 
     & .turntable-cue-lever
         display: flex
-        width: 100%
         justify-content: center
-        gap: 18px
+        gap: 0 18px
 
         & .turntable-cue-lever-spacer
             display: none
@@ -256,10 +254,10 @@ $card-wspace = $card-width * 0.25
             margin: 0
 
         & .ribbon-swish
-            width: 65%
+            width: 75%
 
         & .ribbon-flourish
-            width: 85%
+            width: 90%
 
         & .ribbon-bow
             align-self: flex-end
@@ -270,4 +268,4 @@ $card-wspace = $card-width * 0.25
 
 
     #tableau
-        gap: 0 calc(var(--card-hspace) / 2)
+        gap: var(--card-wspace) calc(var(--card-hspace) / 2)
