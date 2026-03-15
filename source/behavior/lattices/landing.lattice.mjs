@@ -31,7 +31,10 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
     /** @type {Readonly<Part.Turntable>} */
     hud,
     /** @type {Readonly<Hand.Dealer>} */
-    shark;
+    shark,
+    /** @type {Readonly<CardIntri>[]} */
+    initList = [],
+    tapCount = 0;
   const
     args = { tableauID, turntableID, ribbonID, exportBaseID, itemVault },
     $appShell = document.querySelector(`#${_g.appID}`);
@@ -42,6 +45,12 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
     dingus = getTableau(tableauID);
     hud = getTurntable(turntableID);
     shark = getDealer();
+
+    if (itemVault.cards.toString() !== dingus.currentOrder.toString()) {
+      initList = itemVault.cards.map((_itm, _idx) => {
+        return shark.getCard(_idx, itemVault.ndoCards.indexOf(_itm));
+      });
+    }
   } catch (startErr) {
     appLogger.issuelog(`Issue with build for ${lattice_name}`, args, startErr);
     panel = null;
@@ -220,8 +229,18 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
     } else if (!panel || !dingus || !hud || !shark) {
       maybe_success = false;
       appLogger.issuelog(`Required components missing for ${lattice_name}`, args);
+    } else if (tapCount > 0) {
+      maybe_success = false;
+      appLogger.issuelog('Already hooked up');
     } else {
-      $appShell.querySelector('main').setAttribute('data-dye', _g.dyes[itemVault.backDrop || 0]);
+      if (initList.length === 52) {
+        dingus.updateOrder(initList);
+      }
+
+      if ($appShell.querySelector('main').getAttribute('data-dye') !== _g.dyes[itemVault.backDrop || 0]) {
+        $appShell.querySelector('main').setAttribute('data-dye', _g.dyes[itemVault.backDrop || 0]);
+      }
+
       $tableau.setAttribute('style', '');
       $tableau.classList.remove('hide-before-load');
 
@@ -234,6 +253,8 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
       $appShell.addEventListener(_g.notices.fresh, maybe_refresh_items);
 
       maybe_success = true;
+      initList = [];
+      tapCount++;
       appLogger.devlog(`Hooked up ${lattice_name}`);
     }
 
