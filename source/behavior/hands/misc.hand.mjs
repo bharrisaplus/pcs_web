@@ -5,7 +5,10 @@
 
 import { default as _g } from '../_meta/_glods.mjs';
 import { default as appLogger } from '../hands/scribe.hand.mjs';
+import { default as getHostShuttle } from '../shuttles/host.shuttle.mjs';
 
+
+const assetFetcher = getHostShuttle();
 
 /** @returns {Readonly<Hand.Misc>} a helper - {@link Hand.Misc} */
 const makeMiscHand = () => {
@@ -19,37 +22,54 @@ const makeMiscHand = () => {
    * @param  {CSSelector} assetDump - {@link CSSStyleRule.selectorText}
    */
   const load_assets = (assetMap, assetDump) => {
-    const $assetDump = document.querySelector(assetDump);
+    let loadCount = 0;
+    const
+      $assetDump = document.querySelector(assetDump),
+      assetParser = new DOMParser();
 
     if (!$assetDump || assetMap.size === 0) return;
 
-    const assetParser = new DOMParser();
-
     assetMap.forEach(async (assetCheck, assetGrab) => {
+      let
+        assetUrl,
+        assetBlob,
+        assetInnards;
+
       if (document.querySelectorAll(assetCheck).length > 0) {
         appLogger.devlog(`Found ${assetCheck} asset inlined already`);
         return;
       }
 
-      let assetUrl = document.querySelector(assetGrab)?.getAttribute('href');
+      assetUrl = document.querySelector(assetGrab)?.getAttribute('href');
 
       if (!assetUrl) {
-        appLogger.issuelog(`No url to fetch for ${assetGrab}`, false, false, false);
+        appLogger.issuelog(`No url to fetch for ${assetGrab}`, {assetMap}, false);
         return;
       }
 
-      let
-        assetResponse = await fetch(assetUrl),
-        assetInnards = await assetResponse.text();
+      assetBlob = await assetFetcher.grabFile(assetUrl);
+
+      if (!assetBlob) {
+        appLogger.issuelog(`Empty response from ${assetUrl}`, {assetBlob}, false);
+        return;
+      }
+
+      assetInnards = await assetBlob.text();
 
       if (!assetInnards) {
-        appLogger.issuelog(`Empty response from ${assetUrl}`, false, false, false);
-        return;
+        appLogger.issuelog(`Empty asset from ${assetUrl}`, {assetBlob, assetInnards}, false);
       }
 
-      appLogger.devlog(`Loading asset ${assetUrl}\nPlacing within ${assetDump}`);
-      $assetDump.appendChild(assetParser.parseFromString(assetInnards, 'image/svg+xml').firstChild);
+      if (assetUrl.endsWith('.svg') || assetUrl.endsWith('.html') || assetUrl.endsWith('.xml')) {
+        appLogger.devlog(`Loading asset ${assetUrl}\nPlacing within ${assetDump}`);
+        $assetDump.appendChild(assetParser.parseFromString(assetInnards, assetBlob.type).firstChild);
+        loadCount++;
+      } else {
+        appLogger.devlog(`Unknown asset type from ${assetUrl}\n`, {assetBlob});
+      }
     });
+
+    return loadCount === assetMap.size;
   };
 
 

@@ -6,6 +6,7 @@
  * - {@link document.querySelector}
  */
 
+
 /**
  * @typedef {'kick' | 'needle' | 'scratch' | 'blend' | 'chop' | 'trace' | 'splash' | 'fresh'} PCSEventType
  *
@@ -34,6 +35,7 @@
  * `new CustomEvent(<PCSEventType>, PCSEventInit)`
  */
 
+
 /**
  * @typedef {Object} GlobalDeclarations
  * Constants
@@ -51,6 +53,7 @@
  * @property {['Spade', 'Diamond', 'Club', 'Heart']} c_SuiteList
  * @property {['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']} c_NameList
  */
+
 
 /**
  * @typedef {Map<CSSelector, CSSelector>} VerifynLoad
@@ -70,6 +73,7 @@
  *     </body>
  *   </html>
  */
+
 
 /**
  * @typedef {Object} CardIntri
@@ -234,5 +238,18 @@
  * @memberof Lattice
  */
 
+
+/**
+ * @namespace Shuttle
+ * How data is bus'd around; APIs/Third-Party/Network/Externals
+ */
+
+/**
+ * @typedef {Object} Shuttle.Host
+ * Files to retreive from home
+ *
+ * @property {function() :Promise<Blob>} grabFile
+ * @memberof Shuttle
+ */
 
 export const debugName = "pcs:part:types";
