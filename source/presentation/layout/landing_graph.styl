@@ -16,10 +16,6 @@ $card-wspace = $card-width * 0.25
 #pcs-shell
     container: shell / size
 
-    & main
-        height: 85%
-        border-radius: 18px
-
     & header
         height: 13%
         min-height: 81px
@@ -27,6 +23,13 @@ $card-wspace = $card-width * 0.25
         flex-flow: column nowrap
         justify-content: space-around
         align-items: flex-start
+
+    & main
+        height: 85%
+        border-radius: 18px
+
+    & footer
+        display: none
 
 
 #ribbon
