@@ -32,6 +32,29 @@ const canPersist = () => {
   return ok;
 };
 
+/**
+ * @param  {string} timestamp time in miliseconds
+ *
+ * @return {boolean}
+ */
+const isTooOld = (timestamp) => {
+  let tooOldResult;
+
+  try {
+    const
+      stampDate = new Date(JSON.parse(timestamp)),
+      dayAge = Math.ceil(
+        (Date.now() - stampDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
+    tooOldResult = dayAge >= 7
+  } catch {
+    tooOldResult = true;
+  }
+
+  return tooOldResult;
+};
+
 
 /** @returns {Readonly<Bank.Deck>} a packet of cards {@link Bank.Deck} */
 const makeDeckBank = () => {
@@ -42,14 +65,36 @@ const makeDeckBank = () => {
 
 
   const new_deck_order = () => {
+    if (topical_order.toString() === default_order.toString()) { return; }
+
     topical_order = Uint8Array.from(default_order);
+
+    if (canPersist()) {
+      localStorage.setItem(`${_g.appID}:cardOrder`, JSON.stringify(topical_order));
+      localStorage.setItem(`${_g.appID}:cardOrder:stamp`, JSON.stringify(Date.now()));
+    }
   };
 
   /** @param  {number[] | Uint8Array} allNewCards */
   const replace_topical_order_with = (allNewCards) => {
+    let validReplacement;
+
+    if (!Array.isArray(allNewCards) && !(allNewCards instanceof Uint8Array)) { return; }
     if (allNewCards.length !== _g.c_Max) { return; }
 
+    validReplacement = allNewCards.every((_itm) => {
+      return Number.isInteger(_itm) && default_order.indexOf(_itm) !== -1;
+    });
+
+    if (!validReplacement) { return; }
+    if (allNewCards.toString() === topical_order.toString()) { return; }
+
     topical_order = Uint8Array.from(allNewCards);
+
+    if (canPersist()) {
+      localStorage.setItem(`${_g.appID}:cardOrder`, JSON.stringify(topical_order));
+      localStorage.setItem(`${_g.appID}:cardOrder:stamp`, JSON.stringify(Date.now()));
+    }
   };
 
   /** @param  {number} newPaintChoice {@link GlobalDeclarations.dyes}  */
@@ -78,28 +123,25 @@ const makeDeckBank = () => {
   if (canPersist()) {
     const
       maybeBackSplash = localStorage.getItem(`${_g.appID}:backgroundColor`),
-      maybeBackSplashStamp = localStorage.getItem(`${_g.appID}:backgroundColor:stamp`);
+      maybeBackSplashStamp = localStorage.getItem(`${_g.appID}:backgroundColor:stamp`),
+      maybeCardOrder = localStorage.getItem(`${_g.appID}:cardOrder`),
+      maybeCardOrderStamp = localStorage.getItem(`${_g.appID}:cardOrder:stamp`);
 
     if (maybeBackSplashStamp && maybeBackSplash) {
-      let backSplashTooOld;
-
-      try {
-        const
-          backSplashTime = new Date(JSON.parse(maybeBackSplashStamp)),
-          backSplashDayAge = Math.ceil(
-            (Date.now() - backSplashTime.getTime()) / (1000 * 60 * 60 * 24)
-          );
-
-        backSplashTooOld = backSplashDayAge >= 7
-      } catch {
-        backSplashTooOld = true;
-      }
-
-      if (backSplashTooOld) {
+      if (isTooOld(maybeBackSplashStamp)) {
         localStorage.removeItem(`${_g.appID}:backgroundColor`);
         localStorage.removeItem(`${_g.appID}:backgroundColor:stamp`);
       } else {
-        swap_back_splash_for(JSON.parse(maybeBackSplash));
+        swap_back_splash_for(Number.parseInt(JSON.parse(maybeBackSplash)));
+      }
+    }
+
+    if (maybeCardOrderStamp && maybeCardOrder) {
+      if (isTooOld(maybeCardOrderStamp)) {
+        localStorage.removeItem(`${_g.appID}:cardOrder`);
+        localStorage.removeItem(`${_g.appID}:cardOrder:stamp`);
+      } else {
+        replace_topical_order_with(Uint8Array.from(Object.values(JSON.parse(maybeCardOrder))));
       }
     }
   };
