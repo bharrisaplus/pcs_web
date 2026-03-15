@@ -1,6 +1,6 @@
 
 /**
- * @import {Bank} from "../_meta/_typedefs.mjs"
+ * @import {Bank, GlobalDeclarations} from "../_meta/_typedefs.mjs"
  */
 
 import { default as _g } from '../_meta/_glods.mjs';
@@ -38,34 +38,36 @@ const makeDeckBank = () => {
   let
     topical_order = Uint8Array.from(default_order),
     choosen_card,
-    back_splash = 1;
+    back_splash = 0;
 
 
   const new_deck_order = () => {
     topical_order = Uint8Array.from(default_order);
   };
 
-
+  /** @param  {number[] | Uint8Array} allNewCards */
   const replace_topical_order_with = (allNewCards) => {
     if (allNewCards.length !== _g.c_Max) { return; }
 
     topical_order = Uint8Array.from(allNewCards);
   };
 
-
+  /** @param  {number} newPaintChoice {@link GlobalDeclarations.dyes}  */
   const swap_back_splash_for = (newPaintChoice) => {
-    if (!newPaintChoice) { return; }
+    if (!Number.isInteger(newPaintChoice)) { return; }
     if (newPaintChoice < 0 || newPaintChoice >= _g.dyes.length) { return; }
     if (newPaintChoice === back_splash) { return; }
 
     back_splash = newPaintChoice;
 
     if (canPersist()) {
-      localStorage.setItem(`${_g.appID}:backgroundColor`, back_splash.toString());
+      localStorage.setItem(`${_g.appID}:backgroundColor`, JSON.stringify(back_splash));
+      localStorage.setItem(`${_g.appID}:backgroundColor:stamp`, JSON.stringify(Date.now()));
     }
   };
 
 
+  /** @param  {number} cardID */
   const choose_new_card = (cardID) => {
     if (topical_order.indexOf(cardID) === -1 || default_order.indexOf(cardID) === -1) { return; }
 
@@ -74,10 +76,31 @@ const makeDeckBank = () => {
 
 
   if (canPersist()) {
-    let maybeBackSplash = localStorage.getItem(`${_g.appID}:backgroundColor`);
+    const
+      maybeBackSplash = localStorage.getItem(`${_g.appID}:backgroundColor`),
+      maybeBackSplashStamp = localStorage.getItem(`${_g.appID}:backgroundColor:stamp`);
 
-    if (maybeBackSplash) {
-      swap_back_splash_for(Number.parseInt(maybeBackSplash));
+    if (maybeBackSplashStamp && maybeBackSplash) {
+      let backSplashTooOld;
+
+      try {
+        const
+          backSplashTime = new Date(JSON.parse(maybeBackSplashStamp)),
+          backSplashDayAge = Math.ceil(
+            (Date.now() - backSplashTime.getTime()) / (1000 * 60 * 60 * 24)
+          );
+
+        backSplashTooOld = backSplashDayAge >= 7
+      } catch {
+        backSplashTooOld = true;
+      }
+
+      if (backSplashTooOld) {
+        localStorage.removeItem(`${_g.appID}:backgroundColor`);
+        localStorage.removeItem(`${_g.appID}:backgroundColor:stamp`);
+      } else {
+        swap_back_splash_for(JSON.parse(maybeBackSplash));
+      }
     }
   };
 
