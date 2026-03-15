@@ -32,7 +32,9 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
     hud,
     /** @type {Readonly<Hand.Dealer>} */
     shark;
-  const args = { tableauID, turntableID, ribbonID, exportBaseID, itemVault };
+  const
+    args = { tableauID, turntableID, ribbonID, exportBaseID, itemVault },
+    $appShell = document.querySelector(`#${_g.appID}`);
 
 
   try {
@@ -100,10 +102,13 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
 
     dyeIndex = _g.dyes.indexOf(_pcsevt.detail.msg);
 
-    if (dyeIndex === -1) { return; }
+    if (dyeIndex === itemVault.backDrop || dyeIndex === -1) {
+      document.querySelector(panel.dyeInput).blur();
+      return;
+    }
 
     itemVault.updateBackDrop(dyeIndex);
-    document.querySelector(`#${_g.appID} main`).setAttribute('data-dye', _pcsevt.detail.msg);
+    $appShell.querySelector('main').setAttribute('data-dye', _pcsevt.detail.msg);
     appLogger.devlog(`Changed color to ${_g.dyes[itemVault.backDrop]}`);
   };
 
@@ -133,7 +138,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
   const maybe_download_img = async (_pcsevt) => {
     const
       currentColor = window.getComputedStyle(
-        document.querySelector(`#${_g.appID} main`)
+        $appShell.querySelector('main')
       ).getPropertyValue('background-color'),
 
       itemRefs = itemVault.cards.map((_itm, _idx) => {
@@ -145,7 +150,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
     if (
       panel.isBusy || hud.isOpen ||
       _pcsevt.detail?.$dispatcher !== document.querySelector(panel.downloadBtn)
-      ) {
+    ) {
       document.querySelector(panel.downloadBtn).blur();
       return;
     }
@@ -206,9 +211,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
   const tap_in = () => {
     /** @type {Boolean} */
     let maybe_success;
-    const
-      $appShell = document.querySelector(`#${_g.appID}`),
-      $tableau = document.querySelector(tableauID);
+    const $tableau = document.querySelector(tableauID);
 
 
     if (!$appShell || !$tableau) {
