@@ -37,6 +37,7 @@ const makeMiscHand = () => {
 
       if (document.querySelectorAll(assetCheck).length > 0) {
         appLogger.devlog(`Found ${assetCheck} asset inlined already`);
+        loadCount++;
         return;
       }
 
