@@ -22,21 +22,21 @@ const
   preloadThings = new Map([["#card-sot", cardRef]]);
 
 
-document.addEventListener('DOMContentLoaded', () => {
-  appLogger.devlog('console friendly environment');
+document.addEventListener('DOMContentLoaded', async () => {
+  let willRun;
+  const landingPage = cobbleLanding(cardView, cardOverlay, cardMenu, cardRef, appStore);
 
-  const landingPage = cobbleLanding(
-    cardView, cardOverlay, cardMenu, cardRef, appStore
-  );
+  willRun = await appCustodian.startRoutine(preloadThings, preloadDest, bootOverlay, bootOverlaySpinner);
 
-
-  window.addEventListener(_g.notices.kick, () => {
-    if (landingPage.hookUp()) {
-      appLogger.devlog("pcs started");
-    } else {
-      appLogger.issuelog("pcs won't start");
-    }
-  }, { once: true });
-
-  appCustodian.startRoutine(preloadThings, preloadDest, bootOverlay, bootOverlaySpinner);
+  if (willRun) {
+    window.addEventListener(_g.notices.kick, () => {
+      if (landingPage.hookUp()) {
+        appLogger.devlog("pcs started");
+      } else {
+        appLogger.notilog("pcs won't start");
+      }
+    }, { once: true });
+  } else {
+    appLogger.notilog("pcs won't start");
+  }
 });

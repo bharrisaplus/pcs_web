@@ -119,9 +119,9 @@
  * @typedef {Object} Hand.Misc
  * Handles various tasks
  *
- * @property {function (string, string) :void} startAfter
+ * @property {function (string, string) :Promise<boolean>} startAfter
  * @property {function (VerifynLoad, string) :void} warmUp
- * @property {function (VerifynLoad, string, string, string) :void} startRoutine
+ * @property {function (VerifynLoad, string, string, string) :Promise<boolean>} startRoutine
  * @memberof Hand
  */
 

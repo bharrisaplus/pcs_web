@@ -20,8 +20,10 @@ const makeMiscHand = () => {
    *
    * @param  {VerifynLoad} assetMap - {@link CSSStyleRule.selectorText}
    * @param  {CSSelector} assetDump - {@link CSSStyleRule.selectorText}
+   *
+   * @return {Promise<boolean>}
    */
-  const load_assets = (assetMap, assetDump) => {
+  const load_assets = async (assetMap, assetDump) => {
     let loadCount = 0;
     const
       $assetDump = document.querySelector(assetDump),
@@ -29,7 +31,7 @@ const makeMiscHand = () => {
 
     if (!$assetDump || assetMap.size === 0) return;
 
-    assetMap.forEach(async (assetCheck, assetGrab) => {
+    for (const [assetGrab, assetCheck] of assetMap) {
       let
         assetUrl,
         assetBlob,
@@ -38,27 +40,30 @@ const makeMiscHand = () => {
       if (document.querySelectorAll(assetCheck).length > 0) {
         appLogger.devlog(`Found ${assetCheck} asset inlined already`);
         loadCount++;
-        return;
+        continue;
       }
 
       assetUrl = document.querySelector(assetGrab)?.getAttribute('href');
 
       if (!assetUrl) {
-        appLogger.issuelog(`Missing url for ${assetGrab}`, {assetMap}, false);
-        return;
+        appLogger.issuelog(`Missing url for asset`, {assetGrab, assetCheck}, false);
+        continue;
       }
 
       assetBlob = await assetFetcher.grabFile(assetUrl);
 
       if (!assetBlob) {
-        appLogger.issuelog(`Empty response from ${assetUrl}`, {assetBlob}, false);
-        return;
+        appLogger.issuelog(`Missing asset from ${assetUrl}`, {assetGrab, assetCheck}, false);
+        continue;
       }
 
       assetInnards = await assetBlob.text();
 
       if (!assetInnards) {
-        appLogger.issuelog(`Empty asset from ${assetUrl}`, {assetBlob, assetInnards}, false);
+        appLogger.issuelog(
+          `Empty asset from ${assetUrl}`, {assetGrab, assetCheck, assetBlob, assetInnards}, false
+        );
+        continue;
       }
 
       if (assetUrl.endsWith('.svg') || assetUrl.endsWith('.html') || assetUrl.endsWith('.xml')) {
@@ -68,9 +73,9 @@ const makeMiscHand = () => {
         );
         loadCount++;
       } else {
-        appLogger.devlog(`Unknown asset type from ${assetUrl}`, {assetBlob});
+        appLogger.devlog(`Unknown asset type from ${assetUrl}`, {assetGrab, assetCheck, assetBlob});
       }
-    });
+    }
 
     return loadCount === assetMap.size;
   };
@@ -97,7 +102,7 @@ const makeMiscHand = () => {
     // Once loading is done, disconnect loading indicator from DOM
     $indicator?.addEventListener('transitionend', (transEvt) => {
       if (transEvt.propertyName === 'opacity') {
-        appLogger.devlog("Loaded, removing indicator");
+        appLogger.devlog("Removing indicator");
         $indicator.remove();
         window.dispatchEvent(new CustomEvent(_g.notices.kick));
       }
@@ -108,6 +113,7 @@ const makeMiscHand = () => {
         cycleCount++;
 
         if (cycleCount >= 3) {
+          appLogger.devlog("Stopping indicator");
           $indicator.classList.add('loading-done');
         }
     }, { passive: true });
@@ -118,9 +124,14 @@ const makeMiscHand = () => {
     warmUp: load_assets,
     startAfter: watch_for_indicator_tick,
     // Convenience shortcut
-    startRoutine: (a,b,c,d) => {
-      load_assets(a, b);
-      watch_for_indicator_tick(c, d);
+    startRoutine: async (a,b,c,d) => {
+      const loadResult = await load_assets(a, b);
+
+      if (loadResult) {
+        watch_for_indicator_tick(c, d);
+      }
+
+      return loadResult;
     }
   });
 };
