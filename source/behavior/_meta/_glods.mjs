@@ -29,7 +29,9 @@ const _globals = {
   c_TitlePrefix: 'Number',
   c_DescPrefix: "Card in position",
   c_SuiteList: Object.freeze(["Spade", "Diamond", "Club", "Heart"]),
-  c_NameList: Object.freeze(['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King'])
+  c_NameList: Object.freeze([
+    'Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King'
+  ])
 };
 
 const ro_g = Object.freeze(_globals);
