@@ -43,7 +43,7 @@ const makeMiscHand = () => {
       assetUrl = document.querySelector(assetGrab)?.getAttribute('href');
 
       if (!assetUrl) {
-        appLogger.issuelog(`No url to fetch for ${assetGrab}`, {assetMap}, false);
+        appLogger.issuelog(`Missing url for ${assetGrab}`, {assetMap}, false);
         return;
       }
 
@@ -61,11 +61,13 @@ const makeMiscHand = () => {
       }
 
       if (assetUrl.endsWith('.svg') || assetUrl.endsWith('.html') || assetUrl.endsWith('.xml')) {
-        appLogger.devlog(`Loading asset ${assetUrl}\nPlacing within ${assetDump}`);
-        $assetDump.appendChild(assetParser.parseFromString(assetInnards, assetBlob.type).firstChild);
+        appLogger.devlog('Loading asset', {assetUrl, assetDump});
+        $assetDump.appendChild(
+          assetParser.parseFromString(assetInnards, assetBlob.type.split(';')[0]).firstChild
+        );
         loadCount++;
       } else {
-        appLogger.devlog(`Unknown asset type from ${assetUrl}\n`, {assetBlob});
+        appLogger.devlog(`Unknown asset type from ${assetUrl}`, {assetBlob});
       }
     });
 
