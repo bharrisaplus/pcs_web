@@ -2,6 +2,8 @@
  * @import {Shuttle} from '../_meta/_typedefs.mjs';
  */
 
+import { default as appLogger } from '../hands/scribe.hand.mjs';
+
 
 /** @return {Readonly<Shuttle.Host>} {@link Shuttle.Host} */
 const makeHostShuttle = () => {
@@ -20,20 +22,43 @@ const makeHostShuttle = () => {
 
 		try {
 			blobResponse = await fetch(resourceLink);
-			// Check response code
+
+			if (!blobResponse.ok) {
+				if (blobResponse.status > 399) {
+					appLogger.issuelog("Network issue with file grab", {resourceLink, blobResponse}, false);
+				}
+
+				blobResponse = null;
+			}
 		} catch (fetchErr) {
-			// DOMException: AbortError
-			// DOMException: NotAllowedError
-			// TypeError
-			console.error(fetchErr);
+			let fetchErrMsg = "Some problem grabbing file";
+
+			if (fetchErr instanceof DOMException && fetchErr.name === "AbortError") {
+				fetchErrMsg = "Aborted file grab";
+			} else if (fetchErr instanceof DOMException && fetchErr.name === "NotAllowedError") {
+				fetchErrMsg = "Permission issue with file grab";
+			} else if (fetchErr instanceof TypeError) {
+				fetchErrMsg = "Type mismatch with file grab";
+			}
+
+			appLogger.issuelog(fetchErrMsg, {resourceLink, blobResponse, fetchErr}, false);
+			blobResponse = null;
 		}
 
 		if (blobResponse) {
 			try {
 				blobResult = await blobResponse.blob();
-			} catch (shuttleErr) {
-				// TypeError
-				console.error(shuttleErr);
+			} catch (readErr) {
+				let readErrMsg = "Some problem reading file"
+
+				if (readErr instanceof DOMException && readErr.name === "AbortError") {
+					readErrMsg = "Aborted file read";
+				} else if (readErr instanceof TypeError) {
+					readErrMsg = "Could not read file";
+				}
+
+				appLogger.issuelog(readErrMsg, {resourceLink, blobResponse, readErr}, false);
+				blobResult = null;
 			}
 		}
 
