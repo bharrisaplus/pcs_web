@@ -138,6 +138,7 @@ tasks:
       - rm -f {{.DEV_DIR}}/{{.FAVICON_MSTILE_s150_NAME}}
       - rm -f {{.DEV_DIR}}/{{.FAVICON_MSTILE_s310_NAME}}
       - rm -f {{.DEV_DIR}}/{{.FAVICON_MSTILE_w310_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.FAVICON_MASK_NAME}}
       - rm -f {{.DEV_DIR}}/{{.BROWSERCONFIG_NAME}}
       - rm -f {{.DEV_DIR}}/{{.WEBMANIFEST_NAME}}
       - rm -f {{.DEV_DIR}}/meta_data_options.json

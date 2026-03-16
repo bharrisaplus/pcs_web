@@ -140,6 +140,7 @@ tasks:
       - rm -f {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_s150_NAME}}
       - rm -f {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_s310_NAME}}
       - rm -f {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MSTILE_w310_NAME}}
+      - rm -f {{.OCTOCAT_HOST_DIR}}/{{.FAVICON_MASK_NAME}}
       - rm -f {{.OCTOCAT_HOST_DIR}}/{{.BROWSERCONFIG_NAME}}
       - rm -f {{.OCTOCAT_HOST_DIR}}/{{.WEBMANIFEST_NAME}}
 
