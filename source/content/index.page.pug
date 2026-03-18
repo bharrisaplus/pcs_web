@@ -42,7 +42,6 @@ block html_body
 
             include document/partials/turntable.pug
 
-        i.ilink
         block html_body_scripts
             footer
                 div.inline-svg-assets-here(style="display: none; visibility: hidden;")
@@ -55,3 +54,5 @@ block html_body
                     script(src=ES_MAIN_URL defer)
                 else
                     script(src=ES_MAIN_URL type="module" defer)
+
+            i.ilink
