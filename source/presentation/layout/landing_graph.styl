@@ -43,7 +43,7 @@ $card-wspace = $card-width * 0.25
 #ribbon
     display: flex
     width: calc(100% - 9px)
-    padding: 4.5px
+    padding: 0 4.5px
     justify-content: space-around
     align-items: center
 
@@ -248,12 +248,21 @@ $card-wspace = $card-width * 0.25
         header
             height: 17%
             min-height: 150px
+            align-items: center
 
         main
             max-height: calc(100% - 150px - 9px)
 
         & > i.ilink
             display: none
+
+    #title-marquee h2
+        visibility: hidden
+        font-size: 0
+
+        & b
+            visibility: visible
+            font-size: var(--medium-size)
 
 
     #ribbon
