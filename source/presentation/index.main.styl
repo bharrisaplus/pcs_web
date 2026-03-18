@@ -218,6 +218,16 @@
             content: "\1F382"
 
 
+#notifications
+    border-radius: 4.5%
+    background: transparent
+    opacity: 0
+    pointer-events: none
+
+    &:popover-open
+        opacity: 1
+
+
 /*
     transitions & animations
  */
@@ -274,6 +284,10 @@
         transition: all 0.7s ease-in-out allow-discrete
 
 
+#notifications
+    transition: opacity 0.5s, visibility 0.5s ease-out allow-discrete
+
+
 @starting-style
     #pageload-curtain .loading-indicator
         & .loading-spinny
@@ -293,6 +307,11 @@
         &::backdrop
             background-color: transparent
             backdrop-filter: none
+
+
+    #toaster:popover-open
+        visibility: hidden
+        opacity: 0
 
 
 /*

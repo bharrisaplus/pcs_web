@@ -239,6 +239,24 @@ $card-wspace = $card-width * 0.25
             visibility: hidden
 
 
+#notifications
+    display: flex
+    height: 90%
+    width: 250px
+    position: fixed
+    inset: unset
+    right: 18px
+    bottom: 5%
+    border-width: 0
+    visibility: hidden
+    flex-flow: column-reverse nowrap
+    align-items: center
+    gap: 18px 0
+
+    &:popover-open
+        visibility: visible
+
+
 /*
     Ancestor/Parent responsive styles
  */
