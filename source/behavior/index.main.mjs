@@ -10,6 +10,7 @@ import { default as cobbleLanding } from './lattices/landing.lattice.mjs';
 import { default as appStore } from './banks/deck.bank.mjs';
 
 
+let $repoLink;
 const
   bootOverlay = '#pageload-curtain',
   bootOverlaySpinner = '.loading-spinny',
@@ -36,6 +37,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         appLogger.notilog("pcs won't start");
       }
     }, { once: true });
+
+    $repoLink = document.querySelector(`#${_g.appID} > i.ilink`);
+
+    $repoLink?.addEventListener('click', (_clickEvt) => {
+      let _$anchor;
+
+      if (_clickEvt.target !== $repoLink) { return; }
+
+      _$anchor = document.createElement('a');
+      _$anchor.setAttribute('href', "https://github.com/bharrisaplus/pcs_web");
+      _$anchor.setAttribute('target', '_blank');
+      _$anchor.click();
+    })
   } else {
     appLogger.notilog("pcs won't start");
   }

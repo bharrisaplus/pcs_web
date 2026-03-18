@@ -5,6 +5,7 @@
 // Page specific
 @import 'typography/landing_typeset.styl'
 @import 'layout/landing_graph.styl'
+@import 'vectoglyphs/ellipsis_mark.styl'
 
 
 #pcs-shell
@@ -26,6 +27,12 @@
     &:has(#ribbon button:disabled) main #tableau .playing-card
         cursor: default
         pointer-events: none
+
+    & > i.ilink
+        display: inline
+        opacity: 0.2
+        cursor: help
+        content: ellipsis_mark()
 
 
 #title-marquee
@@ -293,6 +300,9 @@
  */
 
 @media (hover: hover)
+    #pcs-shell > i.ilink:hover
+        opacity: 0.3
+
     #ribbon
         &:has(#shuffle:hover) #shuffle-desc[role="tooltip"]
             visibility: visible

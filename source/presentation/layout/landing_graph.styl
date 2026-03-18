@@ -31,6 +31,14 @@ $card-wspace = $card-width * 0.25
     & footer
         display: none
 
+    & > i.ilink
+        height: 24px
+        aspect-ratio: 1/1
+        position: fixed
+        bottom: 0
+        left: calc(50% - 24px)
+        opacity: 0.1
+
 
 #ribbon
     display: flex
@@ -243,6 +251,10 @@ $card-wspace = $card-width * 0.25
 
         main
             max-height: calc(100% - 150px - 9px)
+
+        & > i.ilink
+            display: none
+
 
     #ribbon
         flex-flow: column nowrap
