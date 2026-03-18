@@ -10,7 +10,7 @@ tasks:
   rear-presentation:
     desc: Stylus to CSS
     env:
-      BUILD_TARGET: octocat
+      BUILD_TARGET: soi
       BUILD_OBJECTIVE: demo
       BUILD_AREA: fhost
       FHOST_URL: '{{.FHOST_URL_ROOT}}/demo/'
@@ -47,7 +47,7 @@ tasks:
   rear-behavior:
     desc: JS
     env:
-      BUILD_TARGET: octocat
+      BUILD_TARGET: soi
       BUILD_OBJECTIVE: demo
       BUILD_AREA: fhost
       FHOST_URL: '{{.FHOST_URL_ROOT}}/demo/'
