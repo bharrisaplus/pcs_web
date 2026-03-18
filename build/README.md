@@ -12,6 +12,7 @@ Each build is for a _target_ , _area_ and _objective_
 
 - A _target_ is the host or platform the files are accessed from in the browser.
 	- Usually a shorthand, codename or mascot
+		- `soi == file/local/dev host`
 		- `octocat == github pages`
 		- `jammy == netlify`
 		- `tanuki == gitlab`
