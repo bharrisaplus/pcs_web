@@ -6,13 +6,12 @@ version: '3'
 
 
 includes:
-  demo: ./demo/_tasks.yml
   prod: ./prod_tasks.yml
 
 
 tasks:
   rear-prod:
-    desc: Build demo files
+    desc: Build octocat files
     cmds:
       - mkdir -p {{.OCTOCAT_HOST_DIR}}
       - task: prod:rear-content
@@ -24,7 +23,7 @@ tasks:
       - echo "octocat host ready"
 
   sweep-prod:
-    desc: Remove generated files
+    desc: Remove built octocat files
     cmds:
       - mkdir -p {{.OCTOCAT_HOST_DIR}}
       - task: prod:sweep-content

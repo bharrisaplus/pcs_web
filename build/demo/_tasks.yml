@@ -43,7 +43,7 @@ tasks:
       - task: prod:put-vendor
       - task: prod:put-meta
       - task: prod:set-meta
-      - echo "octocat host ready"
+      - echo "demo host ready"
 
   sweep-fhost:
     desc: Remove demo files
@@ -76,4 +76,4 @@ tasks:
       - task: prod:sweep-behavior
       - task: prod:sweep-vendor
       - task: prod:sweep-meta
-      - echo "octocat host cleared"
+      - echo "demo host cleared"

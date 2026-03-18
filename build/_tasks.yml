@@ -6,6 +6,7 @@ version: '3'
 
 
 includes:
+  demo: ./demo/_tasks.yml
   fhost: ./fhost_tasks.yml
   lhost: ./lhost_tasks.yml
 
