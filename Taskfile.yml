@@ -18,7 +18,8 @@ vars:
     sh: realpath --relative-to="{{.PROJECT_DIR}}" "{{.DEV_DIR}}"
 
 includes:
-  octocat: ./Build/octocat/_tasks.yml
+  soi: ./build/_tasks.yml
+  octocat: ./build/octocat/_tasks.yml
 
 tasks:
   check_env:

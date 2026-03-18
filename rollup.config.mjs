@@ -17,6 +17,10 @@ if (NodeProcess.env.BUILD_TARGET == 'octocat') {
 			targetConfig = octocatV0.default;
 		}
 	}
+} else if (NodeProcess.env.BUILD_TARGET == 'soi') {
+	const soiCurrent = await import('./build/_rollup.config.mjs');
+
+	targetConfig = soiCurrent.default;
 }
 
 export default targetConfig;
