@@ -1,7 +1,7 @@
 import { default as NodeProcess } from 'node:process';
 import { default as NodePath } from 'node:path';
 
-import { default as buildShared } from '../manifest.mjs';
+import { default as buildShared } from './manifest.mjs';
 
 
 const inputFilePath = NodePath.resolve(buildShared.behavior_path, 'index.main.mjs')

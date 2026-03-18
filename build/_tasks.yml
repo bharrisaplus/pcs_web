@@ -12,7 +12,7 @@ includes:
 
 tasks:
   rear-fhost:
-    desc: Build demo for file:// host
+    desc: Build file://
     cmds:
       - mkdir -p {{.DEV_DIR}}
       - task: fhost:rear-content
@@ -23,7 +23,7 @@ tasks:
       - echo "file:// host ready"
 
   rear-lhost:
-    desc: Build demo for localhost://
+    desc: Build localhost://
     deps: [fhost:put-vendor, fhost:put-meta]
     cmds:
       - mkdir -p {{.DEV_DIR}}
@@ -34,7 +34,7 @@ tasks:
       - echo "localhost ready"
 
   sweep-fhost:
-    desc: Remove demo files
+    desc: Remove files
     cmds:
       - mkdir -p {{.DEV_DIR}}
       - task: fhost:sweep-content
@@ -45,7 +45,7 @@ tasks:
       - echo "demo file:// host cleared"
 
   sweep-lhost:
-    desc: Remove generated files
+    desc: Remove files
     cmds:
       - mkdir -p {{.DEV_DIR}}
       - task: fhost:sweep-content
