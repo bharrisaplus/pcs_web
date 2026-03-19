@@ -232,6 +232,18 @@
     &:popover-open
         opacity: 1
 
+    & .toast
+        border-radius: 4.5px
+        background: var(--card-shimmer)
+        pointer-events: auto
+
+        & .toast-close
+            cursor: pointer
+
+        & .toast-msg
+            user-select: none
+            pointer-events: none
+
 
 /*
     transitions & animations

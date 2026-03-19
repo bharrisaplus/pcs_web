@@ -256,6 +256,24 @@ $card-wspace = $card-width * 0.25
     &:popover-open
         visibility: visible
 
+    & .toast
+        max-width: 100%
+        max-height: 30%
+        padding: 9px
+        border-width: 0
+
+        & .tost-close
+            height: 22px
+            aspect-ratio: 1/1
+            border-width: 0
+            border-radius: 4.5px
+
+        & .toast-msg
+            margin-left: 18px
+            max-width: calc(100% - 22px - 18px)
+            overflow: hidden
+            text-overflow: ellipsis
+
 
 /*
     Ancestor/Parent responsive styles
