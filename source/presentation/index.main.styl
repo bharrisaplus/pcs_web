@@ -18,8 +18,13 @@
     & main[data-dye="purple-dye"]
         background: var(--bg-amethyst)
 
-    &:has(main :popover-open) #ribbon,
-    &:has(main .hide-before-load) #ribbon
+    &:has(main .hide-before-load) #ribbon,
+    &:has(#notifications:popover-open) #ribbon,
+    &:has(#notifications:popover-open) #ribbon,
+    &:has(#notifications:popover-open) #tableau,
+    &:has(#notifications:popover-open) #tableau,
+    &:has(#notifications:popover-open) i.ilink,
+    &:has(main :popover-open) #ribbon
         cursor: default
         pointer-events: none
 
@@ -28,7 +33,7 @@
         cursor: default
         pointer-events: none
 
-    & > i.ilink
+    & i.ilink
         display: inline
         opacity: 0.2
         cursor: help
@@ -205,7 +210,7 @@
             border-radius: 18%
 
             &:disabled
-                cursor: not-allowed
+                cursor: auto
 
     & .turntable-cue-lever-spacer
         color: var(--card-base)
@@ -233,6 +238,7 @@
  */
 
 #ribbon [role="tooltip"]
+    /* property | duration */
     transition: visibility 0.25s
 
 #pageload-curtain
@@ -266,13 +272,13 @@
         animation-duration: 0.25s
         animation-timing-function: ease-out
         animation-fill-mode: backwards
+        transition-delay: 0.15s
         transition: /* property | duration */
             rotate 0.2s,
             box-shadow 0.25s
-        transition-delay: 0.15s
 
-        & svg[role="img"] use
-            pointer-events: none
+    & svg[role="img"] use
+        pointer-events: none
 
 
 #turntable
@@ -285,8 +291,11 @@
 
 
 #notifications
-    transition: opacity 0.5s, visibility 0.5s ease-out allow-discrete
-
+    transition-timing-function: ease-out
+    transition-behavior: allow-discrete
+    transition: /* property | duration */
+        opacity 0.5s,
+        visibility 0.5s
 
 @starting-style
     #pageload-curtain .loading-indicator
@@ -319,7 +328,7 @@
  */
 
 @media (hover: hover)
-    #pcs-shell > i.ilink:hover
+    #pcs-shell i.ilink:hover
         opacity: 0.3
 
     #ribbon
