@@ -83,7 +83,7 @@ const makeScribeHand = () => {
 		$toaster.showPopover();
 
 		if (toasts.length >= 3) {
-			const _gcToast = toasts.unshift();
+			const _gcToast = toasts.shift();
 
 			_gcToast.cancel.abort();
 			_gcToast.$elm.remove();
