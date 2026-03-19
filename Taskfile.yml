@@ -20,6 +20,7 @@ vars:
 includes:
   soi: ./build/_tasks.yml
   octocat: ./build/octocat/_tasks.yml
+  assess: ./test/_tasks.yml
 
 tasks:
   check_env:

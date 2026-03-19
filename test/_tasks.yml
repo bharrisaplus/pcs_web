@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+
+version: '3'
+
+
+tasks:
+  spec_of:
+    aliases: ["speco"]
+    cmds:
+      - pnpm "tape {{.CLI_ARGS}} | tap-spec"
+
+  spec_all:
+    aliases: ["specal"]
+    cmds:
+      - pnpm "tape {{.PROJECT_DIR}}/test/specs/*.spec.mjs | tap-spec"
