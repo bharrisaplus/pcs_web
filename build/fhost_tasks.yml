@@ -54,16 +54,6 @@ tasks:
     cmds:
       -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
 
-  nit-behavior:
-    desc: Keeping js/mjs consistent
-    cmds:
-      - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs {{.BEHAVIOR_DIR}}/index.main.mjs
-
-  nit-presentation:
-    desc: Keeping stylus/css consistent
-    cmds:
-      - pnpm stylelint -c {{.PROJECT_DIR}}/stylelint.config.mjs {{.PRESENTATION_DIR}}/index.main.styl
-
   # Moving things around
   put-vendor:
     desc: Copy 3rd party scripts/stylesheets/etc

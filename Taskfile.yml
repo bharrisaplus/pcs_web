@@ -30,6 +30,10 @@ tasks:
       - echo "Unix timestamp {{now | unixEpoch}}"
       - echo $VERSION_NUM
 
-  nitJS:
+  nitScript:
     cmds:
       - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs {{.CLI_ARGS}}
+
+  nitSheet:
+    cmds:
+      - pnpm stylelint -c {{.PROJECT_DIR}}/stylelint.config.mjs {{.CLI_ARGS}} --quiet-deprecation-warnings
