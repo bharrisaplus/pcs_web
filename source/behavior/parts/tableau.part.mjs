@@ -7,15 +7,13 @@
 import { default as _g } from '../_meta/_glods.mjs';
 
 
-let tableauAbortController = new AbortController();
-
-
 /**
  * @param  {CSSelector} containerID - {@link CSSStyleRule.selectorText}
+ * @param  {AbortController} eventCancel - {@link AbortController}
  *
  * @return {Readonly<Part.Tableau>} a surface for cards - {@link Part.Tableau}
  */
-const makeTableauPart = (containerID) => {
+const makeTableauPart = (containerID, eventCancel) => {
   const itemSelector = `${containerID} .playing-card`;
 
   /**
@@ -35,7 +33,7 @@ const makeTableauPart = (containerID) => {
       });
 
       document.querySelector(`#${_g.appID}`)?.dispatchEvent(needleDown);
-    }, {signal: tableauAbortController.signal});
+    }, {signal: eventCancel.signal});
   };
 
 
@@ -47,8 +45,8 @@ const makeTableauPart = (containerID) => {
 
     if (newItems.length < 52) { return; }
 
-    tableauAbortController.abort();
-    tableauAbortController = new AbortController();
+    eventCancel.abort();
+    eventCancel = new AbortController();
 
     _$tmpItems.forEach((_$itm, _itmIdx) => {
       _$itm.setAttribute('id', `card-${newItems[_itmIdx].symbolRef}`);
@@ -89,8 +87,11 @@ const makeTableauPart = (containerID) => {
 };
 
 
-/** @type {Part.Tableau} */
-let singleTableau;
+let
+  /** @type {Part.Tableau} */
+  singleTableau,
+  /** @type {AbortController} */
+  singleCancel;
 
 /**
  * @param {string} getTableauContainerID - {@link CSSStyleRule.selectorText}
@@ -99,7 +100,8 @@ let singleTableau;
  */
 const getTableau = (getTableauContainerID) => {
   if (!singleTableau) {
-    singleTableau = makeTableauPart(getTableauContainerID);
+    singleCancel = new AbortController();
+    singleTableau = makeTableauPart(getTableauContainerID, singleCancel);
   }
 
   return singleTableau

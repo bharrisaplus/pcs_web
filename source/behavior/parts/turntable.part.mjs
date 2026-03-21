@@ -8,15 +8,13 @@ import { default as _g } from "../_meta/_glods.mjs";
 import { default as logger } from "../hands/scribe.hand.mjs";
 
 
-let turntableAbortController = new AbortController();
-
-
 /**
  * @param  {CSSelector} containerID - {@link CSSStyleRule.selectorText}
+ * @param  {AbortController} eventCancel - {@link AbortController}
  *
  * @return {Readonly<Part.Turntable>} a card closeup popover - {@link Part.Turntable}
  */
-const makeTurntablePart = (containerID) => {
+const makeTurntablePart = (containerID, eventCancel) => {
   let
     _tccount = 0,
     _tidyTimeout;
@@ -134,13 +132,13 @@ const makeTurntablePart = (containerID) => {
 
 
   $container.setAttribute('popover', 'manual'); // only close via $turnOff
-  $container.addEventListener('beforetoggle', _tidy, {signal: turntableAbortController.signal});
-  $cueNext.addEventListener('click', _determine_followup, {signal: turntableAbortController.signal});
-  $cuePrevious.addEventListener('click', _determine_followup, {signal: turntableAbortController.signal});
+  $container.addEventListener('beforetoggle', _tidy, {signal: eventCancel.signal});
+  $cueNext.addEventListener('click', _determine_followup, {signal: eventCancel.signal});
+  $cuePrevious.addEventListener('click', _determine_followup, {signal: eventCancel.signal});
 
   $turnOff.addEventListener("click", () => {
     $container.hidePopover();
-  }, {signal: turntableAbortController.signal});
+  }, {signal: eventCancel.signal});
 
   document.querySelector('#title-marquee')?.addEventListener('click', () => {
     if (_tccount++ < 7) { return; }
@@ -150,7 +148,7 @@ const makeTurntablePart = (containerID) => {
     $cueNext.disabled = true;
     $pickup.querySelector('use').setAttribute('href', _g.pcs_cardRef);
     $container.showPopover();
-  }, {signal: turntableAbortController.signal});
+  }, {signal: eventCancel.signal});
 
 
   return Object.freeze({
@@ -175,25 +173,30 @@ const makeTurntablePart = (containerID) => {
   });
 };
 
-/**
- * main Turntable instance
- * @type {Part.Turntable}
- */
-let reuseablePart;
+let
+  /** @type {Part.Turntable} */
+  reuseablePart,
+  /** @type {AbortController} */
+  reuseableCancel;
 
 /**
- * Ensure single turntable per page but allow reuse
+ * Ensure single turntable per page but allow recycling
+ *
  * @param {string} getTurntableContainerID - {@link CSSStyleRule.selectorText}
  *
  * @returns {Readonly<Part.Turntable>} fresh Turntable for the page - {@link Part.Turntable}
  */
 const rinseRepeatTurntable = (getTurntableContainerID) => {
   if (!reuseablePart) {
-    reuseablePart = makeTurntablePart(getTurntableContainerID);
+    reuseableCancel = new AbortController();
+    reuseablePart = makeTurntablePart(getTurntableContainerID, reuseableCancel);
   } else {
-    turntableAbortController.abort();
-    turntableAbortController = new AbortController();
-    reuseablePart = makeTurntablePart(getTurntableContainerID);
+    if (reuseableCancel) {
+      reuseableCancel.abort();
+    }
+
+    reuseableCancel = new AbortController();
+    reuseablePart = makeTurntablePart(getTurntableContainerID, reuseableCancel);
   }
 
   return reuseablePart;
