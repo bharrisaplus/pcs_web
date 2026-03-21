@@ -1,3 +1,4 @@
+/** @globals localStorage */
 
 /**
  * @import {Bank, GlobalDeclarations} from "../_meta/_typedefs.mjs"

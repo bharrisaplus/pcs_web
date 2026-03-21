@@ -1,3 +1,4 @@
+/** @globals XMLSerializer, navigator, document, Image, URL */
 
 /**
  * @import {CSSelector, Hand} from '../_meta/_typedefs.mjs'

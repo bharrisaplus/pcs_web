@@ -1,3 +1,4 @@
+/** @globals document, window */
 
 /**
  * @import {CSSelector, PCSEvent, CardIntri, Hand, Lattice, Part, Bank} from "../_meta/_typedefs.mjs"

@@ -1,3 +1,4 @@
+/** @globals document, window */
 
 /**
  * @import {VerifynLoad} from './_meta/_typedefs.mjs'

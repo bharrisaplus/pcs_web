@@ -1,3 +1,4 @@
+/** @globals document, AbortController, CustomEvent */
 
 /**
  * @import {PCSEvent, CSSelector, Part, CardIntri} from '../_meta/_typedefs.mjs'

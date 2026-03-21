@@ -1,3 +1,5 @@
+/** @globals window, document, console, AbortController */
+
 /**
  * @import {Hand} from '../_meta/_typedefs.mjs'
  */

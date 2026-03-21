@@ -1,5 +1,7 @@
 /** Only used for test purposes. See test/specs/trythis_example.spec.mjs */
 
+/** @globals console, document */
+
 /**
  * @import {CSSelector} from './_meta/_typedefs.mjs';
  */

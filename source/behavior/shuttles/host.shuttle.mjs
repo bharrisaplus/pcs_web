@@ -1,3 +1,5 @@
+/** @globals fetch */
+
 /**
  * @import {Shuttle} from '../_meta/_typedefs.mjs';
  */

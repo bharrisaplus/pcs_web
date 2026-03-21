@@ -1,3 +1,4 @@
+/** @globals document, DOMParser, window, CustomEvent */
 
 /**
  * @import {CSSelector, VerifynLoad, Hand} from "../_meta/_typedefs.mjs"

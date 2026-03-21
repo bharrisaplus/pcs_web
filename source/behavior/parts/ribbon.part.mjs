@@ -1,3 +1,4 @@
+/** @globals document, CustomEvent */
 
 /**
  * @import {Part, PCSEvent, CSSelector} from '../_meta/_typedefs.mjs'
