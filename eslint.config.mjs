@@ -24,24 +24,26 @@ const demoLintConfig = defineConfig([
     },
     languageOptions: {
     	globals: {
-    		document: "readonly",
+        arguments: "readonly",
+        // web api
     		window: "readonly",
-        html2canvas: "readonly",
-        chance: "readonly",
+    		document: "readonly",
         HTMLElement: "readonly",
         console: "readonly",
-        DOMParser: "readonly",
         fetch: "readonly",
+        navigator: "readonly",
+        localStorage: "readonly",
+        DOMParser: "readonly",
+        XMLSerializer: "readonly",
         CustomEvent: "readonly",
         AbortController: "readonly",
-        navigator: "readonly",
         DOMException: "readonly",
         URL: "readonly",
         Image: "readonly",
-        XMLSerializer: "readonly",
         Blob: "readonly",
-        arguments: "readonly",
-        localStorage: "readonly"
+        // third party
+        html2canvas: "readonly",
+        chance: "readonly",
     	}
     }
   }
