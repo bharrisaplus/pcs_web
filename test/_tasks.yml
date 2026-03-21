@@ -8,7 +8,7 @@ tasks:
   spec_of:
     aliases: ["speco"]
     cmds:
-      - pnpm tape {{.CLI_ARGS}} | pnpm tap-spec
+      - pnpm tape {{.PROJECT_DIR}}/test/specs/{{.CLI_ARGS}}.spec.mjs | pnpm tap-spec
 
   spec_all:
     aliases: ["specal"]
