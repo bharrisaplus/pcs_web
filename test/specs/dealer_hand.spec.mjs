@@ -14,7 +14,7 @@ const
 	},
 
 	// This function modifies globals so always call 'td.reset()' when done (read: before assertions).
-	getImport = async (mockScribe) => {
+	getImport = async (mockScribe, mockChance) => {
 		const
 			mockHTML = `<!doctype html><html lang="en"><body></body></html>`,
 			{ document: mockDoc, window: mockWindow } = linkeParse(mockHTML);
@@ -22,6 +22,7 @@ const
 		td.replace(globalThis, 'console', td.object(['error', 'debug', 'warn']));
 		td.replace(globalThis, 'document', mockDoc);
 		td.replace(globalThis, 'window', mockWindow);
+		td.replace(globalThis, 'chance', mockChance);
 		td.replaceEsm(modulePaths.scribeHand, null, mockScribe);
 
 		return await import(modulePaths.dealerHand);
@@ -32,6 +33,7 @@ test('pcs:hand:dealer:getCard should return good intri', async (swear) => {
 	let bonafiedResult = [], bonafiedExpln;
 	const
 		swearScribe = td.object(),
+		swearChance = td.object(['pickset']),
 		swearPos = [
 			[0, 0], [13, 13], [38, 38], [51, 51],
 			[12,10], [40, 49], [25, 1], [13, 39]
@@ -46,7 +48,7 @@ test('pcs:hand:dealer:getCard should return good intri', async (swear) => {
 			{oglo:1,spot:25, title:'Number 26: Two of Spade', desc:'Card in position 26', symbolRef:'#s01'},
 			{oglo:39,spot:13, title:'Number 14: King of Heart', desc:'Card in position 14', symbolRef:'#h39'}
 		],
-		dealerHandFactory = await getImport(swearScribe),
+		dealerHandFactory = await getImport(swearScribe, swearChance),
 		/** @type {Hand.Dealer} */
 		dealerHand = dealerHandFactory.default();
 
@@ -72,20 +74,22 @@ test('pcs:hand:dealer:getCard should return good intri', async (swear) => {
 	swear.deepEqual(bonafiedResult[7], imagineCardIntris[7], 'Should match random intri');
 });
 
+
 test('pcs:hand:dealer:getCard should return bad intri', async (swear) => {
 	let bonafiedResult = [], bonafiedExpln;
 	const
 		swearScribe = td.object(['issuelog']),
+		swearChance = td.object(['pickset']),
 		swearPos = [[0, -1], [5, 52], [13, 90], [-1, 0], [52, 3], [90, 25]],
 		imagineCardIntris = [
-			{oglo:-1,spot:0, title:'Number 1: A Card', desc:'Card in position 1', symbolRef:'#'},
-			{oglo:52,spot:5, title:'Number 6: A Card', desc:'Card in position 6', symbolRef:'#'},
-			{oglo:90,spot:13, title:'Number 14: A Card', desc:'Card in position 14', symbolRef:'#'},
-			{oglo:0,spot:-1, title:'Number 0: A Card', desc:'Card in position 0', symbolRef:'#'},
-			{oglo:3,spot:52, title:'Number 53: A Card', desc:'Card in position 53', symbolRef:'#'},
-			{oglo:25,spot:90, title:'Number 91: A Card', desc:'Card in position 91', symbolRef:'#'}
+			{oglo:-1,spot:0, title:'', desc:'', symbolRef:''},
+			{oglo:52,spot:5, title:'', desc:'', symbolRef:''},
+			{oglo:90,spot:13, title:'', desc:'', symbolRef:''},
+			{oglo:0,spot:-1, title:'', desc:'', symbolRef:''},
+			{oglo:3,spot:52, title:'', desc:'', symbolRef:''},
+			{oglo:25,spot:90, title:'', desc:'', symbolRef:''}
 		],
-		dealerHandFactory = await getImport(swearScribe),
+		dealerHandFactory = await getImport(swearScribe, swearChance),
 		/** @type {Hand.Dealer} */
 		dealerHand = dealerHandFactory.default();
 
@@ -100,11 +104,135 @@ test('pcs:hand:dealer:getCard should return bad intri', async (swear) => {
 
 
 	swear.plan(7);
-	swear.equal(bonafiedExpln.callCount, 6, "Should log issues");
+	swear.isEqual(bonafiedExpln.callCount, 6, "Should log issues");
 	swear.deepEqual(bonafiedResult[0], imagineCardIntris[0], 'Should match bad intri');
 	swear.deepEqual(bonafiedResult[1], imagineCardIntris[1], 'Should match bad intri');
 	swear.deepEqual(bonafiedResult[2], imagineCardIntris[2], 'Should match bad intri');
 	swear.deepEqual(bonafiedResult[3], imagineCardIntris[3], 'Should match bad intri');
 	swear.deepEqual(bonafiedResult[4], imagineCardIntris[4], 'Should match bad intri');
 	swear.deepEqual(bonafiedResult[5], imagineCardIntris[5], 'Should match bad intri');
+});
+
+
+test('pcs:hand:dealer:getCard should return shuffled', async (swear) => {
+	let bonafiedResult = [], bonafiedExpln;
+	const
+		swearScribe = td.object(),
+		swearChance = td.object(['pickset']),
+		swearCardLists = [
+			Uint8Array.from([1,2,3,4,5,6,7,8]),
+			Uint8Array.from([0,3,5,67,45,100,11,12,90,74,33,21,84]),
+			Uint8Array.from([
+				49,26,23,4,9,46,29,24,44,47,32,34,7,48,17,22,5,39,42,20,18,31,50,16,43,51,12,10,3,38,27,21,33,
+				14,8,1,37,11,41,45,15,0,36,35,2,30,25,40,28,6,19,13
+			])
+		],
+		swearPosLists = [
+			Uint8Array.from([0,1,2,3,4,5,6,7]),
+			Uint8Array.from([0,1,2,3,4,5,6,7,8,9,10,11,12]),
+			Uint8Array.from([
+				0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,
+				35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51
+			])
+		],
+		dealerHandFactory = await getImport(swearScribe, swearChance),
+		/** @type {Hand.Dealer} */
+		dealerHand = dealerHandFactory.default();
+
+
+	for (let chkIdx = 0; chkIdx < swearCardLists.length; chkIdx++) {
+		td.when(
+			swearChance.pickset(swearCardLists[chkIdx], swearCardLists[chkIdx].length)
+		).thenReturn(Array.from(swearCardLists[chkIdx]));
+		td.when(
+			swearChance.pickset(swearPosLists[chkIdx], swearPosLists[chkIdx].length)
+		).thenReturn(Array.from(swearPosLists[chkIdx]));
+		
+		bonafiedResult.push(
+			dealerHand.mixUp(swearCardLists[chkIdx], swearPosLists[chkIdx])
+		);
+	}
+
+	bonafiedExpln = td.explain(swearScribe.issuelog);
+
+	td.reset();
+
+
+	swear.plan(5);
+	swear.isEqual(bonafiedExpln.callCount, 0, 'Should have no issue to log');
+	swear.isEqual((bonafiedResult.flat()).length, (swearCardLists.flat()).length, 'Should keep all elements');
+	swear.notEqual(bonafiedResult[0].toString(), swearCardLists[0].toString(),
+		"Should not match starting list after shuffle"
+	);
+	swear.notEqual(bonafiedResult[1].toString(), swearCardLists[1].toString(),
+		"Should not match starting list after shuffle"
+	);
+	swear.notEqual(bonafiedResult[2].toString(), swearCardLists[2].toString(),
+		"Should not match starting list after shuffle"
+	);
+});
+
+
+test('pcs:hand:dealer:getCard should return non-shuffled', async (swear) => {
+	let bonafiedResult = [], bonafiedExpln;
+	const
+		swearScribe = td.object(),
+		swearChance = td.object(['pickset']),
+		swearCardLists = [
+			Uint8Array.from([]),
+			Uint8Array.from([0,3,5,67,45,100,11,12,90,74,33,21,84]),
+			Uint8Array.from([
+				49,26,23,4,9,46,29,24,44,47,32,34,7,48,17,22,52,39,42,20,18,31,50,16,43,51,
+				12,10,3,38,27,21,33,14,8,1,37,11,41,45,15,0,36,35,2,30,25,40,28,6,19,13,5
+			])
+		],
+		swearPosLists = [
+			Uint8Array.from([]),
+			Uint8Array.from([0,1,2,3,4,5,6,7,8,9,10,11]),
+			Uint8Array.from([
+				0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,
+				35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,52
+			])
+		],
+		dealerHandFactory = await getImport(swearScribe, swearChance),
+		/** @type {Hand.Dealer} */
+		dealerHand = dealerHandFactory.default();
+
+
+	for (let chkIdx = 0; chkIdx < swearCardLists.length; chkIdx++) {
+		td.when(
+			swearChance.pickset(swearCardLists[chkIdx], swearCardLists[chkIdx].length)
+		).thenReturn(Array.from(swearCardLists[chkIdx]));
+		td.when(
+			swearChance.pickset(swearPosLists[chkIdx], swearPosLists[chkIdx].length)
+		).thenReturn(Array.from(swearPosLists[chkIdx]));
+		
+		bonafiedResult.push(
+			dealerHand.mixUp(swearCardLists[chkIdx], swearPosLists[chkIdx])
+		);
+	}
+
+	bonafiedExpln = td.explain(swearScribe.issuelog);
+
+	td.reset();
+
+
+	swear.plan(7);
+	swear.isEqual(bonafiedExpln.callCount, 3, 'Should log issues');
+	swear.isEqual((bonafiedResult.flat()).length, (swearCardLists.flat()).length, 'Should keep all elements');
+	swear.isEqual(bonafiedResult[0].length, 0,
+		"Should be blank"
+	);
+	swear.isEqual(`${bonafiedResult[1][0]}${bonafiedResult[1][1]}`, '00',
+		"Should be blank"
+	);
+	swear.isEqual(`${bonafiedResult[1][0]}${bonafiedResult[1][bonafiedResult.length-1]}`, '00',
+		"Should be blank"
+	);
+	swear.isEqual(`${bonafiedResult[2][0]}${bonafiedResult[2][1]}`, '00',
+		"Should be blank"
+	);
+	swear.isEqual(`${bonafiedResult[2][0]}${bonafiedResult[2][bonafiedResult.length-1]}`, '00',
+		"Should be blank"
+	);
 });
