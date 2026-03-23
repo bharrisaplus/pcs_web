@@ -15,17 +15,19 @@ const
 	},
 
 	// This function modifies globals so always call 'td.reset()' when done (read: before assertions).
-	getImport = async (mockScribe, mockWindow, mockDoc, mockXMLS, mockClip, mockImg) => {
+	getImport = async (mockScribe, mockWindow, mockDoc, mockXMLS, mockClip, mockImg, mockCanvas) => {
 		td.replace(globalThis, 'console', td.object(['error', 'debug', 'warn']));
 		td.replace(globalThis, 'document', mockDoc);
 		td.replace(globalThis, 'window', mockWindow);
 		td.replace(globalThis, 'XMLSerializer', mockXMLS);
 		td.replace(navigator, 'clipboard', mockClip);
 		td.replace(globalThis, 'Image', mockImg);
+		td.replace(globalThis, 'OffscreenCanvas', mockCanvas);
 		td.replaceEsm(modulePaths.scribeHand, null, mockScribe);
 
 		return (await import(modulePaths.egressHand)).default;
 	};
+
 
 test('pcs:hand:egress:exportTest should run without issue', async (swear) => {
 	let bonafiedResult, bonafiedExplntns = [];
@@ -65,6 +67,7 @@ test('pcs:hand:egress:exportTest should run without issue', async (swear) => {
 	);
 	swear.isEqual(bonafiedExplntns[1].callCount, 0, "Should have no issue");
 });
+
 
 test('pcs:hand:egress:exportTest should have issues', async (swear) => {
 	let
@@ -121,4 +124,56 @@ test('pcs:hand:egress:exportTest should have issues', async (swear) => {
 	swear.isEqual(bonafiedExplntns[1].calls[1].cloneArgs[0], "Issue occured copying to clipboard",
 		"Should have expected issue"
 	);
+});
+
+
+test("pcs:hand:egress:generateImage should run without issue", async (swear) => {
+	let bonafiedExplntns = [];
+	const
+		swearScribe = td.object(['issuelog']),
+		swearXMLSerializer = td.constructor(['serializeToString']),
+		swearClipboard = td.object(),
+		swearSpriteList = Array.from({length: 52}, (_, _idx) => { return `#${_idx}`; }),
+		swearSVGSelector = 'test-vector',
+		swearSVG = `<svg id="${swearSVGSelector}"><defs><symbol><rect></rect></symbol></defs></svg>`,
+		swearHTML = `<!doctype html><html lang="en"><body>${swearSVG}</body></html>`,
+		{
+			Image: linkeImg,
+			document: swearDoc,
+			window: swearWindow
+		} = linkeParse(swearHTML),
+		swearImg = td.constructor(linkeImg),
+		swearCanvas = td.constructor(swearDoc.HTMLCanvasElement),
+		swearCanvasInst = td.instance(swearCanvas),
+		swear2DCtx = td.object(['drawImage']),
+
+		/** @type {Hand.Egress} */
+		egressHand = await getImport(
+			swearScribe, swearWindow, swearDoc, swearXMLSerializer, swearClipboard, swearImg, swearCanvas
+		);
+
+
+	swearImg.prototype.decode = td.func();
+	swearCanvas.prototype.getContext = td.func();
+	swearCanvas.prototype.toDataURL = td.func();
+	td.when(swearCanvas(0, 0)).thenReturn(swearCanvasInst);
+	td.when(swearCanvas.prototype.getContext('2d')).thenReturn(swear2DCtx);
+	td.when(swearXMLSerializer(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
+	td.when(swearImg.prototype.decode()).thenResolve(undefined);
+	td.when(swear2DCtx.drawImage(td.matchers.anything())).thenReturn(null);
+	td.when(swearCanvas.prototype.toDataURL()).thenReturn("12d34");
+
+	await egressHand.generateImage("#333", swearSpriteList, `#${swearSVGSelector}`);
+	
+	bonafiedExplntns.push(td.explain(swearScribe.issuelog));
+	bonafiedExplntns.push(td.explain(swearCanvasInst.toDataURL));
+
+	td.reset();
+
+
+	swear.plan(4);
+	swear.isEqual(bonafiedExplntns[0].callCount, 0, "Should have no issues");
+	swear.isEqual(bonafiedExplntns[1].callCount, 1, "Should generate image via data url");
+	swear.isEqual(swearCanvasInst.width, 1000, "Should create canvas and set width");
+	swear.isEqual(swearCanvasInst.height, 400, "Should create canvas and set height");
 });
