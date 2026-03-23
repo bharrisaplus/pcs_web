@@ -1,0 +1,6 @@
+{	
+	"src": [
+		"./source/behavior/_meta",
+		"./source/behavior/hands"
+	]
+}

@@ -5,6 +5,7 @@ node_modules
 distribution/demo
 distribution/2026_*
 !distribution/.gitkeep
+coverage
 
 # Pages hosting
 docs/**/*
