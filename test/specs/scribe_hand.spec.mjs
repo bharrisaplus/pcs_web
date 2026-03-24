@@ -299,3 +299,132 @@ test("pcs:hand:scribe:devlog should not log noti message", async (swear) => {
 	swear.isEqual(bonafiedExplntns[1].callCount, 1, "Should show popover");
 	swear.isEqual(bonafiedExplntns[2].callCount, 1, "Should hide popover");
 });
+
+
+test("pcs:hand:scribe:devlog should handle multiple noti messages", async (swear) => {
+	let bonafiedResults = [], bonafiedExplntns = [];
+	const
+		swearToastTempl = pugFile(NodePath.resolve(contentDir, './document/partials/template_toast.pug'), {}),
+		swearToasterMrkp = `<div id="notifications" popover="manual"></div>`,
+		swearHTML = `<!doctype html><html lang="en"><body>${swearToasterMrkp}${swearToastTempl}</body></html>`,
+		swearLoc = {href: "http://localhost:28133/check.spec.mjs"},
+		swearDOM = linkeParse(swearHTML, {location: swearLoc}),
+		imagineMsgs = [
+			"A notification message for the log",
+			"A 2nd notification message for the log",
+			"A 3rd notification message for the log",
+			"A 4th notification message for the log",
+		],
+
+		impMeta = await getImport(swearDOM.window, swearDOM.document);
+
+
+	swearDOM.HTMLElement.prototype.showPopover = td.func();
+	swearDOM.HTMLElement.prototype.hidePopover = td.func();
+
+	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	impMeta.freshModule.notilog(imagineMsgs[0]);
+	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	impMeta.freshModule.notilog(imagineMsgs[1]);
+	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	impMeta.freshModule.notilog(imagineMsgs[2]);
+	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	impMeta.freshModule.notilog(imagineMsgs[3]);
+	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	impMeta.moduleDocument.querySelector('button.toast-close').click();
+	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	impMeta.moduleDocument.querySelector('button.toast-close').click();
+	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	impMeta.moduleDocument.querySelector('button.toast-close').click();
+	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
+	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.showPopover));
+	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.hidePopover));
+
+	td.reset();
+	delete impMeta.freshModule;
+
+
+	swear.plan(4);
+	swear.isEqual(bonafiedResults.join(''), '01233210', "Should add then remove notification toast");
+	swear.isEqual(bonafiedExplntns[0].callCount, 4, "Should use console.info");
+	swear.isEqual(bonafiedExplntns[1].callCount, 4, "Should show popover");
+	swear.isEqual(bonafiedExplntns[2].callCount, 1, "Should hide popover");
+});
+
+
+test("pcs:hand:scribe:devlog should remove dangling noti message", async (swear) => {
+	let bonafiedResults = [], bonafiedExplntns = [];
+	const
+		swearToastTempl = pugFile(NodePath.resolve(contentDir, './document/partials/template_toast.pug'), {}),
+		swearToasterMrkp = `<div id="notifications" popover="manual"></div>`,
+		swearHTML = `<!doctype html><html lang="en"><body>${swearToasterMrkp}${swearToastTempl}</body></html>`,
+		swearLoc = {href: "http://localhost:28133/check.spec.mjs"},
+		swearDOM = linkeParse(swearHTML, {location: swearLoc}),
+		imagineMsg = "A notification message for the log",
+
+		impMeta = await getImport(swearDOM.window, swearDOM.document);
+
+
+	swearDOM.HTMLElement.prototype.showPopover = td.func();
+	swearDOM.HTMLElement.prototype.hidePopover = td.func();
+
+	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	impMeta.freshModule.notilog(imagineMsg);
+	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	Array.prototype.indexOf = () => { return -1; };
+	impMeta.moduleDocument.querySelector('button.toast-close').click();
+	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
+	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.showPopover));
+	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.hidePopover));
+
+	td.reset();
+	delete impMeta.freshModule;
+
+
+	swear.plan(4);
+	swear.isEqual(bonafiedResults.join(''), '010', "Should add then remove notification toast");
+	swear.isEqual(bonafiedExplntns[0].callCount, 1, "Should use console.info");
+	swear.isEqual(bonafiedExplntns[1].callCount, 1, "Should show popover");
+	swear.isEqual(bonafiedExplntns[2].callCount, 1, "Should hide popover");
+});
+
+
+test("pcs:hand:scribe:devlog should not show repeat noti message", async (swear) => {
+	let bonafiedResults = [], bonafiedExplntns = [];
+	const
+		swearToastTempl = pugFile(NodePath.resolve(contentDir, './document/partials/template_toast.pug'), {}),
+		swearToasterMrkp = `<div id="notifications" popover="manual"></div>`,
+		swearHTML = `<!doctype html><html lang="en"><body>${swearToasterMrkp}${swearToastTempl}</body></html>`,
+		swearLoc = {href: "http://localhost:28133/check.spec.mjs"},
+		swearDOM = linkeParse(swearHTML, {location: swearLoc}),
+		imagineMsg = "A notification message for the log",
+
+		impMeta = await getImport(swearDOM.window, swearDOM.document);
+
+
+	swearDOM.HTMLElement.prototype.showPopover = td.func();
+	swearDOM.HTMLElement.prototype.hidePopover = td.func();
+
+	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	impMeta.freshModule.notilog(imagineMsg);
+	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	impMeta.freshModule.notilog(imagineMsg);
+	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	impMeta.moduleDocument.querySelector('button.toast-close').click();
+	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
+	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.showPopover));
+	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.hidePopover));
+
+	td.reset();
+	delete impMeta.freshModule;
+
+
+	swear.plan(4);
+	swear.isEqual(bonafiedResults.join(''), '0110', "Should add then remove notification toast");
+	swear.isEqual(bonafiedExplntns[0].callCount, 2, "Should use console.info");
+	swear.isEqual(bonafiedExplntns[1].callCount, 1, "Should show popover");
+	swear.isEqual(bonafiedExplntns[2].callCount, 1, "Should hide popover");
+});
