@@ -240,8 +240,8 @@ test("pcs:hand:scribe:devlog should log noti message", async (swear) => {
 		impMeta = await getImport(swearDOM.window, swearDOM.document);
 
 
-	swearDOM.HTMLElement.prototype.showPopover = td.func();
-	swearDOM.HTMLElement.prototype.hidePopover = td.func();
+	td.replace(swearDOM.HTMLElement.prototype, 'showPopover', td.func());
+	td.replace(swearDOM.HTMLElement.prototype, 'hidePopover', td.func());
 
 	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
@@ -277,8 +277,8 @@ test("pcs:hand:scribe:devlog should not log noti message", async (swear) => {
 		impMeta = await getImport(swearDOM.window, swearDOM.document);
 
 
-	swearDOM.HTMLElement.prototype.showPopover = td.func();
-	swearDOM.HTMLElement.prototype.hidePopover = td.func();
+	td.replace(swearDOM.HTMLElement.prototype, 'showPopover', td.func());
+	td.replace(swearDOM.HTMLElement.prototype, 'hidePopover', td.func());
 
 	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
@@ -319,8 +319,8 @@ test("pcs:hand:scribe:devlog should handle multiple noti messages", async (swear
 		impMeta = await getImport(swearDOM.window, swearDOM.document);
 
 
-	swearDOM.HTMLElement.prototype.showPopover = td.func();
-	swearDOM.HTMLElement.prototype.hidePopover = td.func();
+	td.replace(swearDOM.HTMLElement.prototype, 'showPopover', td.func());
+	td.replace(swearDOM.HTMLElement.prototype, 'hidePopover', td.func());
 
 	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsgs[0]);
@@ -361,18 +361,20 @@ test("pcs:hand:scribe:devlog should remove dangling noti message", async (swear)
 		swearHTML = `<!doctype html><html lang="en"><body>${swearToasterMrkp}${swearToastTempl}</body></html>`,
 		swearLoc = {href: "http://localhost:28133/check.spec.mjs"},
 		swearDOM = linkeParse(swearHTML, {location: swearLoc}),
+		swearArrIndexOf = td.func(),
 		imagineMsg = "A notification message for the log",
 
 		impMeta = await getImport(swearDOM.window, swearDOM.document);
 
 
-	swearDOM.HTMLElement.prototype.showPopover = td.func();
-	swearDOM.HTMLElement.prototype.hidePopover = td.func();
+	td.replace(swearDOM.HTMLElement.prototype, 'showPopover', td.func());
+	td.replace(swearDOM.HTMLElement.prototype, 'hidePopover', td.func());
+	td.replace(Array.prototype, 'indexOf', swearArrIndexOf);
+	td.when(Array.prototype.indexOf(td.matchers.anything())).thenReturn(-1);
 
 	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
 	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
-	Array.prototype.indexOf = () => { return -1; };
 	impMeta.moduleDocument.querySelector('button.toast-close').click();
 	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
@@ -404,8 +406,8 @@ test("pcs:hand:scribe:devlog should not show repeat noti message", async (swear)
 		impMeta = await getImport(swearDOM.window, swearDOM.document);
 
 
-	swearDOM.HTMLElement.prototype.showPopover = td.func();
-	swearDOM.HTMLElement.prototype.hidePopover = td.func();
+	td.replace(swearDOM.HTMLElement.prototype, 'showPopover', td.func());
+	td.replace(swearDOM.HTMLElement.prototype, 'hidePopover', td.func());
 
 	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
