@@ -67,6 +67,7 @@ test('pcs:hand:egress:exportTest should run without issue', async (swear) => {
 	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.issuelog));
 
 	td.reset();
+	delete impMeta.freshModule;
 
 
 	swear.plan(4);
@@ -105,6 +106,7 @@ test('pcs:hand:egress:exportTest should have issues', async (swear) => {
 	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.issuelog));
 
 	td.reset();
+	delete impMeta.freshModule;
 
 
 	swear.plan(8);
@@ -153,6 +155,7 @@ test("pcs:hand:egress:generateImage should run without issue", async (swear) => 
 	bonafiedExplntns.push(td.explain(impMeta.moduleCanvasInst.toDataURL));
 
 	td.reset();
+	delete impMeta.freshModule;
 
 
 	swear.plan(4);
@@ -199,6 +202,7 @@ test("pcs:hand:egress:generateImage should have issues", async (swear) => {
 	bonafiedExplntns.push(td.explain(impMeta.moduleCanvasInst.toDataURL));
 
 	td.reset();
+	delete impMeta.freshModule;
 
 
 	swear.plan(5);
@@ -247,6 +251,7 @@ test("pcs:hand:egress:generateImage should have issues (cont)", async (swear) =>
 	bonafiedExplntns.push(td.explain(impMeta.moduleCanvasInst.toDataURL));
 
 	td.reset();
+	delete impMeta.freshModule;
 
 
 	swear.plan(5);
@@ -284,6 +289,7 @@ test("pcs:hand:egress:generateImage should have issues (cont'd)", async (swear) 
 	bonafiedExplntns.push(td.explain(impMeta.moduleCanvasInst.toDataURL));
 
 	td.reset();
+	delete impMeta.freshModule;
 
 
 	swear.plan(4);
