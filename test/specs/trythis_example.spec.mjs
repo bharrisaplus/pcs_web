@@ -1,106 +1,116 @@
+/**
+ * @import {ExampleModule} from '../../source/behavior/trythis.example.mjs'
+ */
+
+import { default as NodeCrypto } from 'node:crypto';
 import { test } from 'tape';
-import * as td from 'testdouble';
 import { parseHTML as linkeParse } from 'linkedom';
+import {
+	object as tdObject,
+	replace as tdReplace,
+	replaceEsm as tdReplaceEsm,
+	explain as tdExplain,
+	reset as tdReset
+} from 'testdouble';
 
 
 const
+	defaultSpecHTML = `<!doctype html><html lang="en"><body></body></html>`,
 	modulePaths = {
 		scribeHand: '../../source/behavior/hands/scribe.hand.mjs',
 		trythisExample: '../../source/behavior/trythis.example.mjs'
 	},
 
-	defaultSpecHTML = `<!doctype html><html lang="en"><body><div class="myClass"></div></body></html>`,
+	getImport = async (mockMarkup) => {
+		// This modifies globals so always call 'reset' with testdouble when done with import
+		const
+			{ document: _mockDoc, window: _mockWindow } = linkeParse(mockMarkup),
+			_mockScribe = tdObject(['devlog', 'issuelog']),
 
-	getSpecFixtures = (htmlStr = defaultSpecHTML) => {
-		return Object.freeze({
-			_webapi: linkeParse(htmlStr)
-		});
-	},
+			mockConsole = tdReplace(globalThis, 'console', tdObject(['log'])),
+			mockDoc = tdReplace(globalThis, 'document', _mockDoc),
+			mockWindow = tdReplace(globalThis, 'window', _mockWindow);
 
-	// This function modifies globals so always call 'td.reset()' when done (read: before assertions).
-	getImport = async (mockConsole, mockDoc, mockWindow, mockScribe) => {
-		td.replace(globalThis, 'console', mockConsole);
-		td.replace(globalThis, 'document', mockDoc);
-		td.replace(globalThis, 'window', mockWindow);
-		td.replaceEsm(modulePaths.scribeHand, null, mockScribe);
 
-		return (await import(modulePaths.trythisExample)).default;
+		await tdReplaceEsm(modulePaths.scribeHand, null, _mockScribe);
+
+		return {
+			/** @type {ExampleModule} */
+			freshModule: (await import(`${modulePaths.trythisExample}?v=${NodeCrypto.randomUUID()}`)).default,
+			moduleConsole: mockConsole,
+			moduleWindow: mockWindow,
+			moduleDoc: mockDoc,
+			moduleLogger: _mockScribe
+		};
 	};
 
 
 test('trythis_example:funcHere', async function (swear) {
-	let swearResult;
-	const
-		_fixtures = getSpecFixtures(),
-		swearConsole = td.object(['log']),
-
-		_tryThis = await getImport(swearConsole, _fixtures._webapi.document, _fixtures._webapi.window, {});
+	let bonafiedExplntn;
+	const metaImp = await getImport(defaultSpecHTML);
 
 
-	_tryThis.funcHere();
+	metaImp.freshModule.funcHere();
 
-	swearResult = td.explain(console.log);
+	bonafiedExplntn = tdExplain(metaImp.moduleConsole.log);
 
-	td.reset();
+	tdReset();
+	// Overkill but feel better about ensuring module is removed from Node's cache before next import
+	delete metaImp.freshModule
 
 
 	swear.plan(2);
-	swear.equal(swearResult.callCount, 1, "should call console.log once");
-	swear.equal(swearResult.calls[0].args[0], "Thanks for trying",
-		"should call console.log with expected args"
+	swear.equal(bonafiedExplntn.callCount, 1, "should call console.log");
+	swear.equal(bonafiedExplntn.calls[0].cloneArgs[0], "Thanks for trying",
+		"should call devlog with expected args"
 	);
 });
 
 
 test('trythis_example:orFuncHere', async function (swear) {
-	let swearResult;
+	let bonafiedExplntn;
 	const
-		_fixtures = getSpecFixtures(),
-		swearSelector = '.myClass',
-		swearElement = _fixtures._webapi.document.querySelector(swearSelector),
-		swearConsole = td.object(['log']),
+		swearSelector = 'myClass',
+		swearHTML = `<!doctype html><html lang="en"><body><div class="${swearSelector}"></div></body></html>`,
 
-		_tryThis = await getImport(swearConsole, _fixtures._webapi.document, _fixtures._webapi.window, {})
+		metaImp = await getImport(swearHTML);
 
 
-	_tryThis.orFuncHere(swearSelector);
-	swearElement.click();
+	metaImp.freshModule.orFuncHere(`.${swearSelector}`);
+	metaImp.moduleDoc.querySelector(`.${swearSelector}`)?.click();
 
-	swearResult = td.explain(swearConsole.log);
+	bonafiedExplntn = tdExplain(metaImp.moduleConsole.log);
 
-	td.reset();
+	tdReset();
+	delete metaImp.freshModule;
 
 
 	swear.plan(2);
-	swear.equal(swearResult.callCount, 1, "should call console.log once");
-	swear.equal(swearResult.calls[0].args[0], "Called event",
-		"Should call console.log with expected args"
-	);
+	swear.equal(bonafiedExplntn.callCount, 1, "should call console.log once");
+	swear.equal(bonafiedExplntn.calls[0].cloneArgs[0], "Called event", "Should call with expected args");
 });
 
 
 test('trythis_example:evenFuncHere', async function (swear) {
-	let swearResult;
+	let bonafiedExplntn;
 	const
-		_fixtures = getSpecFixtures(),
-		swearSelector = '.myClass',
-		swearElement = _fixtures._webapi.document.querySelector(swearSelector),
-		swearScribe = td.object(['devlog']),
+		swearSelector = 'myOtherClass',
+		swearHTML = `<!doctype html><html lang="en"><body><div class="${swearSelector}"></div></body></html>`,
 
-		_tryThis = await getImport({}, _fixtures._webapi.document, _fixtures._webapi.window, swearScribe);
+		metaImp = await getImport(swearHTML);
 
 
-	_tryThis.evenFuncHere(swearSelector);
-	swearElement.click();
+	metaImp.freshModule.evenFuncHere(`.${swearSelector}`);
+	metaImp.moduleDoc.querySelector(`.${swearSelector}`).click();
 
-	swearResult = td.explain(swearScribe.devlog);
+	bonafiedExplntn = tdExplain(metaImp.moduleLogger.devlog);
 
-	td.reset();
+	tdReset();
 
 
 	swear.plan(2);
-	swear.equal(swearResult.callCount, 1, "should call devlog once");
-	swear.equal(swearResult.calls[0].args[0], "Will dev log",
+	swear.equal(bonafiedExplntn.callCount, 1, "should call devlog once");
+	swear.equal(bonafiedExplntn.calls[0].cloneArgs[0], "Will dev log",
 		"Should call console.log with expected args"
 	);
 });
