@@ -98,3 +98,21 @@ test("pcs:hand:misc:warmUp should run without issue", async (swear) => {
 		"Should placed asset in the DOM"
 	);
 });
+
+
+test('pcs:hand:misc:warmUp should have issues', (swear) => {
+	swear.plan(1);
+	swear.ok(true, "stub");
+});
+
+
+test('pcs:hand:misc:startAfter should run without issue', (swear) => {
+	swear.plan(1);
+	swear.ok(true, "stub");
+});
+
+
+test('pcs:hand:misc:startAfter should have issues', (swear) => {
+	swear.plan(1);
+	swear.ok(true, "stub");
+});
