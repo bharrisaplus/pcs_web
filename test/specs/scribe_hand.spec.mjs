@@ -13,15 +13,24 @@ import { parseHTML as linkeParse } from 'linkedom';
 
 const
 	contentDir = NodeProcess.env.CONTENT_DIR || NodePath.resolve('../../source/contnet'),
+	toastTemplate = pugFile(NodePath.resolve(contentDir, './document/partials/template_toast.pug'), {}),
 	defaultSpecHTML = `<!doctype html><html lang="en"><body></body></html>`,
+	notiMarkup = `<div id="notifications" popover="manual"></div>`,
+	toasterSpecHTML = `<!doctype html><html lang="en"><body>${notiMarkup}${toastTemplate}</body></html>`,
 	modulePath = '../../source/behavior/hands/scribe.hand.mjs',
 
 	// This function modifies globals so always call 'td.reset()' when done (read: before assertions).
-	getImport = async (mockWindow, mockDoc) => {
+	getImport = async (mockMarkup, mockLocation) => {
 		const
-			consoleMock = td.replace(globalThis, 'console', td.object(['warn', 'debug', 'error', 'info'])),
-			docMock = td.replace(globalThis, 'document', mockDoc),
-			windowMock = td.replace(globalThis, 'window', mockWindow),
+			{
+				HTMLElement: mockHTMLElem,
+				document: _mockDoc,
+				window: _mockWindow
+			} = linkeParse(mockMarkup, {location: mockLocation}),
+
+			mockConsole = td.replace(globalThis, 'console', td.object(['warn', 'debug', 'error', 'info'])),
+			mockDoc = td.replace(globalThis, 'document', _mockDoc),
+			mockWindow = td.replace(globalThis, 'window', _mockWindow),
 
 			moduleImport = await import(`${modulePath}?v=${NodeCrypto.randomUUID()}`);
 
@@ -29,9 +38,10 @@ const
 		return {
 			/** @type {Hand.Scribe} */
 			freshModule: moduleImport.default,
-			moduleConsole: consoleMock,
-			moduleDocument: docMock,
-			moduleWindow: windowMock
+			moduleConsole: mockConsole,
+			moduleDoc: mockDoc,
+			moduleWindow: mockWindow,
+			moduleHTMLElement: mockHTMLElem
 		};
 	};
 
@@ -39,9 +49,8 @@ const
 test("pcs:hand:scribe:devlog should use console use based on url", async (swear) => {
 	const
 		swearLoc = {href: "http://localhost:54321/my.spec.mjs"},
-		swearDOM = linkeParse(defaultSpecHTML, {location: swearLoc}),
 
-		impMeta = await getImport(swearDOM.window, swearDOM.document);
+		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
 
 	td.reset();
@@ -49,16 +58,15 @@ test("pcs:hand:scribe:devlog should use console use based on url", async (swear)
 
 
 	swear.plan(1);
-	swear.isEqual(typeof impMeta.moduleWindow.devToast, "function", "Should add debug function to window");
+	swear.isEqual(typeof impMeta.moduleWindow.devToast, "function", "add debug function to window");
 });
 
 
 test("pcs:hand:scribe:devlog should use console use based on url", async (swear) => {
 	const
 		swearLoc = {href: "https://localhost:54321/my.spec.mjs"},
-		swearDOM = linkeParse(defaultSpecHTML, {location: swearLoc}),
 
-		impMeta = await getImport(swearDOM.window, swearDOM.document);
+		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
 
 	td.reset();
@@ -66,16 +74,15 @@ test("pcs:hand:scribe:devlog should use console use based on url", async (swear)
 
 
 	swear.plan(1);
-	swear.isEqual(typeof impMeta.moduleWindow.devToast, "function", "Should add debug function to window");
+	swear.isEqual(typeof impMeta.moduleWindow.devToast, "function", "add debug function to window");
 });
 
 
 test("pcs:hand:scribe:devlog should use console use based on url", async (swear) => {
 	const
 		swearLoc = {href: "file://my.spec.mjs"},
-		swearDOM = linkeParse(defaultSpecHTML, {location: swearLoc}),
 
-		impMeta = await getImport(swearDOM.window, swearDOM.document);
+		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
 
 	td.reset();
@@ -83,39 +90,37 @@ test("pcs:hand:scribe:devlog should use console use based on url", async (swear)
 
 
 	swear.plan(1);
-	swear.isEqual(typeof impMeta.moduleWindow.devToast, "function", "Should add debug function to window");
+	swear.isEqual(typeof impMeta.moduleWindow.devToast, "function", "add debug function to window");
 });
 
 
 test("pcs:hand:scribe:devlog should not use console use based on url", async (swear) => {
 	const
 		swearLoc = {href: "http://prodsite.io/my.spec.mjs"},
-		swearDOM = linkeParse(defaultSpecHTML, {location: swearLoc}),
 
-		impMeta = await getImport(swearDOM.window, swearDOM.document);
+		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
 	td.reset();
 	delete impMeta.freshModule;
 
 
 	swear.plan(1);
-	swear.isEqual(typeof impMeta.moduleWindow.devToast, "undefined", "Should not add debug function");
+	swear.isEqual(typeof impMeta.moduleWindow.devToast, "undefined", "no add debug function");
 });
 
 
 test("pcs:hand:scribe:devlog should not use console use based on url", async (swear) => {
 	const
 		swearLoc = {href: "https://prodsite.com/my.spec.mjs"},
-		swearDOM = linkeParse(defaultSpecHTML, {location: swearLoc}),
 
-		impMeta = await getImport(swearDOM.window, swearDOM.document);
+		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
 	td.reset();
 	delete impMeta.freshModule;
 
 
 	swear.plan(1);
-	swear.isEqual(typeof impMeta.moduleWindow.devToast, "undefined", "Should not add debug function");
+	swear.isEqual(typeof impMeta.moduleWindow.devToast, "undefined", "no add debug function");
 });
 
 
@@ -123,14 +128,13 @@ test("pcs:hand:scribe:devlog should log dev message", async (swear) => {
 	let bonafiedExplntns = [];
 	const
 		swearLoc = {href: "http://localhost:28133/check.spec.mjs"},
-		swearDOM = linkeParse(defaultSpecHTML, {location: swearLoc}),
 		imagineMsgs = [
 			"A message for the log",
 			"A message with a thing for the log"
 		],
 		imagineThingy = {stuff: '123'},
 
-		impMeta = await getImport(swearDOM.window, swearDOM.document);
+		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
 
 	impMeta.freshModule.devlog(imagineMsgs[0]);
@@ -145,18 +149,12 @@ test("pcs:hand:scribe:devlog should log dev message", async (swear) => {
 
 
 	swear.plan(6);
-	swear.isEqual(bonafiedExplntns[0].callCount, 3, "Should use console.debug");
-	swear.isEqual(bonafiedExplntns[1].callCount, 0, "Should not use console.error");
-	swear.isEqual(bonafiedExplntns[2].callCount, 0, "Should use console.warn");
-	swear.isEqual(bonafiedExplntns[0].calls[0].cloneArgs[0], imagineMsgs[0],
-		"Should use console.debug with expected arg"
-	);
-	swear.isEqual(bonafiedExplntns[0].calls[1].cloneArgs[0], imagineMsgs[1],
-		"Should use console.debug with expected arg"
-	);
-	swear.deepEqual(bonafiedExplntns[0].calls[2].cloneArgs[0], imagineThingy,
-		"Should use console.debug with expected arg"
-	);
+	swear.isEqual(bonafiedExplntns[0].callCount, 3, "call console.debug");
+	swear.isEqual(bonafiedExplntns[1].callCount, 0, "call use console.error");
+	swear.isEqual(bonafiedExplntns[2].callCount, 0, "call console.warn");
+	swear.isEqual(bonafiedExplntns[0].calls[0].cloneArgs[0], imagineMsgs[0], "correct arg for console.debug");
+	swear.isEqual(bonafiedExplntns[0].calls[1].cloneArgs[0], imagineMsgs[1], "correct arg for console.debug");
+	swear.deepEqual(bonafiedExplntns[0].calls[2].cloneArgs[0], imagineThingy, "correct arg for console.debug");
 });
 
 
@@ -164,7 +162,6 @@ test("pcs:hand:scribe:devlog should log issue message", async (swear) => {
 	let bonafiedExplntns = [];
 	const
 		swearLoc = {href: "http://localhost:28133/check.spec.mjs"},
-		swearDOM = linkeParse(defaultSpecHTML, {location: swearLoc}),
 		imagineError = new Error('whoops'),
 		imagineThingyz = [{stuff: 456}, {stuff: 789}, {stuff: 321}],
 		imagineMsgs = [
@@ -175,7 +172,7 @@ test("pcs:hand:scribe:devlog should log issue message", async (swear) => {
 			"Another message with a thing for the log",
 		],
 
-		impMeta = await getImport(swearDOM.window, swearDOM.document);
+		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
 
 	impMeta.freshModule.issuelog(imagineMsgs[0]);
@@ -194,35 +191,27 @@ test("pcs:hand:scribe:devlog should log issue message", async (swear) => {
 
 
 	swear.plan(12);
-	swear.isEqual(bonafiedExplntns[0].callCount, 4, "Should use console.error");
-	swear.isEqual(bonafiedExplntns[1].callCount, 3, "Should not use console.debug");
-	swear.isEqual(bonafiedExplntns[2].callCount, 2, "Should use console.warn");
-	swear.isEqual(bonafiedExplntns[0].calls[0].cloneArgs[0], imagineMsgs[0],
-		"Should use console.error with expected arg"
-	);
-	swear.isEqual(bonafiedExplntns[0].calls[1].cloneArgs[0], imagineMsgs[1],
-		"Should use console.error with expected arg"
-	);
-	swear.isEqual(bonafiedExplntns[0].calls[2].cloneArgs[0], imagineMsgs[2],
-		"Should use console.error with expected arg"
-	);
-	swear.deepEqual(bonafiedExplntns[0].calls[3].cloneArgs[0], imagineError,
-		"Should use console.error with expected arg"
-	);
+	swear.isEqual(bonafiedExplntns[0].callCount, 4, "call console.error expected number of times");
+	swear.isEqual(bonafiedExplntns[1].callCount, 3, "call console.debug expected number of times");
+	swear.isEqual(bonafiedExplntns[2].callCount, 2, "call console.warn expected number of times");
+	swear.isEqual(bonafiedExplntns[0].calls[0].cloneArgs[0], imagineMsgs[0],"correct arg for console.error");
+	swear.isEqual(bonafiedExplntns[0].calls[1].cloneArgs[0], imagineMsgs[1],"correct arg for console.error");
+	swear.isEqual(bonafiedExplntns[0].calls[2].cloneArgs[0], imagineMsgs[2],"correct arg for console.error");
+	swear.deepEqual(bonafiedExplntns[0].calls[3].cloneArgs[0], imagineError,"correct arg for console.error");
 	swear.deepEqual(bonafiedExplntns[1].calls[0].cloneArgs[0], imagineThingyz[0],
-		"Should use console.error with expected arg"
+		"correct arg for console.error"
 	);
 	swear.deepEqual(bonafiedExplntns[1].calls[1].cloneArgs[0], imagineThingyz[1],
-		"Should use console.error with expected arg"
+		"correct arg for console.error"
 	);
 	swear.deepEqual(bonafiedExplntns[1].calls[2].cloneArgs[0], imagineThingyz[2],
-		"Should use console.error with expected arg"
+		"correct arg for console.error"
 	);
 	swear.deepEqual(bonafiedExplntns[2].calls[0].cloneArgs[0], imagineMsgs[3],
-		"Should use console.error with expected arg"
+		"correct arg for console.error"
 	);
 	swear.deepEqual(bonafiedExplntns[2].calls[1].cloneArgs[0], imagineMsgs[4],
-		"Should use console.error with expected arg"
+		"correct arg for console.error"
 	);
 });
 
@@ -230,27 +219,23 @@ test("pcs:hand:scribe:devlog should log issue message", async (swear) => {
 test("pcs:hand:scribe:devlog should log noti message", async (swear) => {
 	let bonafiedResults = [], bonafiedExplntns = [];
 	const
-		swearToastTempl = pugFile(NodePath.resolve(contentDir, './document/partials/template_toast.pug'), {}),
-		swearToasterMrkp = `<div id="notifications" popover="manual"></div>`,
-		swearHTML = `<!doctype html><html lang="en"><body>${swearToasterMrkp}${swearToastTempl}</body></html>`,
 		swearLoc = {href: "http://localhost:28133/check.spec.mjs"},
-		swearDOM = linkeParse(swearHTML, {location: swearLoc}),
 		imagineMsg = "A notification message for the log",
 
-		impMeta = await getImport(swearDOM.window, swearDOM.document);
+		impMeta = await getImport(toasterSpecHTML, swearLoc);
 
 
-	td.replace(swearDOM.HTMLElement.prototype, 'showPopover', td.func());
-	td.replace(swearDOM.HTMLElement.prototype, 'hidePopover', td.func());
+	td.replace(impMeta.moduleHTMLElement.prototype, 'showPopover', td.func());
+	td.replace(impMeta.moduleHTMLElement.prototype, 'hidePopover', td.func());
 
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDocument.querySelector('button.toast-close').click();
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
+	impMeta.moduleDoc.querySelector('button.toast-close').click();
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
-	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.showPopover));
-	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.hidePopover));
+	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
+	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.hidePopover));
 
 	td.reset();
 	delete impMeta.freshModule;
@@ -267,27 +252,23 @@ test("pcs:hand:scribe:devlog should log noti message", async (swear) => {
 test("pcs:hand:scribe:devlog should not log noti message", async (swear) => {
 	let bonafiedResults = [], bonafiedExplntns = [];
 	const
-		swearToastTempl = pugFile(NodePath.resolve(contentDir, './document/partials/template_toast.pug'), {}),
-		swearToasterMrkp = `<div id="notifications" popover="manual"></div>`,
-		swearHTML = `<!doctype html><html lang="en"><body>${swearToasterMrkp}${swearToastTempl}</body></html>`,
 		swearLoc = {href: "http://prodsite.xyz/checka.spec.mjs"},
-		swearDOM = linkeParse(swearHTML, {location: swearLoc}),
 		imagineMsg = "A notification message for the log",
 
-		impMeta = await getImport(swearDOM.window, swearDOM.document);
+		impMeta = await getImport(toasterSpecHTML, swearLoc);
 
 
-	td.replace(swearDOM.HTMLElement.prototype, 'showPopover', td.func());
-	td.replace(swearDOM.HTMLElement.prototype, 'hidePopover', td.func());
+	td.replace(impMeta.moduleHTMLElement.prototype, 'showPopover', td.func());
+	td.replace(impMeta.moduleHTMLElement.prototype, 'hidePopover', td.func());
 
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDocument.querySelector('button.toast-close').click();
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
+	impMeta.moduleDoc.querySelector('button.toast-close').click();
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
-	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.showPopover));
-	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.hidePopover));
+	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
+	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.hidePopover));
 
 	td.reset();
 	delete impMeta.freshModule;
@@ -304,11 +285,7 @@ test("pcs:hand:scribe:devlog should not log noti message", async (swear) => {
 test("pcs:hand:scribe:devlog should handle multiple noti messages", async (swear) => {
 	let bonafiedResults = [], bonafiedExplntns = [];
 	const
-		swearToastTempl = pugFile(NodePath.resolve(contentDir, './document/partials/template_toast.pug'), {}),
-		swearToasterMrkp = `<div id="notifications" popover="manual"></div>`,
-		swearHTML = `<!doctype html><html lang="en"><body>${swearToasterMrkp}${swearToastTempl}</body></html>`,
 		swearLoc = {href: "http://localhost:28133/check.spec.mjs"},
-		swearDOM = linkeParse(swearHTML, {location: swearLoc}),
 		imagineMsgs = [
 			"A notification message for the log",
 			"A 2nd notification message for the log",
@@ -316,30 +293,30 @@ test("pcs:hand:scribe:devlog should handle multiple noti messages", async (swear
 			"A 4th notification message for the log",
 		],
 
-		impMeta = await getImport(swearDOM.window, swearDOM.document);
+		impMeta = await getImport(toasterSpecHTML, swearLoc);
 
 
-	td.replace(swearDOM.HTMLElement.prototype, 'showPopover', td.func());
-	td.replace(swearDOM.HTMLElement.prototype, 'hidePopover', td.func());
+	td.replace(impMeta.moduleHTMLElement.prototype, 'showPopover', td.func());
+	td.replace(impMeta.moduleHTMLElement.prototype, 'hidePopover', td.func());
 
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsgs[0]);
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsgs[1]);
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsgs[2]);
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsgs[3]);
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDocument.querySelector('button.toast-close').click();
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDocument.querySelector('button.toast-close').click();
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDocument.querySelector('button.toast-close').click();
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
+	impMeta.moduleDoc.querySelector('button.toast-close').click();
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
+	impMeta.moduleDoc.querySelector('button.toast-close').click();
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
+	impMeta.moduleDoc.querySelector('button.toast-close').click();
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
-	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.showPopover));
-	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.hidePopover));
+	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
+	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.hidePopover));
 
 	td.reset();
 	delete impMeta.freshModule;
@@ -356,30 +333,26 @@ test("pcs:hand:scribe:devlog should handle multiple noti messages", async (swear
 test("pcs:hand:scribe:devlog should remove dangling noti message", async (swear) => {
 	let bonafiedResults = [], bonafiedExplntns = [];
 	const
-		swearToastTempl = pugFile(NodePath.resolve(contentDir, './document/partials/template_toast.pug'), {}),
-		swearToasterMrkp = `<div id="notifications" popover="manual"></div>`,
-		swearHTML = `<!doctype html><html lang="en"><body>${swearToasterMrkp}${swearToastTempl}</body></html>`,
 		swearLoc = {href: "http://localhost:28133/check.spec.mjs"},
-		swearDOM = linkeParse(swearHTML, {location: swearLoc}),
 		swearArrIndexOf = td.func(),
 		imagineMsg = "A notification message for the log",
 
-		impMeta = await getImport(swearDOM.window, swearDOM.document);
+		impMeta = await getImport(toasterSpecHTML, swearLoc);
 
 
-	td.replace(swearDOM.HTMLElement.prototype, 'showPopover', td.func());
-	td.replace(swearDOM.HTMLElement.prototype, 'hidePopover', td.func());
+	td.replace(impMeta.moduleHTMLElement.prototype, 'showPopover', td.func());
+	td.replace(impMeta.moduleHTMLElement.prototype, 'hidePopover', td.func());
 	td.replace(Array.prototype, 'indexOf', swearArrIndexOf);
 	td.when(Array.prototype.indexOf(td.matchers.anything())).thenReturn(-1);
 
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDocument.querySelector('button.toast-close').click();
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
+	impMeta.moduleDoc.querySelector('button.toast-close').click();
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
-	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.showPopover));
-	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.hidePopover));
+	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
+	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.hidePopover));
 
 	td.reset();
 	delete impMeta.freshModule;
@@ -396,29 +369,25 @@ test("pcs:hand:scribe:devlog should remove dangling noti message", async (swear)
 test("pcs:hand:scribe:devlog should not show repeat noti message", async (swear) => {
 	let bonafiedResults = [], bonafiedExplntns = [];
 	const
-		swearToastTempl = pugFile(NodePath.resolve(contentDir, './document/partials/template_toast.pug'), {}),
-		swearToasterMrkp = `<div id="notifications" popover="manual"></div>`,
-		swearHTML = `<!doctype html><html lang="en"><body>${swearToasterMrkp}${swearToastTempl}</body></html>`,
 		swearLoc = {href: "http://localhost:28133/check.spec.mjs"},
-		swearDOM = linkeParse(swearHTML, {location: swearLoc}),
 		imagineMsg = "A notification message for the log",
 
-		impMeta = await getImport(swearDOM.window, swearDOM.document);
+		impMeta = await getImport(toasterSpecHTML, swearLoc);
 
 
-	td.replace(swearDOM.HTMLElement.prototype, 'showPopover', td.func());
-	td.replace(swearDOM.HTMLElement.prototype, 'hidePopover', td.func());
+	td.replace(impMeta.moduleHTMLElement.prototype, 'showPopover', td.func());
+	td.replace(impMeta.moduleHTMLElement.prototype, 'hidePopover', td.func());
 
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDocument.querySelector('button.toast-close').click();
-	bonafiedResults.push(impMeta.moduleDocument.querySelectorAll('button.toast-close').length);
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
+	impMeta.moduleDoc.querySelector('button.toast-close').click();
+	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
-	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.showPopover));
-	bonafiedExplntns.push(td.explain(swearDOM.HTMLElement.prototype.hidePopover));
+	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
+	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.hidePopover));
 
 	td.reset();
 	delete impMeta.freshModule;
