@@ -2,6 +2,7 @@
  * @import {Hand} from '../../source/behavior/_meta/_typedefs.mjs';
  */
 
+import { default as NodeCrypto } from 'node:crypto';
 import { test } from 'tape';
 import * as td from 'testdouble';
 import { parseHTML as linkeParse } from 'linkedom';
@@ -9,31 +10,41 @@ import { parseHTML as linkeParse } from 'linkedom';
 
 const
 	modulePaths = {
-		scribeHand: '../../source/behavior/hands/scribe.hand.mjs',
-		dealerHand: '../../source/behavior/hands/dealer.hand.mjs'
+		hands: {
+			scribe: '../../source/behavior/hands/scribe.hand.mjs',
+			dealer: '../../source/behavior/hands/dealer.hand.mjs'
+		}
 	},
 
-	// This function modifies globals so always call 'td.reset()' when done (read: before assertions).
-	getImport = async (mockScribe, mockChance) => {
+	getImport = async () => {
 		const
-			mockHTML = `<!doctype html><html lang="en"><body></body></html>`,
-			{ document: mockDoc, window: mockWindow } = linkeParse(mockHTML);
+			_mockHTML = `<!doctype html><html lang="en"><body></body></html>`,
+			_mockScribe = td.object(['issuelog']),
+			_mockChance = td.object(),
+			{ document: _mockDoc, window: _mockWindow } = linkeParse(_mockHTML),
 
-		td.replace(globalThis, 'console', td.object(['error', 'debug', 'warn']));
-		td.replace(globalThis, 'document', mockDoc);
-		td.replace(globalThis, 'window', mockWindow);
-		td.replace(globalThis, 'chance', mockChance);
-		td.replaceEsm(modulePaths.scribeHand, null, mockScribe);
+			mockConsole = td.replace(globalThis, 'console', td.object()),
+			mockWindow = td.replace(globalThis, 'window', _mockWindow),
+			mockDoc = td.replace(globalThis, 'document', _mockDoc),
+			mockChance = td.replace(globalThis, 'chance', _mockChance);
 
-		return await import(modulePaths.dealerHand);
+
+		await td.replaceEsm(modulePaths.hands.scribe, null, _mockScribe);
+
+		return {
+			freshModule: (await import(`${modulePaths.hands.dealer}?v=${NodeCrypto.randomUUID()}`)).default,
+			moduleConsole: mockConsole,
+			moduleWindow: mockWindow,
+			moduleDoc: mockDoc,
+			moduleLogger: _mockScribe,
+			moduleChanceJS: mockChance
+		}
 	};
 
 
 test('pcs:hand:dealer:getCard should return good intri', async (swear) => {
 	let bonafiedResult = [], bonafiedExpln;
 	const
-		swearScribe = td.object(),
-		swearChance = td.object(['pickset']),
 		swearPos = [
 			[0, 0], [13, 13], [38, 38], [51, 51],
 			[12,10], [40, 49], [25, 1], [13, 39]
@@ -48,16 +59,17 @@ test('pcs:hand:dealer:getCard should return good intri', async (swear) => {
 			{oglo:1,spot:25, title:'Number 26: Two of Spade', desc:'Card in position 26', symbolRef:'#s01'},
 			{oglo:39,spot:13, title:'Number 14: King of Heart', desc:'Card in position 14', symbolRef:'#h39'}
 		],
-		dealerHandFactory = await getImport(swearScribe, swearChance),
+
+		impMeta = await getImport(),
 		/** @type {Hand.Dealer} */
-		dealerHand = dealerHandFactory.default();
+		dealerHand = impMeta.freshModule();
 
 
 	for (const posPair of swearPos) {
 		bonafiedResult.push(dealerHand.getCard(posPair[0], posPair[1]));
 	}
 
-	bonafiedExpln = td.explain(swearScribe.issuelog);
+	bonafiedExpln = td.explain(impMeta.moduleLogger.issuelog);
 
 	td.reset();
 
@@ -78,8 +90,6 @@ test('pcs:hand:dealer:getCard should return good intri', async (swear) => {
 test('pcs:hand:dealer:getCard should return bad intri', async (swear) => {
 	let bonafiedResult = [], bonafiedExpln;
 	const
-		swearScribe = td.object(['issuelog']),
-		swearChance = td.object(['pickset']),
 		swearPos = [[0, -1], [5, 52], [13, 90], [-1, 0], [52, 3], [90, 25]],
 		imagineCardIntris = [
 			{oglo:-1,spot:0, title:'', desc:'', symbolRef:''},
@@ -89,16 +99,17 @@ test('pcs:hand:dealer:getCard should return bad intri', async (swear) => {
 			{oglo:3,spot:52, title:'', desc:'', symbolRef:''},
 			{oglo:25,spot:90, title:'', desc:'', symbolRef:''}
 		],
-		dealerHandFactory = await getImport(swearScribe, swearChance),
+
+		impMeta = await getImport(),
 		/** @type {Hand.Dealer} */
-		dealerHand = dealerHandFactory.default();
+		dealerHand = impMeta.freshModule();
 
 
 	for (const posPair of swearPos) {
 		bonafiedResult.push(dealerHand.getCard(posPair[0], posPair[1]));
 	}
 
-	bonafiedExpln = td.explain(swearScribe.issuelog);
+	bonafiedExpln = td.explain(impMeta.moduleLogger.issuelog);
 
 	td.reset();
 
@@ -117,8 +128,6 @@ test('pcs:hand:dealer:getCard should return bad intri', async (swear) => {
 test('pcs:hand:dealer:getCard should return shuffled', async (swear) => {
 	let bonafiedResult = [], bonafiedExpln;
 	const
-		swearScribe = td.object(),
-		swearChance = td.object(['pickset']),
 		swearCardLists = [
 			Uint8Array.from([1,2,3,4,5,6,7,8]),
 			Uint8Array.from([0,3,5,67,45,100,11,12,90,74,33,21,84]),
@@ -135,17 +144,18 @@ test('pcs:hand:dealer:getCard should return shuffled', async (swear) => {
 				35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51
 			])
 		],
-		dealerHandFactory = await getImport(swearScribe, swearChance),
+
+		impMeta = await getImport(),
 		/** @type {Hand.Dealer} */
-		dealerHand = dealerHandFactory.default();
+		dealerHand = impMeta.freshModule();
 
 
 	for (let chkIdx = 0; chkIdx < swearCardLists.length; chkIdx++) {
 		td.when(
-			swearChance.pickset(swearCardLists[chkIdx], swearCardLists[chkIdx].length)
+			impMeta.moduleChanceJS.pickset(swearCardLists[chkIdx], swearCardLists[chkIdx].length)
 		).thenReturn(Array.from(swearCardLists[chkIdx]));
 		td.when(
-			swearChance.pickset(swearPosLists[chkIdx], swearPosLists[chkIdx].length)
+			impMeta.moduleChanceJS.pickset(swearPosLists[chkIdx], swearPosLists[chkIdx].length)
 		).thenReturn(Array.from(swearPosLists[chkIdx]));
 		
 		bonafiedResult.push(
@@ -153,7 +163,7 @@ test('pcs:hand:dealer:getCard should return shuffled', async (swear) => {
 		);
 	}
 
-	bonafiedExpln = td.explain(swearScribe.issuelog);
+	bonafiedExpln = td.explain(impMeta.moduleLogger.issuelog);
 
 	td.reset();
 
@@ -176,8 +186,6 @@ test('pcs:hand:dealer:getCard should return shuffled', async (swear) => {
 test('pcs:hand:dealer:getCard should return non-shuffled', async (swear) => {
 	let bonafiedResult = [], bonafiedExpln;
 	const
-		swearScribe = td.object(),
-		swearChance = td.object(['pickset']),
 		swearCardLists = [
 			Uint8Array.from([]),
 			Uint8Array.from([0,3,5,67,45,100,11,12,90,74,33,21,84]),
@@ -194,17 +202,18 @@ test('pcs:hand:dealer:getCard should return non-shuffled', async (swear) => {
 				35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,52
 			])
 		],
-		dealerHandFactory = await getImport(swearScribe, swearChance),
+
+		impMeta = await getImport(),
 		/** @type {Hand.Dealer} */
-		dealerHand = dealerHandFactory.default();
+		dealerHand = impMeta.freshModule();
 
 
 	for (let chkIdx = 0; chkIdx < swearCardLists.length; chkIdx++) {
 		td.when(
-			swearChance.pickset(swearCardLists[chkIdx], swearCardLists[chkIdx].length)
+			impMeta.moduleChanceJS.pickset(swearCardLists[chkIdx], swearCardLists[chkIdx].length)
 		).thenReturn(Array.from(swearCardLists[chkIdx]));
 		td.when(
-			swearChance.pickset(swearPosLists[chkIdx], swearPosLists[chkIdx].length)
+			impMeta.moduleChanceJS.pickset(swearPosLists[chkIdx], swearPosLists[chkIdx].length)
 		).thenReturn(Array.from(swearPosLists[chkIdx]));
 		
 		bonafiedResult.push(
@@ -212,7 +221,7 @@ test('pcs:hand:dealer:getCard should return non-shuffled', async (swear) => {
 		);
 	}
 
-	bonafiedExpln = td.explain(swearScribe.issuelog);
+	bonafiedExpln = td.explain(impMeta.moduleLogger.issuelog);
 
 	td.reset();
 
