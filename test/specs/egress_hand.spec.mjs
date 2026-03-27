@@ -2,6 +2,7 @@
  * @import {Hand} from '../../source/behavior/_meta/_typedefs.mjs';
  */
 
+import { default as NodeCrypto } from 'node:crypto';
 import { test } from 'tape';
 import * as td from 'testdouble';
 import { parseHTML as linkeParse } from 'linkedom';
@@ -15,46 +16,55 @@ const
 	},
 
 	// This function modifies globals so always call 'td.reset()' when done (read: before assertions).
-	getImport = async (mockScribe, mockWindow, mockDoc, mockXMLS, mockClip, mockImg, mockCanvas) => {
-		td.replace(globalThis, 'console', td.object(['error', 'debug', 'warn']));
-		td.replace(globalThis, 'document', mockDoc);
-		td.replace(globalThis, 'window', mockWindow);
-		td.replace(globalThis, 'XMLSerializer', mockXMLS);
-		td.replace(navigator, 'clipboard', mockClip);
-		td.replace(globalThis, 'Image', mockImg);
-		td.replace(globalThis, 'OffscreenCanvas', mockCanvas);
-		td.replaceEsm(modulePaths.scribeHand, null, mockScribe);
+	getImport = async (mockMarkup) => {
+		const
+			{ Image: _mockImg, document: _mockDoc, window: _mockWindow } = linkeParse(mockMarkup),
+			_mockScribe = td.object(),
+			_mockCanvas = td.constructor(_mockDoc.HTMLCanvasElement),
 
-		return (await import(modulePaths.egressHand)).default;
+			mockConsole = td.replace(globalThis, 'console', td.object()),
+			mockWindow = td.replace(globalThis, 'window', _mockWindow),
+			mockDoc = td.replace(globalThis, 'document', _mockDoc),
+			mockXMLS = td.replace(globalThis, 'XMLSerializer', td.constructor(['serializeToString'])),
+			mockClip = td.replace(navigator, 'clipboard', td.object(['writeText'])),
+			mockImgElm = td.replace(globalThis, 'Image', _mockImg),
+			mockCanvas = td.replace(globalThis, 'OffscreenCanvas', _mockCanvas),
+			mockCanvasInst = td.instance(_mockCanvas);
+
+
+		await td.replaceEsm(modulePaths.scribeHand, null, _mockScribe);
+
+		return {
+			/** @type {Hand.Egress} */
+			freshModule: (await import(`${modulePaths.egressHand}?v=${NodeCrypto.randomUUID()}`)).default,
+			moduleConsole: mockConsole,
+			moduleWindow: mockWindow,
+			moduleDoc: mockDoc,
+			moduleXMLS: mockXMLS,
+			moduleClipboard: mockClip,
+			moduleImg: mockImgElm,
+			moduleCanvas: mockCanvas,
+			moduleCanvasInst: mockCanvasInst,
+			moduleLogger: _mockScribe
+		};
 	};
 
 
 test('pcs:hand:egress:exportTest should run without issue', async (swear) => {
 	let bonafiedResult, bonafiedExplntns = [];
 	const
-		swearScribe = td.object(['issuelog']),
-		swearXMLSerializer = td.constructor(['serializeToString']),
-		swearClipboard = td.object(['writeText']),
-		{
-			Image: swearImg,
-			document: swearDoc,
-			window: swearWindow
-		} = linkeParse(defaultSpecHTML),
-
 		imagineArgument = "Cards:\n====\nThis is for the clipboards",
 
 		/** @type {Hand.Egress} */
-		egressHand = await getImport(
-			swearScribe, swearWindow, swearDoc, swearXMLSerializer, swearClipboard, swearImg
-		);
+		impMeta = await getImport(defaultSpecHTML);
 
 
-	td.when(swearClipboard.writeText(imagineArgument)).thenResolve(undefined);
+	td.when(impMeta.moduleClipboard.writeText(imagineArgument)).thenResolve(undefined);
 
-	bonafiedResult = await egressHand.exportText("This is for the clipboards");
+	bonafiedResult = await impMeta.freshModule.exportText("This is for the clipboards");
 
-	bonafiedExplntns.push(td.explain(swearClipboard.writeText));
-	bonafiedExplntns.push(td.explain(swearScribe.issuelog));
+	bonafiedExplntns.push(td.explain(impMeta.moduleClipboard.writeText));
+	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.issuelog));
 
 	td.reset();
 
@@ -74,35 +84,25 @@ test('pcs:hand:egress:exportTest should have issues', async (swear) => {
 		bonafiedResults = [],
 		bonafiedExplntns = [];
 	const
-		swearScribe = td.object(['issuelog']),
-		swearXMLSerializer = td.constructor(['serializeToString']),
-		swearClipboard = td.object(['writeText']),
-		{
-			Image: swearImg,
-			document: swearDoc,
-			window: swearWindow
-		} = linkeParse(defaultSpecHTML),
-
 		imagineArgs = [
 			"Cards:\n====\nThis is also for the clipboards",
 			"Cards:\n====\nThis is for the clipboards by the clipboards"
 		],
 
-		/** @type {Hand.Egress} */
-		egressHand = await getImport(
-			swearScribe, swearWindow, swearDoc, swearXMLSerializer, swearClipboard, swearImg
-		);
+		impMeta = await getImport(defaultSpecHTML);
 
 
-	td.when(swearClipboard.writeText(imagineArgs[0])).thenThrow(new DOMException("eep", "NotAllowedError"));
+	td.when(impMeta.moduleClipboard.writeText(imagineArgs[0])).thenThrow(
+		new DOMException("eep", "NotAllowedError")
+	);
 
-	td.when(swearClipboard.writeText(imagineArgs[1])).thenThrow(new Error("oops"));
+	td.when(impMeta.moduleClipboard.writeText(imagineArgs[1])).thenThrow(new Error("oops"));
 
-	bonafiedResults.push((await egressHand.exportText(imagineArgs[0].split("Cards:\n====\n")[1])));
-	bonafiedResults.push((await egressHand.exportText(imagineArgs[1].split("Cards:\n====\n")[1])));
+	bonafiedResults.push((await impMeta.freshModule.exportText(imagineArgs[0].split("Cards:\n====\n")[1])));
+	bonafiedResults.push((await impMeta.freshModule.exportText(imagineArgs[1].split("Cards:\n====\n")[1])));
 
-	bonafiedExplntns.push(td.explain(swearClipboard.writeText));
-	bonafiedExplntns.push(td.explain(swearScribe.issuelog));
+	bonafiedExplntns.push(td.explain(impMeta.moduleClipboard.writeText));
+	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.issuelog));
 
 	td.reset();
 
@@ -130,41 +130,27 @@ test('pcs:hand:egress:exportTest should have issues', async (swear) => {
 test("pcs:hand:egress:generateImage should run without issue", async (swear) => {
 	let bonafiedExplntns = [];
 	const
-		swearScribe = td.object(['issuelog']),
-		swearXMLSerializer = td.constructor(['serializeToString']),
-		swearClipboard = td.object(),
 		swearSpriteList = Array.from({length: 52}, (_, _idx) => { return `#${_idx}`; }),
 		swearSVGSelector = 'test-vector',
 		swearSVG = `<svg id="${swearSVGSelector}"><defs><symbol><rect></rect></symbol></defs></svg>`,
 		swearHTML = `<!doctype html><html lang="en"><body>${swearSVG}</body></html>`,
-		{
-			Image: linkeImg,
-			document: swearDoc,
-			window: swearWindow
-		} = linkeParse(swearHTML),
-		swearImg = td.constructor(linkeImg),
-		swearCanvas = td.constructor(swearDoc.HTMLCanvasElement),
-		swearCanvasInst = td.instance(swearCanvas),
 
-		/** @type {Hand.Egress} */
-		egressHand = await getImport(
-			swearScribe, swearWindow, swearDoc, swearXMLSerializer, swearClipboard, swearImg, swearCanvas
-		);
+		impMeta = await getImport(swearHTML);
 
 
-	swearImg.prototype.decode = td.func();
-	swearCanvasInst.getContext = td.func();
-	swearCanvasInst.toDataURL = td.func();
-	td.when(swearCanvas(0, 0)).thenReturn(swearCanvasInst);
-	td.when(swearCanvasInst.getContext('2d')).thenReturn(td.object(['drawImage']));
-	td.when(swearXMLSerializer(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
-	td.when(swearImg.prototype.decode()).thenResolve(undefined);
-	td.when(swearCanvasInst.toDataURL()).thenReturn("12d34");
+	impMeta.moduleImg.prototype.decode = td.func();
+	impMeta.moduleCanvasInst.getContext = td.func();
+	impMeta.moduleCanvasInst.toDataURL = td.func();
+	td.when(impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
+	td.when(impMeta.moduleCanvasInst.getContext('2d')).thenReturn(td.object(['drawImage']));
+	td.when(impMeta.moduleXMLS(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
+	td.when(impMeta.moduleImg.prototype.decode()).thenResolve(undefined);
+	td.when(impMeta.moduleCanvasInst.toDataURL()).thenReturn("12d34");
 
-	await egressHand.generateImage("#333", swearSpriteList, `#${swearSVGSelector}`);
-	
-	bonafiedExplntns.push(td.explain(swearScribe.issuelog));
-	bonafiedExplntns.push(td.explain(swearCanvasInst.toDataURL));
+	await impMeta.freshModule.generateImage("#333", swearSpriteList, `#${swearSVGSelector}`);
+
+	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.issuelog));
+	bonafiedExplntns.push(td.explain(impMeta.moduleCanvasInst.toDataURL));
 
 	td.reset();
 
@@ -172,17 +158,14 @@ test("pcs:hand:egress:generateImage should run without issue", async (swear) => 
 	swear.plan(4);
 	swear.isEqual(bonafiedExplntns[0].callCount, 0, "Should have no issues");
 	swear.isEqual(bonafiedExplntns[1].callCount, 1, "Should generate image via data url");
-	swear.isEqual(swearCanvasInst.width, 1000, "Should create canvas and set width");
-	swear.isEqual(swearCanvasInst.height, 400, "Should create canvas and set height");
+	swear.isEqual(impMeta.moduleCanvasInst.width, 1000, "Should create canvas and set width");
+	swear.isEqual(impMeta.moduleCanvasInst.height, 400, "Should create canvas and set height");
 });
 
 
 test("pcs:hand:egress:generateImage should have issues", async (swear) => {
 	let bonafiedResults = [], bonafiedExplntns = [];
 	const
-		swearScribe = td.object(['issuelog']),
-		swearXMLSerializer = td.constructor(['serializeToString']),
-		swearClipboard = td.object(),
 		swearSpriteLists = [
 			Array.from({length: 51}, (_, _idx) => { return `#${_idx}`; }),
 			Array.from({length: 52}, (_, _idx) => { return `#${_idx}`; }),
@@ -193,37 +176,27 @@ test("pcs:hand:egress:generateImage should have issues", async (swear) => {
 		],
 		swearSVG = `<svg id="${swearSVGSelectors[0]}"><defs><symbol><rect></rect></symbol></defs></svg>`,
 		swearHTML = `<!doctype html><html lang="en"><body>${swearSVG}</body></html>`,
-		{
-			Image: linkeImg,
-			document: swearDoc,
-			window: swearWindow
-		} = linkeParse(swearHTML),
-		swearImg = td.constructor(linkeImg),
-		swearCanvas = td.constructor(swearDoc.HTMLCanvasElement),
-		swearCanvasInst = td.instance(swearCanvas),
 
 		/** @type {Hand.Egress} */
-		egressHand = await getImport(
-			swearScribe, swearWindow, swearDoc, swearXMLSerializer, swearClipboard, swearImg, swearCanvas
-		);
+		impMeta = await getImport(swearHTML);
 
 
-	swearImg.prototype.decode = td.func();
-	swearCanvasInst.getContext = td.func();
-	swearCanvasInst.toDataURL = td.func();
-	td.when(swearCanvas(0, 0)).thenReturn(swearCanvasInst);
-	td.when(swearCanvasInst.getContext('2d')).thenReturn(td.object(['drawImage']));
+	impMeta.moduleImg.prototype.decode = td.func();
+	impMeta.moduleCanvasInst.getContext = td.func();
+	impMeta.moduleCanvasInst.toDataURL = td.func();
+	td.when(impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
+	td.when(impMeta.moduleCanvasInst.getContext('2d')).thenReturn(td.object(['drawImage']));
 
 	bonafiedResults.push(
-		await egressHand.generateImage("#333", swearSpriteLists[0], `#${swearSVGSelectors[0]}`)
+		await impMeta.freshModule.generateImage("#333", swearSpriteLists[0], `#${swearSVGSelectors[0]}`)
 	);
 
 	bonafiedResults.push(
-		await egressHand.generateImage("#333", swearSpriteLists[1], `#${swearSVGSelectors[1]}`)
+		await impMeta.freshModule.generateImage("#333", swearSpriteLists[1], `#${swearSVGSelectors[1]}`)
 	);
 
-	bonafiedExplntns.push(td.explain(swearScribe.issuelog));
-	bonafiedExplntns.push(td.explain(swearCanvasInst.toDataURL));
+	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.issuelog));
+	bonafiedExplntns.push(td.explain(impMeta.moduleCanvasInst.toDataURL));
 
 	td.reset();
 
@@ -244,48 +217,34 @@ test("pcs:hand:egress:generateImage should have issues", async (swear) => {
 test("pcs:hand:egress:generateImage should have issues (cont)", async (swear) => {
 	let bonafiedResults = [], bonafiedExplntns = [];
 	const
-		swearScribe = td.object(['issuelog']),
-		swearXMLSerializer = td.constructor(['serializeToString']),
-		swearClipboard = td.object(),
 		swearSpriteList = Array.from({length: 52}, (_, _idx) => { return `#${_idx}`; }),
 		swearSVGSelector = 'test-vector',
 		swearSVG = `<svg id="${swearSVGSelector}"><defs><symbol><rect></rect></symbol></defs></svg>`,
 		swearHTML = `<!doctype html><html lang="en"><body>${swearSVG}</body></html>`,
-		{
-			Image: linkeImg,
-			document: swearDoc,
-			window: swearWindow
-		} = linkeParse(swearHTML),
-		swearImg = td.constructor(linkeImg),
-		swearCanvas = td.constructor(swearDoc.HTMLCanvasElement),
-		swearCanvasInst = td.instance(swearCanvas),
 
-		/** @type {Hand.Egress} */
-		egressHand = await getImport(
-			swearScribe, swearWindow, swearDoc, swearXMLSerializer, swearClipboard, swearImg, swearCanvas
-		);
+		impMeta = await getImport(swearHTML);
 
 
-	swearImg.prototype.decode = td.func();
-	swearCanvasInst.getContext = td.func();
-	swearCanvasInst.toDataURL = td.func();
-	td.when(swearCanvas(0, 0)).thenReturn(swearCanvasInst);
-	td.when(swearCanvasInst.getContext('2d')).thenReturn(td.object(['drawImage']));
-	td.when(swearXMLSerializer(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
+	impMeta.moduleImg.prototype.decode = td.func();
+	impMeta.moduleCanvasInst.getContext = td.func();
+	impMeta.moduleCanvasInst.toDataURL = td.func();
+	td.when(impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
+	td.when(impMeta.moduleCanvasInst.getContext('2d')).thenReturn(td.object(['drawImage']));
+	td.when(impMeta.moduleXMLS(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
 
-	td.when(swearCanvasInst.toDataURL()).thenThrow(new DOMException('darn', 'SecurityError'));
+	td.when(impMeta.moduleCanvasInst.toDataURL()).thenThrow(new DOMException('darn', 'SecurityError'));
 	bonafiedResults.push(
-		await egressHand.generateImage("#333", swearSpriteList, `#${swearSVGSelector}`)
+		await impMeta.freshModule.generateImage("#333", swearSpriteList, `#${swearSVGSelector}`)
 	);
 
-	td.when(swearImg.prototype.decode()).thenThrow(new DOMException('oops', 'EncodingError'));
+	td.when(impMeta.moduleImg.prototype.decode()).thenThrow(new DOMException('oops', 'EncodingError'));
 	bonafiedResults.push(
-		await egressHand.generateImage("#333", swearSpriteList, `#${swearSVGSelector}`)
+		await impMeta.freshModule.generateImage("#333", swearSpriteList, `#${swearSVGSelector}`)
 	);
 
 
-	bonafiedExplntns.push(td.explain(swearScribe.issuelog));
-	bonafiedExplntns.push(td.explain(swearCanvasInst.toDataURL));
+	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.issuelog));
+	bonafiedExplntns.push(td.explain(impMeta.moduleCanvasInst.toDataURL));
 
 	td.reset();
 
@@ -303,40 +262,26 @@ test("pcs:hand:egress:generateImage should have issues (cont)", async (swear) =>
 test("pcs:hand:egress:generateImage should have issues (cont'd)", async (swear) => {
 	let bonafiedResult, bonafiedExplntns = [];
 	const
-		swearScribe = td.object(['issuelog']),
-		swearXMLSerializer = td.constructor(['serializeToString']),
-		swearClipboard = td.object(),
 		swearSpriteList = Array.from({length: 52}, (_, _idx) => { return `#${_idx}`; }),
 		swearSVGSelector = 'test-vector',
 		swearSVG = `<svg id="${swearSVGSelector}"><defs><symbol><rect></rect></symbol></defs></svg>`,
 		swearHTML = `<!doctype html><html lang="en"><body>${swearSVG}</body></html>`,
-		{
-			Image: linkeImg,
-			document: swearDoc,
-			window: swearWindow
-		} = linkeParse(swearHTML),
-		swearImg = td.constructor(linkeImg),
-		swearCanvas = td.constructor(swearDoc.HTMLCanvasElement),
-		swearCanvasInst = td.instance(swearCanvas),
 		swear2DCTX = { drawImage: () => { throw new DOMException('welp', 'BadThing') } },
 
-		/** @type {Hand.Egress} */
-		egressHand = await getImport(
-			swearScribe, swearWindow, swearDoc, swearXMLSerializer, swearClipboard, swearImg, swearCanvas
-		);
+		impMeta = await getImport(swearHTML);
 
 
-	swearImg.prototype.decode = td.func();
-	swearCanvasInst.toDataURL = td.func();
-	swearCanvasInst.getContext = () => { return swear2DCTX; };
-	td.when(swearCanvas(0, 0)).thenReturn(swearCanvasInst);
-	td.when(swearCanvasInst.getContext('2d')).thenReturn(swear2DCTX);
-	td.when(swearXMLSerializer(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
+	impMeta.moduleImg.prototype.decode = td.func();
+	impMeta.moduleCanvasInst.toDataURL = td.func();
+	impMeta.moduleCanvasInst.getContext = () => { return swear2DCTX; };
+	td.when(impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
+	td.when(impMeta.moduleCanvasInst.getContext('2d')).thenReturn(swear2DCTX);
+	td.when(impMeta.moduleXMLS(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
 
-	bonafiedResult = await egressHand.generateImage("#333", swearSpriteList, `#${swearSVGSelector}`);
-	
-	bonafiedExplntns.push(td.explain(swearScribe.issuelog));
-	bonafiedExplntns.push(td.explain(swearCanvasInst.toDataURL));
+	bonafiedResult = await impMeta.freshModule.generateImage("#333", swearSpriteList, `#${swearSVGSelector}`);
+
+	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.issuelog));
+	bonafiedExplntns.push(td.explain(impMeta.moduleCanvasInst.toDataURL));
 
 	td.reset();
 
