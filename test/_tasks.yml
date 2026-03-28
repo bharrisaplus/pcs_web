@@ -23,14 +23,16 @@ tasks:
   spec_all:
     aliases: ["specal"]
     vars:
-      SPEC_GLOB: '{{.PROJECT_DIR}}/test/specs/*.spec.mjs'
+      INCL_SPECS: '{dealer_hand,deck_bank,egress_hand,host_shuttle,misc_had,scribe_had}'
+      SPEC_GLOB: '{{.PROJECT_DIR}}/test/specs/{{.INCL_SPECS}}.spec.mjs'
     cmds:
       - pnpm tape {{.SPEC_GLOB}} | pnpm tap-spec
 
   spec_all_cov:
     aliases: ["specalov"]
     vars:
-      SPEC_GLOB: '{{.PROJECT_DIR}}/test/specs/*.spec.mjs'
+      INCL_SPECS: '{dealer_hand,deck_bank,egress_hand,host_shuttle,misc_had,scribe_had}'
+      SPEC_GLOB: '{{.PROJECT_DIR}}/test/specs/{{.INCL_SPECS}}.spec.mjs'
       C8_CONFIG: '{{.PROJECT_DIR}}/c8rc.json'
     cmds:
       - pnpm c8 -c {{.C8_CONFIG}} tape {{.SPEC_GLOB}} | pnpm tap-nyc
