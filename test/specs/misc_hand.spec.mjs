@@ -5,7 +5,7 @@
 import { default as NodeProcess } from 'node:process';
 import { default as NodePath } from 'node:path';
 import { default as NodeCrypto } from 'node:crypto';
-import { test } from 'tape';
+import { default as test } from 'tape';
 import * as td from 'testdouble';
 import { renderFile as pugFile } from 'pug';
 import { DOMParser as linkedomParser, parseHTML as linkeParse } from 'linkedom';
@@ -99,7 +99,7 @@ test("pcs:hand:misc:warmUp should run without issue", async (swear) => {
 	swear.plan(6);
 	swear.ok(bonafiedResult, "Should run successfully");
 	swear.isEqual(bonafiedExplntns[0].callCount, 1, "Should make dev log");
-	swear.isEqual(bonafiedExplntns[0].calls[0].cloneArgs[0], 'Loading asset',
+	swear.isEqual(bonafiedExplntns[0].calls[0].args[0], 'Loading asset',
 		"Should have dev log for loading success"
 	);
 	swear.isEqual(bonafiedExplntns[1].callCount, 0, "No log issue");
@@ -154,15 +154,15 @@ test('pcs:hand:misc:warmUp should have issues', async (swear) => {
 	swear.isEqual(bonafiedExplntns[0].callCount, 2, "log dev");
 	swear.isEqual(bonafiedExplntns[1].callCount, 2, "log issues");
 	swear.isEqual(bonafiedExplntns[2].callCount, 0, "No grab file");
-	swear.isEqual(bonafiedExplntns[0].calls[0].cloneArgs[0], "Nothing to retrieve", "Correct args for devlog");
+	swear.isEqual(bonafiedExplntns[0].calls[0].args[0], "Nothing to retrieve", "Correct args for devlog");
 	swear.isEqual(
-		bonafiedExplntns[0].calls[1].cloneArgs[0], `Found #${swearCheckSelectorV} asset inlined already`,
+		bonafiedExplntns[0].calls[1].args[0], `Found #${swearCheckSelectorV} asset inlined already`,
 		"Correct args for devlog"
 	);
-	swear.isEqual(bonafiedExplntns[1].calls[0].cloneArgs[0], "Nowhere to place asset",
+	swear.isEqual(bonafiedExplntns[1].calls[0].args[0], "Nowhere to place asset",
 		"Correct args for issuelog"
 	);
-	swear.isEqual(bonafiedExplntns[1].calls[1].cloneArgs[0], `Missing url for asset`,
+	swear.isEqual(bonafiedExplntns[1].calls[1].args[0], `Missing url for asset`,
 		"Correct args for issuelog"
 	);
 });
@@ -211,13 +211,13 @@ test("pcs:hand:misc:warmUp should have issues cont'd", async (swear) => {
 	swear.isEqual(bonafiedExplntns[0].callCount, 1, "log dev");
 	swear.isEqual(bonafiedExplntns[1].callCount, 2, "log issue");
 	swear.isEqual(bonafiedExplntns[2].callCount, 3, "grab file");
-	swear.isEqual(bonafiedExplntns[0].calls[0].cloneArgs[0], `Unknown asset type from ${swearGrabUrl}`,
+	swear.isEqual(bonafiedExplntns[0].calls[0].args[0], `Unknown asset type from ${swearGrabUrl}`,
 		"correct args for log dev"
 	);
-	swear.isEqual(bonafiedExplntns[1].calls[0].cloneArgs[0], `Missing asset from ${swearGrabUrl}`,
+	swear.isEqual(bonafiedExplntns[1].calls[0].args[0], `Missing asset from ${swearGrabUrl}`,
 		"correct args for log issue"
 	);
-	swear.isEqual(bonafiedExplntns[1].calls[1].cloneArgs[0], `Empty asset from ${swearGrabUrl}`,
+	swear.isEqual(bonafiedExplntns[1].calls[1].args[0], `Empty asset from ${swearGrabUrl}`,
 		"correct args for log issue"
 	);
 });
@@ -234,7 +234,8 @@ test('pcs:hand:misc:startAfter should run without issue', async (swear) => {
 
 		impMeta = await getImport(swearHTML);
 
-	impMeta.moduleEvent.prototype.propertyName = "opacity";
+
+	impMeta.moduleEvent.prototype['propertyName'] = "opacity";
 
 	impMeta.freshModule.startAfter(`#${swearCurtainSelectorV}`, spinnySelector);
 	impMeta.moduleDoc.querySelector(spinnySelector).dispatchEvent(new impMeta.moduleEvent(swearIterationEvent));
@@ -255,8 +256,8 @@ test('pcs:hand:misc:startAfter should run without issue', async (swear) => {
 	swear.ok(bonafiedResult[1], "fires kick event");
 	swear.ok(bonafiedResult[2], "removes element once transition finished");
 	swear.isEqual(bonafiedExplntns[0].callCount, 2, "calls dev log");
-	swear.isEqual(bonafiedExplntns[0].calls[0].cloneArgs[0], "Stopping indicator", "Correct args for devlog");
-	swear.isEqual(bonafiedExplntns[0].calls[1].cloneArgs[0], "Removing indicator", "Correct args for devlog");
+	swear.isEqual(bonafiedExplntns[0].calls[0].args[0], "Stopping indicator", "Correct args for devlog");
+	swear.isEqual(bonafiedExplntns[0].calls[1].args[0], "Removing indicator", "Correct args for devlog");
 });
 
 
