@@ -6,7 +6,7 @@ import { default as NodeProcess } from 'node:process';
 import { default as NodePath } from 'node:path';
 import { default as NodeCrypto } from 'node:crypto';
 import { renderFile as pugFile } from 'pug';
-import { test } from 'tape';
+import { default as test } from 'tape';
 import * as td from 'testdouble';
 import { parseHTML as linkeParse } from 'linkedom';
 
@@ -58,7 +58,7 @@ test("pcs:hand:scribe:devlog should use console use based on url", async (swear)
 
 
 	swear.plan(1);
-	swear.isEqual(typeof impMeta.moduleWindow.devToast, "function", "add debug function to window");
+	swear.isEqual(typeof impMeta.moduleWindow['devToast'], "function", "add debug function to window");
 });
 
 
@@ -74,7 +74,7 @@ test("pcs:hand:scribe:devlog should use console use based on url", async (swear)
 
 
 	swear.plan(1);
-	swear.isEqual(typeof impMeta.moduleWindow.devToast, "function", "add debug function to window");
+	swear.isEqual(typeof impMeta.moduleWindow['devToast'], "function", "add debug function to window");
 });
 
 
@@ -90,7 +90,7 @@ test("pcs:hand:scribe:devlog should use console use based on url", async (swear)
 
 
 	swear.plan(1);
-	swear.isEqual(typeof impMeta.moduleWindow.devToast, "function", "add debug function to window");
+	swear.isEqual(typeof impMeta.moduleWindow['devToast'], "function", "add debug function to window");
 });
 
 
@@ -105,7 +105,7 @@ test("pcs:hand:scribe:devlog should not use console use based on url", async (sw
 
 
 	swear.plan(1);
-	swear.isEqual(typeof impMeta.moduleWindow.devToast, "undefined", "no add debug function");
+	swear.isEqual(typeof impMeta.moduleWindow['devToast'], "undefined", "no add debug function");
 });
 
 
@@ -120,7 +120,7 @@ test("pcs:hand:scribe:devlog should not use console use based on url", async (sw
 
 
 	swear.plan(1);
-	swear.isEqual(typeof impMeta.moduleWindow.devToast, "undefined", "no add debug function");
+	swear.isEqual(typeof impMeta.moduleWindow['devToast'], "undefined", "no add debug function");
 });
 
 
@@ -152,9 +152,9 @@ test("pcs:hand:scribe:devlog should log dev message", async (swear) => {
 	swear.isEqual(bonafiedExplntns[0].callCount, 3, "call console.debug");
 	swear.isEqual(bonafiedExplntns[1].callCount, 0, "call use console.error");
 	swear.isEqual(bonafiedExplntns[2].callCount, 0, "call console.warn");
-	swear.isEqual(bonafiedExplntns[0].calls[0].cloneArgs[0], imagineMsgs[0], "correct arg for console.debug");
-	swear.isEqual(bonafiedExplntns[0].calls[1].cloneArgs[0], imagineMsgs[1], "correct arg for console.debug");
-	swear.deepEqual(bonafiedExplntns[0].calls[2].cloneArgs[0], imagineThingy, "correct arg for console.debug");
+	swear.isEqual(bonafiedExplntns[0].calls[0].args[0], imagineMsgs[0], "correct arg for console.debug");
+	swear.isEqual(bonafiedExplntns[0].calls[1].args[0], imagineMsgs[1], "correct arg for console.debug");
+	swear.deepEqual(bonafiedExplntns[0].calls[2].args[0], imagineThingy, "correct arg for console.debug");
 });
 
 
@@ -175,9 +175,9 @@ test("pcs:hand:scribe:devlog should log issue message", async (swear) => {
 		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
 
-	impMeta.freshModule.issuelog(imagineMsgs[0]);
-	impMeta.freshModule.issuelog(imagineMsgs[1], imagineThingyz[0]);
-	impMeta.freshModule.issuelog(imagineMsgs[2], imagineThingyz[1], imagineError);
+	impMeta.freshModule.issuelog(imagineMsgs[0], false, false, true);
+	impMeta.freshModule.issuelog(imagineMsgs[1], imagineThingyz[0], false, true);
+	impMeta.freshModule.issuelog(imagineMsgs[2], imagineThingyz[1], imagineError, true);
 
 	impMeta.freshModule.issuelog(imagineMsgs[3], false, false, false);
 	impMeta.freshModule.issuelog(imagineMsgs[4], imagineThingyz[2], false, false);
@@ -194,23 +194,23 @@ test("pcs:hand:scribe:devlog should log issue message", async (swear) => {
 	swear.isEqual(bonafiedExplntns[0].callCount, 4, "call console.error expected number of times");
 	swear.isEqual(bonafiedExplntns[1].callCount, 3, "call console.debug expected number of times");
 	swear.isEqual(bonafiedExplntns[2].callCount, 2, "call console.warn expected number of times");
-	swear.isEqual(bonafiedExplntns[0].calls[0].cloneArgs[0], imagineMsgs[0],"correct arg for console.error");
-	swear.isEqual(bonafiedExplntns[0].calls[1].cloneArgs[0], imagineMsgs[1],"correct arg for console.error");
-	swear.isEqual(bonafiedExplntns[0].calls[2].cloneArgs[0], imagineMsgs[2],"correct arg for console.error");
-	swear.deepEqual(bonafiedExplntns[0].calls[3].cloneArgs[0], imagineError,"correct arg for console.error");
-	swear.deepEqual(bonafiedExplntns[1].calls[0].cloneArgs[0], imagineThingyz[0],
+	swear.isEqual(bonafiedExplntns[0].calls[0].args[0], imagineMsgs[0],"correct arg for console.error");
+	swear.isEqual(bonafiedExplntns[0].calls[1].args[0], imagineMsgs[1],"correct arg for console.error");
+	swear.isEqual(bonafiedExplntns[0].calls[2].args[0], imagineMsgs[2],"correct arg for console.error");
+	swear.deepEqual(bonafiedExplntns[0].calls[3].args[0], imagineError,"correct arg for console.error");
+	swear.deepEqual(bonafiedExplntns[1].calls[0].args[0], imagineThingyz[0],
 		"correct arg for console.error"
 	);
-	swear.deepEqual(bonafiedExplntns[1].calls[1].cloneArgs[0], imagineThingyz[1],
+	swear.deepEqual(bonafiedExplntns[1].calls[1].args[0], imagineThingyz[1],
 		"correct arg for console.error"
 	);
-	swear.deepEqual(bonafiedExplntns[1].calls[2].cloneArgs[0], imagineThingyz[2],
+	swear.deepEqual(bonafiedExplntns[1].calls[2].args[0], imagineThingyz[2],
 		"correct arg for console.error"
 	);
-	swear.deepEqual(bonafiedExplntns[2].calls[0].cloneArgs[0], imagineMsgs[3],
+	swear.deepEqual(bonafiedExplntns[2].calls[0].args[0], imagineMsgs[3],
 		"correct arg for console.error"
 	);
-	swear.deepEqual(bonafiedExplntns[2].calls[1].cloneArgs[0], imagineMsgs[4],
+	swear.deepEqual(bonafiedExplntns[2].calls[1].args[0], imagineMsgs[4],
 		"correct arg for console.error"
 	);
 });
@@ -231,7 +231,7 @@ test("pcs:hand:scribe:devlog should log noti message", async (swear) => {
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDoc.querySelector('button.toast-close').click();
+	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(new impMeta.moduleWindow.Event('click'));
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
 	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
@@ -264,7 +264,7 @@ test("pcs:hand:scribe:devlog should not log noti message", async (swear) => {
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDoc.querySelector('button.toast-close').click();
+	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(new impMeta.moduleWindow.Event('click'));
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
 	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
@@ -308,11 +308,11 @@ test("pcs:hand:scribe:devlog should handle multiple noti messages", async (swear
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsgs[3]);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDoc.querySelector('button.toast-close').click();
+	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(new impMeta.moduleWindow.Event('click'));
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDoc.querySelector('button.toast-close').click();
+	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(new impMeta.moduleWindow.Event('click'));
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDoc.querySelector('button.toast-close').click();
+	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(new impMeta.moduleWindow.Event('click'));
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
 	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
@@ -348,7 +348,7 @@ test("pcs:hand:scribe:devlog should remove dangling noti message", async (swear)
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDoc.querySelector('button.toast-close').click();
+	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(new impMeta.moduleWindow.Event('click'));
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
 	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
@@ -383,7 +383,7 @@ test("pcs:hand:scribe:devlog should not show repeat noti message", async (swear)
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDoc.querySelector('button.toast-close').click();
+	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(new impMeta.moduleWindow.Event('click'));
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
 	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
