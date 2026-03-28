@@ -3,7 +3,7 @@
  */
 
 import { default as NodeCrypto } from 'node:crypto';
-import { test } from 'tape';
+import { default as test } from 'tape';
 import { parseHTML as linkeParse } from 'linkedom';
 import {
 	object as tdObject,
@@ -61,7 +61,7 @@ test('trythis_example:funcHere', async function (swear) {
 
 	swear.plan(2);
 	swear.equal(bonafiedExplntn.callCount, 1, "should call console.log");
-	swear.equal(bonafiedExplntn.calls[0].cloneArgs[0], "Thanks for trying",
+	swear.equal(bonafiedExplntn.calls[0].args[0], "Thanks for trying",
 		"should call devlog with expected args"
 	);
 });
@@ -77,7 +77,7 @@ test('trythis_example:orFuncHere', async function (swear) {
 
 
 	metaImp.freshModule.orFuncHere(`.${swearSelector}`);
-	metaImp.moduleDoc.querySelector(`.${swearSelector}`)?.click();
+	metaImp.moduleDoc.querySelector(`.${swearSelector}`).dispatchEvent(new metaImp.moduleWindow.Event('click'));
 
 	bonafiedExplntn = tdExplain(metaImp.moduleConsole.log);
 
@@ -87,7 +87,7 @@ test('trythis_example:orFuncHere', async function (swear) {
 
 	swear.plan(2);
 	swear.equal(bonafiedExplntn.callCount, 1, "should call console.log once");
-	swear.equal(bonafiedExplntn.calls[0].cloneArgs[0], "Called event", "Should call with expected args");
+	swear.equal(bonafiedExplntn.calls[0].args[0], "Called event", "Should call with expected args");
 });
 
 
@@ -101,7 +101,7 @@ test('trythis_example:evenFuncHere', async function (swear) {
 
 
 	metaImp.freshModule.evenFuncHere(`.${swearSelector}`);
-	metaImp.moduleDoc.querySelector(`.${swearSelector}`).click();
+	metaImp.moduleDoc.querySelector(`.${swearSelector}`).dispatchEvent(new metaImp.moduleWindow.Event('click'));
 
 	bonafiedExplntn = tdExplain(metaImp.moduleLogger.devlog);
 
@@ -110,7 +110,7 @@ test('trythis_example:evenFuncHere', async function (swear) {
 
 	swear.plan(2);
 	swear.equal(bonafiedExplntn.callCount, 1, "should call devlog once");
-	swear.equal(bonafiedExplntn.calls[0].cloneArgs[0], "Will dev log",
+	swear.equal(bonafiedExplntn.calls[0].args[0], "Will dev log",
 		"Should call console.log with expected args"
 	);
 });
