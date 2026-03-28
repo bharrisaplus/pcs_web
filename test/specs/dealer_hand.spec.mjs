@@ -3,7 +3,7 @@
  */
 
 import { default as NodeCrypto } from 'node:crypto';
-import { test } from 'tape';
+import { default as test } from 'tape';
 import * as td from 'testdouble';
 import { parseHTML as linkeParse } from 'linkedom';
 
