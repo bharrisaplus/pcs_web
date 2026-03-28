@@ -1,6 +1,9 @@
 {	
 	"src": [
 		"./source/behavior/_meta",
-		"./source/behavior/hands"
-	]
+		"./source/behavior/banks",
+		"./source/behavior/hands",
+		"./source/behavior/shuttles"
+	],
+	"report-dir": "./coverage/spec"
 }
