@@ -41,3 +41,20 @@ tasks:
       C8_CONFIG: '{{.PROJECT_DIR}}/test/c8rc.spec.json'
     cmds:
       - pnpm c8 -c {{.C8_CONFIG}} tape {{.SPEC_GLOB}} | pnpm tap-nyc
+
+  spec_of_lcov:
+    aliases: ["speclcov"]
+    vars:
+      SPEC_PATH: '{{.PROJECT_DIR}}/test/specs/{{.CLI_ARGS}}.spec.mjs'
+      C8_CONFIG: '{{.PROJECT_DIR}}/c8rc.spec.json'
+    cmds:
+      - pnpm c8 -c {{.C8_CONFIG}} -r lcovonly tape {{.SPEC_PATH}} | pnpm tap-nyc
+
+  spec_all_lcov:
+    aliases: ["specallcov"]
+    vars:
+      INCL_SPECS: '{dealer_hand,deck_bank,egress_hand,host_shuttle,misc_had,scribe_had}'
+      SPEC_GLOB: '{{.PROJECT_DIR}}/test/specs/{{.INCL_SPECS}}.spec.mjs'
+      C8_CONFIG: '{{.PROJECT_DIR}}/test/c8rc.spec.json'
+    cmds:
+      - pnpm c8 -c {{.C8_CONFIG}} -r lcovonly tape {{.SPEC_GLOB}} | pnpm tap-nyc
