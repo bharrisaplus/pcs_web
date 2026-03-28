@@ -3,7 +3,7 @@
  */
 
 import { default as NodeCrypto } from 'node:crypto';
-import { test } from 'tape';
+import { default as test } from 'tape';
 import * as td from 'testdouble';
 import { parseHTML as linkeParse } from 'linkedom';
 
@@ -20,12 +20,14 @@ const
 		const
 			{ Image: _mockImg, document: _mockDoc, window: _mockWindow } = linkeParse(mockMarkup),
 			_mockScribe = td.object(),
-			_mockCanvas = td.constructor(_mockDoc.HTMLCanvasElement),
+			_mockCanvas = td.constructor(_mockWindow.HTMLCanvasElement),
+			_mockXMLS = td.constructor(['serializeToString']),
 
 			mockConsole = td.replace(globalThis, 'console', td.object()),
 			mockWindow = td.replace(globalThis, 'window', _mockWindow),
 			mockDoc = td.replace(globalThis, 'document', _mockDoc),
-			mockXMLS = td.replace(globalThis, 'XMLSerializer', td.constructor(['serializeToString'])),
+			mockXMLS = td.replace(globalThis, 'XMLSerializer', _mockXMLS),
+			mockXMLSInst = td.instance(_mockXMLS),
 			mockClip = td.replace(navigator, 'clipboard', td.object(['writeText'])),
 			mockImgElm = td.replace(globalThis, 'Image', _mockImg),
 			mockCanvas = td.replace(globalThis, 'OffscreenCanvas', _mockCanvas),
@@ -41,6 +43,7 @@ const
 			moduleWindow: mockWindow,
 			moduleDoc: mockDoc,
 			moduleXMLS: mockXMLS,
+			moduleXMLSInst: mockXMLSInst,
 			moduleClipboard: mockClip,
 			moduleImg: mockImgElm,
 			moduleCanvas: mockCanvas,
@@ -55,7 +58,6 @@ test('pcs:hand:egress:exportTest should run without issue', async (swear) => {
 	const
 		imagineArgument = "Cards:\n====\nThis is for the clipboards",
 
-		/** @type {Hand.Egress} */
 		impMeta = await getImport(defaultSpecHTML);
 
 
@@ -114,16 +116,16 @@ test('pcs:hand:egress:exportTest should have issues', async (swear) => {
 	swear.notOk(bonafiedResults[1], "Should return false");
 	swear.isEqual(bonafiedExplntns[0].callCount, 2, "Should attempt to access clipboard");
 	swear.isEqual(bonafiedExplntns[1].callCount, 2, "Should have issue");
-	swear.isEqual(bonafiedExplntns[1].calls[0].cloneArgs.length, 4,
+	swear.isEqual(bonafiedExplntns[1].calls[0].args.length, 4,
 		"Should log issue in expected manner"
 	);
-	swear.isEqual(bonafiedExplntns[1].calls[0].cloneArgs[0], "Clipboard permission needed",
+	swear.isEqual(bonafiedExplntns[1].calls[0].args[0], "Clipboard permission needed",
 		"Should have expected issue"
 	);
-	swear.isEqual(bonafiedExplntns[1].calls[1].cloneArgs.length, 3,
+	swear.isEqual(bonafiedExplntns[1].calls[1].args.length, 3,
 		"Should log issue in expected manner"
 	);
-	swear.isEqual(bonafiedExplntns[1].calls[1].cloneArgs[0], "Issue occured copying to clipboard",
+	swear.isEqual(bonafiedExplntns[1].calls[1].args[0], "Issue occured copying to clipboard",
 		"Should have expected issue"
 	);
 });
@@ -141,11 +143,9 @@ test("pcs:hand:egress:generateImage should run without issue", async (swear) => 
 
 
 	impMeta.moduleImg.prototype.decode = td.func();
-	impMeta.moduleCanvasInst.getContext = td.func();
-	impMeta.moduleCanvasInst.toDataURL = td.func();
-	td.when(impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
+	td.when(new impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
 	td.when(impMeta.moduleCanvasInst.getContext('2d')).thenReturn(td.object(['drawImage']));
-	td.when(impMeta.moduleXMLS(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
+	td.when(impMeta.moduleXMLSInst.serializeToString(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
 	td.when(impMeta.moduleImg.prototype.decode()).thenResolve(undefined);
 	td.when(impMeta.moduleCanvasInst.toDataURL()).thenReturn("12d34");
 
@@ -180,14 +180,11 @@ test("pcs:hand:egress:generateImage should have issues", async (swear) => {
 		swearSVG = `<svg id="${swearSVGSelectors[0]}"><defs><symbol><rect></rect></symbol></defs></svg>`,
 		swearHTML = `<!doctype html><html lang="en"><body>${swearSVG}</body></html>`,
 
-		/** @type {Hand.Egress} */
 		impMeta = await getImport(swearHTML);
 
 
 	impMeta.moduleImg.prototype.decode = td.func();
-	impMeta.moduleCanvasInst.getContext = td.func();
-	impMeta.moduleCanvasInst.toDataURL = td.func();
-	td.when(impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
+	td.when(new impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
 	td.when(impMeta.moduleCanvasInst.getContext('2d')).thenReturn(td.object(['drawImage']));
 
 	bonafiedResults.push(
@@ -209,10 +206,10 @@ test("pcs:hand:egress:generateImage should have issues", async (swear) => {
 	swear.isEqual(bonafiedExplntns[0].callCount, 2, "Should have issues");
 	swear.isEqual(bonafiedExplntns[1].callCount, 0, "Should generate no image");
 	swear.isEqual(bonafiedResults.join(""), "", "Should generate no image");
-	swear.isEqual(bonafiedExplntns[0].calls[0].cloneArgs[0], "Missing components for image download",
+	swear.isEqual(bonafiedExplntns[0].calls[0].args[0], "Missing components for image download",
 		"Should log expected issue"
 	);
-	swear.isEqual(bonafiedExplntns[0].calls[1].cloneArgs[0], "Missing components for image download",
+	swear.isEqual(bonafiedExplntns[0].calls[1].args[0], "Missing components for image download",
 		"Should log expected issue"
 	);
 });
@@ -230,11 +227,9 @@ test("pcs:hand:egress:generateImage should have issues (cont)", async (swear) =>
 
 
 	impMeta.moduleImg.prototype.decode = td.func();
-	impMeta.moduleCanvasInst.getContext = td.func();
-	impMeta.moduleCanvasInst.toDataURL = td.func();
-	td.when(impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
+	td.when(new impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
 	td.when(impMeta.moduleCanvasInst.getContext('2d')).thenReturn(td.object(['drawImage']));
-	td.when(impMeta.moduleXMLS(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
+	td.when(impMeta.moduleXMLSInst.serializeToString(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
 
 	td.when(impMeta.moduleCanvasInst.toDataURL()).thenThrow(new DOMException('darn', 'SecurityError'));
 	bonafiedResults.push(
@@ -258,8 +253,8 @@ test("pcs:hand:egress:generateImage should have issues (cont)", async (swear) =>
 	swear.isEqual(bonafiedExplntns[0].callCount, 2, "Should have issues");
 	swear.isEqual(bonafiedExplntns[1].callCount, 1, "Should attempt to generate image once");
 	swear.isEqual(bonafiedResults.join(""), "", "Should generate no image");
-	swear.isEqual(bonafiedExplntns[0].calls[0].cloneArgs[0], "Issue with canvas", "Should log expected issue");
-	swear.isEqual(bonafiedExplntns[0].calls[1].cloneArgs[0], "Issue with image decode",
+	swear.isEqual(bonafiedExplntns[0].calls[0].args[0], "Issue with canvas", "Should log expected issue");
+	swear.isEqual(bonafiedExplntns[0].calls[1].args[0], "Issue with image decode",
 		"Should log expected issue"
 	);
 });
@@ -277,11 +272,10 @@ test("pcs:hand:egress:generateImage should have issues (cont'd)", async (swear) 
 
 
 	impMeta.moduleImg.prototype.decode = td.func();
-	impMeta.moduleCanvasInst.toDataURL = td.func();
-	impMeta.moduleCanvasInst.getContext = () => { return swear2DCTX; };
-	td.when(impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
+
+	td.when(new impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
 	td.when(impMeta.moduleCanvasInst.getContext('2d')).thenReturn(swear2DCTX);
-	td.when(impMeta.moduleXMLS(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
+	td.when(impMeta.moduleXMLSInst.serializeToString(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
 
 	bonafiedResult = await impMeta.freshModule.generateImage("#333", swearSpriteList, `#${swearSVGSelector}`);
 
@@ -296,7 +290,7 @@ test("pcs:hand:egress:generateImage should have issues (cont'd)", async (swear) 
 	swear.isEqual(bonafiedExplntns[0].callCount, 1, "Should have issue");
 	swear.isEqual(bonafiedExplntns[1].callCount, 0, "Should generate no image");
 	swear.isEqual(bonafiedResult, "", "Should generate no image");
-	swear.isEqual(bonafiedExplntns[0].calls[0].cloneArgs[0], "Issue with web API",
+	swear.isEqual(bonafiedExplntns[0].calls[0].args[0], "Issue with web API",
 		"Should log expected issue"
 	);
 });
