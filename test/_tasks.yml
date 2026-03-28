@@ -5,20 +5,15 @@ version: '3'
 
 
 tasks:
+
+  # unit(ish) tests
+
   spec_of:
     aliases: ["speco"]
     vars:
       SPEC_PATH: '{{.PROJECT_DIR}}/test/specs/{{.CLI_ARGS}}.spec.mjs'
     cmds:
       - pnpm tape {{.SPEC_PATH}} | pnpm tap-spec
-
-  spec_of_cov:
-    aliases: ["specov"]
-    vars:
-      SPEC_PATH: '{{.PROJECT_DIR}}/test/specs/{{.CLI_ARGS}}.spec.mjs'
-      C8_CONFIG: '{{.PROJECT_DIR}}/c8rc.json'
-    cmds:
-      - pnpm c8 -c {{.C8_CONFIG}} tape {{.SPEC_PATH}} | pnpm tap-nyc
 
   spec_all:
     aliases: ["specal"]
@@ -27,6 +22,16 @@ tasks:
       SPEC_GLOB: '{{.PROJECT_DIR}}/test/specs/{{.INCL_SPECS}}.spec.mjs'
     cmds:
       - pnpm tape {{.SPEC_GLOB}} | pnpm tap-spec
+
+  # coverage
+
+  spec_of_cov:
+    aliases: ["specov"]
+    vars:
+      SPEC_PATH: '{{.PROJECT_DIR}}/test/specs/{{.CLI_ARGS}}.spec.mjs'
+      C8_CONFIG: '{{.PROJECT_DIR}}/c8rc.json'
+    cmds:
+      - pnpm c8 -c {{.C8_CONFIG}} tape {{.SPEC_PATH}} | pnpm tap-nyc
 
   spec_all_cov:
     aliases: ["specalov"]
