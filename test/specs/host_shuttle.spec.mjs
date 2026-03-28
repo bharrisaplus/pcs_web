@@ -3,7 +3,7 @@
  */
 
 import { default as NodeCrypto } from 'node:crypto';
-import { test } from 'tape';
+import { default as test } from 'tape';
 import * as td from 'testdouble';
 import { parseHTML as linkeParse } from 'linkedom';
 
@@ -78,8 +78,9 @@ test("pcs:shuttle:host:grabFile should have issues", async (swear) => {
 			"https://ssomesitee.net",
 		],
 		swearResponses = [
-			td.object(['blob']),
-			td.object(['blob'])
+			{ ok: true, status: 200, blob: td.func() },
+			{ ok: true, status: 200, blob: td.func() }
+			
 		],
 		impMeta = await getImport(),
 		/** @type {Shuttle.Host} */
@@ -98,14 +99,10 @@ test("pcs:shuttle:host:grabFile should have issues", async (swear) => {
 	td.when(impMeta.moduleFetch(swearLinks[3])).thenReject(new TypeError('welp'));
 	bonafiedResults.push(await hostShuttle.grabFile(swearLinks[3]));
 
-	swearResponses[0].ok = true;
-	swearResponses[0].status = 200;
 	td.when(swearResponses[0].blob()).thenReject(new DOMException('not again', 'AbortError'));
 	td.when(impMeta.moduleFetch(swearLinks[4])).thenResolve(swearResponses[0]);
 	bonafiedResults.push(await hostShuttle.grabFile(swearLinks[4]));
 
-	swearResponses[1].ok = true;
-	swearResponses[1].status = 200;
 	td.when(swearResponses[1].blob()).thenReject(new TypeError('whoops'));
 	td.when(impMeta.moduleFetch(swearLinks[5])).thenResolve(swearResponses[1]);
 	bonafiedResults.push(await hostShuttle.grabFile(swearLinks[5]));
@@ -117,10 +114,10 @@ test("pcs:shuttle:host:grabFile should have issues", async (swear) => {
 	swear.plan(8);
 	swear.ok(bonafiedResults.every((_bR) => !_bR), "return false-y value");
 	swear.equals(bonafiedExplntns[0].callCount, 6, "log issue");
-	swear.ok(bonafiedExplntns[0].calls[0].cloneArgs[0].startsWith("Network"), "correct args for log issue");
-	swear.ok(bonafiedExplntns[0].calls[1].cloneArgs[0].startsWith("Aborted"), "correct args for log issue");
-	swear.ok(bonafiedExplntns[0].calls[2].cloneArgs[0].startsWith("Permission"), "correct args for log issue");
-	swear.ok(bonafiedExplntns[0].calls[3].cloneArgs[0].startsWith("Type m"), "correct args for log issue");
-	swear.ok(bonafiedExplntns[0].calls[4].cloneArgs[0].startsWith("Aborted"), "correct args for log issue");
-	swear.ok(bonafiedExplntns[0].calls[5].cloneArgs[0].startsWith("Could n"), "correct args for log issue");
+	swear.ok(bonafiedExplntns[0].calls[0].args[0].startsWith("Network"), "correct args for log issue");
+	swear.ok(bonafiedExplntns[0].calls[1].args[0].startsWith("Aborted"), "correct args for log issue");
+	swear.ok(bonafiedExplntns[0].calls[2].args[0].startsWith("Permission"), "correct args for log issue");
+	swear.ok(bonafiedExplntns[0].calls[3].args[0].startsWith("Type m"), "correct args for log issue");
+	swear.ok(bonafiedExplntns[0].calls[4].args[0].startsWith("Aborted"), "correct args for log issue");
+	swear.ok(bonafiedExplntns[0].calls[5].args[0].startsWith("Could n"), "correct args for log issue");
 });
