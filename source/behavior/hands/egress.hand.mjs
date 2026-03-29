@@ -48,24 +48,30 @@ const makeEgressHand = () => {
 		let
 			imgDataUrl = "",
 			svgObjUrl = "",
+			$spriteSheet,
 			/** @type {SVGUseElement[]} */
-			$useItems = [];
-
-		const
-			/** @type {SVGElement} */
-			$spriteSheet = document.querySelector(spriteSheet)?.cloneNode(true),
+			$useItems = [],
 			/** @type {SVGRectElement} */
-			$backdrop = $spriteSheet.querySelector(`defs symbol rect`),
-
-			$itemGroup = document.createElementNS("http://www.w3.org/2000/svg", "g"),
-			$canvas = document.createElement('canvas'),
-			canvas_ctx_2d = $canvas.getContext('2d'),
+			$backdrop,
+			/** @type {SVGGElement} */
+			$itemGroup,
+			$canvas,
+			canvas_ctx_2d,
 			tmpImage = new Image();
 
-		if (!$spriteSheet || spriteList.length < 52) {
-			appLogger.issuelog("Missing componenets for image download", {spriteList, spriteSheet}, false);
-			imgDataUrl = "";
+		/** @type {SVGElement} */
+		const $ogSpriteSheet = document.querySelector(spriteSheet);
+
+		if (!$ogSpriteSheet || !($ogSpriteSheet instanceof window.SVGElement) || spriteList.length < 52) {
+			appLogger.issuelog("Missing components for image download", {spriteList, spriteSheet}, false);
 		} else {
+			$spriteSheet = $ogSpriteSheet.cloneNode(true).firstChild.parentElement;
+			$backdrop = $spriteSheet.querySelector(`defs symbol rect`)
+			$itemGroup = document.createElementNS("http://www.w3.org/2000/svg", "g")
+			$canvas = document.createElement('canvas')
+			canvas_ctx_2d = $canvas.getContext('2d');
+			tmpImage = new Image();
+
 			$spriteSheet.setAttribute('style', '');
 			$itemGroup.setAttribute('id', 'group-items');
 			$backdrop?.setAttribute('fill', backdropColor);
