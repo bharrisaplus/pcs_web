@@ -18,6 +18,7 @@ const makeScribeHand = () => {
 		  window.location?.href?.startsWith('file:') // || whatever you like
 		),
 
+		/** @type {HTMLElement} */
 		$toaster = document.querySelector('#notifications'),
 		/** @type {HTMLTemplateElement} */
 		$toastRef = document.querySelector('template#toast');
@@ -48,9 +49,9 @@ const makeScribeHand = () => {
 		let maybeNoTo;
 		const
 			aToastAbort = new AbortController(),
-			/** @type {DocumentFragment} [description] */
+			/** @type {DocumentFragment} */
 			$toastContainer = document.importNode($toastRef.content, true),
-			/** @type {HTMLElement} [description] */
+			/** @type {HTMLElement} */
 			$aToast = $toastContainer.querySelector('.toast');
 
 		if (toasts.some((_toastItm) => { _toastItm.$elm.textContent === toastMsg })) { return; }
