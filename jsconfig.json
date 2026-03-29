@@ -24,18 +24,14 @@
 		"skipDefaultLibCheck": true,
 		"strictNullChecks": false,
 		"lib": [
-			"dom",
-			"esnext",
-			"webworker",
-			"decorators"
+			"DOM",
+			"ESNext",
+			"WebWorker"
 		],
-		"module": "nodenext",
+		"module": "esnext",
 		"target": "esnext",
 		"types": [
-			"esnext",
-			"dom",
-			"module",
-			"nodenext"
+			"node"
 		]
 	}
 }
