@@ -1,9 +1,11 @@
 import { default as ESLintJS } from '@eslint/js';
 import { defineConfig } from "eslint/config";
-import stylistic from '@stylistic/eslint-plugin';
+import { default as stylistic } from '@stylistic/eslint-plugin';
+import { default as BrowserCompat } from 'eslint-plugin-compat';
 
 const demoLintConfig = defineConfig([
   ESLintJS.configs.recommended,
+  BrowserCompat.configs["flat/recommended"],
   {
     plugins: {
       "@stylistic": stylistic
