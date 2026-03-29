@@ -61,7 +61,7 @@ const isTooOld = (timestamp) => {
 const makeDeckBank = () => {
   let
     topical_order = Uint8Array.from(default_order),
-    choosen_card,
+    choosen_card = 0,
     back_splash = 0;
 
 
