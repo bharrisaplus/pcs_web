@@ -38,7 +38,7 @@ const makeScribeHand = () => {
 				if (issueErr) { console.error(issueErr); }
 			} else {
 				if (issueMsg) { console.warn(issueMsg); }
-				if (issueThingy) { console.debug(issueMsg); }
+				if (issueThingy) { console.debug(issueThingy); }
 			}
 		}
 	};
