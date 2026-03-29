@@ -15,8 +15,11 @@ const makeDealerHand = () => {
    * @return {Readonly<CardIntri>} a card - {@link CardIntri}
    */
   const generate_card_intri = (curPos, ndoPos) => {
-    let _name = "A Card";
-    let _symbl = "";
+    let
+      _name = "A Card",
+      _symbl = "",
+      /** @type {CardIntri} */
+      result = { oglo: ndoPos, spot: curPos, title: '', desc: '', symbolRef: '' };
 
     if ((curPos > -1 && curPos < _g.c_Max) && (ndoPos > -1 && ndoPos < _g.c_Max)) {
       let _suite = _g.c_SuiteList[Math.floor(ndoPos / 13)];
@@ -52,15 +55,20 @@ const makeDealerHand = () => {
         }
         default: appLogger.issuelog("Can't create card for position", {curPos, ndoPos}, false, false);
       }
+
+      result = Object.freeze({
+        oglo: ndoPos,
+        spot: curPos,
+        title: `${_g.c_TitlePrefix} ${curPos + 1}: ${_name}`,
+        desc: `${_g.c_DescPrefix} ${curPos + 1}`,
+        symbolRef: `#${_symbl}`
+      });
+    } else {
+      appLogger.issuelog("Can't create card for position", {curPos, ndoPos}, false, false);
+      result = Object.freeze(result);
     }
 
-    return Object.freeze({
-      oglo: ndoPos,
-      spot: curPos,
-      title: `${_g.c_TitlePrefix} ${curPos + 1}: ${_name}`,
-      desc: `${_g.c_DescPrefix} ${curPos + 1}`,
-      symbolRef: `#${_symbl}`
-    });
+    return result;
   };
 
 
