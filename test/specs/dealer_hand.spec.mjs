@@ -127,7 +127,7 @@ test('pcs:hand:dealer:getCard should return bad intri', async (swear) => {
 });
 
 
-test('pcs:hand:dealer:getCard should return shuffled', async (swear) => {
+test('pcs:hand:dealer:mixUp should return shuffled', async (swear) => {
 	let bonafiedResult = [], bonafiedExpln;
 	const
 		swearCardLists = [
@@ -186,7 +186,7 @@ test('pcs:hand:dealer:getCard should return shuffled', async (swear) => {
 });
 
 
-test('pcs:hand:dealer:getCard should return non-shuffled', async (swear) => {
+test('pcs:hand:dealer:mixUp should return non-shuffled', async (swear) => {
 	let bonafiedResult = [], bonafiedExpln;
 	const
 		swearCardLists = [
