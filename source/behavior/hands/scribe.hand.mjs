@@ -64,7 +64,9 @@ const makeScribeHand = () => {
 				cutIdx,
 				cutToast;
 
-			if (_clickEvt.target.parentElement !== $aToast) { return; }
+			if (_clickEvt.target instanceof window.HTMLElement && _clickEvt.target.parentElement !== $aToast) {
+				return;
+			}
 
 			cutIdx = toasts.map((_toastItm) => _toastItm.$elm ).indexOf($aToast);
 
