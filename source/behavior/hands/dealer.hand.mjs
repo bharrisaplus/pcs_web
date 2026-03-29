@@ -6,6 +6,7 @@
 import { default as _g } from '../_meta/_glods.mjs';
 import { default as appLogger } from './scribe.hand.mjs';
 
+
 /** @return {Readonly<Hand.Dealer>} a helper for cards */
 const makeDealerHand = () => {
   /**
@@ -79,21 +80,28 @@ const makeDealerHand = () => {
    * @return {Uint8Array}
    */
   const pcs_shuffle = (cardList, positionList) => {
-    const
-      card_sample = chance.pickset(cardList, cardList.length),
-      position_sample = chance.pickset(positionList, positionList.length);
+    let
+      card_sample,
+      position_sample;
 
     const result = Uint8Array.from({length: cardList.length});
 
-    for (let _ = 0; _ < positionList.length; _++) {
-      const
-        _card_idx = Math.floor(Math.random() * card_sample.length),
-        _pos_idx = Math.floor(Math.random() * position_sample.length);
+    if (result.length > 0 && result.length <= _g.c_Max && result.length === positionList.length) {
+      card_sample = chance.pickset(cardList, cardList.length);
+      position_sample = chance.pickset(positionList, positionList.length);
 
-      result[position_sample[_pos_idx]] = card_sample[_card_idx];
+      for (let _ = 0; _ < positionList.length; _++) {
+        const
+          _card_idx = Math.floor(Math.random() * card_sample.length),
+          _pos_idx = Math.floor(Math.random() * position_sample.length);
 
-      card_sample.splice(_card_idx, 1);
-      position_sample.splice(_pos_idx, 1);
+        result[position_sample[_pos_idx]] = card_sample[_card_idx];
+
+        card_sample.splice(_card_idx, 1);
+        position_sample.splice(_pos_idx, 1);
+      }
+    } else {
+      appLogger.issuelog("Can't shuffle mismatched array size", {cardList, positionList}, false, false);
     }
 
     return result;
