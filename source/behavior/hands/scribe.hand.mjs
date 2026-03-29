@@ -54,7 +54,9 @@ const makeScribeHand = () => {
 			/** @type {HTMLElement} */
 			$aToast = $toastContainer.querySelector('.toast');
 
-		if (toasts.some((_toastItm) => { _toastItm.$elm.textContent === toastMsg })) { return; }
+		if (toasts.some((_toast) => _toast.$elm.querySelector('span.toast-msg')?.textContent === toastMsg)) {
+			return;
+		}
 
 		$aToast.querySelector('span.toast-msg').textContent = toastMsg;
 		$aToast.querySelector('button.toast-close').addEventListener('click', (_clickEvt) => {
