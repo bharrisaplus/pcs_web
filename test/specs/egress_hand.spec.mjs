@@ -18,11 +18,11 @@ const
 	getImport = async (mockMarkup = defaultSpecHTML) => {
 		const
 			{ Image: _mockImg, document: _mockDoc, window: _mockWindow } = linkeParse(mockMarkup),
-			_mockScribe = td.object(),
+			_mockScribe = td.object(['issuelog']),
 			_mockCanvas = td.constructor(_mockWindow.HTMLCanvasElement),
 			_mockXMLS = td.constructor(['serializeToString']),
 
-			mockConsole = td.replace(globalThis, 'console', td.object()),
+			mockConsole = td.replace(globalThis, 'console', td.object({})),
 			mockWindow = td.replace(globalThis, 'window', _mockWindow),
 			mockDoc = td.replace(globalThis, 'document', _mockDoc),
 			mockXMLS = td.replace(globalThis, 'XMLSerializer', _mockXMLS),
