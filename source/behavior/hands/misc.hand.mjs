@@ -98,11 +98,11 @@ const makeMiscHand = () => {
       $indicator = document.querySelector(indicatorSelector),
       $tick = $indicator?.querySelector(tickSelector);
 
-    if (!$indicator || !$tick) window.dispatchEvent(new CustomEvent(_g.notices.kick));
+    if (!$indicator || !$tick) { window.dispatchEvent(new CustomEvent(_g.notices.kick)); return; }
 
     // Once loading is done, disconnect loading indicator from DOM
     $indicator?.addEventListener('transitionend', (transEvt) => {
-      if (transEvt.propertyName === 'opacity') {
+      if (transEvt instanceof TransitionEvent && transEvt.propertyName === 'opacity') {
         appLogger.devlog("Removing indicator");
         $indicator.remove();
         window.dispatchEvent(new CustomEvent(_g.notices.kick));
@@ -110,7 +110,7 @@ const makeMiscHand = () => {
     }, { once: true });
 
     // Let the loading animation show off a bit before starting
-    $tick?.addEventListener('animationiteration', () => {
+    $tick.addEventListener('animationiteration', () => {
         cycleCount++;
 
         if (cycleCount >= 3) {
