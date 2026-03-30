@@ -7,8 +7,16 @@ import { default as NodePath } from 'node:path';
 import { default as NodeCrypto } from 'node:crypto';
 import { renderFile as pugFile } from 'pug';
 import { default as test } from 'tape';
-import * as td from 'testdouble';
 import { parseHTML as linkeParse } from 'linkedom';
+import {
+	object as tdObj,
+	replace as tdSwap,
+	reset as tdClr,
+	explain as tdExpln,
+	func as tdFunc,
+	when as tdStub,
+	matchers as tdMatches
+} from 'testdouble';
 
 
 const
@@ -28,9 +36,9 @@ const
 				window: _mockWindow
 			} = linkeParse(mockMarkup, {location: mockLocation}),
 
-			mockConsole = td.replace(globalThis, 'console', td.object(['warn', 'debug', 'error', 'info'])),
-			mockDoc = td.replace(globalThis, 'document', _mockDoc),
-			mockWindow = td.replace(globalThis, 'window', _mockWindow),
+			mockConsole = tdSwap(globalThis, 'console', tdObj(['warn', 'debug', 'error', 'info'])),
+			mockDoc = tdSwap(globalThis, 'document', _mockDoc),
+			mockWindow = tdSwap(globalThis, 'window', _mockWindow),
 
 			moduleImport = await import(`${modulePath}?v=${NodeCrypto.randomUUID()}`);
 
@@ -53,7 +61,7 @@ test("pcs:hand:scribe:devlog should use console use based on url", async (swear)
 		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -70,7 +78,7 @@ test("pcs:hand:scribe:devlog should use console use based on url", async (swear)
 		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -87,7 +95,7 @@ test("pcs:hand:scribe:devlog should use console use based on url", async (swear)
 		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -103,7 +111,7 @@ test("pcs:hand:scribe:devlog should not use console use based on url", async (sw
 
 		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -119,7 +127,7 @@ test("pcs:hand:scribe:devlog should not use console use based on url", async (sw
 
 		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -145,11 +153,11 @@ test("pcs:hand:scribe:devlog should log dev message", async (swear) => {
 	impMeta.freshModule.devlog(imagineMsgs[0]);
 	impMeta.freshModule.devlog(imagineMsgs[1], imagineThingy);
 
-	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.debug));
-	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.error));
-	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.warn));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleConsole.debug));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleConsole.error));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleConsole.warn));
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -187,11 +195,11 @@ test("pcs:hand:scribe:devlog should log issue message", async (swear) => {
 	impMeta.freshModule.issuelog(imagineMsgs[3], false, false, false);
 	impMeta.freshModule.issuelog(imagineMsgs[4], imagineThingyz[2], false, false);
 
-	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.error));
-	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.debug));
-	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.warn));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleConsole.error));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleConsole.debug));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleConsole.warn));
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -230,8 +238,8 @@ test("pcs:hand:scribe:devlog should log noti message", async (swear) => {
 		impMeta = await getImport(toasterSpecHTML, swearLoc);
 
 
-	td.replace(impMeta.moduleHTMLElement.prototype, 'showPopover', td.func());
-	td.replace(impMeta.moduleHTMLElement.prototype, 'hidePopover', td.func());
+	tdSwap(impMeta.moduleHTMLElement.prototype, 'showPopover', tdFunc());
+	tdSwap(impMeta.moduleHTMLElement.prototype, 'hidePopover', tdFunc());
 
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
@@ -240,11 +248,11 @@ test("pcs:hand:scribe:devlog should log noti message", async (swear) => {
 		new impMeta.moduleWindow.Event('click')
 	);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
-	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
-	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.hidePopover));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleConsole.info));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleHTMLElement.prototype.showPopover));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleHTMLElement.prototype.hidePopover));
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -265,8 +273,8 @@ test("pcs:hand:scribe:devlog should not log noti message", async (swear) => {
 		impMeta = await getImport(toasterSpecHTML, swearLoc);
 
 
-	td.replace(impMeta.moduleHTMLElement.prototype, 'showPopover', td.func());
-	td.replace(impMeta.moduleHTMLElement.prototype, 'hidePopover', td.func());
+	tdSwap(impMeta.moduleHTMLElement.prototype, 'showPopover', tdFunc());
+	tdSwap(impMeta.moduleHTMLElement.prototype, 'hidePopover', tdFunc());
 
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
@@ -275,11 +283,11 @@ test("pcs:hand:scribe:devlog should not log noti message", async (swear) => {
 		new impMeta.moduleWindow.Event('click')
 	);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
-	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
-	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.hidePopover));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleConsole.info));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleHTMLElement.prototype.showPopover));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleHTMLElement.prototype.hidePopover));
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -305,8 +313,8 @@ test("pcs:hand:scribe:devlog should handle multiple noti messages", async (swear
 		impMeta = await getImport(toasterSpecHTML, swearLoc);
 
 
-	td.replace(impMeta.moduleHTMLElement.prototype, 'showPopover', td.func());
-	td.replace(impMeta.moduleHTMLElement.prototype, 'hidePopover', td.func());
+	tdSwap(impMeta.moduleHTMLElement.prototype, 'showPopover', tdFunc());
+	tdSwap(impMeta.moduleHTMLElement.prototype, 'hidePopover', tdFunc());
 
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsgs[0]);
@@ -329,11 +337,11 @@ test("pcs:hand:scribe:devlog should handle multiple noti messages", async (swear
 		new impMeta.moduleWindow.Event('click')
 	);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
-	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
-	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.hidePopover));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleConsole.info));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleHTMLElement.prototype.showPopover));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleHTMLElement.prototype.hidePopover));
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -349,16 +357,16 @@ test("pcs:hand:scribe:devlog should remove dangling noti message", async (swear)
 	let bonafiedResults = [], bonafiedExplntns = [];
 	const
 		swearLoc = {href: "http://localhost:28133/check.spec.mjs"},
-		swearArrIndexOf = td.func(),
+		swearArrIndexOf = tdFunc(),
 		imagineMsg = "A notification message for the log",
 
 		impMeta = await getImport(toasterSpecHTML, swearLoc);
 
 
-	td.replace(impMeta.moduleHTMLElement.prototype, 'showPopover', td.func());
-	td.replace(impMeta.moduleHTMLElement.prototype, 'hidePopover', td.func());
-	td.replace(Array.prototype, 'indexOf', swearArrIndexOf);
-	td.when(Array.prototype.indexOf(td.matchers.anything())).thenReturn(-1);
+	tdSwap(impMeta.moduleHTMLElement.prototype, 'showPopover', tdFunc());
+	tdSwap(impMeta.moduleHTMLElement.prototype, 'hidePopover', tdFunc());
+	tdSwap(Array.prototype, 'indexOf', swearArrIndexOf);
+	tdStub(Array.prototype.indexOf(tdMatches.anything())).thenReturn(-1);
 
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
@@ -367,11 +375,11 @@ test("pcs:hand:scribe:devlog should remove dangling noti message", async (swear)
 		new impMeta.moduleWindow.Event('click')
 	);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
-	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
-	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.hidePopover));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleConsole.info));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleHTMLElement.prototype.showPopover));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleHTMLElement.prototype.hidePopover));
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -392,8 +400,8 @@ test("pcs:hand:scribe:devlog should not show repeat noti message", async (swear)
 		impMeta = await getImport(toasterSpecHTML, swearLoc);
 
 
-	td.replace(impMeta.moduleHTMLElement.prototype, 'showPopover', td.func());
-	td.replace(impMeta.moduleHTMLElement.prototype, 'hidePopover', td.func());
+	tdSwap(impMeta.moduleHTMLElement.prototype, 'showPopover', tdFunc());
+	tdSwap(impMeta.moduleHTMLElement.prototype, 'hidePopover', tdFunc());
 
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
@@ -404,11 +412,11 @@ test("pcs:hand:scribe:devlog should not show repeat noti message", async (swear)
 		new impMeta.moduleWindow.Event('click')
 	);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
-	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
-	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.hidePopover));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleConsole.info));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleHTMLElement.prototype.showPopover));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleHTMLElement.prototype.hidePopover));
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
