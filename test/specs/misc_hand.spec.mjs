@@ -27,7 +27,7 @@ const
 		}
 	},
 
-	getImport = async (mockMarkup) => {
+	getImport = async (mockMarkup = `<!doctype html><html></html>`) => {
 		const
 			{
 				document: _mockDoc,
@@ -246,10 +246,18 @@ test('pcs:hand:misc:startAfter should run without issue', async (swear) => {
 
 
 	impMeta.freshModule.startAfter(`#${swearCurtainSelectorV}`, spinnySelector);
-	impMeta.moduleDoc.querySelector(spinnySelector).dispatchEvent(new impMeta.moduleEvent(swearIterationEvent));
-	impMeta.moduleDoc.querySelector(spinnySelector).dispatchEvent(new impMeta.moduleEvent(swearIterationEvent));
-	impMeta.moduleDoc.querySelector(spinnySelector).dispatchEvent(new impMeta.moduleEvent(swearIterationEvent));
-	bonafiedResult.push(impMeta.moduleDoc.querySelector(`#${swearCurtainSelectorV}`).classList.contains('loading-done'));
+	impMeta.moduleDoc.querySelector(spinnySelector).dispatchEvent(
+		new impMeta.moduleEvent(swearIterationEvent)
+	);
+	impMeta.moduleDoc.querySelector(spinnySelector).dispatchEvent(
+		new impMeta.moduleEvent(swearIterationEvent)
+	);
+	impMeta.moduleDoc.querySelector(spinnySelector).dispatchEvent(
+		new impMeta.moduleEvent(swearIterationEvent)
+	);
+	bonafiedResult.push(
+		impMeta.moduleDoc.querySelector(`#${swearCurtainSelectorV}`).classList.contains('loading-done')
+	);
 
 	impMeta.moduleWindow.addEventListener('kick', () => bonafiedResult.push(true));
 	impMeta.moduleDoc.querySelector(`#${swearCurtainSelectorV}`).dispatchEvent(
