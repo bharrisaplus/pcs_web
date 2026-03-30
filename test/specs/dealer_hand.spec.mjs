@@ -26,10 +26,10 @@ const
 		const
 			_mockHTML = `<!doctype html><html lang="en"><body></body></html>`,
 			_mockScribe = tdObj(['issuelog']),
-			_mockChance = tdObj(),
+			_mockChance = tdObj(['pickset']),
 			{ document: _mockDoc, window: _mockWindow } = linkeParse(_mockHTML),
 
-			mockConsole = tdSwap(globalThis, 'console', tdObj()),
+			mockConsole = tdSwap(globalThis, 'console', tdObj({})),
 			mockWindow = tdSwap(globalThis, 'window', _mockWindow),
 			mockDoc = tdSwap(globalThis, 'document', _mockDoc),
 			mockChance = tdSwap(globalThis, 'chance', _mockChance);
