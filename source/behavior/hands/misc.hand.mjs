@@ -30,7 +30,15 @@ const makeMiscHand = () => {
       $assetDump = document.querySelector(assetDump),
       assetParser = new DOMParser();
 
-    if (!$assetDump || assetMap.size === 0) return;
+    if (assetMap.size === 0) {
+      appLogger.devlog('Nothing to retrieve', {assetMap, assetDump});
+      return false;
+    }
+
+    if (!$assetDump) {
+      appLogger.issuelog('Nowhere to place asset', {assetMap, assetDump}, null);
+      return false;
+    };
 
     for (const [assetGrab, assetCheck] of assetMap) {
       let
@@ -38,7 +46,7 @@ const makeMiscHand = () => {
         assetBlob,
         assetInnards;
 
-      if (document.querySelectorAll(assetCheck).length > 0) {
+      if ($assetDump.querySelectorAll(assetCheck).length > 0) {
         appLogger.devlog(`Found ${assetCheck} asset inlined already`);
         loadCount++;
         continue;
@@ -78,7 +86,7 @@ const makeMiscHand = () => {
       }
     }
 
-    return loadCount === assetMap.size;
+    return (loadCount > 0 && loadCount === assetMap.size);
   };
 
 
