@@ -13,7 +13,7 @@ const makeHostShuttle = () => {
 	/**
 	 * @param  {string} resourceLink {@link URL}
 	 *
-	 * @return {Blob}
+	 * @return {Promise<Blob>}
 	 */
 	const blob_from_url = async (resourceLink) => {
 		let

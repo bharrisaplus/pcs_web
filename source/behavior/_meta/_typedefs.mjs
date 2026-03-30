@@ -119,8 +119,8 @@
  * @typedef {Object} Hand.Misc
  * Handles various tasks
  *
- * @property {function (string, string) :Promise<boolean>} startAfter
- * @property {function (VerifynLoad, string) :void} warmUp
+ * @property {function (string, string) :void} startAfter
+ * @property {function (VerifynLoad, string) :Promise<boolean>} warmUp
  * @property {function (VerifynLoad, string, string, string) :Promise<boolean>} startRoutine
  * @memberof Hand
  */
@@ -130,7 +130,7 @@
  * Card tricks
  *
  * @property {function(number, number) :Readonly<CardIntri>} getCard
- * @property {function(Uint8Array, Uint8Array) :Uint8Array} mixUp
+ * @property {function(number[], number[]) :number[]} mixUp
  * @memberof Hand
  */
 
@@ -176,8 +176,8 @@
  * @property {number[]} cursor
  * @property {string} nextBtn - {@link CSSStyleRule.selectorText}
  * @property {string} prevBtn - {@link CSSStyleRule.selectorText}
- * @property {function(CardIntri)} loadTurntable
- * @property {function(CardIntri)} spinTurntable
+ * @property {function(CardIntri) :void} loadTurntable
+ * @property {function(CardIntri) :void} spinTurntable
  * @memberof Part
  */
 
@@ -234,7 +234,7 @@
  *      <turntable /> <- hud for card closeup - {@link Part.Turntable}
  *    </lattice>
  *
- * @property {function() :void} hookUp
+ * @property {function() :boolean} hookUp
  * @memberof Lattice
  */
 
@@ -248,7 +248,7 @@
  * @typedef {Object} Shuttle.Host
  * Files to retreive from home
  *
- * @property {function() :Promise<Blob>} grabFile
+ * @property {function(string) :Promise<Blob>} grabFile
  * @memberof Shuttle
  */
 
