@@ -20,8 +20,8 @@ const
 		}
 	},
 
-	getImport = async (mockLocSto) => {
-		const mockLocalStorage = tdSwap(globalThis, 'localStorage', mockLocSto);
+	getImport = async (mockLclStrg) => {
+		const mockLocalStorage = tdSwap(globalThis, 'localStorage', mockLclStrg);
 
 		return {
 			/** @type {Bank.Deck} */
@@ -65,9 +65,9 @@ test("pcs:bank:deck should read previous values if available in localstorage", a
 	const
 		// 41|3, 27\12, 49|20
 		swearOrder = [
-			0,  1,  2,  41,  4,  5,  34,  7,  8,  9, 10, 11, 27, 13, 14, 15, 16, 30, 18, 19, 49, 21, 22, 23, 24,
-			25, 26, 12, 28, 29, 17, 31, 32, 33, 6, 35, 36, 37, 38, 39, 40, 3, 42, 43, 44, 45, 46, 47, 48, 20,
-			50, 51
+			0,  1,  2,  41,  4,  5,  34,  7,  8,  9, 10, 11, 27, 13, 14, 15, 16, 30, 18, 19, 49, 21, 22, 23,
+			24, 25, 26, 12, 28, 29, 17, 31, 32, 33, 6, 35, 36, 37, 38, 39, 40, 3, 42, 43, 44, 45, 46, 47, 48,
+			20, 50, 51
 		],
 		swearBGC = 2,
 		swearLSKeyPrefix = 'pcs-shell',
@@ -120,8 +120,8 @@ test("pcs:bank:deck should not read previous values that are stale", async (swea
 		],
 		swearBGC = 2,
 		swearStaleOffset = (1000 * 60 * 60 * 24) * 8,
+		swearLclStrg = tdObj(['setItem', 'removeItem', 'getItem', 'clear']),
 		swearLSKeyPrefix = 'pcs-shell',
-		swearLocalStorage = tdObj(['setItem', 'removeItem', 'getItem', 'clear']),
 		swearLSKeys = [
 			`${swearLSKeyPrefix}:backgroundColor`,
 			`${swearLSKeyPrefix}:backgroundColor:stamp`,
@@ -130,21 +130,21 @@ test("pcs:bank:deck should not read previous values that are stale", async (swea
 		];
 
 
-	tdStub(swearLocalStorage.getItem(swearLSKeys[0])).thenReturn(JSON.stringify(swearBGC));
-	tdStub(swearLocalStorage.getItem(swearLSKeys[1])).thenReturn(JSON.stringify(Date.now() - swearStaleOffset));
-	tdStub(swearLocalStorage.getItem(swearLSKeys[2])).thenReturn(JSON.stringify(swearOrder));
-	tdStub(swearLocalStorage.getItem(swearLSKeys[3])).thenReturn(JSON.stringify(Date.now() - swearStaleOffset));
+	tdStub(swearLclStrg.getItem(swearLSKeys[0])).thenReturn(JSON.stringify(swearBGC));
+	tdStub(swearLclStrg.getItem(swearLSKeys[1])).thenReturn(JSON.stringify(Date.now() - swearStaleOffset));
+	tdStub(swearLclStrg.getItem(swearLSKeys[2])).thenReturn(JSON.stringify(swearOrder));
+	tdStub(swearLclStrg.getItem(swearLSKeys[3])).thenReturn(JSON.stringify(Date.now() - swearStaleOffset));
 
-	impMeta = await getImport(swearLocalStorage);
+	impMeta = await getImport(swearLclStrg);
 
-	bonafiedResults['sel'] = (impMeta.freshModule.choice);
-	bonafiedResults['bgc'] = (impMeta.freshModule.backDrop);
-	bonafiedResults['items'] = (impMeta.freshModule.cards);
+	bonafiedResults['sel'] = impMeta.freshModule.choice;
+	bonafiedResults['bgc'] = impMeta.freshModule.backDrop;
+	bonafiedResults['items'] = impMeta.freshModule.cards;
 
-	bonafiedExplntns.push(tdExpl(swearLocalStorage.setItem));
-	bonafiedExplntns.push(tdExpl(swearLocalStorage.removeItem));
-	bonafiedExplntns.push(tdExpl(swearLocalStorage.getItem));
-	bonafiedExplntns.push(tdExpl(swearLocalStorage.clear));
+	bonafiedExplntns.push(tdExpl(swearLclStrg.setItem));
+	bonafiedExplntns.push(tdExpl(swearLclStrg.removeItem));
+	bonafiedExplntns.push(tdExpl(swearLclStrg.getItem));
+	bonafiedExplntns.push(tdExpl(swearLclStrg.clear));
 	tdClr();
 	delete impMeta.freshModule;
 
