@@ -15,8 +15,7 @@ const
 		egressHand: '../../source/behavior/hands/egress.hand.mjs'
 	},
 
-	// This function modifies globals so always call 'td.reset()' when done (read: before assertions).
-	getImport = async (mockMarkup) => {
+	getImport = async (mockMarkup = defaultSpecHTML) => {
 		const
 			{ Image: _mockImg, document: _mockDoc, window: _mockWindow } = linkeParse(mockMarkup),
 			_mockScribe = td.object(),
@@ -58,7 +57,7 @@ test('pcs:hand:egress:exportTest should run without issue', async (swear) => {
 	const
 		imagineArgument = "Cards:\n====\nThis is for the clipboards",
 
-		impMeta = await getImport(defaultSpecHTML);
+		impMeta = await getImport();
 
 
 	td.when(impMeta.moduleClipboard.writeText(imagineArgument)).thenResolve(undefined);
@@ -92,7 +91,7 @@ test('pcs:hand:egress:exportTest should have issues', async (swear) => {
 			"Cards:\n====\nThis is for the clipboards by the clipboards"
 		],
 
-		impMeta = await getImport(defaultSpecHTML);
+		impMeta = await getImport();
 
 
 	td.when(impMeta.moduleClipboard.writeText(imagineArgs[0])).thenThrow(
