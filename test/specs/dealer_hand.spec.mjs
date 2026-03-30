@@ -4,9 +4,15 @@
 
 import { default as NodeCrypto } from 'node:crypto';
 import { default as test } from 'tape';
-import * as td from 'testdouble';
 import { parseHTML as linkeParse } from 'linkedom';
-
+import {
+	object as tdObj,
+	replace as tdSwap,
+	replaceEsm as tdSwapEsm,
+	explain as tdExpln,
+	reset as tdClr,
+	when as tdStub
+} from 'testdouble';
 
 const
 	modulePaths = {
@@ -19,17 +25,17 @@ const
 	getImport = async () => {
 		const
 			_mockHTML = `<!doctype html><html lang="en"><body></body></html>`,
-			_mockScribe = td.object(['issuelog']),
-			_mockChance = td.object(),
+			_mockScribe = tdObj(['issuelog']),
+			_mockChance = tdObj(),
 			{ document: _mockDoc, window: _mockWindow } = linkeParse(_mockHTML),
 
-			mockConsole = td.replace(globalThis, 'console', td.object()),
-			mockWindow = td.replace(globalThis, 'window', _mockWindow),
-			mockDoc = td.replace(globalThis, 'document', _mockDoc),
-			mockChance = td.replace(globalThis, 'chance', _mockChance);
+			mockConsole = tdSwap(globalThis, 'console', tdObj()),
+			mockWindow = tdSwap(globalThis, 'window', _mockWindow),
+			mockDoc = tdSwap(globalThis, 'document', _mockDoc),
+			mockChance = tdSwap(globalThis, 'chance', _mockChance);
 
 
-		await td.replaceEsm(modulePaths.hands.scribe, null, _mockScribe);
+		await tdSwapEsm(modulePaths.hands.scribe, null, _mockScribe);
 
 		return {
 			freshModule: (await import(`${modulePaths.hands.dealer}?v=${NodeCrypto.randomUUID()}`)).default,
@@ -69,9 +75,9 @@ test('pcs:hand:dealer:getCard should return good intri', async (swear) => {
 		bonafiedResult.push(dealerHand.getCard(posPair[0], posPair[1]));
 	}
 
-	bonafiedExpln = td.explain(impMeta.moduleLogger.issuelog);
+	bonafiedExpln = tdExpln(impMeta.moduleLogger.issuelog);
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -110,9 +116,9 @@ test('pcs:hand:dealer:getCard should return bad intri', async (swear) => {
 		bonafiedResult.push(dealerHand.getCard(posPair[0], posPair[1]));
 	}
 
-	bonafiedExpln = td.explain(impMeta.moduleLogger.issuelog);
+	bonafiedExpln = tdExpln(impMeta.moduleLogger.issuelog);
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -153,10 +159,10 @@ test('pcs:hand:dealer:mixUp should return shuffled', async (swear) => {
 
 
 	for (let chkIdx = 0; chkIdx < swearCardLists.length; chkIdx++) {
-		td.when(
+		tdStub(
 			impMeta.moduleChanceJS.pickset(swearCardLists[chkIdx], swearCardLists[chkIdx].length)
 		).thenReturn(Array.from(swearCardLists[chkIdx]));
-		td.when(
+		tdStub(
 			impMeta.moduleChanceJS.pickset(swearPosLists[chkIdx], swearPosLists[chkIdx].length)
 		).thenReturn(Array.from(swearPosLists[chkIdx]));
 		
@@ -165,9 +171,9 @@ test('pcs:hand:dealer:mixUp should return shuffled', async (swear) => {
 		);
 	}
 
-	bonafiedExpln = td.explain(impMeta.moduleLogger.issuelog);
+	bonafiedExpln = tdExpln(impMeta.moduleLogger.issuelog);
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -212,10 +218,10 @@ test('pcs:hand:dealer:mixUp should return non-shuffled', async (swear) => {
 
 
 	for (let chkIdx = 0; chkIdx < swearCardLists.length; chkIdx++) {
-		td.when(
+		tdStub(
 			impMeta.moduleChanceJS.pickset(swearCardLists[chkIdx], swearCardLists[chkIdx].length)
 		).thenReturn(Array.from(swearCardLists[chkIdx]));
-		td.when(
+		tdStub(
 			impMeta.moduleChanceJS.pickset(swearPosLists[chkIdx], swearPosLists[chkIdx].length)
 		).thenReturn(Array.from(swearPosLists[chkIdx]));
 		
@@ -224,9 +230,9 @@ test('pcs:hand:dealer:mixUp should return non-shuffled', async (swear) => {
 		);
 	}
 
-	bonafiedExpln = td.explain(impMeta.moduleLogger.issuelog);
+	bonafiedExpln = tdExpln(impMeta.moduleLogger.issuelog);
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
