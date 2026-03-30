@@ -45,6 +45,16 @@ const
 			mockHostSh = td.object(['grabFile']);
 
 
+		// Keep this around until linkedom has a TransitionEvent
+		class TransitionEvent extends mockEvent {
+			constructor(type = "transitionend", eventInitDict = {}) {
+				super(type, eventInitDict);
+				this.propertyName = "opacity";
+			}
+		}
+
+
+		td.replace(globalThis, 'TransitionEvent', TransitionEvent);
 		await td.replaceEsm(modulePaths.hand.scribe, null, _mockScribe);
 		await td.replaceEsm(modulePaths.shuttle.host, null, () => mockHostSh);
 
@@ -56,6 +66,7 @@ const
 			moduleWindow: mockWindow,
 			moduleEvent: mockEvent,
 			moduleCustomEvent: mockCustomEvt,
+			moduleTransitionEvent: TransitionEvent,
 			moduleDoc: mockDoc,
 			moduleDomParser: mockDomParser,
 			moduleLogger: _mockScribe,
@@ -227,15 +238,12 @@ test('pcs:hand:misc:startAfter should run without issue', async (swear) => {
 	let bonafiedResult = [], bonafiedExplntns = [];
 	const
   		swearIterationEvent = 'animationiteration',
-  		swearEndEvent = 'transitionend',
 		swearCurtainSelectorV = 'pageload-curtain',
 		swearCurtain = `<div id="${swearCurtainSelectorV}">${loadingIndicator}</div>`,
 		swearHTML = `<!doctype html><html lang="en"><body>${swearCurtain}</body></html>`,
 
 		impMeta = await getImport(swearHTML);
 
-
-	impMeta.moduleEvent.prototype['propertyName'] = "opacity";
 
 	impMeta.freshModule.startAfter(`#${swearCurtainSelectorV}`, spinnySelector);
 	impMeta.moduleDoc.querySelector(spinnySelector).dispatchEvent(new impMeta.moduleEvent(swearIterationEvent));
@@ -244,7 +252,9 @@ test('pcs:hand:misc:startAfter should run without issue', async (swear) => {
 	bonafiedResult.push(impMeta.moduleDoc.querySelector(`#${swearCurtainSelectorV}`).classList.contains('loading-done'));
 
 	impMeta.moduleWindow.addEventListener('kick', () => bonafiedResult.push(true));
-	impMeta.moduleDoc.querySelector(`#${swearCurtainSelectorV}`).dispatchEvent(new impMeta.moduleEvent(swearEndEvent));
+	impMeta.moduleDoc.querySelector(`#${swearCurtainSelectorV}`).dispatchEvent(
+		new impMeta.moduleTransitionEvent()
+	);
 	bonafiedResult.push(impMeta.moduleDoc.querySelectorAll(`#${swearCurtainSelectorV}`).length == 0);
 
 	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.devlog));
