@@ -113,6 +113,7 @@ const makeScribeHand = () => {
 	};
 
 
+	// @ts-ignore
 	window['devToast'] = console_free ? (thisHere) => { log_notification(thisHere) } : undefined;
 
 	return Object.freeze({

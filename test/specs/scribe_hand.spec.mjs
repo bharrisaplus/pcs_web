@@ -20,7 +20,7 @@ const
 	modulePath = '../../source/behavior/hands/scribe.hand.mjs',
 
 	// This function modifies globals so always call 'td.reset()' when done (read: before assertions).
-	getImport = async (mockMarkup, mockLocation) => {
+	getImport = async (mockMarkup = `<!doctype html><html></html>`, mockLocation = {href:'localhost://'}) => {
 		const
 			{
 				HTMLElement: mockHTMLElem,
@@ -58,6 +58,7 @@ test("pcs:hand:scribe:devlog should use console use based on url", async (swear)
 
 
 	swear.plan(1);
+	// @ts-ignore
 	swear.isEqual(typeof impMeta.moduleWindow['devToast'], "function", "add debug function to window");
 });
 
@@ -74,6 +75,7 @@ test("pcs:hand:scribe:devlog should use console use based on url", async (swear)
 
 
 	swear.plan(1);
+	// @ts-ignore
 	swear.isEqual(typeof impMeta.moduleWindow['devToast'], "function", "add debug function to window");
 });
 
@@ -90,6 +92,7 @@ test("pcs:hand:scribe:devlog should use console use based on url", async (swear)
 
 
 	swear.plan(1);
+	// @ts-ignore
 	swear.isEqual(typeof impMeta.moduleWindow['devToast'], "function", "add debug function to window");
 });
 
@@ -105,6 +108,7 @@ test("pcs:hand:scribe:devlog should not use console use based on url", async (sw
 
 
 	swear.plan(1);
+	// @ts-ignore
 	swear.isEqual(typeof impMeta.moduleWindow['devToast'], "undefined", "no add debug function");
 });
 
@@ -120,6 +124,7 @@ test("pcs:hand:scribe:devlog should not use console use based on url", async (sw
 
 
 	swear.plan(1);
+	// @ts-ignore
 	swear.isEqual(typeof impMeta.moduleWindow['devToast'], "undefined", "no add debug function");
 });
 
@@ -231,7 +236,9 @@ test("pcs:hand:scribe:devlog should log noti message", async (swear) => {
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(new impMeta.moduleWindow.Event('click'));
+	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(
+		new impMeta.moduleWindow.Event('click')
+	);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
 	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
@@ -264,7 +271,9 @@ test("pcs:hand:scribe:devlog should not log noti message", async (swear) => {
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(new impMeta.moduleWindow.Event('click'));
+	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(
+		new impMeta.moduleWindow.Event('click')
+	);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
 	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
@@ -308,11 +317,17 @@ test("pcs:hand:scribe:devlog should handle multiple noti messages", async (swear
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsgs[3]);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(new impMeta.moduleWindow.Event('click'));
+	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(
+		new impMeta.moduleWindow.Event('click')
+	);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(new impMeta.moduleWindow.Event('click'));
+	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(
+		new impMeta.moduleWindow.Event('click')
+	);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(new impMeta.moduleWindow.Event('click'));
+	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(
+		new impMeta.moduleWindow.Event('click')
+	);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
 	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
@@ -348,7 +363,9 @@ test("pcs:hand:scribe:devlog should remove dangling noti message", async (swear)
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(new impMeta.moduleWindow.Event('click'));
+	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(
+		new impMeta.moduleWindow.Event('click')
+	);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
 	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
@@ -383,7 +400,9 @@ test("pcs:hand:scribe:devlog should not show repeat noti message", async (swear)
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	impMeta.freshModule.notilog(imagineMsg);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
-	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(new impMeta.moduleWindow.Event('click'));
+	impMeta.moduleDoc.querySelector('button.toast-close').dispatchEvent(
+		new impMeta.moduleWindow.Event('click')
+	);
 	bonafiedResults.push(impMeta.moduleDoc.querySelectorAll('button.toast-close').length);
 	bonafiedExplntns.push(td.explain(impMeta.moduleConsole.info));
 	bonafiedExplntns.push(td.explain(impMeta.moduleHTMLElement.prototype.showPopover));
