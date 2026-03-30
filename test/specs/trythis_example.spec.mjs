@@ -15,7 +15,7 @@ import {
 
 
 const
-	defaultSpecHTML = `<!doctype html><html lang="en"><body></body></html>`,
+	defaultSpecHTML = `<!doctype html><html><body></body></html>`,
 	modulePaths = {
 		scribeHand: '../../source/behavior/hands/scribe.hand.mjs',
 		trythisExample: '../../source/behavior/trythis.example.mjs'

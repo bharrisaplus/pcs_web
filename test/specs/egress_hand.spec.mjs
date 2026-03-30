@@ -22,7 +22,7 @@ import {
 class notXMLSerializer { serializeToString(/** @type {Node} */ _){ return ""; } };
 
 const
-	defaultSpecHTML = `<!doctype html><html lang="en"><body></body></html>`,
+	defaultSpecHTML = `<!doctype html><html><body></body></html>`,
 	modulePaths = {
 		scribeHand: '../../source/behavior/hands/scribe.hand.mjs',
 		egressHand: '../../source/behavior/hands/egress.hand.mjs'

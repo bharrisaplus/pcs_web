@@ -28,7 +28,7 @@ const
 
 	getImport = async () => {
 		const
-			_mockHTML = `<!doctype html><html lang="en"><body></body></html>`,
+			_mockHTML = `<!doctype html><html><body></body></html>`,
 			_mockScribe = tdObj(['issuelog']),
 			{ document: _mockDoc, window: _mockWindow } = linkeParse(_mockHTML),
 

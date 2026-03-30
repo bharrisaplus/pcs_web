@@ -14,7 +14,7 @@ import { parseHTML as linkeParse } from 'linkedom';
 const
 	contentDir = NodeProcess.env.CONTENT_DIR || NodePath.resolve('../../source/contnet'),
 	toastTemplate = pugFile(NodePath.resolve(contentDir, './document/partials/template_toast.pug'), {}),
-	defaultSpecHTML = `<!doctype html><html lang="en"><body></body></html>`,
+	defaultSpecHTML = `<!doctype html><html><body></body></html>`,
 	notiMarkup = `<div id="notifications" popover="manual"></div>`,
 	toasterSpecHTML = `<!doctype html><html lang="en"><body>${notiMarkup}${toastTemplate}</body></html>`,
 	modulePath = '../../source/behavior/hands/scribe.hand.mjs',
