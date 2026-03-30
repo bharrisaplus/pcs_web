@@ -137,20 +137,20 @@ test('pcs:hand:dealer:mixUp should return shuffled', async (swear) => {
 	let bonafiedResult = [], bonafiedExpln;
 	const
 		swearCardLists = [
-			Uint8Array.from([1,2,3,4,5,6,7,8]),
-			Uint8Array.from([0,3,5,67,45,100,11,12,90,74,33,21,84]),
-			Uint8Array.from([
+			[1,2,3,4,5,6,7,8],
+			[0,3,5,67,45,100,11,12,90,74,33,21,84],
+			[
 				49,26,23,4,9,46,29,24,44,47,32,34,7,48,17,22,5,39,42,20,18,31,50,16,43,51,12,10,3,38,27,21,33,
 				14,8,1,37,11,41,45,15,0,36,35,2,30,25,40,28,6,19,13
-			])
+			]
 		],
 		swearPosLists = [
-			Uint8Array.from([0,1,2,3,4,5,6,7]),
-			Uint8Array.from([0,1,2,3,4,5,6,7,8,9,10,11,12]),
-			Uint8Array.from([
+			[0,1,2,3,4,5,6,7],
+			[0,1,2,3,4,5,6,7,8,9,10,11,12],
+			[
 				0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,
 				35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51
-			])
+			]
 		],
 
 		impMeta = await getImport(),
@@ -196,20 +196,20 @@ test('pcs:hand:dealer:mixUp should return non-shuffled', async (swear) => {
 	let bonafiedResult = [], bonafiedExpln;
 	const
 		swearCardLists = [
-			Uint8Array.from([]),
-			Uint8Array.from([0,3,5,67,45,100,11,12,90,74,33,21,84]),
-			Uint8Array.from([
+			[],
+			[0,3,5,67,45,100,11,12,90,74,33,21,84],
+			[
 				49,26,23,4,9,46,29,24,44,47,32,34,7,48,17,22,52,39,42,20,18,31,50,16,43,51,
 				12,10,3,38,27,21,33,14,8,1,37,11,41,45,15,0,36,35,2,30,25,40,28,6,19,13,5
-			])
+			]
 		],
 		swearPosLists = [
-			Uint8Array.from([]),
-			Uint8Array.from([0,1,2,3,4,5,6,7,8,9,10,11]),
-			Uint8Array.from([
+			[],
+			[0,1,2,3,4,5,6,7,8,9,10,11],
+			[
 				0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,
 				35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,52
-			])
+			]
 		],
 
 		impMeta = await getImport(),
@@ -236,22 +236,7 @@ test('pcs:hand:dealer:mixUp should return non-shuffled', async (swear) => {
 	delete impMeta.freshModule;
 
 
-	swear.plan(7);
+	swear.plan(2);
 	swear.isEqual(bonafiedExpln.callCount, 3, 'Should log issues');
-	swear.isEqual((bonafiedResult.flat()).length, (swearCardLists.flat()).length, 'Should keep all elements');
-	swear.isEqual(bonafiedResult[0].length, 0,
-		"Should be blank"
-	);
-	swear.isEqual(`${bonafiedResult[1][0]}${bonafiedResult[1][1]}`, '00',
-		"Should be blank"
-	);
-	swear.isEqual(`${bonafiedResult[1][0]}${bonafiedResult[1][bonafiedResult.length-1]}`, '00',
-		"Should be blank"
-	);
-	swear.isEqual(`${bonafiedResult[2][0]}${bonafiedResult[2][1]}`, '00',
-		"Should be blank"
-	);
-	swear.isEqual(`${bonafiedResult[2][0]}${bonafiedResult[2][bonafiedResult.length-1]}`, '00',
-		"Should be blank"
-	);
+	swear.isEqual((bonafiedResult.flat()).length, 0, 'Should be blank');
 });

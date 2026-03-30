@@ -74,19 +74,19 @@ const makeDealerHand = () => {
 
 
   /**
-   * @param  {Uint8Array} cardList
-   * @param  {Uint8Array} positionList
+   * @param  {number[]} cardList
+   * @param  {number[]} positionList
    *
-   * @return {Uint8Array}
+   * @return {number[]}
    */
   const pcs_shuffle = (cardList, positionList) => {
     let
       card_sample,
-      position_sample;
+      position_sample,
+      result;
 
-    const result = Uint8Array.from({length: cardList.length});
-
-    if (result.length > 0 && result.length <= _g.c_Max && result.length === positionList.length) {
+    if (cardList.length > 0 && cardList.length <= _g.c_Max && cardList.length === positionList.length) {
+      result = Array(cardList.length).fill(0);
       card_sample = chance.pickset(cardList, cardList.length);
       position_sample = chance.pickset(positionList, positionList.length);
 
@@ -102,6 +102,7 @@ const makeDealerHand = () => {
       }
     } else {
       appLogger.issuelog("Can't shuffle mismatched array size", {cardList, positionList}, false, false);
+      result = [];
     }
 
     return result;

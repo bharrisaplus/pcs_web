@@ -183,7 +183,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
       return;
     }
 
-    itemVault.updateCards(shark.mixUp(itemVault.ucards, itemVault.ndoUCards));
+    itemVault.updateCards(shark.mixUp(itemVault.cards, itemVault.ndoCards));
 
     mixList = itemVault.cards.map((_itm, _idx) => {
       return shark.getCard(_idx, itemVault.ndoCards.indexOf(_itm));
