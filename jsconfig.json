@@ -33,10 +33,14 @@
 			"WebWorker"
 		],
 		"module": "esnext",
+		"moduleResolution": "bundler",
 		"target": "esnext",
 		"types": [
 			"node",
 			"./source/behavior/_meta/_.d.ts"
 		]
+	},
+	"typedocOptions": {
+		"jsDocCompatibility": true
 	}
 }
