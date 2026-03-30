@@ -145,7 +145,9 @@ test("pcs:hand:egress:generateImage should run without issue", async (swear) => 
 	impMeta.moduleImg.prototype.decode = td.func();
 	td.when(new impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
 	td.when(impMeta.moduleCanvasInst.getContext('2d')).thenReturn(td.object(['drawImage']));
-	td.when(impMeta.moduleXMLSInst.serializeToString(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
+	td.when(impMeta.moduleXMLSInst.serializeToString(td.matchers.anything())).thenReturn(
+		swearSVG.toWellFormed()
+	);
 	td.when(impMeta.moduleImg.prototype.decode()).thenResolve(undefined);
 	td.when(impMeta.moduleCanvasInst.toDataURL()).thenReturn("12d34");
 
@@ -229,7 +231,9 @@ test("pcs:hand:egress:generateImage should have issues (cont)", async (swear) =>
 	impMeta.moduleImg.prototype.decode = td.func();
 	td.when(new impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
 	td.when(impMeta.moduleCanvasInst.getContext('2d')).thenReturn(td.object(['drawImage']));
-	td.when(impMeta.moduleXMLSInst.serializeToString(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
+	td.when(impMeta.moduleXMLSInst.serializeToString(td.matchers.anything())).thenReturn(
+		swearSVG.toWellFormed()
+	);
 
 	td.when(impMeta.moduleCanvasInst.toDataURL()).thenThrow(new DOMException('darn', 'SecurityError'));
 	bonafiedResults.push(
@@ -275,7 +279,9 @@ test("pcs:hand:egress:generateImage should have issues (cont'd)", async (swear) 
 
 	td.when(new impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
 	td.when(impMeta.moduleCanvasInst.getContext('2d')).thenReturn(swear2DCTX);
-	td.when(impMeta.moduleXMLSInst.serializeToString(td.matchers.anything())).thenReturn(swearSVG.toWellFormed());
+	td.when(impMeta.moduleXMLSInst.serializeToString(td.matchers.anything())).thenReturn(
+		swearSVG.toWellFormed()
+	);
 
 	bonafiedResult = await impMeta.freshModule.generateImage("#333", swearSpriteList, `#${swearSVGSelector}`);
 
