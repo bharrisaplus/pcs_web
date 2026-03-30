@@ -6,9 +6,16 @@ import { default as NodeProcess } from 'node:process';
 import { default as NodePath } from 'node:path';
 import { default as NodeCrypto } from 'node:crypto';
 import { default as test } from 'tape';
-import * as td from 'testdouble';
 import { renderFile as pugFile } from 'pug';
 import { DOMParser as linkedomParser, parseHTML as linkeParse } from 'linkedom';
+import {
+	object as tdObj,
+	replace as tdSwap,
+	replaceEsm as tdSwapEsm,
+	when as tdStub,
+	explain as tdExpln,
+	reset as tdClr
+} from 'testdouble';
 
 
 const
@@ -35,14 +42,14 @@ const
 				CustomEvent: _mockCustomEvent,
 				window: _mockWindow
 			} = linkeParse(mockMarkup),
-			_mockScribe = td.object(['devlog', 'issuelog']),
+			_mockScribe = tdObj(['devlog', 'issuelog']),
 
-			mockConsole = td.replace(globalThis, 'console', td.object()),
-			mockWindow = td.replace(globalThis, 'window', _mockWindow),
-			mockDoc = td.replace(globalThis, 'document', _mockDoc),
-			mockDomParser = td.replace(globalThis, 'DOMParser', linkedomParser),
-			mockCustomEvt = td.replace(globalThis, 'CustomEvent', _mockCustomEvent),
-			mockHostSh = td.object(['grabFile']);
+			mockConsole = tdSwap(globalThis, 'console', tdObj()),
+			mockWindow = tdSwap(globalThis, 'window', _mockWindow),
+			mockDoc = tdSwap(globalThis, 'document', _mockDoc),
+			mockDomParser = tdSwap(globalThis, 'DOMParser', linkedomParser),
+			mockCustomEvt = tdSwap(globalThis, 'CustomEvent', _mockCustomEvent),
+			mockHostSh = tdObj(['grabFile']);
 
 
 		// Keep this around until linkedom has a TransitionEvent
@@ -54,9 +61,9 @@ const
 		}
 
 
-		td.replace(globalThis, 'TransitionEvent', TransitionEvent);
-		await td.replaceEsm(modulePaths.hand.scribe, null, _mockScribe);
-		await td.replaceEsm(modulePaths.shuttle.host, null, () => mockHostSh);
+		tdSwap(globalThis, 'TransitionEvent', TransitionEvent);
+		await tdSwapEsm(modulePaths.hand.scribe, null, _mockScribe);
+		await tdSwapEsm(modulePaths.shuttle.host, null, () => mockHostSh);
 
 
 		return {
@@ -97,14 +104,14 @@ test("pcs:hand:misc:warmUp should run without issue", async (swear) => {
 		impMeta = await getImport(swearHTML);
 
 
-	td.when(impMeta.moduleAPI.grabFile(swearGrabUrl)).thenResolve(swearBlob);
+	tdStub(impMeta.moduleAPI.grabFile(swearGrabUrl)).thenResolve(swearBlob);
 
 	bonafiedResult = await impMeta.freshModule.warmUp(swearAssets, `#${swearDumpSelectorV}`);
 
-	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.devlog));
-	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.issuelog));
-	bonafiedExplntns.push(td.explain(impMeta.moduleAPI.grabFile));
-	td.reset();
+	bonafiedExplntns.push(tdExpln(impMeta.moduleLogger.devlog));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleLogger.issuelog));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleAPI.grabFile));
+	tdClr();
 
 
 	swear.plan(6);
@@ -150,11 +157,11 @@ test('pcs:hand:misc:warmUp should have issues', async (swear) => {
 	impMeta.moduleDoc.querySelector(`#${swearCheckSelectorV}`).remove();
 	bonafiedResult.push(await impMeta.freshModule.warmUp(swearAssets, `#${swearDumpSelectorV}`));
 
-	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.devlog));
-	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.issuelog));
-	bonafiedExplntns.push(td.explain(impMeta.moduleAPI.grabFile));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleLogger.devlog));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleLogger.issuelog));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleAPI.grabFile));
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -201,19 +208,19 @@ test("pcs:hand:misc:warmUp should have issues cont'd", async (swear) => {
 		impMeta = await getImport(swearHTML);
 
 
-	td.when(impMeta.moduleAPI.grabFile(swearGrabUrl)).thenReturn(null);
+	tdStub(impMeta.moduleAPI.grabFile(swearGrabUrl)).thenReturn(null);
 	bonafiedResult = await impMeta.freshModule.warmUp(swearAssets, `#${swearDumpSelectorV}`);
-	td.when(impMeta.moduleAPI.grabFile(swearGrabUrl)).thenReturn(new Blob());
+	tdStub(impMeta.moduleAPI.grabFile(swearGrabUrl)).thenReturn(new Blob());
 	bonafiedResult = await impMeta.freshModule.warmUp(swearAssets, `#${swearDumpSelectorV}`);
-	td.when(impMeta.moduleAPI.grabFile(swearGrabUrl)).thenReturn(swearBlob);
+	tdStub(impMeta.moduleAPI.grabFile(swearGrabUrl)).thenReturn(swearBlob);
 	bonafiedResult = await impMeta.freshModule.warmUp(swearAssets, `#${swearDumpSelectorV}`);
 
 
-	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.devlog));
-	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.issuelog));
-	bonafiedExplntns.push(td.explain(impMeta.moduleAPI.grabFile));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleLogger.devlog));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleLogger.issuelog));
+	bonafiedExplntns.push(tdExpln(impMeta.moduleAPI.grabFile));
 
-	td.reset();
+	tdClr();
 	delete impMeta.freshModule;
 
 
@@ -265,8 +272,8 @@ test('pcs:hand:misc:startAfter should run without issue', async (swear) => {
 	);
 	bonafiedResult.push(impMeta.moduleDoc.querySelectorAll(`#${swearCurtainSelectorV}`).length == 0);
 
-	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.devlog));
-	td.reset();
+	bonafiedExplntns.push(tdExpln(impMeta.moduleLogger.devlog));
+	tdClr();
 
 
 	swear.plan(6);
@@ -294,8 +301,8 @@ test("pcs:hand:misc:startAfter should run without issue (cont'd)", async (swear)
 	bonafiedResult.push(impMeta.moduleDoc.querySelectorAll(`#${swearCurtainSelectorV}`).length == 1);
 	impMeta.moduleDoc.querySelector(`#${swearCurtainSelectorV}`).remove();
 	impMeta.freshModule.startAfter(`#${swearCurtainSelectorV}`, spinnySelector);
-	bonafiedExplntns.push(td.explain(impMeta.moduleLogger.devlog));
-	td.reset();
+	bonafiedExplntns.push(tdExpln(impMeta.moduleLogger.devlog));
+	tdClr();
 
 
 	swear.plan(4);
