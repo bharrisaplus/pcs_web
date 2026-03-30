@@ -19,6 +19,8 @@ import {
 } from 'testdouble';
 
 
+class notXMLSerializer { serializeToString(/** @type {Node} */ _){ return ""; } };
+
 const
 	defaultSpecHTML = `<!doctype html><html lang="en"><body></body></html>`,
 	modulePaths = {
@@ -31,7 +33,7 @@ const
 			{ Image: _mockImg, document: _mockDoc, window: _mockWindow } = linkeParse(mockMarkup),
 			_mockScribe = tdObj(['issuelog']),
 			_mockCanvas = tdCnstrct(_mockWindow.HTMLCanvasElement),
-			_mockXMLS = tdCnstrct(['serializeToString']),
+			_mockXMLS = tdCnstrct(notXMLSerializer),
 
 			mockConsole = tdSwap(globalThis, 'console', tdObj({})),
 			mockWindow = tdSwap(globalThis, 'window', _mockWindow),
