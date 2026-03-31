@@ -94,6 +94,15 @@
 
 
 /**
+ * @typedef {Object} NotificationToast
+ * An update about something at runtime
+ *
+ * @property {HTMLElement} $elm
+ * @property {AbortController} cancel
+ */
+
+
+/**
  * @namespace Bank
  * Where and How data is stored; Vaults/Stores
  */
