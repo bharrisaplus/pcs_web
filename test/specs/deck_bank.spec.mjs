@@ -47,7 +47,7 @@ test.skip("pcs:bank:deck should check for previous values if localstorage availa
 	bonafiedExplntns.push(tdExpl(swearLocalStorage.getItem));
 	bonafiedExplntns.push(tdExpl(swearLocalStorage.clear));
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(6);
@@ -96,7 +96,7 @@ test("pcs:bank:deck should read previous values if available in localstorage", a
 	bonafiedExplntns.push(tdExpl(swearLocalStorage.getItem));
 	bonafiedExplntns.push(tdExpl(swearLocalStorage.clear));
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(7);
@@ -146,7 +146,7 @@ test("pcs:bank:deck should not read previous values that are stale", async (swea
 	bonafiedExplntns.push(tdExpl(swearLclStrg.getItem));
 	bonafiedExplntns.push(tdExpl(swearLclStrg.clear));
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(7);
