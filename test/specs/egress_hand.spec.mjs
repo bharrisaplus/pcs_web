@@ -34,16 +34,16 @@ const
 			_mockScribe = tdObj(['issuelog']),
 			_mockCanvas = tdCnstrct(_mockWindow.HTMLCanvasElement),
 			_mockXMLS = tdCnstrct(notXMLSerializer),
+			mockCanvasInst = tdInst(_mockCanvas),
 
 			mockConsole = tdSwap(globalThis, 'console', tdObj({})),
 			mockWindow = tdSwap(globalThis, 'window', _mockWindow),
 			mockDoc = tdSwap(globalThis, 'document', _mockDoc),
+			mockCreateElement = tdSwap(mockDoc, 'createElement', tdFunc()),
 			mockXMLS = tdSwap(globalThis, 'XMLSerializer', _mockXMLS),
 			mockXMLSInst = tdInst(_mockXMLS),
 			mockClip = tdSwap(navigator, 'clipboard', tdObj(['writeText'])),
-			mockImgElm = tdSwap(globalThis, 'Image', _mockImg),
-			mockCanvas = tdSwap(globalThis, 'OffscreenCanvas', _mockCanvas),
-			mockCanvasInst = tdInst(_mockCanvas);
+			mockImgElm = tdSwap(globalThis, 'Image', _mockImg);
 
 
 		await tdSwapEsm(modulePaths.scribeHand, null, _mockScribe);
@@ -54,11 +54,12 @@ const
 			moduleConsole: mockConsole,
 			moduleWindow: mockWindow,
 			moduleDoc: mockDoc,
+			moduleDocCreateElement: mockCreateElement,
 			moduleXMLS: mockXMLS,
 			moduleXMLSInst: mockXMLSInst,
 			moduleClipboard: mockClip,
 			moduleImg: mockImgElm,
-			moduleCanvas: mockCanvas,
+			moduleCanvas: _mockCanvas,
 			moduleCanvasInst: mockCanvasInst,
 			moduleLogger: _mockScribe
 		};
@@ -155,7 +156,7 @@ test("pcs:hand:egress:generateImage should run without issue", async (swear) => 
 
 
 	impMeta.moduleImg.prototype.decode = tdFunc();
-	tdStub(new impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
+	tdStub(impMeta.moduleDocCreateElement('canvas')).thenReturn(impMeta.moduleCanvasInst);
 	tdStub(impMeta.moduleCanvasInst.getContext('2d')).thenReturn(tdObj(['drawImage']));
 	tdStub(impMeta.moduleXMLSInst.serializeToString(tdMatches.anything())).thenReturn(swearSVG.toWellFormed());
 	tdStub(impMeta.moduleImg.prototype.decode()).thenResolve(undefined);
@@ -196,7 +197,7 @@ test("pcs:hand:egress:generateImage should have issues", async (swear) => {
 
 
 	impMeta.moduleImg.prototype.decode = tdFunc();
-	tdStub(new impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
+	tdStub(impMeta.moduleDocCreateElement('canvas')).thenReturn(impMeta.moduleCanvasInst);
 	tdStub(impMeta.moduleCanvasInst.getContext('2d')).thenReturn(tdObj(['drawImage']));
 
 	bonafiedResults.push(
@@ -239,7 +240,7 @@ test("pcs:hand:egress:generateImage should have issues (cont)", async (swear) =>
 
 
 	impMeta.moduleImg.prototype.decode = tdFunc();
-	tdStub(new impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
+	tdStub(impMeta.moduleDocCreateElement('canvas')).thenReturn(impMeta.moduleCanvasInst);
 	tdStub(impMeta.moduleCanvasInst.getContext('2d')).thenReturn(tdObj(['drawImage']));
 	tdStub(impMeta.moduleXMLSInst.serializeToString(tdMatches.anything())).thenReturn(swearSVG.toWellFormed());
 
@@ -285,7 +286,7 @@ test("pcs:hand:egress:generateImage should have issues (cont'd)", async (swear) 
 
 	impMeta.moduleImg.prototype.decode = tdFunc();
 
-	tdStub(new impMeta.moduleCanvas(0, 0)).thenReturn(impMeta.moduleCanvasInst);
+	tdStub(impMeta.moduleDocCreateElement('canvas')).thenReturn(impMeta.moduleCanvasInst);
 	tdStub(impMeta.moduleCanvasInst.getContext('2d')).thenReturn(swear2DCTX);
 	tdStub(impMeta.moduleXMLSInst.serializeToString(tdMatches.anything())).thenReturn(swearSVG.toWellFormed());
 
