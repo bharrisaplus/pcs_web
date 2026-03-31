@@ -27,7 +27,7 @@ const makeEgressHand = () => {
 			result = true
 		} catch (clipboardError) {
 			if (clipboardError instanceof DOMException && clipboardError.name === "NotAllowedError"){
-				appLogger.issuelog("Clipboard permission needed", false, false, false);
+				appLogger.issuelog("Clipboard permission needed", false, null, false);
 			} else {
 				appLogger.issuelog("Issue occured copying to clipboard", {cpyTxt}, clipboardError);
 			}
@@ -63,7 +63,7 @@ const makeEgressHand = () => {
 		const $ogSpriteSheet = document.querySelector(spriteSheet);
 
 		if (!$ogSpriteSheet || !($ogSpriteSheet instanceof window.SVGElement) || spriteList.length < 52) {
-			appLogger.issuelog("Missing components for image download", {spriteList, spriteSheet}, false);
+			appLogger.issuelog("Missing components for image download", {spriteList, spriteSheet}, null);
 		} else {
 			$spriteSheet = $ogSpriteSheet.cloneNode(true).firstChild.parentElement;
 			$backdrop = $spriteSheet.querySelector(`defs symbol rect`)

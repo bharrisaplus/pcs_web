@@ -1,6 +1,6 @@
 
 /**
- * @import {CSSelector, CardIntri, Hand} from '../_meta/_typedefs.mjs'
+ * @import {CardIntri, Hand} from '../_meta/_typedefs.mjs'
  */
 
 import { default as _g } from '../_meta/_glods.mjs';
@@ -54,7 +54,7 @@ const makeDealerHand = () => {
           _symbl = `${_suite[0].toLowerCase()}${ndoPos}`;
           break;
         }
-        default: appLogger.issuelog("Can't create card for position", {curPos, ndoPos}, false, false);
+        default: appLogger.issuelog("Can't create card for position", {curPos, ndoPos}, null, false);
       }
 
       result = Object.freeze({
@@ -65,7 +65,7 @@ const makeDealerHand = () => {
         symbolRef: `#${_symbl}`
       });
     } else {
-      appLogger.issuelog("Can't create card for position", {curPos, ndoPos}, false, false);
+      appLogger.issuelog("Can't create card for position", {curPos, ndoPos}, null, false);
       result = Object.freeze(result);
     }
 
@@ -101,7 +101,7 @@ const makeDealerHand = () => {
         position_sample.splice(_pos_idx, 1);
       }
     } else {
-      appLogger.issuelog("Can't shuffle mismatched array size", {cardList, positionList}, false, false);
+      appLogger.issuelog("Can't shuffle mismatched array size", {cardList, positionList}, null, false);
       result = [];
     }
 

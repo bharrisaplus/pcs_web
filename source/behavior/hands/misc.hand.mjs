@@ -55,14 +55,14 @@ const makeMiscHand = () => {
       assetUrl = document.querySelector(assetGrab)?.getAttribute('href');
 
       if (!assetUrl) {
-        appLogger.issuelog(`Missing url for asset`, {assetGrab, assetCheck}, false);
+        appLogger.issuelog(`Missing url for asset`, {assetGrab, assetCheck}, null);
         continue;
       }
 
       assetBlob = await assetFetcher.grabFile(assetUrl);
 
       if (!assetBlob) {
-        appLogger.issuelog(`Missing asset from ${assetUrl}`, {assetGrab, assetCheck}, false);
+        appLogger.issuelog(`Missing asset from ${assetUrl}`, {assetGrab, assetCheck}, null);
         continue;
       }
 
@@ -70,7 +70,7 @@ const makeMiscHand = () => {
 
       if (!assetInnards) {
         appLogger.issuelog(
-          `Empty asset from ${assetUrl}`, {assetGrab, assetCheck, assetBlob, assetInnards}, false
+          `Empty asset from ${assetUrl}`, {assetGrab, assetCheck, assetBlob, assetInnards}, null
         );
         continue;
       }

@@ -27,7 +27,7 @@ const makeHostShuttle = () => {
 
 			if (!blobResponse.ok) {
 				if (blobResponse.status > 399) {
-					appLogger.issuelog("Network issue with file grab", {resourceLink, blobResponse}, false);
+					appLogger.issuelog("Network issue with file grab", {resourceLink, blobResponse}, null);
 				}
 
 				blobResponse = null;
@@ -43,7 +43,7 @@ const makeHostShuttle = () => {
 				fetchErrMsg = "Type mismatch with file grab";
 			}
 
-			appLogger.issuelog(fetchErrMsg, {resourceLink, blobResponse, fetchErr}, false);
+			appLogger.issuelog(fetchErrMsg, {resourceLink, blobResponse, fetchErr}, null);
 			blobResponse = null;
 		}
 
@@ -59,7 +59,7 @@ const makeHostShuttle = () => {
 					readErrMsg = "Could not read file";
 				}
 
-				appLogger.issuelog(readErrMsg, {resourceLink, blobResponse, readErr}, false);
+				appLogger.issuelog(readErrMsg, {resourceLink, blobResponse, readErr}, null);
 				blobResult = null;
 			}
 		}
