@@ -6,11 +6,17 @@
  * - {@link document.querySelector}
  */
 
+/**
+ * @typedef {'green-dye' | 'red-dye' | 'blue-dye' | 'purple-dye'} PCSBackgroundColorOption
+ */
+
 
 /**
  * @typedef {'kick' | 'needle' | 'scratch' | 'blend' | 'chop' | 'trace' | 'splash' | 'fresh'} PCSEventType
- *
- * @typedef {Object} PCSEventTypes - {@link CustomEvent.type}
+ */
+
+/**
+ * @typedef {Object} PCSEventTypes - {@link PCSEventType}
  * @property {'kick'} kick Start app
  * @property {'needle'} needle Open Popover
  * @property {'scratch'} scratch Update Popover
@@ -19,13 +25,12 @@
  * @property {'trace'} trace Generate Image
  * @property {'splash'} splash Change Background Color
  * @property {'fresh'} fresh Reset
- * @see CustomEvent.type
  */
 
 /**
  * @typedef {Object} PCSEventInitDetail
  * @property {string} [msg]
- * @property {Element|HTMLElement|HTMLButtonElement} $dispatcher
+ * @property {HTMLElement|HTMLButtonElement|HTMLSelectElement} $dispatcher
  */
 
 /**
@@ -48,7 +53,7 @@
  *
  * @property {'pcs-shell'} appID
  * @property {Readonly<PCSEventTypes>} notices
- * @property {Readonly<['green-dye', 'red-dye', 'blue-dye', 'purple-dye']>} dyes
+ * @property {Readonly<string[]>} dyes - {@link PCSBackgroundColorOption} - `['green-dye', 'red-dye', 'blue-dye', 'purple-dye']`
  * @property {'Magnified view of card'} pcs_cardTitle
  * @property {'A single card up close and personal'} pcs_cardDesc
  * @property {'#pcs-card'} pcs_cardRef
