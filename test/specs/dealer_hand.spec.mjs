@@ -78,7 +78,7 @@ test('pcs:hand:dealer:getCard should return good intri', async (swear) => {
 	bonafiedExpln = tdExpln(impMeta.moduleLogger.issuelog);
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(9);
@@ -119,7 +119,7 @@ test('pcs:hand:dealer:getCard should return bad intri', async (swear) => {
 	bonafiedExpln = tdExpln(impMeta.moduleLogger.issuelog);
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(7);
@@ -174,7 +174,7 @@ test('pcs:hand:dealer:mixUp should return shuffled', async (swear) => {
 	bonafiedExpln = tdExpln(impMeta.moduleLogger.issuelog);
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(5);
@@ -233,7 +233,7 @@ test('pcs:hand:dealer:mixUp should return non-shuffled', async (swear) => {
 	bonafiedExpln = tdExpln(impMeta.moduleLogger.issuelog);
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(2);
