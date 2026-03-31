@@ -10,7 +10,7 @@ import { default as appCustodian } from './hands/misc.hand.mjs';
 import { default as cobbleLanding } from './lattices/landing.lattice.mjs';
 import { default as appStore } from './banks/deck.bank.mjs';
 
-
+/** @type {HTMLElement} */
 let $repoLink;
 const
   bootOverlay = '#pageload-curtain',
