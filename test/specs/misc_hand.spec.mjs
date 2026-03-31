@@ -112,6 +112,7 @@ test("pcs:hand:misc:warmUp should run without issue", async (swear) => {
 	bonafiedExplntns.push(tdExpln(impMeta.moduleLogger.issuelog));
 	bonafiedExplntns.push(tdExpln(impMeta.moduleAPI.grabFile));
 	tdClr();
+	impMeta.freshModule = null;
 
 
 	swear.plan(6);
@@ -162,7 +163,7 @@ test('pcs:hand:misc:warmUp should have issues', async (swear) => {
 	bonafiedExplntns.push(tdExpln(impMeta.moduleAPI.grabFile));
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(10);
@@ -221,7 +222,7 @@ test("pcs:hand:misc:warmUp should have issues cont'd", async (swear) => {
 	bonafiedExplntns.push(tdExpln(impMeta.moduleAPI.grabFile));
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(7);
@@ -274,6 +275,7 @@ test('pcs:hand:misc:startAfter should run without issue', async (swear) => {
 
 	bonafiedExplntns.push(tdExpln(impMeta.moduleLogger.devlog));
 	tdClr();
+	impMeta.freshModule = null;
 
 
 	swear.plan(6);
@@ -303,6 +305,7 @@ test("pcs:hand:misc:startAfter should run without issue (cont'd)", async (swear)
 	impMeta.freshModule.startAfter(`#${swearCurtainSelectorV}`, spinnySelector);
 	bonafiedExplntns.push(tdExpln(impMeta.moduleLogger.devlog));
 	tdClr();
+	impMeta.freshModule = null;
 
 
 	swear.plan(4);
