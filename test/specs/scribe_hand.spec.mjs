@@ -188,12 +188,12 @@ test("pcs:hand:scribe:devlog should log issue message", async (swear) => {
 		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
 
-	impMeta.freshModule.issuelog(imagineMsgs[0], false, false, true);
-	impMeta.freshModule.issuelog(imagineMsgs[1], imagineThingyz[0], false, true);
+	impMeta.freshModule.issuelog(imagineMsgs[0], false, null, true);
+	impMeta.freshModule.issuelog(imagineMsgs[1], imagineThingyz[0], null, true);
 	impMeta.freshModule.issuelog(imagineMsgs[2], imagineThingyz[1], imagineError, true);
 
-	impMeta.freshModule.issuelog(imagineMsgs[3], false, false, false);
-	impMeta.freshModule.issuelog(imagineMsgs[4], imagineThingyz[2], false, false);
+	impMeta.freshModule.issuelog(imagineMsgs[3], false, null, false);
+	impMeta.freshModule.issuelog(imagineMsgs[4], imagineThingyz[2], null, false);
 
 	bonafiedExplntns.push(tdExpln(impMeta.moduleConsole.error));
 	bonafiedExplntns.push(tdExpln(impMeta.moduleConsole.debug));
