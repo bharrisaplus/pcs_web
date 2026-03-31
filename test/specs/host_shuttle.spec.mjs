@@ -51,14 +51,16 @@ const
 
 
 test("pcs:shuttle:host:grabFile should run without issue", async (swear) => {
-	let bonafiedResult, bonafiedExplntn;
+	let bonafiedResult, bonafiedExplntn,
+		/** @type {Shuttle.Host} */
+		hostShuttle;
 	const
 		swearLink = "https://ssomesite.com",
 		swearBody = new Blob(),
-		impMeta = await getImport(),
-		/** @type {Shuttle.Host} */
-		hostShuttle = impMeta.freshModule();
+		impMeta = await getImport();
 
+
+	hostShuttle = impMeta.freshModule();
 
 	tdStub(impMeta.moduleFetch(swearLink)).thenResolve(new Response(swearBody))
 
@@ -66,6 +68,8 @@ test("pcs:shuttle:host:grabFile should run without issue", async (swear) => {
 	bonafiedExplntn = tdExpln(impMeta.moduleLogger.issuelog);
 
 	tdClr();
+	impMeta.freshModule = null;
+	hostShuttle = null;
 
 
 	swear.plan(2);
@@ -75,7 +79,9 @@ test("pcs:shuttle:host:grabFile should run without issue", async (swear) => {
 
 
 test("pcs:shuttle:host:grabFile should have issues", async (swear) => {
-	let bonafiedResults = [], bonafiedExplntns = [];
+	let bonafiedResults = [], bonafiedExplntns = [],
+		/** @type {Shuttle.Host} */
+		hostShuttle;
 	const
 		swearLinks = [
 			"https://ssomesite.com",
@@ -90,10 +96,10 @@ test("pcs:shuttle:host:grabFile should have issues", async (swear) => {
 			{ ok: true, status: 200, blob: tdFunc() }
 
 		],
-		impMeta = await getImport(),
-		/** @type {Shuttle.Host} */
-		hostShuttle = impMeta.freshModule();
+		impMeta = await getImport();
 
+
+	hostShuttle = impMeta.freshModule();
 
 	tdStub(impMeta.moduleFetch(swearLinks[0])).thenResolve(new Response(null, {status: 404}));
 	bonafiedResults.push(await hostShuttle.grabFile(swearLinks[0]));
@@ -117,6 +123,8 @@ test("pcs:shuttle:host:grabFile should have issues", async (swear) => {
 
 	bonafiedExplntns.push(tdExpln(impMeta.moduleLogger.issuelog));
 	tdClr();
+	impMeta.freshModule = null;
+	hostShuttle = null;
 
 
 	swear.plan(8);
