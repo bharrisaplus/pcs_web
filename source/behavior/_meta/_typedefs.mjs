@@ -23,16 +23,22 @@
  */
 
 /**
- * @typedef {Object} PCSEventInit
- * {@link CustomEvent} - {@link PCSEventType} - {@link PCSEvent}
- * `new CustomEvent(<PCSEventType>,<PCSEventInit>)`
- * @property {{msg :string, $dispatcher :Element}} detail
+ * @typedef {Object} PCSEventInitDetail
+ * @property {string} [msg]
+ * @property {Element|HTMLElement|HTMLButtonElement} $dispatcher
  */
 
 /**
- * @typedef {CustomEvent<PCSEventInit>} PCSEvent
+ * @typedef {Object} PCSEventInit
+ * {@link CustomEventInit} - {@link PCSEventType} - {@link PCSEventInitDetail}
+ * `new CustomEvent(<PCSEventType>,<PCSEventInit>)`
+ * @property {PCSEventInitDetail} detail
+ */
+
+/**
+ * @typedef {CustomEvent<PCSEventInitDetail>} PCSEvent
  * {@link CustomEvent} - {@link PCSEventType} - {@link PCSEventInit}
- * `new CustomEvent(<PCSEventType>, PCSEventInit)`
+ * `new CustomEvent(<PCSEventType>, <PCSEventInit>)`
  */
 
 
