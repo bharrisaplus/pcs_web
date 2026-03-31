@@ -62,7 +62,7 @@ test("pcs:hand:scribe:devlog should use console use based on url", async (swear)
 
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(1);
@@ -79,7 +79,7 @@ test("pcs:hand:scribe:devlog should use console use based on url", async (swear)
 
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(1);
@@ -96,7 +96,7 @@ test("pcs:hand:scribe:devlog should use console use based on url", async (swear)
 
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(1);
@@ -112,7 +112,7 @@ test("pcs:hand:scribe:devlog should not use console use based on url", async (sw
 		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(1);
@@ -128,7 +128,7 @@ test("pcs:hand:scribe:devlog should not use console use based on url", async (sw
 		impMeta = await getImport(defaultSpecHTML, swearLoc);
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(1);
@@ -158,7 +158,7 @@ test("pcs:hand:scribe:devlog should log dev message", async (swear) => {
 	bonafiedExplntns.push(tdExpln(impMeta.moduleConsole.warn));
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(6);
@@ -200,7 +200,7 @@ test("pcs:hand:scribe:devlog should log issue message", async (swear) => {
 	bonafiedExplntns.push(tdExpln(impMeta.moduleConsole.warn));
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(12);
@@ -253,7 +253,7 @@ test("pcs:hand:scribe:devlog should log noti message", async (swear) => {
 	bonafiedExplntns.push(tdExpln(impMeta.moduleHTMLElement.prototype.hidePopover));
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(4);
@@ -288,7 +288,7 @@ test("pcs:hand:scribe:devlog should not log noti message", async (swear) => {
 	bonafiedExplntns.push(tdExpln(impMeta.moduleHTMLElement.prototype.hidePopover));
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(4);
@@ -342,7 +342,7 @@ test("pcs:hand:scribe:devlog should handle multiple noti messages", async (swear
 	bonafiedExplntns.push(tdExpln(impMeta.moduleHTMLElement.prototype.hidePopover));
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(4);
@@ -380,7 +380,7 @@ test("pcs:hand:scribe:devlog should remove dangling noti message", async (swear)
 	bonafiedExplntns.push(tdExpln(impMeta.moduleHTMLElement.prototype.hidePopover));
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(4);
@@ -417,7 +417,7 @@ test("pcs:hand:scribe:devlog should not show repeat noti message", async (swear)
 	bonafiedExplntns.push(tdExpln(impMeta.moduleHTMLElement.prototype.hidePopover));
 
 	tdClr();
-	delete impMeta.freshModule;
+	impMeta.freshModule = null;
 
 
 	swear.plan(4);
