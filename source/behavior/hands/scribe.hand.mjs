@@ -1,7 +1,7 @@
 /** @globals window, document, console, AbortController */
 
 /**
- * @import {Hand} from '../_meta/_typedefs.mjs'
+ * @import {NotificationToast, Hand} from '../_meta/_typedefs.mjs'
  */
 
 
@@ -24,6 +24,11 @@ const makeScribeHand = () => {
 		$toastRef = document.querySelector('template#toast');
 
 
+	/**
+	 * @param  {string} devMsg
+	 * @param  {Object} [devThingy]
+	 * @see Hand.Scribe#devlog
+	 */
 	const log_dev = (devMsg, devThingy) => {
 		if (console_free) {
 			if (devMsg) { console.debug(devMsg); }
@@ -31,6 +36,14 @@ const makeScribeHand = () => {
 		}
 	};
 
+
+	/**
+	 * @param  {string} issueMsg
+	 * @param  {Object} [issueThingy]
+	 * @param  {Error|DOMException} [issueErr]
+	 * @param  {boolean} [blocking]
+	 * @see Hand.Scribe#issuelog
+	 */
 	const log_issue = (issueMsg, issueThingy, issueErr, blocking = true) => {
 		if (console_free) {
 			if (blocking) {
@@ -44,7 +57,9 @@ const makeScribeHand = () => {
 		}
 	};
 
-	const _make_toast = (toastMsg) => {
+
+	/** @param  {string} maybeMsg */
+	const _make_toast = (maybeMsg) => {
 		/** @type {NotificationToast} */
 		let maybeNoTo;
 		const
@@ -52,21 +67,30 @@ const makeScribeHand = () => {
 			/** @type {DocumentFragment} */
 			$toastContainer = document.importNode($toastRef.content, true),
 			/** @type {HTMLElement} */
-			$aToast = $toastContainer.querySelector('.toast');
+			$aToast = $toastContainer.querySelector('.toast'),
+			/** @type {HTMLSpanElement} */
+			$aToastMsg = $aToast.querySelector('span.toast-msg'),
+			/** @type {HTMLButtonElement} */
+			$aToastClose = $aToast.querySelector('button.toast-close');
 
-		if (toasts.some((_toast) => _toast.$elm.querySelector('span.toast-msg')?.textContent === toastMsg)) {
+
+		if (!maybeMsg || maybeMsg.trim().length < 10) { return; }
+
+		if (!$toaster || !$toastRef || !$aToast || !$aToastMsg || !$aToastClose) { return; }
+
+		if (toasts.some((_toast) => _toast.$elm.querySelector('span.toast-msg')?.textContent === maybeMsg)) {
 			return;
 		}
 
-		$aToast.querySelector('span.toast-msg').textContent = toastMsg;
-		$aToast.querySelector('button.toast-close').addEventListener('click', (_clickEvt) => {
-			let
-				cutIdx,
-				cutToast;
 
-			if (_clickEvt.target instanceof window.HTMLElement && _clickEvt.target.parentElement !== $aToast) {
-				return;
-			}
+		$aToastMsg.textContent = maybeMsg;
+		$aToastClose.addEventListener('click', (_clickEvt) => {
+			let cutIdx, cutToast;
+
+			if (
+				!(_clickEvt.target instanceof window.HTMLButtonElement) ||
+				(_clickEvt.target instanceof window.HTMLElement && _clickEvt.target.parentElement !== $aToast)
+			) { return; }
 
 			cutIdx = toasts.map((_toastItm) => _toastItm.$elm ).indexOf($aToast);
 
@@ -101,7 +125,10 @@ const makeScribeHand = () => {
 		toasts.push(maybeNoTo);
 	};
 
-
+	/**
+	 * @param  {string} notificationMsg
+	 * @see Hand.Scribe#notilog
+	 */
 	const log_notification = (notificationMsg) => {
 		if (console_free) {
 			if (notificationMsg) { console.info(notificationMsg); }
@@ -113,7 +140,7 @@ const makeScribeHand = () => {
 	};
 
 
-	window['devToast'] = console_free ? (thisHere) => { log_notification(thisHere) } : undefined;
+	window['devToast'] = console_free ? log_notification : undefined;
 
 	return Object.freeze({
 		devlog: log_dev,
