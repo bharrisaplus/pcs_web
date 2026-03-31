@@ -49,7 +49,9 @@ const
 
 
 test('pcs:hand:dealer:getCard should return good intri', async (swear) => {
-	let bonafiedResult = [], bonafiedExpln;
+	let bonafiedResult = [], bonafiedExpln,
+		/** @type {Hand.Dealer} */
+		dealerHand;
 	const
 		swearPos = [
 			[0, 0], [13, 13], [38, 38], [51, 51],
@@ -66,10 +68,10 @@ test('pcs:hand:dealer:getCard should return good intri', async (swear) => {
 			{oglo:39,spot:13, title:'Number 14: King of Heart', desc:'Card in position 14', symbolRef:'#h39'}
 		],
 
-		impMeta = await getImport(),
-		/** @type {Hand.Dealer} */
-		dealerHand = impMeta.freshModule();
+		impMeta = await getImport();
 
+
+	dealerHand = impMeta.freshModule();
 
 	for (const posPair of swearPos) {
 		bonafiedResult.push(dealerHand.getCard(posPair[0], posPair[1]));
@@ -79,6 +81,7 @@ test('pcs:hand:dealer:getCard should return good intri', async (swear) => {
 
 	tdClr();
 	impMeta.freshModule = null;
+	dealerHand = null;
 
 
 	swear.plan(9);
@@ -95,7 +98,9 @@ test('pcs:hand:dealer:getCard should return good intri', async (swear) => {
 
 
 test('pcs:hand:dealer:getCard should return bad intri', async (swear) => {
-	let bonafiedResult = [], bonafiedExpln;
+	let bonafiedResult = [], bonafiedExpln,
+		/** @type {Hand.Dealer} */
+		dealerHand;
 	const
 		swearPos = [[0, -1], [5, 52], [13, 90], [-1, 0], [52, 3], [90, 25]],
 		imagineCardIntris = [
@@ -107,10 +112,10 @@ test('pcs:hand:dealer:getCard should return bad intri', async (swear) => {
 			{oglo:25,spot:90, title:'', desc:'', symbolRef:''}
 		],
 
-		impMeta = await getImport(),
-		/** @type {Hand.Dealer} */
-		dealerHand = impMeta.freshModule();
+		impMeta = await getImport();
 
+
+	dealerHand = impMeta.freshModule();
 
 	for (const posPair of swearPos) {
 		bonafiedResult.push(dealerHand.getCard(posPair[0], posPair[1]));
@@ -120,6 +125,7 @@ test('pcs:hand:dealer:getCard should return bad intri', async (swear) => {
 
 	tdClr();
 	impMeta.freshModule = null;
+	dealerHand = null;
 
 
 	swear.plan(7);
@@ -134,7 +140,9 @@ test('pcs:hand:dealer:getCard should return bad intri', async (swear) => {
 
 
 test('pcs:hand:dealer:mixUp should return shuffled', async (swear) => {
-	let bonafiedResult = [], bonafiedExpln;
+	let bonafiedResult = [], bonafiedExpln,
+		/** @type {Hand.Dealer} */
+		dealerHand;
 	const
 		swearCardLists = [
 			[1,2,3,4,5,6,7,8],
@@ -153,10 +161,10 @@ test('pcs:hand:dealer:mixUp should return shuffled', async (swear) => {
 			]
 		],
 
-		impMeta = await getImport(),
-		/** @type {Hand.Dealer} */
-		dealerHand = impMeta.freshModule();
+		impMeta = await getImport();
 
+
+	dealerHand = impMeta.freshModule();
 
 	for (let chkIdx = 0; chkIdx < swearCardLists.length; chkIdx++) {
 		tdStub(
@@ -175,6 +183,7 @@ test('pcs:hand:dealer:mixUp should return shuffled', async (swear) => {
 
 	tdClr();
 	impMeta.freshModule = null;
+	dealerHand = null;
 
 
 	swear.plan(5);
@@ -193,7 +202,9 @@ test('pcs:hand:dealer:mixUp should return shuffled', async (swear) => {
 
 
 test('pcs:hand:dealer:mixUp should return non-shuffled', async (swear) => {
-	let bonafiedResult = [], bonafiedExpln;
+	let bonafiedResult = [], bonafiedExpln,
+		/** @type {Hand.Dealer} */
+		dealerHand;
 	const
 		swearCardLists = [
 			[],
@@ -212,10 +223,10 @@ test('pcs:hand:dealer:mixUp should return non-shuffled', async (swear) => {
 			]
 		],
 
-		impMeta = await getImport(),
-		/** @type {Hand.Dealer} */
-		dealerHand = impMeta.freshModule();
+		impMeta = await getImport();
 
+
+	dealerHand = impMeta.freshModule();
 
 	for (let chkIdx = 0; chkIdx < swearCardLists.length; chkIdx++) {
 		tdStub(
@@ -234,6 +245,7 @@ test('pcs:hand:dealer:mixUp should return non-shuffled', async (swear) => {
 
 	tdClr();
 	impMeta.freshModule = null;
+	dealerHand = null;
 
 
 	swear.plan(2);
