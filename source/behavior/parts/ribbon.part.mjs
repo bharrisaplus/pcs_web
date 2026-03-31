@@ -32,7 +32,7 @@ const makeRibbonPart = (containerID) => {
 
 
   /** @param {string} dipOption */
-  const dip_brush = (dipOption) => {
+  const _dip_brush = (dipOption) => {
     /** @type {string} */
     let dipColor;
 
@@ -63,6 +63,7 @@ const makeRibbonPart = (containerID) => {
    * @param  {string[]} txtExports
    *
    * @return {Promise<Boolean>}
+   * @see Part.Ribbon#composeTxt
    */
   const write_out = async (txtExports) => {
     let result = false;
@@ -109,6 +110,7 @@ const makeRibbonPart = (containerID) => {
    * @param  {CSSelector} renderBase
    *
    * @return {Promise<Boolean>}
+   * @see Part.Ribbon#prepareImg
    */
   const render_out = async (renderColor, renderExports, renderBase) => {
     let
@@ -164,6 +166,7 @@ const makeRibbonPart = (containerID) => {
   };
 
 
+  /** @see Part.Ribbon#resetCtrls */
   const generic_cool_down = () => {
     if (is_grabbing) { return; }
 
@@ -201,10 +204,13 @@ const makeRibbonPart = (containerID) => {
 
 
   $brushWell.addEventListener('change', (_changeEvt) => {
-    if (is_grabbing || _changeEvt.target !== $brushWell) { return; }
+    if (
+      is_grabbing ||
+      !(_changeEvt.target instanceof window.HTMLSelectElement) || _changeEvt.target !== $brushWell
+    ) { return; }
 
     _changeEvt.preventDefault();
-    dip_brush(_changeEvt.target.value);
+    _dip_brush(_changeEvt.target.value);
   });
 
 
