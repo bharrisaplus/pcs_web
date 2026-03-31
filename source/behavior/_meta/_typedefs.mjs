@@ -48,16 +48,16 @@
  *
  * @property {'pcs-shell'} appID
  * @property {Readonly<PCSEventTypes>} notices
- * @property {['green-dye', 'red-dye', 'blue-dye', 'purple-dye']} dyes
- * @property {'magnified view of card'} pcs_cardTitle
+ * @property {Readonly<['green-dye', 'red-dye', 'blue-dye', 'purple-dye']>} dyes
+ * @property {'Magnified view of card'} pcs_cardTitle
  * @property {'A single card up close and personal'} pcs_cardDesc
  * @property {'#pcs-card'} pcs_cardRef
  * @property {'Cards:\n====\n'} pcs_clippre
  * @property {52} c_Max
  * @property {"Number"} c_TitlePrefix
  * @property {'Card in position'} c_DescPrefix
- * @property {['Spade', 'Diamond', 'Club', 'Heart']} c_SuiteList
- * @property {['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']} c_NameList
+ * @property {Readonly<['Spade', 'Diamond', 'Club', 'Heart']>} c_SuiteList
+ * @property {Readonly<['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']>} c_NameList
  */
 
 
