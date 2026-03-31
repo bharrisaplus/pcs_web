@@ -77,7 +77,8 @@ test('trythis_example:orFuncHere', async function (swear) {
 
 
 	metaImp.freshModule?.orFuncHere(`.${swearSelector}`);
-	metaImp.moduleDoc?.querySelector(`.${swearSelector}`)?.dispatchEvent(new metaImp.moduleWindow.Event('click'));
+	metaImp.moduleDoc?.querySelector(`.${swearSelector}`)?.
+		dispatchEvent(new metaImp.moduleWindow.Event('click'));
 
 	bonafiedExplntn = tdExplain(metaImp.moduleConsole.log);
 
@@ -101,7 +102,8 @@ test('trythis_example:evenFuncHere', async function (swear) {
 
 
 	metaImp.freshModule?.evenFuncHere(`.${swearSelector}`);
-	metaImp.moduleDoc.querySelector(`.${swearSelector}`).dispatchEvent(new metaImp.moduleWindow.Event('click'));
+	metaImp.moduleDoc.querySelector(`.${swearSelector}`)?.
+		dispatchEvent(new metaImp.moduleWindow.Event('click'));
 
 	bonafiedExplntn = tdExplain(metaImp.moduleLogger.devlog);
 
