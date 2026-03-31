@@ -2,8 +2,8 @@
 
 
 /**
- * @typedef {string} CSSelector - {@link CSSStyleRule.selectorText}
- * - {@link document.querySelector}
+ * @typedef {string} CSSelector
+ * {@link CSSStyleRule.selectorText} - {@link document.querySelector}
  */
 
 /**
