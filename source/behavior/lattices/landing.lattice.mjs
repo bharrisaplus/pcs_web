@@ -102,9 +102,8 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
     let dyeIndex;
 
     if (
-      panel.isBusy || hud.isOpen ||
-      _pcsevt.detail?.$dispatcher !== document.querySelector(panel.dyeInput) ||
-      !_pcsevt.detail?.msg
+      panel.isBusy || hud.isOpen || !_pcsevt.detail?.msg ||
+      _pcsevt.detail?.$dispatcher !== document.querySelector(panel.dyeInput)
     ) {
       document.querySelector(panel.dyeInput).blur();
       return;
