@@ -2,10 +2,6 @@
 
 /** @globals console, document */
 
-/**
- * @import {CSSelector} from './_meta/_typedefs.mjs';
- */
-
 import { default as tryLogger } from './hands/scribe.hand.mjs';
 
 
