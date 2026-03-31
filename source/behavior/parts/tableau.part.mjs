@@ -17,12 +17,15 @@ const makeTableauPart = (containerID, eventCancel) => {
   const itemSelector = `${containerID} .playing-card`;
 
   /**
-   * @param  {HTMLLIElement} $item
+   * @param  {HTMLElement} $item
    * @param  {number} itemIdx
    */
   const _setupItem = ($item, itemIdx) => {
     $item.addEventListener('click', (_clickEvt) => {
-      if ($item !== _clickEvt.target && $item !== _clickEvt.target?.parentElement) { return; }
+      if (
+        !(_clickEvt.target instanceof window.HTMLElement) ||
+        $item !== _clickEvt.target && $item !== _clickEvt.target?.parentElement
+      ) { return; }
 
       /** @type {PCSEvent} */
       const needleDown = new CustomEvent(_g.notices.needle, {
@@ -41,6 +44,7 @@ const makeTableauPart = (containerID, eventCancel) => {
    * @param  {CardIntri[]} newItems
    */
   const set_items_from = (newItems) => {
+    /** @type {HTMLElement[]} [description] */
     const _$tmpItems = Array.from(document.querySelectorAll(itemSelector));
 
     if (newItems.length < 52) { return; }
@@ -75,10 +79,11 @@ const makeTableauPart = (containerID, eventCancel) => {
     updateOrder: set_items_from,
 
     get currentOrder () {
-      return Array.from(
-        document.querySelectorAll(itemSelector)
-      ).filter(
-        ($item) => $item.dataset.oid && $item.dataset.oid.length <= 2
+      /** @type {HTMLElement[]} */
+      const $items = Array.from(document.querySelectorAll(itemSelector));
+
+      return $items.filter(
+        ( $item) => $item.dataset.oid && $item.dataset.oid.length <= 2
       ).map(
         ($item) => Number.parseInt($item.dataset.oid)
       );
