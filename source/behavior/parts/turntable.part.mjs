@@ -65,8 +65,8 @@ const makeTurntablePart = (containerID, eventCancel) => {
     if (_updateInfo.oglo <= -1 || _updateInfo.oglo >= _g.c_Max) { result = false; }
     if (_updateInfo.spot <= -1 || _updateInfo.spot >= _g.c_Max) { result = false; }
 
-    $pickup.setAttribute('data-spot', _updateInfo.spot);
-    $pickup.setAttribute('data-oglo', _updateInfo.oglo);
+    $pickup.setAttribute('data-spot', _updateInfo.spot.toString());
+    $pickup.setAttribute('data-oglo', _updateInfo.oglo.toString());
     $pickup.querySelector('use').setAttribute('href', _updateInfo.symbolRef);
     $pickup.querySelector('title').textContent = _updateInfo.title;
     $pickup.querySelector('desc').textContent = _updateInfo.desc;
@@ -123,7 +123,7 @@ const makeTurntablePart = (containerID, eventCancel) => {
   };
 
 
-  /** @param  {CardIntri} _cueInfo */
+  /** @param  {CardIntri} cueInfo */
   const move_arm = (cueInfo) => {
     if (!$container.matches(':popover-open')) { return; }
 

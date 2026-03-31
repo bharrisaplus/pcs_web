@@ -55,7 +55,7 @@ const makeRibbonPart = (containerID) => {
 
     document.querySelector(`#${_g.appID}`).dispatchEvent(splashEvt);
 
-    $brushWell.value = 0;
+    $brushWell.value = '0';
   };
 
 
