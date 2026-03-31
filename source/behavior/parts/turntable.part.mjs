@@ -111,7 +111,10 @@ const makeTurntablePart = (containerID, eventCancel) => {
   };
 
 
-  /** @param {CardIntri} pickupInfo */
+  /**
+   * @param {CardIntri} pickupInfo
+   * @see Part.Turntable#loadTurntable
+   */
   const set_pickup = (pickupInfo) => {
     if ($container.matches(':popover-open')) { return; }
 
@@ -123,7 +126,10 @@ const makeTurntablePart = (containerID, eventCancel) => {
   };
 
 
-  /** @param  {CardIntri} cueInfo */
+  /**
+   * @param  {CardIntri} cueInfo
+   * @see Part.Turntable#spinTurntable
+   */
   const move_arm = (cueInfo) => {
     if (!$container.matches(':popover-open')) { return; }
 

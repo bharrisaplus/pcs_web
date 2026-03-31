@@ -18,6 +18,7 @@ const makeEgressHand = () => {
 	 * @param  {string} cpyTxt
 	 *
 	 * @return {Promise<Boolean>}
+	 * @see Hand.Egress#exportText
 	 */
 	const copy_to_clipboard = async (cpyTxt) => {
 		let result = false;
@@ -43,6 +44,7 @@ const makeEgressHand = () => {
 	 * @param  {CSSelector} spriteSheet
 	 *
 	 * @return {Promise<string>} The data url for the generated image
+	 * @see Hand.Egress#generteImage
 	 */
 	const canvasyze_rasterize = async (backdropColor, spriteList, spriteSheet) => {
 		let

@@ -23,6 +23,7 @@ const makeMiscHand = () => {
    * @param  {CSSelector} assetDump - {@link CSSStyleRule.selectorText}
    *
    * @return {Promise<boolean>}
+   * @see Hand.Misc#warmUp
    */
   const load_assets = async (assetMap, assetDump) => {
     let loadCount = 0;
@@ -100,6 +101,7 @@ const makeMiscHand = () => {
    *
    * @param  {CSSelector} indicatorSelector - {@link CSSStyleRule.selectorText}
    * @param  {CSSelector} tickSelector - {@link CSSStyleRule.selectorText}
+   * @see Hand.Misc#startAfter
    */
   const watch_for_indicator_tick = (indicatorSelector, tickSelector) => {
     const

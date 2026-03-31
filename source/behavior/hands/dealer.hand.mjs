@@ -14,6 +14,7 @@ const makeDealerHand = () => {
    * @param  {number} ndoPos usually the 'oid' data attribute - {@link HTMLElement.dataset}
    *
    * @return {Readonly<CardIntri>} a card - {@link CardIntri}
+   * @see Hand.Dealer#getCard
    */
   const generate_card_intri = (curPos, ndoPos) => {
     let
@@ -78,6 +79,7 @@ const makeDealerHand = () => {
    * @param  {number[]} positionList
    *
    * @return {number[]}
+   * @see Hand.Dealer#mixUp
    */
   const pcs_shuffle = (cardList, positionList) => {
     let

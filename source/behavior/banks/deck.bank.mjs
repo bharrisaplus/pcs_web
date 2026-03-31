@@ -64,7 +64,7 @@ const makeDeckBank = () => {
     choosen_card = 0,
     back_splash = 0;
 
-
+  /** @see Bank.Deck#resetCards */
   const new_deck_order = () => {
     if (topical_order.toString() === default_order.toString()) { return; }
 
@@ -76,7 +76,10 @@ const makeDeckBank = () => {
     }
   };
 
-  /** @param  {number[] | Uint8Array} allNewCards */
+  /**
+   * @param  {number[] | Uint8Array} allNewCards
+   * @see Bank.Deck#updateCards
+   */
   const replace_topical_order_with = (allNewCards) => {
     let validReplacement;
 
@@ -98,7 +101,10 @@ const makeDeckBank = () => {
     }
   };
 
-  /** @param  {number} newPaintChoice {@link GlobalDeclarations.dyes}  */
+  /**
+   * @param  {number} newPaintChoice {@link GlobalDeclarations.dyes}
+   * @see Bank.Deck#updateBackDrop
+   */
   const swap_back_splash_for = (newPaintChoice) => {
     if (!Number.isInteger(newPaintChoice)) { return; }
     if (newPaintChoice < 0 || newPaintChoice >= _g.dyes.length) { return; }
@@ -113,7 +119,10 @@ const makeDeckBank = () => {
   };
 
 
-  /** @param  {number} cardID */
+  /**
+   * @param  {number} cardID
+   * @see Bank.Deck#updateChoice
+   */
   const choose_new_card = (cardID) => {
     if (topical_order.indexOf(cardID) === -1 || default_order.indexOf(cardID) === -1) { return; }
 
