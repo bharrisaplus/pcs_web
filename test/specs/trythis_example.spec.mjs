@@ -35,7 +35,7 @@ const
 		await tdReplaceEsm(modulePaths.scribeHand, null, _mockScribe);
 
 		return {
-			/** @type {ExampleModule} */
+			/** @type {ExampleModule?} */
 			freshModule: (await import(`${modulePaths.trythisExample}?v=${NodeCrypto.randomUUID()}`)).default,
 			moduleConsole: mockConsole,
 			moduleWindow: mockWindow,
@@ -50,13 +50,13 @@ test('trythis_example:funcHere', async function (swear) {
 	const metaImp = await getImport(defaultSpecHTML);
 
 
-	metaImp.freshModule.funcHere();
+	metaImp.freshModule?.funcHere();
 
 	bonafiedExplntn = tdExplain(metaImp.moduleConsole.log);
 
 	tdReset();
-	// Overkill but feel better about ensuring module is removed from Node's cache before next import
-	delete metaImp.freshModule
+	// Overkill but helping ensuring module is removed from Node's cache before next import
+	metaImp.freshModule = null;
 
 
 	swear.plan(2);
@@ -76,13 +76,13 @@ test('trythis_example:orFuncHere', async function (swear) {
 		metaImp = await getImport(swearHTML);
 
 
-	metaImp.freshModule.orFuncHere(`.${swearSelector}`);
-	metaImp.moduleDoc.querySelector(`.${swearSelector}`).dispatchEvent(new metaImp.moduleWindow.Event('click'));
+	metaImp.freshModule?.orFuncHere(`.${swearSelector}`);
+	metaImp.moduleDoc?.querySelector(`.${swearSelector}`)?.dispatchEvent(new metaImp.moduleWindow.Event('click'));
 
 	bonafiedExplntn = tdExplain(metaImp.moduleConsole.log);
 
 	tdReset();
-	delete metaImp.freshModule;
+	metaImp.freshModule = null;
 
 
 	swear.plan(2);
@@ -100,12 +100,13 @@ test('trythis_example:evenFuncHere', async function (swear) {
 		metaImp = await getImport(swearHTML);
 
 
-	metaImp.freshModule.evenFuncHere(`.${swearSelector}`);
+	metaImp.freshModule?.evenFuncHere(`.${swearSelector}`);
 	metaImp.moduleDoc.querySelector(`.${swearSelector}`).dispatchEvent(new metaImp.moduleWindow.Event('click'));
 
 	bonafiedExplntn = tdExplain(metaImp.moduleLogger.devlog);
 
 	tdReset();
+	metaImp.freshModule = null;
 
 
 	swear.plan(2);
