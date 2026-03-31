@@ -86,7 +86,7 @@ const makeDeckBank = () => {
     if (!Array.isArray(allNewCards) && !(allNewCards instanceof Uint8Array)) { return; }
     if (allNewCards.length !== _g.c_Max) { return; }
 
-    validReplacement = allNewCards.every((_itm) => {
+    validReplacement = allNewCards.values().every((_itm) => {
       return Number.isInteger(_itm) && default_order.indexOf(_itm) !== -1;
     });
 
@@ -162,6 +162,8 @@ const makeDeckBank = () => {
     updateBackDrop: swap_back_splash_for,
     resetCards: new_deck_order,
     // Computed-s
+
+    /** @type {[number, number]} */
     get choice () {
       return [topical_order.indexOf(choosen_card), default_order.indexOf(choosen_card)];
     },

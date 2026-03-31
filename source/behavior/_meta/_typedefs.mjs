@@ -120,7 +120,7 @@
  * @property {number[]} ndoCards
  * @property {Uint8Array} ucards
  * @property {number[]} cards
- * @property {number[]} choice
+ * @property {[number, number]} choice
  * @property {number} backDrop
  * @property {function(Uint8Array | number[]) :void} updateCards
  * @property {function(number) :void} updateChoice
