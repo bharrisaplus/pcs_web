@@ -1,5 +1,9 @@
 /** Only used for test purposes. See test/specs/trythis_example.spec.mjs */
 
+/**
+ * @import {CSSelector} from './_meta/_typedefs.mjs'
+ */
+
 /** @globals console, document */
 
 import { default as tryLogger } from './hands/scribe.hand.mjs';

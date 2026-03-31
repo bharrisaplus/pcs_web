@@ -162,7 +162,7 @@
  * @typedef {Object} Hand.Scribe
  * Logging
  *
- * @property {function(string, Object) :void} devlog
+ * @property {(a :string, b ?:Object) => void} devlog
  * @property {(a :string, b ?:Object, c ?:Error|DOMException, d ?:boolean) => void} issuelog
  * @property {function(string) :void} notilog
  * @memberof Hand
