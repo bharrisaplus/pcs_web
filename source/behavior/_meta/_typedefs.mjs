@@ -14,7 +14,7 @@
  * @property {'kick'} kick Start app
  * @property {'needle'} needle Open Popover
  * @property {'scratch'} scratch Update Popover
- * @property {'blend'} mix Shuffle
+ * @property {'blend'} blend Shuffle
  * @property {'chop'} chop Copy and Paste
  * @property {'trace'} trace Generate Image
  * @property {'splash'} splash Change Background Color
@@ -148,7 +148,7 @@
  * Logging
  *
  * @property {function(string, Object) :void} devlog
- * @property {function(string, Object, Exception, boolean) :void} issuelog
+ * @property {(a :string, b ?:Object, c ?:Error|DOMException, d ?:boolean) => void} issuelog
  * @property {function(string) :void} notilog
  * @memberof Hand
  */
@@ -193,7 +193,7 @@
  *    </tableau>
  *
  * @property {number[]} currentOrder
- * @property {CardIntri[]} updateOrder
+ * @property {function(CardIntri[]) :void} updateOrder
  * @memberof Part
  */
 
@@ -209,7 +209,7 @@
  * @property {Boolean} isBusy
  * @property {CSSelector} dyeInput
  * @property {function(string[]) :Promise<Boolean>} composeTxt
- * @property {function(string[], CSSelector) :Promise<Boolean>} prepareImg
+ * @property {function(string, string[], CSSelector) :Promise<Boolean>} prepareImg
  * @property {function() :void} resetCtrls
  * @property {CSSelector} copyBtn
  * @property {CSSelector} downloadBtn
