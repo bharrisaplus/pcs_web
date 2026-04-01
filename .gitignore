@@ -6,6 +6,7 @@ distribution/demo
 distribution/2026_*
 !distribution/.gitkeep
 coverage
+test/stories/_td.mjs
 
 # Pages hosting
 docs/**/*

@@ -23,6 +23,13 @@ tasks:
     cmds:
       - pnpm tape {{.SPEC_GLOB}} | pnpm tap-spec
 
+  # integration(like) test
+  rear-preface:
+    env:
+      BUILD_TARGET: test
+    cmds:
+      - cp {{.PROJECT_DIR}}/node_modules/testdouble/dist/testdouble.js {{.PROJECT_DIR}}/test/stories/_td.mjs
+
   # coverage
 
   spec_of_cov:
