@@ -15,7 +15,7 @@ const demoLintConfig = defineConfig([
         "tabWidth": 4,
         "code": 111,
         "comments": 102,
-        "ignorePattern": "@(import|typedef|property)",
+        "ignorePattern": "@(import|typedef|property|param)",
         "ignoreComments": false,
         "ignoreTrailingComments": false,
         "ignoreUrls": false,
