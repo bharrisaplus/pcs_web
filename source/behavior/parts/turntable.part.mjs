@@ -12,7 +12,7 @@ import { default as logger } from "../hands/scribe.hand.mjs";
  * @param  {CSSelector} containerID - {@link CSSStyleRule.selectorText}
  * @param  {AbortController} eventCancel - {@link AbortController}
  *
- * @return {Readonly<Part.Turntable>} a card closeup popover - {@link Part.Turntable}
+ * @return {Part.Turntable} a card closeup popover - {@link Part.Turntable}
  */
 const makeTurntablePart = (containerID, eventCancel) => {
   let
@@ -190,7 +190,7 @@ let
  *
  * @param {string} getTurntableContainerID - {@link CSSStyleRule.selectorText}
  *
- * @returns {Readonly<Part.Turntable>} fresh Turntable for the page - {@link Part.Turntable}
+ * @returns {Part.Turntable} fresh Turntable for the page - {@link Part.Turntable}
  */
 const rinseRepeatTurntable = (getTurntableContainerID) => {
   if (!reuseablePart) {

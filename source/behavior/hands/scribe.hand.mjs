@@ -6,7 +6,7 @@
 
 
 /**
- * @return {Readonly<Hand.Scribe>} a logger - {@link Hand.Scribe}
+ * @return {Hand.Scribe} a logger - {@link Hand.Scribe}
  */
 const makeScribeHand = () => {
 	/** @type {NotificationToast[]} */

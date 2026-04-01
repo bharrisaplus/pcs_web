@@ -7,7 +7,7 @@ import { default as _g } from '../_meta/_glods.mjs';
 import { default as appLogger } from './scribe.hand.mjs';
 
 
-/** @return {Readonly<Hand.Dealer>} a helper for cards */
+/** @return {Hand.Dealer} a helper for cards - {@link Hand.Dealer} */
 const makeDealerHand = () => {
   /**
    * @param  {number} curPos from the list as it stands

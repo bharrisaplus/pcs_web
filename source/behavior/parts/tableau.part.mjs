@@ -11,7 +11,7 @@ import { default as _g } from '../_meta/_glods.mjs';
  * @param  {CSSelector} containerID - {@link CSSStyleRule.selectorText}
  * @param  {AbortController} eventCancel - {@link AbortController}
  *
- * @return {Readonly<Part.Tableau>} a surface for cards - {@link Part.Tableau}
+ * @return {Part.Tableau} a surface for cards - {@link Part.Tableau}
  */
 const makeTableauPart = (containerID, eventCancel) => {
   const itemSelector = `${containerID} .playing-card`;
@@ -102,7 +102,7 @@ let
 /**
  * @param {string} getTableauContainerID - {@link CSSStyleRule.selectorText}
  *
- * @returns {Readonly<Part.Tableau>} sole Tableau for the page - {@link Part.Turntable}
+ * @returns {Part.Tableau} sole Tableau for the page - {@link Part.Turntable}
  */
 const getTableau = (getTableauContainerID) => {
   if (!singleTableau) {

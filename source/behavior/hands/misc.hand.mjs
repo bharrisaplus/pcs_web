@@ -11,7 +11,7 @@ import { default as getHostShuttle } from '../shuttles/host.shuttle.mjs';
 
 const assetFetcher = getHostShuttle();
 
-/** @returns {Readonly<Hand.Misc>} a helper - {@link Hand.Misc} */
+/** @returns {Hand.Misc} a helper - {@link Hand.Misc} */
 const makeMiscHand = () => {
   let cycleCount = 0;
 

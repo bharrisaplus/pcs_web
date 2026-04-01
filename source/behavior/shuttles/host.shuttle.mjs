@@ -67,7 +67,7 @@ const makeHostShuttle = () => {
 		return blobResult;
 	}
 
-	/** @type {Readonly<Shuttle.Host>} */
+	/** @type {Shuttle.Host} */
 	const HostShuttle = Object.freeze({
 		grabFile: blob_from_url
 	});

@@ -9,7 +9,7 @@ import { default as appLogger } from '../hands/scribe.hand.mjs';
 
 
 /**
- * @return {Readonly<Hand.Egress>} - {@link Hand.Egress}
+ * @return {Hand.Egress} - {@link Hand.Egress}
  */
 const makeEgressHand = () => {
 	const egressSerializer = new XMLSerializer();

@@ -11,7 +11,7 @@ import { default as outHand } from '../hands/egress.hand.mjs';
 /**
  * @param {CSSelector} containerID {@link CSSStyleRule.selectorText}
  *
- * @returns {Part.Ribbon} the control panel
+ * @returns {Part.Ribbon} the control panel - {@link Part.Ribbon}
  */
 const makeRibbonPart = (containerID) => {
   let is_grabbing = false;
@@ -303,7 +303,7 @@ let singleRibbon;
 /**
  * @param {CSSelector} getRibbonContainerID {@link CSSStyleRule.selectorText}
  *
- * @return {Readonly<Part.Ribbon>}
+ * @return {Part.Ribbon}
  */
 const getRibbon = (getRibbonContainerID) => {
   if (!singleRibbon) {
