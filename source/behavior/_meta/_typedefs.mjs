@@ -168,7 +168,7 @@
  * Logging
  *
  * @property {(a :string, b ?:Object) => void} devlog
- * @property {(a :string, b ?:Object, c ?:Error|DOMException, d ?:boolean) => void} issuelog
+ * @property {(a :string, b ?:Object, c ?:unknown|Error|DOMException, d ?:boolean) => void} issuelog
  * @property {function(string) :void} notilog
  * @memberof Hand
  */

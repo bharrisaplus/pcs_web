@@ -40,7 +40,7 @@ const makeScribeHand = () => {
 	/**
 	 * @param  {string} issueMsg
 	 * @param  {Object} [issueThingy]
-	 * @param  {Error|DOMException} [issueErr]
+	 * @param  {unknown|Error|DOMException} [issueErr]
 	 * @param  {boolean} [blocking]
 	 * @see Hand.Scribe#issuelog
 	 */
