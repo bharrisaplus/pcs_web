@@ -15,29 +15,30 @@ import { default as getRibbon } from '../parts/ribbon.part.mjs';
 const lattice_name = "pcs:lattice:landing";
 
 /**
- * @param  {CSSelector} tableauID The dingus element - {@link Part.Tableau}
- * @param  {CSSelector} turntableID The hud element - {@link Part.Turntable}
- * @param  {CSSelector} ribbonID the panel element - {@link Part.Ribbon}
+ * @param  {CSSelector} tableauID The dingus element - {@link CSSStyleRule.selectorText} - {@link Part.Tableau}
+ * @param  {CSSelector} turntableID The hud element - {@link CSSStyleRule.selectorText} - {@link Part.Turntable}
+ * @param  {CSSelector} ribbonID the panel element - {@link CSSStyleRule.selectorText} - {@link Part.Ribbon}
  * @param  {CSSelector} exportBaseID the svg "spritesheet"
  *
  * @param  {Bank.Deck} itemVault The card state - {@link Bank.Deck}
- * @return {Readonly<Lattice.Landing>} home screen manager - {@link Lattice.Landing}
+ * @return {Lattice.Landing} home screen manager - {@link Lattice.Landing}
  */
 const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, itemVault) => {
   let
-    /** @type {Readonly<Part.Ribbon>} */
+    /** @type {Part.Ribbon} */
     panel,
-    /** @type {Readonly<Part.Tableau>} */
+    /** @type {Part.Tableau} */
     dingus,
-    /** @type {Readonly<Part.Turntable>} */
+    /** @type {Part.Turntable} */
     hud,
-    /** @type {Readonly<Hand.Dealer>} */
+    /** @type {Hand.Dealer} */
     shark,
-    /** @type {Readonly<CardIntri>[]} */
+    /** @type {CardIntri[]} */
     initList = [],
     tapCount = 0;
   const
     args = { tableauID, turntableID, ribbonID, exportBaseID, itemVault },
+    /** @type {HTMLElement} [description] */
     $appShell = document.querySelector(`#${_g.appID}`);
 
 
@@ -100,19 +101,18 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
   /** @param {PCSEvent} _pcsevt */
   const maybe_change_color = (_pcsevt) => {
     let dyeIndex;
+    /** @type {HTMLElement} */
+    const $panelDye = document.querySelector(panel.dyeInput);
 
-    if (
-      panel.isBusy || hud.isOpen || !_pcsevt.detail?.msg ||
-      _pcsevt.detail?.$dispatcher !== document.querySelector(panel.dyeInput)
-    ) {
-      document.querySelector(panel.dyeInput).blur();
+    if (panel.isBusy || hud.isOpen || !_pcsevt.detail?.msg || _pcsevt.detail?.$dispatcher !== $panelDye) {
+      $panelDye.blur();
       return;
     }
 
     dyeIndex = _g.dyes.indexOf(_pcsevt.detail.msg);
 
     if (dyeIndex === itemVault.backDrop || dyeIndex === -1) {
-      document.querySelector(panel.dyeInput).blur();
+      $panelDye.blur();
       return;
     }
 
@@ -124,17 +124,17 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
 
   /** @param {PCSEvent} _pcsevt */
   const maybe_output_txt = async (_pcsevt) => {
-    const itemLabels = itemVault.cards.map((_itm, _idx) => {
-      return shark.getCard(
-        _idx, itemVault.ndoCards.indexOf(_itm)
-      ).title.split(":")[1].trim();
-    });
+    const
+      /** @type {HTMLButtonElement} */
+      $panelCopy = document.querySelector(panel.copyBtn),
+      itemLabels = itemVault.cards.map((_itm, _idx) => {
+        return shark.getCard(
+          _idx, itemVault.ndoCards.indexOf(_itm)
+        ).title.split(":")[1].trim();
+      });
 
-    if (
-      panel.isBusy || hud.isOpen ||
-      _pcsevt.detail?.$dispatcher !== document.querySelector(panel.copyBtn)
-    ) {
-      document.querySelector(panel.copyBtn).blur();
+    if (panel.isBusy || hud.isOpen || _pcsevt.detail?.$dispatcher !== $panelCopy) {
+      $panelCopy.blur();
       return;
     }
 
@@ -146,6 +146,8 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
   /** @param {PCSEvent} _pcsevt */
   const maybe_download_img = async (_pcsevt) => {
     const
+      /** @type {HTMLButtonElement} */
+      $panelDwnld = document.querySelector(panel.downloadBtn),
       currentColor = window.getComputedStyle(
         $appShell.querySelector('main')
       ).getPropertyValue('background-color'),
@@ -156,11 +158,8 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
         ).symbolRef;
       });
 
-    if (
-      panel.isBusy || hud.isOpen ||
-      _pcsevt.detail?.$dispatcher !== document.querySelector(panel.downloadBtn)
-    ) {
-      document.querySelector(panel.downloadBtn).blur();
+    if (panel.isBusy || hud.isOpen || _pcsevt.detail?.$dispatcher !== $panelDwnld) {
+      $panelDwnld.blur();
       return;
     }
 
@@ -170,15 +169,15 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
   };
 
 
+  /** @param {PCSEvent} _pcsevt */ 
   const maybe_mix_items = (_pcsevt) => {
     /** @type {CardIntri[]} */
     let mixList = [];
+    /** @type {HTMLButtonElement} */
+    const $panelMix = document.querySelector(panel.mingleBtn);
 
-    if (
-      panel.isBusy || hud.isOpen ||
-      _pcsevt.detail?.$dispatcher !== document.querySelector(panel.mingleBtn)
-    ) {
-      document.querySelector(panel.mingleBtn).blur();
+    if (panel.isBusy || hud.isOpen || _pcsevt.detail?.$dispatcher !== $panelMix) {
+      $panelMix.blur();
       return;
     }
 
@@ -193,15 +192,17 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
   };
 
 
+  /** @param {PCSEvent} _pcsevt - {@link PCSEvent} */ 
   const maybe_refresh_items = (_pcsevt) => {
     let freshList = [];
+    /** @type {HTMLButtonElement} [description] */
+    const $panelClear = document.querySelector(panel.clearBtn);
 
     if (
-      panel.isBusy || hud.isOpen ||
-      _pcsevt.detail?.$dispatcher !== document.querySelector(panel.clearBtn) ||
+      panel.isBusy || hud.isOpen || _pcsevt.detail?.$dispatcher !== $panelClear ||
       itemVault.ucards.toString() === itemVault.ndoUCards.toString()
     ) {
-      document.querySelector(panel.clearBtn).blur();
+      $panelClear.blur();
       return;
     }
 
