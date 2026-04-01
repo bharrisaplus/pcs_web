@@ -1,0 +1,15 @@
+root = true
+
+[*]
+end_of_line = lf
+
+[*.{envrc,gitignore,js,json,md,yml,mjs,ts,yaml,pug,styl,stylus,html,css,svg}]
+charset = utf-8
+
+[*.{js,mjs,yml,yaml,css,html}]
+indent_style = space
+indent_size = 2
+
+[*.{json, pug, styl, stylus}]
+indent_style = space
+indent_size = 4
