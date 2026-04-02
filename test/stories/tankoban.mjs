@@ -27,6 +27,8 @@ const
   ],
 
   coveragePathPrefix = '/source/behavior',
+  contentPathPrefix = '/content/',
+  presentationPathPrefix = '/presentation',
 
   { document: rootDoc } = linkeParse($`
     <!DOCTYPE html><html lang="en">
@@ -150,6 +152,23 @@ const TankoBanServer = http.createServer(async (req, res) => {
           resCode = 404;
         }
       } else if (lookupUrl.startsWith(coveragePathPrefix)) {
+        $greetElement.textContent = `Hello`;
+        resHeader = headerForMime('.mjs');
+        resCode = 200;
+        foundContent = true;
+      } else if (lookupUrl.startsWith(contentPathPrefix)) {
+        try {
+          lookupContent = pugRender(NodePath.resolve(_dir, `../../${lookupUrl}`));
+          resHeader = headerForMime('.html');
+          resCode = 200;
+        } catch (lookupContentErr) {
+          console.error(lookupContentErr);
+          lookupContent = '';
+          $greetElement.textContent = `Not Found`;
+          resHeader = headerForMime('.html');
+          resCode = 404;
+        }
+      } else if (lookupUrl.startsWith(presentationPathPrefix)) {
         $greetElement.textContent = `Hello`;
         resHeader = headerForMime('.mjs');
         resCode = 200;

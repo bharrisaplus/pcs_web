@@ -1,0 +1,15 @@
+extends ../../story_preface.page.pug
+
+block story_preface_title
+    title ribbon:part
+
+block story_preface_sheets
+    link(rel="stylesheet" href="/turntable_part/sketch.css")
+
+block story_preface_entry
+    #turntable-conte
+        button#loadit Load Subject
+
+block story_preface_scripts
+    script(src="/turntable_part/_tankoban.mjs")
+    script(src="/turntable_part/conte.mjs" defer)
