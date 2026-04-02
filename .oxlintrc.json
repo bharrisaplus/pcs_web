@@ -1141,7 +1141,8 @@
     "XSLTProcessor": "readonly",
     "arguments": "readonly",
     "html2canvas": "readonly",
-    "chance": "readonly"
+    "chance": "readonly",
+    "td": "readonly"
   },
   "rules": {
     "constructor-super": "error",

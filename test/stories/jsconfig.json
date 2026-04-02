@@ -1,0 +1,26 @@
+{
+    "include": [
+        "single/*_part/conte.mjs"
+    ],
+    "compilerOptions": {
+        "noEmit": true,
+        "allowJs": true,
+        "checkJs": true,
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "strictNullChecks": false,
+        "lib": [
+            "DOM",
+            "ESNext",
+            "WebWorker"
+        ],
+        "module": "esnext",
+        "target": "esnext",
+        "types": [
+            "./_.d.ts"
+        ]
+    },
+    "typedocOptions": {
+        "jsDocCompatibility": true
+    }
+}
