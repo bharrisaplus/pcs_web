@@ -3,10 +3,18 @@ html(lang="en")
     head
         meta(charset="UTF-8")
         meta(name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no")
-        title Tankoban
+        block story_preface_title
+            title Tankoban
         link(rel="icon" type="image/x-icon" href="/favicon.ico")
-        link(rel="stylesheet" href="reset.css")
+        link(rel="stylesheet" href="/reset.css")
+        style.
+            html { background-color: gray; }
+        script(type="text/javascript" src="/td.mjs")
         link(id="sheetshere")
+        block story_preface_sheets
     body
+        block story_preface_entry
+            h1 Load your conte
         footer
             script(id="scriptshere")
+            block story_preface_scripts
