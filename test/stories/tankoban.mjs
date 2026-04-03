@@ -8,9 +8,10 @@ import { renderFile as pugRender } from 'pug';
 import { render as stylRender } from 'stylus';
 
 
-let _stylTmp;
 const
   _dir = import.meta.dirname,
+  _sourceDir = NodePath.resolve(_dir, '../../source'),
+  _conteDir = NodePath.resolve(_dir, './single'),
 
   requiredFiles = [
     './story_preface.page.pug',
@@ -63,6 +64,71 @@ const
   prefaceTD = await NodeFS.readFile(NodePath.resolve(_dir, requiredFiles[2]), { encoding: 'utf8' });
 
 
+const grabPug = (grabPath = 'missing', isPanel = true) => {
+  let result;
+  try {
+    if (isPanel) {
+      result = pugRender(NodePath.resolve(_conteDir, `./${grabPath}/panel.pug`));
+    } else {
+      result = pugRender(NodePath.resolve(_sourceDir, `./${grabPath}`));
+    }
+  } catch (pugErr) {
+    console.error(pugErr);
+    result = null;
+  }
+
+  return result;
+};
+
+
+const grabStyl = async (grabPath = 'missing', isSketch = true) => {
+  let _tmp, result;
+  const grabDir = NodePath.dirname(grabPath);
+
+  try {
+    if (isSketch) {
+      _tmp = await NodeFS.readFile(NodePath.resolve(_conteDir,`./${grabDir}/sketch.styl`), {encoding: 'utf8'});
+    } else {
+      _tmp = await NodeFS.readFile(NodePath.resolve(_sourceDir, `./${grabPath}`), { encoding: 'utf8' });
+    }
+
+    result = stylRender(_tmp, {paths: [_dir, NodePath.resolve(_sourceDir, './presentation')]});
+  } catch (stylErr) {
+    console.error(stylErr);
+    result = null;
+  }
+
+  return result;
+};
+
+
+const grabJSasInstrument = () => {};
+
+
+const maybeGrabFile = async (maybePath = 'missing', maybeType = '') => {
+  let result;
+
+  try {
+    switch(maybeType) {
+      case 'pugpanel': result = grabPug(maybePath); break;
+      case 'pug': result = grabPug(maybePath, false); break;
+      case 'stylusSketch': result = await grabStyl(maybePath); break;
+      case 'stylus': result = await grabStyl(maybePath, false); break;
+      case 'instrument': grabJSasInstrument(); break;
+      case 'bibl': result = await NodeFS.readFile(NodePath.resolve(_dir, `./single/${maybePath}`)); break;
+      default: { // most text
+        result = await NodeFS.readFile(NodePath.resolve(_dir, `./single/${maybePath}`), { encoding: 'utf8' });
+      }
+    }
+  } catch (contentErr) {
+    console.error(contentErr);
+    result = null;
+  }
+
+  return result;
+};
+
+
 const headerForMime = (dotExt = '') => {
   let result;
   switch(dotExt) {
@@ -82,6 +148,7 @@ const headerForMime = (dotExt = '') => {
 
 const TankoBanServer = http.createServer(async (req, res) => {
   let
+    isRoot = false,
     isCSSReset = false,
     isFavicon = false,
     isTDJS = false,
@@ -98,6 +165,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
       $greetElement.textContent = $`Hello`;
       resHeader = headerForMime('.html');
       resCode = 200;
+      isRoot = true;
     } else if (lookupUrl == "/reset.css") {
       resHeader = headerForMime('.css');
       resCode = 200;
@@ -117,39 +185,28 @@ const TankoBanServer = http.createServer(async (req, res) => {
       if (okConte.some((_conte) => lookupUrl.startsWith(`/${_conte}`))) {
         lookupExt = NodePath.extname(lookupUrl);
 
-        try {
-          if (lookupExt == '') {
-            lookupContent = pugRender(NodePath.resolve(_dir, `./single/${lookupUrl}/panel.pug`));
-            resHeader = headerForMime('.html');
-          } else {
-            if (['.js','.mjs','.svg','.json'].indexOf(lookupExt) != -1) {
-              lookupContent = await NodeFS.readFile(
-                NodePath.resolve(_dir, `./single/${lookupUrl}`), { encoding: 'utf8' }
-              );
-              resHeader = headerForMime(lookupExt);
-            } else if (lookupExt == '.css') {
-              _stylTmp = await NodeFS.readFile(
-                NodePath.resolve(
-                  _dir,`./single/${NodePath.dirname(lookupUrl)}/${NodePath.basename(lookupUrl, '.css')}.styl`
-                ),
-                { encoding: 'utf8' }
-              );
-              lookupContent = stylRender(_stylTmp, {paths: [NodePath.resolve(_dir)]});
-              resHeader = headerForMime('.css');
-            } else {
-              lookupContent = await NodeFS.readFile(NodePath.resolve(_dir, `./${lookupUrl}`));
-              resHeader = headerForMime(lookupExt);
-            }
-          }
+        if (lookupExt == '') {
+          lookupContent = await maybeGrabFile(lookupUrl, 'pugpanel');
+          resHeader = headerForMime('.html');
+        } else if (['.js','.mjs','.svg','.json'].indexOf(lookupExt) != -1) {
+          lookupContent = await maybeGrabFile(lookupUrl);
+          resHeader = headerForMime(lookupExt);
+        } else if (lookupExt == '.css') {
+          lookupContent = await maybeGrabFile(lookupUrl, 'stylusSketch');
+          resHeader = headerForMime('.css');
+        } else {
+          lookupContent = await maybeGrabFile(lookupUrl, 'bibl');
+          resHeader = headerForMime(lookupExt);
+        }
 
+        if (lookupContent) {
           resCode = 200;
           foundContent = true;
-        } catch (lookupErr) {
-          console.error(lookupErr);
-          lookupContent = '';
+        } else { // Couldn't read file
           $greetElement.textContent = `Not Found`;
           resHeader = headerForMime('.html');
           resCode = 404;
+          foundContent = false;
         }
       } else if (lookupUrl.startsWith(coveragePathPrefix)) {
         $greetElement.textContent = `Hello`;
@@ -157,18 +214,19 @@ const TankoBanServer = http.createServer(async (req, res) => {
         resCode = 200;
         foundContent = true;
       } else if (lookupUrl.startsWith(contentPathPrefix)) {
-        try {
-          lookupContent = pugRender(NodePath.resolve(_dir, `../../${lookupUrl}`));
+        lookupContent = await maybeGrabFile(lookupUrl, 'pug');
+
+        if (lookupContent){
           resHeader = headerForMime('.html');
           resCode = 200;
-        } catch (lookupContentErr) {
-          console.error(lookupContentErr);
-          lookupContent = '';
+          foundContent = true;
+        } else {
           $greetElement.textContent = `Not Found`;
           resHeader = headerForMime('.html');
           resCode = 404;
+          foundContent = false;
         }
-      } else if (lookupUrl.startsWith(presentationPathPrefix)) {
+      } else if (lookupUrl.startsWith(presentationPathPrefix)) { 
         $greetElement.textContent = `Hello`;
         resHeader = headerForMime('.mjs');
         resCode = 200;
@@ -177,16 +235,22 @@ const TankoBanServer = http.createServer(async (req, res) => {
         $greetElement.textContent = `Not Found`;
         resHeader = headerForMime('.html');
         resCode = 404;
+        foundContent = false;
       }
     }
   } else {
     $greetElement.textContent = `Not Found`;
     resHeader = headerForMime('.html');
     resCode = 404;
+    foundContent = false;
   }
 
   if (isVerbose) {
-    console.debug(`Responding to: ${lookupUrl}`);
+    if (isRoot || isFavicon || isCSSReset || isTDJS || foundContent) {
+      console.debug(`Responding to: ${lookupUrl}`);
+    } else {
+      console.warn(`Responding (404) to: ${lookupUrl}`);
+    }
   }
 
   res.writeHead(resCode, resHeader);
