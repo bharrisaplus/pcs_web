@@ -1,6 +1,7 @@
 
 let hasLoadedContentandBehavior = false;
 const
+  loadSelector = '#loadit',
   contentUrl = '/content/document/partials/turntable.pug',
   behaviorUrl = '/source/behavior/parts/turntable.part.mjs',
   presentationUrl = '/presentation/index.main.styl';
@@ -59,5 +60,15 @@ const loadContentandBehavior = async () => {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-  document.querySelector('#loadit')?.addEventListener('click', loadContentandBehavior);
-}, { once: true });
+  document.querySelector(loadSelector)?.addEventListener('click', (_clickEvt) => {
+    if (_clickEvt.target !== document.querySelector(loadSelector)) { return; }
+
+    loadContentandBehavior();
+
+    document.querySelector(loadSelector)?.addEventListener('transitionend', () => {
+      document.querySelector(loadSelector)?.remove();
+    });
+
+    document.querySelector(loadSelector)?.setAttribute('style', 'opacity:0;');
+  });
+});
