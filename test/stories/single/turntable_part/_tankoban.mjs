@@ -1,16 +1,36 @@
 
 let hasLoadedContentandBehavior = false;
 const
+  entrySelector = '#turntable-conte',
   loadSelector = '#loadit',
   contentUrl = '/content/document/partials/turntable.pug',
   behaviorUrl = '/source/behavior/parts/turntable.part.mjs',
   presentationUrl = '/presentation/index.main.styl';
 
+const subjectHTML = `
+  <DOCTYPE html><html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <title>Conte</title>
+    </head>
+    <body>
+    <div id="container"></div>
+    </body>
+  </html>`;
 
 const loadContent = async () => {
+  let resp, result;
   console.log('Will fetch ' + contentUrl);
-  return true;
-  //return await import(contentUrl);
+
+  try {
+    resp = await fetch(contentUrl);
+    result = await resp.text();
+  } catch (contentErr) {
+    console.error(contentErr);
+    result = '';
+  }
+
+  return result;
 };
 
 const loadPresentation = async () => {
@@ -26,7 +46,7 @@ const loadBehavior = async () => {
 };
 
 const loadContentandBehavior = async () => {
-  let hasLoadedContent, hasLoadedPresentation, hasLoadedBehavior;
+  let hasLoadedContent = false, hasLoadedPresentation = false, hasLoadedBehavior = false;
   const result = {};
 
   if (!hasLoadedContentandBehavior) {
@@ -53,21 +73,45 @@ const loadContentandBehavior = async () => {
       console.error(ldBhvrErr);
     }
 
-    if (hasLoadedContent && hasLoadedPresentation && hasLoadedBehavior) {
-      hasLoadedContentandBehavior = true;
-    }
+    hasLoadedContentandBehavior = hasLoadedContent && hasLoadedPresentation && hasLoadedBehavior;
   }
+
+  return result;
 };
 
+
 document.addEventListener('DOMContentLoaded', async () => {
-  document.querySelector(loadSelector)?.addEventListener('click', (_clickEvt) => {
+  const
+    getDoc = new DOMParser(),
+    $subjectMembrane = document.createElement('div'),
+    $subjectFrame = document.createElement('iframe'),
+    subjectDoc = getDoc.parseFromString(subjectHTML, 'text/html');
+
+  if (!subjectDoc) { return; }
+
+  document.querySelector(loadSelector)?.addEventListener('click', async (_clickEvt) => {
+    let assets, $subj;
     if (_clickEvt.target !== document.querySelector(loadSelector)) { return; }
 
-    loadContentandBehavior();
+    assets = await loadContentandBehavior();
+
+    if (!hasLoadedContentandBehavior || !assets) { return; }
+
+    $subj = getDoc.parseFromString(assets.markup, 'text/html').body.children[0];
+
+    if (!$subj) { return; }
+
+    subjectDoc.querySelector('#container')?.replaceChildren($subj);
 
     document.querySelector(loadSelector)?.addEventListener('transitionend', () => {
       document.querySelector(loadSelector)?.remove();
-    });
+
+      $subjectFrame.srcdoc = subjectDoc.children[0].getHTML();
+
+      $subjectMembrane.replaceChildren($subjectFrame);
+      $subjectMembrane.classList.add('subject-membrane');
+      document.querySelector(entrySelector)?.replaceChildren($subjectMembrane);
+    }, {once: true});
 
     document.querySelector(loadSelector)?.setAttribute('style', 'opacity:0;');
   });

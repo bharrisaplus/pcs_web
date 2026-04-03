@@ -18,6 +18,19 @@ body:has(#turntable-conte)
     align-items: center
     background-color: rgba(99, 236, 78, 0.25)
 
+    & .subject-membrane
+        min-height: 300px
+        min-width: 300px
+        border-width: 0
+        overflow: clip
+        border-radius: 18px
+        outline-width: 2px
+        outline-style: dashed
+
+        & iframe
+            max-height: 99%
+            max-width: 99%
+
 button#loadit
     max-height: 36px
     translate: 0 0
@@ -37,6 +50,7 @@ button#loadit
 
     &:hover
         cursor: pointer
+
 
 @starting-style
     button#loadit
