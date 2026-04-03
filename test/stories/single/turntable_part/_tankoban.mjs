@@ -5,9 +5,9 @@ const
   loadSelector = '#loadit',
   contentUrl = '/content/document/partials/turntable.pug',
   behaviorUrl = '/source/behavior/parts/turntable.part.mjs',
-  presentationUrl = '/presentation/index.main.styl';
+  presentationUrl = '/presentation/index.main.styl',
 
-const subjectHTML = `
+  subjectHTML = `
   <DOCTYPE html><html lang="en">
     <head>
       <meta charset="utf-8">
@@ -18,9 +18,9 @@ const subjectHTML = `
     </body>
   </html>`;
 
+
 const loadContent = async () => {
   let resp, result;
-  console.log('Will fetch ' + contentUrl);
 
   try {
     resp = await fetch(contentUrl);
@@ -30,8 +30,10 @@ const loadContent = async () => {
     result = '';
   }
 
+  console.log('Fetched ' + contentUrl);
   return result;
 };
+
 
 const loadPresentation = async () => {
   console.log("Will fetch " + behaviorUrl);
@@ -39,11 +41,13 @@ const loadPresentation = async () => {
   //return await import(presentationUrl);
 }
 
+
 const loadBehavior = async () => {
   console.log(`Will fetch ${presentationUrl}`);
   return true;
   //return await import(behaviorUrl);
 };
+
 
 const loadContentandBehavior = async () => {
   let hasLoadedContent = false, hasLoadedPresentation = false, hasLoadedBehavior = false;
