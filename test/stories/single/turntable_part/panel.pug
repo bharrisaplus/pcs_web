@@ -7,8 +7,9 @@ block story_preface_sheets
     link(rel="stylesheet" href="/turntable_part/sketch.css")
 
 block story_preface_entry
-    #turntable-conte
-        button#loadit Load Subject
+    #turntable-panel
+        .subject-membrane
+            iframe.subject-frame(src="/turntable_part/subject" sandbox="allow-scripts allow-modals allow-popups allow-downloads")
 
 block story_preface_scripts
     script(src="/turntable_part/_tankoban.mjs")

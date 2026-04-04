@@ -1,17 +1,24 @@
 @import './story_preface.main.styl'
 
+:root
+    font: normal 16px/1 monospace
 
-body:has(#turntable-conte)
+body:has(#turntable-panel)
     display: flex
+    height: calc(100% - 1rem)
+    width: calc(100% - 1rem)
+    margin: 0.5rem
     overflow: hidden
     justify-content: center
     align-items: center
     background-color: #4ecfec
 
-#turntable-conte
+#turntable-panel
     display: flex
-    width: 100%
-    height: 100%
+    height: calc(100% - 0.5rem)
+    max-height: calc(100% - 0.5rem)
+    width: calc(100% - 0.5rem)
+    max-width: calc(100% - 0.5rem)
     border-width: 0
     border-radius: 9px
     justify-content: center
@@ -19,17 +26,27 @@ body:has(#turntable-conte)
     background-color: rgba(99, 236, 78, 0.25)
 
     & .subject-membrane
+        display: flex
         min-height: 300px
+        max-height: 90%
         min-width: 300px
+        max-width: 90%
+        overflow: hidden
+        resize: both
+        justify-content: center
+        align-items: center
         border-width: 0
-        overflow: clip
         border-radius: 18px
         outline-width: 2px
         outline-style: dashed
+        outline-color: rgba(236, 107, 78, 0.63)
 
         & iframe
+            height: 99%
             max-height: 99%
+            width: 99%
             max-width: 99%
+
 
 button#loadit
     max-height: 36px
