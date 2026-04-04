@@ -6,6 +6,7 @@ import { parseHTML as linkeParse } from 'linkedom';
 import { html as $ } from 'ucontent';
 import { renderFile as pugRender } from 'pug';
 import { render as stylRender } from 'stylus';
+import { rollup } from 'rollup';
 
 
 const
@@ -108,7 +109,27 @@ const grabStyl = async (grabPath = 'missing', isSketch = true) => {
 };
 
 
-const grabJSasInstrument = () => {};
+const grabJSBundle = async (grabPath = 'missing') => {
+  let result = [];
+  try {
+    const
+      rollupBundle = await rollup({ input: NodePath.resolve(_sourceDir, `../${grabPath}`) }),
+      { output: rollupOutput } = await rollupBundle.generate({ format: 'es' });
+
+    for (const maybeChunk of rollupOutput) {
+      if (maybeChunk.type == 'asset') { continue; }
+
+      result.push(maybeChunk.code);
+    }
+
+    await rollupBundle.close();
+  } catch (rollupErr) {
+    console.error(rollupErr);
+    result = [];
+  }
+
+  return result.join("\n");
+};
 
 
 const maybeGrabFile = async (maybePath = 'missing', maybeType = '') => {
@@ -121,7 +142,7 @@ const maybeGrabFile = async (maybePath = 'missing', maybeType = '') => {
       case 'pug': result = grabPug(maybePath, 'other'); break;
       case 'stylusSketch': result = await grabStyl(maybePath); break;
       case 'stylus': result = await grabStyl(maybePath, false); break;
-      case 'instrument': grabJSasInstrument(); break;
+      case 'bundle': result = await grabJSBundle(maybePath); break;
       case 'bibl': result = await NodeFS.readFile(NodePath.resolve(_dir, `./single/${maybePath}`)); break;
       default: { // most text
         result = await NodeFS.readFile(NodePath.resolve(_dir, `./single/${maybePath}`), { encoding: 'utf8' });
@@ -218,10 +239,21 @@ const TankoBanServer = http.createServer(async (req, res) => {
           foundContent = false;
         }
       } else if (lookupUrl.startsWith(coveragePathPrefix)) {
-        $greetElement.textContent = `Hello`;
-        resHeader = headerForMime('.mjs');
-        resCode = 200;
-        foundContent = true;
+        lookupContent = await maybeGrabFile(lookupUrl, 'bundle');
+
+        if (lookupContent) {
+          console.log("found content");
+          resHeader = headerForMime('.mjs');
+          resCode = 200;
+          foundContent = true;
+        } else {
+          console.log(lookupContent);
+          console.log("no found content");
+          $greetElement.textContent = `Not Found`;
+          resHeader = headerForMime('.html');
+          resCode = 404;
+          foundContent = false;
+        }
       } else if (lookupUrl.startsWith(contentPathPrefix)) {
         lookupContent = await maybeGrabFile(lookupUrl, 'pug');
 
