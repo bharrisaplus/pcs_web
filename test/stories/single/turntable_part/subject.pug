@@ -3,9 +3,11 @@ html(lang="en")
     head
         meta(charset="utf-8")
         title Conte
-        //- link(type="stylesheet" href="/presentation/index.main.styl")
+        link(id="subject-styl" rel="stylesheet" href="/presentation/index.main.css")
+        script(type="text/javascript" src="/td.mjs")
     body
         #container
-            //- include ../../../source/content/document/partials/turntable.pug
+            include ../../../../source/content/document/partials/turntable.pug
         footer
-            //- script(src="/source/behavior/parts/turntable.part.mjs")
+            //- script(src="/source/behavior/parts/turntable.part.mjs" type="module")
+            script(src="/turntable_part/conte.mjs" defer)

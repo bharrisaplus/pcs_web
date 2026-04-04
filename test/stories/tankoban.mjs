@@ -28,7 +28,7 @@ const
   ],
 
   coveragePathPrefix = '/source/behavior',
-  contentPathPrefix = '/content/',
+  contentPathPrefix = '/content',
   presentationPathPrefix = '/presentation',
 
   { document: rootDoc } = linkeParse($`
@@ -93,7 +93,9 @@ const grabStyl = async (grabPath = 'missing', isSketch = true) => {
     if (isSketch) {
       _tmp = await NodeFS.readFile(NodePath.resolve(_conteDir,`./${grabDir}/sketch.styl`), {encoding: 'utf8'});
     } else {
-      _tmp = await NodeFS.readFile(NodePath.resolve(_sourceDir, `./${grabPath}`), { encoding: 'utf8' });
+      _tmp = await NodeFS.readFile(NodePath.resolve(_sourceDir,
+        `./${NodePath.dirname(grabPath)}/${NodePath.basename(grabPath, '.css')}.styl`), { encoding: 'utf8' }
+      );
     }
 
     result = stylRender(_tmp, {paths: [_dir, NodePath.resolve(_sourceDir, './presentation')]});
@@ -234,10 +236,18 @@ const TankoBanServer = http.createServer(async (req, res) => {
           foundContent = false;
         }
       } else if (lookupUrl.startsWith(presentationPathPrefix)) { 
-        $greetElement.textContent = `Hello`;
-        resHeader = headerForMime('.mjs');
-        resCode = 200;
-        foundContent = true;
+        lookupContent = await maybeGrabFile(lookupUrl, 'stylus');
+
+        if (lookupContent){
+          resHeader = headerForMime('.css');
+          resCode = 200;
+          foundContent = true;
+        } else {
+          $greetElement.textContent = `Not Found`;
+          resHeader = headerForMime('.html');
+          resCode = 404;
+          foundContent = false;
+        }
       } else {
         $greetElement.textContent = `Not Found`;
         resHeader = headerForMime('.html');
