@@ -38,6 +38,7 @@ const
         <title>Tankoban</title>
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="stylesheet" href="/reset.css"/>
+        <style>html { background-color: gray; }</style>
         <script type="text/javascript" src="/td.mjs"></script>
       </head>
       <body>
@@ -64,13 +65,16 @@ const
   prefaceTD = await NodeFS.readFile(NodePath.resolve(_dir, requiredFiles[2]), { encoding: 'utf8' });
 
 
-const grabPug = (grabPath = 'missing', isPanel = true) => {
+const grabPug = (grabPath = 'missing', grabType = 'panel') => {
   let result;
+
   try {
-    if (isPanel) {
-      result = pugRender(NodePath.resolve(_conteDir, `./${grabPath}/panel.pug`));
-    } else {
-      result = pugRender(NodePath.resolve(_sourceDir, `./${grabPath}`));
+    switch(grabType) {
+      case 'panel': result = pugRender(NodePath.resolve(_conteDir, `./${grabPath}/panel.pug`)); break;
+      case 'subject': {
+        result = pugRender(NodePath.resolve(_conteDir, `./${NodePath.dirname(grabPath)}/subject.pug`)); break;
+      }
+      default: result = pugRender(NodePath.resolve(_sourceDir, `./${grabPath}`));
     }
   } catch (pugErr) {
     console.error(pugErr);
@@ -111,7 +115,8 @@ const maybeGrabFile = async (maybePath = 'missing', maybeType = '') => {
   try {
     switch(maybeType) {
       case 'pugpanel': result = grabPug(maybePath); break;
-      case 'pug': result = grabPug(maybePath, false); break;
+      case 'pugsubject': result = grabPug(maybePath, 'subject'); break;
+      case 'pug': result = grabPug(maybePath, 'other'); break;
       case 'stylusSketch': result = await grabStyl(maybePath); break;
       case 'stylus': result = await grabStyl(maybePath, false); break;
       case 'instrument': grabJSasInstrument(); break;
@@ -186,7 +191,9 @@ const TankoBanServer = http.createServer(async (req, res) => {
         lookupExt = NodePath.extname(lookupUrl);
 
         if (lookupExt == '') {
-          lookupContent = await maybeGrabFile(lookupUrl, 'pugpanel');
+          lookupContent = await maybeGrabFile(lookupUrl,
+            lookupUrl.endsWith(`/subject`) ? 'pugsubject' : 'pugpanel'
+          );
           resHeader = headerForMime('.html');
         } else if (['.js','.mjs','.svg','.json'].indexOf(lookupExt) != -1) {
           lookupContent = await maybeGrabFile(lookupUrl);
