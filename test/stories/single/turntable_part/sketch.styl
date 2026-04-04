@@ -27,9 +27,11 @@ body:has(#turntable-panel)
 
     & .subject-membrane
         display: flex
-        min-height: 300px
+        height: 450px
+        min-height: 450px
         max-height: 90%
-        min-width: 300px
+        width: 450px
+        min-width: 450px
         max-width: 90%
         overflow: hidden
         resize: both
@@ -42,14 +44,20 @@ body:has(#turntable-panel)
         outline-color: rgba(236, 107, 78, 0.63)
 
         & iframe
-            height: 99%
-            max-height: 99%
-            width: 99%
-            max-width: 99%
+            height: calc(100% - 2rem)
+            max-height: calc(100% - 2rem)
+            width: calc(100% - 2rem)
+            max-width: calc(100% - 2rem)
+
+    &:has(#showhide)
+        position: relative
 
 
-button#loadit
+button#showhide
     max-height: 36px
+    position: absolute
+    right: 1rem
+    bottom: 1rem
     translate: 0 0
     padding: 4px 8px
     font-size: 18px
@@ -67,6 +75,9 @@ button#loadit
 
     &:hover
         cursor: pointer
+
+    &:disabled
+        color: #333
 
 
 @starting-style
