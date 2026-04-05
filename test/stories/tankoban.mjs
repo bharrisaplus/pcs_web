@@ -28,7 +28,20 @@ const
   contentPathPrefix = '/content',
   presentationPathPrefix = '/presentation',
 
-  rootDocFcn = pugCompile(`
+  foundPreface = requiredFiles.every(async (reqFl) => {
+    let result;
+    try {
+      result = await NodeFS.stat(NodePath.resolve(_dir, reqFl))
+    } catch {
+      result = false;
+    }
+    return result;
+  }),
+  cssReset = foundPreface ? await NodeFS.readFile(requiredFiles[3], { encoding: 'utf8' }) : '',
+  faviconIco = foundPreface ? await NodeFS.readFile(requiredFiles[4]) : '',
+  prefaceTD = foundPreface ? await NodeFS.readFile(requiredFiles[2], { encoding: 'utf8' }) : '';
+
+const rootDocFcn = foundPreface ? pugCompile(`
 doctype html
 html(lang="en")
   head
@@ -51,14 +64,7 @@ html(lang="en")
 
       console.debug(td.explain(mockdObj.hello));
       console.info(result);
-  `),
-
-
-  foundPreface = requiredFiles.every(async (reqFl) => await NodeFS.stat(NodePath.resolve(_dir, reqFl))),
-  cssReset = await NodeFS.readFile(requiredFiles[3], { encoding: 'utf8' }),
-  faviconIco = await NodeFS.readFile(requiredFiles[4]),
-  prefaceTD = await NodeFS.readFile(requiredFiles[2], { encoding: 'utf8' });
-
+  `) : function(){};
 
 const grabPug = (grabPath = 'missing', grabType = 'panel') => {
   let result;
@@ -298,7 +304,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
 // Start
 
 if (!foundPreface) {
-  console.error(`Preface files not found - ensure files located relative to server:`);
+  console.error(`Preface files not found - check:`);
   console.debug(requiredFiles.toString());
   NodeExit(1);
 }
