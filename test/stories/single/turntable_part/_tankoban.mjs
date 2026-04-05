@@ -1,32 +1,53 @@
 
 let loadedSubject = false;
-/** @type {HTMLButtonElement} */
-const $subjToggleBtn = document.createElement('button');
+
+const
+  /** @type {HTMLButtonElement} */
+  $subjShow = document.createElement('button'),
+  /** @type {HTMLButtonElement} */
+  $subjHide = document.createElement('button');
 
 
-$subjToggleBtn.setAttribute('id', 'showhide');
+$subjShow.setAttribute('id', 'show');
+$subjHide.setAttribute('id', 'hide');
 
 window.addEventListener('message', (_msgEvt) => {
   if (_msgEvt.data.type != 'loaded') { return; }
   if (loadedSubject) { return; }
 
   loadedSubject = true;
-  $subjToggleBtn.textContent = "Show/Hide Subject"
-  document.querySelector('#turntable-panel')?.appendChild($subjToggleBtn);
+  $subjShow.textContent = "Show"
+  $subjHide.textContent = "Hide"
+  document.querySelector('#ctrl-band')?.appendChild($subjShow);
+  document.querySelector('#ctrl-band')?.appendChild($subjHide);
+  document.querySelector('#ctrl-band')?.classList.remove('load-curtain');
 }, { once: true });
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  $subjToggleBtn.addEventListener('click', (_clickEvt) => {
-    if (_clickEvt.target != $subjToggleBtn) { return; }
+  $subjHide.addEventListener('click', (_clickEvt) => {
+    if (_clickEvt.target != $subjHide) { return; }
     if (!loadedSubject) { return; }
 
-    $subjToggleBtn.disabled = true;
+    $subjHide.disabled = true;
 
     window.frames[0].focus();
-    window.frames[0].postMessage({ type: 'subjectToggle' }, '*');
+    window.frames[0].postMessage({ type: 'subject:hide' }, '*');
     window.setTimeout(() => {
-      $subjToggleBtn.disabled = false;
+      $subjHide.disabled = false;
+    }, 1000);
+  });
+
+  $subjShow.addEventListener('click', (_clickEvt) => {
+    if (_clickEvt.target != $subjShow) { return; }
+    if (!loadedSubject) { return; }
+
+    $subjShow.disabled = true;
+
+    window.frames[0].focus();
+    window.frames[0].postMessage({ type: 'subject:show' }, '*');
+    window.setTimeout(() => {
+      $subjShow.disabled = false;
     }, 1000);
   });
 });

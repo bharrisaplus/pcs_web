@@ -52,34 +52,48 @@ body:has(#turntable-panel)
     &:has(#showhide)
         position: relative
 
-
-button#showhide
-    max-height: 36px
+#ctrl-band
+    display: flex
+    max-height: 40px
+    max-width: 85px
     position: absolute
     right: 1rem
     bottom: 1rem
-    translate: 0 0
-    padding: 4px 8px
-    font-size: 18px
+    flex-direction: row-reverse
+    gap: 0 0.5625rem
+    background-color: transparent
     border-width: 0
-    border-radius: 4.5px
-    box-shadow: 3px 3px rgba(50,50,50, 0.5)
-    color: #FAFAFA
-    background-color: #ec6b4e
+    outline-width: 1px
+    outline-style: dotted
+    outline-color: rgba(236, 107, 78, 0.63)
     /* property | duration | easing | behavior */
-    transition: opacity 0.45s ease-in-out allow-discrete
+    transition: opacity 0.75s ease-in-out allow-discrete
 
-    &:active
-        box-shadow: 2px 2px rgba(50,50,50, 0.5)
-        translate: 0 1.5px
+    &.load-curtain
+        opacity: 0
 
-    &:hover
-        cursor: pointer
+    & button
+        max-height: 36px
+        translate: 0 0
+        padding: 4px 8px
+        font-size: 1.125rem
+        border-width: 0
+        border-radius: 4.5px
+        box-shadow: 3px 3px rgba(50,50,50, 0.5)
+        color: #FAFAFA
+        background-color: #ec6b4e
 
-    &:disabled
-        color: #333
+        &:active
+            box-shadow: 2px 2px rgba(50,50,50, 0.5)
+            translate: 0 1.5px
+
+        &:hover
+            cursor: pointer
+
+        &:disabled
+            color: #333
 
 
 @starting-style
-    button#loadit
+    #ctrl-band
         opacity: 0
