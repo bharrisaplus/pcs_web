@@ -3,9 +3,7 @@ import { default as NodePath } from 'node:path';
 import { default as NodeFS } from 'node:fs/promises';
 import http from 'node:http';
 
-import { parseHTML as linkeParse } from 'linkedom';
-import { html as $ } from 'ucontent';
-import { renderFile as pugRender } from 'pug';
+import { renderFile as pugRender, compile as pugCompile } from 'pug';
 import { render as stylRender } from 'stylus';
 import { rollup } from 'rollup';
 
@@ -30,32 +28,31 @@ const
   contentPathPrefix = '/content',
   presentationPathPrefix = '/presentation',
 
-  { document: rootDoc } = linkeParse($`
-    <!DOCTYPE html><html lang="en">
-      <head>
-        <meta charset="utf-8">
-        <title>Tankoban</title>
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="stylesheet" href="/reset.css"/>
-        <style>html { background-color: gray; }</style>
-        <script type="text/javascript" src="/td.mjs"></script>
-      </head>
-      <body>
-      <div id="hookhere"></div>
-      <script type="module" defer>
-        let result;
-        const abc = td.object(['hello']);
+  rootDocFcn = pugCompile(`
+doctype html
+html(lang="en")
+  head
+    title Tankoban
+    link(rel="icon" type="image/x-icon" href="/favicon.ico")
+    link(ref="stylesheet" href="/reset.css")
+    style.
+      html { background-color: gray; }
+    script(type="text/javascript" src="/td.mjs")
+  body
+    header
+      h1 #{greetMsg}
+    script(type="module").
+      let result;
+      const mockdObj = td.object(['hello']);
 
-        td.when(abc.hello()).thenReturn('world');
+      td.when(mockdObj.hello()).thenReturn('world');
 
-        result = abc.hello();
+      result = mockdObj.hello();
 
-        console.debug(td.explain(abc.hello));
-        console.info(result);
-      </script>
-      </body>
-    </html>
+      console.debug(td.explain(mockdObj.hello));
+      console.info(result);
   `),
+
 
   foundPreface = requiredFiles.every(async (reqFl) => await NodeFS.stat(NodePath.resolve(_dir, reqFl))),
   cssReset = await NodeFS.readFile(requiredFiles[3], { encoding: 'utf8' }),
@@ -169,14 +166,13 @@ const headerForMime = (dotExt = '') => {
 
 const TankoBanServer = http.createServer(async (req, res) => {
   let
-    lookupExt, lookupContent, resCode, resHeader,
+    greeting, lookupExt, lookupContent, resCode, resHeader,
     isRoot = false, isCSSReset = false, isFavicon = false, isTDJS = false, foundContent = false,
     lookupUrl = req.url || '';
-  const $greetElement = rootDoc.createElement('h1');
 
   if (lookupUrl) {
     if(okRootPaths.indexOf(lookupUrl) != -1) {
-      $greetElement.textContent = $`Hello`;
+      greeting = `Hello`;
       resHeader = headerForMime('.html');
       resCode = 200;
       isRoot = true;
@@ -219,7 +215,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
           resCode = 200;
           foundContent = true;
         } else { // Couldn't read file
-          $greetElement.textContent = `Not Found`;
+          greeting = `Not Found`;
           resHeader = headerForMime('.html');
           resCode = 404;
           foundContent = false;
@@ -232,7 +228,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
           resCode = 200;
           foundContent = true;
         } else {
-          $greetElement.textContent = `Not Found`;
+          greeting = `Not Found`;
           resHeader = headerForMime('.html');
           resCode = 404;
           foundContent = false;
@@ -245,7 +241,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
           resCode = 200;
           foundContent = true;
         } else {
-          $greetElement.textContent = `Not Found`;
+          greeting = `Not Found`;
           resHeader = headerForMime('.html');
           resCode = 404;
           foundContent = false;
@@ -258,20 +254,20 @@ const TankoBanServer = http.createServer(async (req, res) => {
           resCode = 200;
           foundContent = true;
         } else {
-          $greetElement.textContent = `Not Found`;
+          greeting = `Not Found`;
           resHeader = headerForMime('.html');
           resCode = 404;
           foundContent = false;
         }
       } else {
-        $greetElement.textContent = `Not Found`;
+        greeting = `Not Found`;
         resHeader = headerForMime('.html');
         resCode = 404;
         foundContent = false;
       }
     }
   } else {
-    $greetElement.textContent = `Not Found`;
+    greeting = `Not Found`;
     resHeader = headerForMime('.html');
     resCode = 404;
     foundContent = false;
@@ -292,10 +288,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
     case isCSSReset: res.write(cssReset); break;
     case isTDJS: res.write(prefaceTD); break;
     case foundContent: res.write(lookupContent); break;
-    default: {
-      rootDoc.querySelector('#hookhere')?.replaceChildren($greetElement);
-      res.write(rootDoc.toString());
-    }
+    default: res.write(rootDocFcn({ greetMsg: greeting }))
   }
 
   res.end();
@@ -303,8 +296,6 @@ const TankoBanServer = http.createServer(async (req, res) => {
 
 
 // Start
-
-console.debug(testShared.conte_oneshot_path);
 
 if (!foundPreface) {
   console.error(`Preface files not found - ensure files located relative to server:`);
