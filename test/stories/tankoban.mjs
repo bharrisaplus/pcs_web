@@ -2,17 +2,18 @@ import { argv as NodeArgParse, exit as NodeExit } from 'node:process';
 import { default as NodePath } from 'node:path';
 import { default as NodeFS } from 'node:fs/promises';
 import http from 'node:http';
+
 import { parseHTML as linkeParse } from 'linkedom';
 import { html as $ } from 'ucontent';
 import { renderFile as pugRender } from 'pug';
 import { render as stylRender } from 'stylus';
 import { rollup } from 'rollup';
 
+import { default as testShared } from '../compass.mjs';
+
 
 const
   _dir = import.meta.dirname,
-  _sourceDir = NodePath.resolve(_dir, '../../source'),
-  _conteDir = NodePath.resolve(_dir, './single'),
 
   requiredFiles = [
     './story_preface.page.pug',
@@ -23,10 +24,6 @@ const
   ],
 
   okRootPaths = ['/', '/index.html', '/index', '/tankoban.html', '/tankoban'],
-
-  okConte = [
-    'turntable_part'
-  ],
 
   coveragePathPrefix = '/source/behavior',
   contentPathPrefix = '/content',
@@ -69,17 +66,14 @@ const
 const grabPug = (grabPath = 'missing', grabType = 'panel') => {
   let result;
 
-  try {
-    switch(grabType) {
-      case 'panel': result = pugRender(NodePath.resolve(_conteDir, `./${grabPath}/panel.pug`)); break;
-      case 'subject': {
-        result = pugRender(NodePath.resolve(_conteDir, `./${NodePath.dirname(grabPath)}/subject.pug`)); break;
-      }
-      default: result = pugRender(NodePath.resolve(_sourceDir, `./${grabPath}`));
+  switch(grabType) {
+    case 'panel': {
+      result = pugRender(NodePath.resolve(testShared.conte_oneshot_path, `./${grabPath}/panel.pug`)); break;
     }
-  } catch (pugErr) {
-    console.error(pugErr);
-    result = null;
+    case 'subject': {
+      result = pugRender(NodePath.resolve(testShared.conte_oneshot_path, `./${grabPath}.pug`)); break;
+    }
+    default: result = pugRender(NodePath.resolve(testShared.source_path, `./${grabPath}`));
   }
 
   return result;
@@ -90,20 +84,17 @@ const grabStyl = async (grabPath = 'missing', isSketch = true) => {
   let _tmp, result;
   const grabDir = NodePath.dirname(grabPath);
 
-  try {
-    if (isSketch) {
-      _tmp = await NodeFS.readFile(NodePath.resolve(_conteDir,`./${grabDir}/sketch.styl`), {encoding: 'utf8'});
-    } else {
-      _tmp = await NodeFS.readFile(NodePath.resolve(_sourceDir,
-        `./${NodePath.dirname(grabPath)}/${NodePath.basename(grabPath, '.css')}.styl`), { encoding: 'utf8' }
-      );
-    }
-
-    result = stylRender(_tmp, {paths: [_dir, NodePath.resolve(_sourceDir, './presentation')]});
-  } catch (stylErr) {
-    console.error(stylErr);
-    result = null;
+  if (isSketch) {
+    _tmp = await NodeFS.readFile(
+      NodePath.resolve(testShared.conte_oneshot_path,`./${grabDir}/sketch.styl`), { encoding: 'utf8' }
+    );
+  } else {
+    _tmp = await NodeFS.readFile(NodePath.resolve(testShared.source_path,
+      `./${NodePath.dirname(grabPath)}/${NodePath.basename(grabPath, '.css')}.styl`), { encoding: 'utf8' }
+    );
   }
+
+  result = stylRender(_tmp, {paths: [testShared.story_path, `${testShared.source_path}/presentation`]});
 
   return result;
 };
@@ -111,22 +102,18 @@ const grabStyl = async (grabPath = 'missing', isSketch = true) => {
 
 const grabJSBundle = async (grabPath = 'missing') => {
   let result = [];
-  try {
-    const
-      rollupBundle = await rollup({ input: NodePath.resolve(_sourceDir, `../${grabPath}`) }),
-      { output: rollupOutput } = await rollupBundle.generate({ format: 'es' });
 
-    for (const maybeChunk of rollupOutput) {
-      if (maybeChunk.type == 'asset') { continue; }
+  const
+    rollupBundle = await rollup({ input: NodePath.resolve(testShared.project_path, `./${grabPath}`) }),
+    { output: rollupOutput } = await rollupBundle.generate({ format: 'es' });
 
-      result.push(maybeChunk.code);
-    }
+  for (const maybeChunk of rollupOutput) {
+    if (maybeChunk.type == 'asset') { continue; }
 
-    await rollupBundle.close();
-  } catch (rollupErr) {
-    console.error(rollupErr);
-    result = [];
+    result.push(maybeChunk.code);
   }
+
+  await rollupBundle.close();
 
   return result.join("\n");
 };
@@ -143,9 +130,15 @@ const maybeGrabFile = async (maybePath = 'missing', maybeType = '') => {
       case 'stylusSketch': result = await grabStyl(maybePath); break;
       case 'stylus': result = await grabStyl(maybePath, false); break;
       case 'bundle': result = await grabJSBundle(maybePath); break;
-      case 'bibl': result = await NodeFS.readFile(NodePath.resolve(_dir, `./single/${maybePath}`)); break;
+      case 'bibl':  {
+        result = await NodeFS.readFile(
+          NodePath.resolve(testShared.conte_oneshot_path, `./${maybePath}`)
+        ); break;
+      }
       default: { // most text
-        result = await NodeFS.readFile(NodePath.resolve(_dir, `./single/${maybePath}`), { encoding: 'utf8' });
+        result = await NodeFS.readFile(
+          NodePath.resolve(testShared.conte_oneshot_path, `./${maybePath}`), { encoding: 'utf8' }
+        );
       }
     }
   } catch (contentErr) {
@@ -176,16 +169,9 @@ const headerForMime = (dotExt = '') => {
 
 const TankoBanServer = http.createServer(async (req, res) => {
   let
-    isRoot = false,
-    isCSSReset = false,
-    isFavicon = false,
-    isTDJS = false,
-    foundContent = false,
-    lookupUrl = req.url || '',
-    lookupExt,
-    lookupContent,
-    resCode,
-    resHeader;
+    lookupExt, lookupContent, resCode, resHeader,
+    isRoot = false, isCSSReset = false, isFavicon = false, isTDJS = false, foundContent = false,
+    lookupUrl = req.url || '';
   const $greetElement = rootDoc.createElement('h1');
 
   if (lookupUrl) {
@@ -210,7 +196,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
       resCode = 200;
       isTDJS = true;
     } else {
-      if (okConte.some((_conte) => lookupUrl.startsWith(`/${_conte}`))) {
+      if (testShared.story_path_allow.some((_conte) => lookupUrl.startsWith(`/${_conte}`))) {
         lookupExt = NodePath.extname(lookupUrl);
 
         if (lookupExt == '') {
@@ -242,13 +228,10 @@ const TankoBanServer = http.createServer(async (req, res) => {
         lookupContent = await maybeGrabFile(lookupUrl, 'bundle');
 
         if (lookupContent) {
-          console.log("found content");
           resHeader = headerForMime('.mjs');
           resCode = 200;
           foundContent = true;
         } else {
-          console.log(lookupContent);
-          console.log("no found content");
           $greetElement.textContent = `Not Found`;
           resHeader = headerForMime('.html');
           resCode = 404;
@@ -320,6 +303,8 @@ const TankoBanServer = http.createServer(async (req, res) => {
 
 
 // Start
+
+console.debug(testShared.conte_oneshot_path);
 
 if (!foundPreface) {
   console.error(`Preface files not found - ensure files located relative to server:`);
