@@ -12,6 +12,13 @@ html(lang="en")
                 border-radius: 18px;
             }
         script(type="text/javascript" src="/td.mjs")
+        script(type="importmap").
+            {
+                "imports": {
+                    "../_meta/_glods.mjs": "/turntable_part/clones/_glods.clone.mjs"
+                }
+            }
+
     body
         #container
             include ../../../../source/content/document/partials/turntable.pug
@@ -19,4 +26,4 @@ html(lang="en")
             #graphic-assets
                 include ../../../../source/content/graphic/misc/minipacket.svg
             script(src="/source/behavior/parts/turntable.part.mjs" type="module")
-            script(src="/turntable_part/conte.mjs" defer)
+            script(src="/turntable_part/conte.mjs" type="module" defer)

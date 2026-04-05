@@ -109,7 +109,10 @@ const grabJSBundle = async (grabPath = 'missing') => {
   let result = [];
 
   const
-    rollupBundle = await rollup({ input: NodePath.resolve(testShared.project_path, `./${grabPath}`) }),
+    rollupBundle = await rollup({
+      input: NodePath.resolve(testShared.project_path, `./${grabPath}`),
+      external: (_, importer) => { importer?.endsWith('_glods.mjs')}
+    }),
     { output: rollupOutput } = await rollupBundle.generate({ format: 'es' });
 
   for (const maybeChunk of rollupOutput) {
