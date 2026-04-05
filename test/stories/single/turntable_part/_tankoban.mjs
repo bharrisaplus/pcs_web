@@ -21,6 +21,7 @@ window.addEventListener('message', (_msgEvt) => {
   document.querySelector('#ctrl-band')?.appendChild($subjShow);
   document.querySelector('#ctrl-band')?.appendChild($subjHide);
   document.querySelector('#ctrl-band')?.classList.remove('load-curtain');
+  window.printTestGlobals = function () { window.frames[0].postMessage({ type: 'print:globals'}); };
 }, { once: true });
 
 
@@ -32,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     $subjHide.disabled = true;
 
     window.frames[0].focus();
-    window.frames[0].postMessage({ type: 'subject:hide' }, '*');
+    window.frames[0].postMessage({ type: 'subject:hide' });
     window.setTimeout(() => {
       $subjHide.disabled = false;
     }, 1000);
@@ -45,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     $subjShow.disabled = true;
 
     window.frames[0].focus();
-    window.frames[0].postMessage({ type: 'subject:show' }, '*');
+    window.frames[0].postMessage({ type: 'subject:show' });
     window.setTimeout(() => {
       $subjShow.disabled = false;
     }, 1000);
