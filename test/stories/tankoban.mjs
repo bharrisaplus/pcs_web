@@ -14,13 +14,14 @@ import { default as testShared } from '../compass.mjs';
 
 const
   _dir = import.meta.dirname,
+  isVerbose = NodeArgParse[2] == '-v' || NodeArgParse[2] == '--verbose',
 
   requiredFiles = [
-    './story_preface.page.pug',
-    './story_preface.main.styl',
-    './_td.mjs',
-    '../../distribution/common/vendor/meyerweb/reset.min.css',
-    '../../distribution/common/favicons/sqwiggle.ico'
+    NodePath.resolve(_dir, './story_preface.page.pug'),
+    NodePath.resolve(_dir, './story_preface.main.styl'),
+    NodePath.resolve(_dir, './_td.mjs'),
+    NodePath.resolve(testShared.cssreset_path, './reset.min.css'),
+    NodePath.resolve(testShared.favicon_path, './sqwiggle.ico'),
   ],
 
   okRootPaths = ['/', '/index.html', '/index', '/tankoban.html', '/tankoban'],
@@ -56,11 +57,10 @@ const
     </html>
   `),
 
-  isVerbose = NodeArgParse[2] == '-v' || NodeArgParse[2] == '--verbose',
   foundPreface = requiredFiles.every(async (reqFl) => await NodeFS.stat(NodePath.resolve(_dir, reqFl))),
-  cssReset = await NodeFS.readFile(NodePath.resolve(_dir, requiredFiles[3]), { encoding: 'utf8' }),
-  faviconIco = await NodeFS.readFile(NodePath.resolve(_dir, requiredFiles[4])),
-  prefaceTD = await NodeFS.readFile(NodePath.resolve(_dir, requiredFiles[2]), { encoding: 'utf8' });
+  cssReset = await NodeFS.readFile(requiredFiles[3], { encoding: 'utf8' }),
+  faviconIco = await NodeFS.readFile(requiredFiles[4]),
+  prefaceTD = await NodeFS.readFile(requiredFiles[2], { encoding: 'utf8' });
 
 
 const grabPug = (grabPath = 'missing', grabType = 'panel') => {
