@@ -309,5 +309,5 @@ if (!foundPreface) {
   NodeExit(1);
 }
 
-console.log("Listening on 54321...");
-TankoBanServer.listen(54321);
+console.log(`Listening on ${testShared.tankoban_port}...`);
+TankoBanServer.listen(testShared.tankoban_port);

@@ -24,6 +24,7 @@ const
     favicon_path: NodeProcess.env.COMMON_DIR ?
       NodePath.resolve(NodeProcess.env.COMMON_DIR, './favicons') :
       NodePath.resolve(_dir, '../../distribution/common/favicons'),
+    tankoban_port: 54321,
     // Stories to run; see stories/tankoban.js
     story_path_allow: [
       'turntable_part'
