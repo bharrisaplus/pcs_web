@@ -12,7 +12,7 @@ const
     spec_path: NodeProcess.env.SPEC_DIR || NodePath.resolve(_dir, './specs'),
     story_path: NodeProcess.env.STORY_DIR || NodePath.resolve(_dir, './stories'),
     conte_oneshot_path: NodeProcess.env.STORY_DIR ?
-      NodePath.resolve(NodeProcess.env.STORY_DIR, './stories/single') :
+      NodePath.resolve(NodeProcess.env.STORY_DIR, './single') :
       NodePath.resolve(_dir, './stories/single'),
     conte_omnibus_path: NodeProcess.env.STORY_DIR ?
       NodePath.resolve(NodeProcess.env.STORY_DIR, './stories/single') :
