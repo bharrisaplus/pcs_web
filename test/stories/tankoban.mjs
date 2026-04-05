@@ -15,8 +15,8 @@ const
   isVerbose = NodeArgParse[2] == '-v' || NodeArgParse[2] == '--verbose',
 
   requiredFiles = [
-    NodePath.resolve(_dir, './story_preface.page.pug'),
-    NodePath.resolve(_dir, './story_preface.main.styl'),
+    NodePath.resolve(_dir, './story_preface.pug'),
+    NodePath.resolve(_dir, './story_preface.styl'),
     NodePath.resolve(_dir, './_td.mjs'),
     NodePath.resolve(testShared.cssreset_path, './reset.min.css'),
     NodePath.resolve(testShared.favicon_path, './sqwiggle.ico'),
@@ -71,10 +71,12 @@ const grabPug = (grabPath = 'missing', grabType = 'panel') => {
 
   switch(grabType) {
     case 'panel': {
-      result = pugRender(NodePath.resolve(testShared.conte_oneshot_path, `./${grabPath}/panel.pug`)); break;
+      result = pugRender(
+        NodePath.resolve(testShared.conte_oneshot_path, `./${grabPath}/panel.page.pug`)
+      ); break;
     }
     case 'subject': {
-      result = pugRender(NodePath.resolve(testShared.conte_oneshot_path, `./${grabPath}.pug`)); break;
+      result = pugRender(NodePath.resolve(testShared.conte_oneshot_path, `./${grabPath}.page.pug`)); break;
     }
     default: result = pugRender(NodePath.resolve(testShared.source_path, `./${grabPath}`));
   }
@@ -89,7 +91,7 @@ const grabStyl = async (grabPath = 'missing', isSketch = true) => {
 
   if (isSketch) {
     _tmp = await NodeFS.readFile(
-      NodePath.resolve(testShared.conte_oneshot_path,`./${grabDir}/sketch.styl`), { encoding: 'utf8' }
+      NodePath.resolve(testShared.conte_oneshot_path,`./${grabDir}/sketch.main.styl`), { encoding: 'utf8' }
     );
   } else {
     _tmp = await NodeFS.readFile(NodePath.resolve(testShared.source_path,
