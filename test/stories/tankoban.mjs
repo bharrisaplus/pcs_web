@@ -111,7 +111,7 @@ const grabJSBundle = async (grabPath = 'missing') => {
   const
     rollupBundle = await rollup({
       input: NodePath.resolve(testShared.project_path, `./${grabPath}`),
-      external: (_, importer) => { importer?.endsWith('_glods.mjs')}
+      external: (_, importer) => { return importer?.endsWith('_glods.mjs'); }
     }),
     { output: rollupOutput } = await rollupBundle.generate({ format: 'es' });
 
