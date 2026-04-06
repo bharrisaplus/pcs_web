@@ -15,15 +15,16 @@ html(lang="en")
         script(type="importmap").
             {
                 "imports": {
-                    "../_meta/_glods.mjs": "/turntable_part/clones/_glods.clone.mjs"
+                    "../_meta/_glods.mjs": "/turntable_part/clones/_glods.clone.mjs",
+                    "/source/behavior/_meta/_glods.mjs": "/turntable_part/clones/_glods.clone.mjs",
+                    "turntable_part": "/source/behavior/parts/turntable.part.mjs"
                 }
             }
 
-    body
+    body#test-shell
         #container
             include ../../../../source/content/document/partials/turntable.pug
         footer
             #graphic-assets
                 include ../../../../source/content/graphic/misc/minipacket.svg
-            script(src="/source/behavior/parts/turntable.part.mjs" type="module")
             script(src="/turntable_part/conte.mjs" type="module" defer)
