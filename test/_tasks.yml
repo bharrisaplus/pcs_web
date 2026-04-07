@@ -23,12 +23,19 @@ tasks:
     cmds:
       - pnpm tape {{.SPEC_GLOB}} | pnpm tap-spec
 
-  # integration(like) test
-  rear-preface:
+
+  # integration(like) tests
+
+  rear-preface-td:
     env:
-      BUILD_TARGET: test
+      BUILD_TARGET: story_preface:testdouble
     cmds:
-      - cp {{.PROJECT_DIR}}/node_modules/testdouble/dist/testdouble.js {{.PROJECT_DIR}}/test/stories/_td.mjs
+      - pnpm rollup -c {{.TEST_DIR}}/_rollup.config.mjs
+
+  rear_preface:
+    cmds:
+      - task: rear-preface-td
+
 
   # coverage
 

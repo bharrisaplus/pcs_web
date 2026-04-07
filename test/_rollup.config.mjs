@@ -16,7 +16,7 @@ if (NodeProcess.env.BUILD_TARGET == "story_preface:testdouble") {
   targetConfig = {
     input: 'testdouble_browser',
     output: {
-      file: NodePath.resolve(testShared.story_path, './__td.mjs'),
+      file: NodePath.resolve(testShared.story_path, './_td.mjs'),
       format: 'es'
     },
     plugins: [
