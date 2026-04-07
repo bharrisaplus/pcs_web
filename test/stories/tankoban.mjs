@@ -50,11 +50,18 @@ html(lang="en")
     link(ref="stylesheet" href="/reset.css")
     style.
       html { background-color: gray; }
-    script(type="text/javascript" src="/td.mjs")
+    script(type="importmap").
+      {
+        "imports": {
+          "testdouble": "/td.mjs"
+        }
+      }
   body
     header
       h1 #{greetMsg}
     script(type="module").
+      import { default as td } from 'testdouble';
+
       let result;
       const mockdObj = td.object(['hello']);
 
