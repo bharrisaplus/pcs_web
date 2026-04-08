@@ -31,21 +31,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  window.addEventListener('message', (_msgEvt) => {
-    if (_msgEvt.data.type == 'print:globals') {
-      logGlobals();
-    } else if (_msgEvt.data.type == 'subject:show') {
-      $turntable.hidePopover();
-      $turntable.showPopover();
-    } else if (_msgEvt.data.type == 'subject:load') {
-      $turntable.hidePopover();
-      turntableBehavior.loadTurntable(testCards[0]);
-    } else if (_msgEvt.data.type == 'subject:hide') {
-      $turntable.hidePopover();
-    } else {
-      console.warn(`Received unknown msg type: ${_msgEvt.data.type}`);
-    }
-  });
+  if (
+    window.frameElement &&
+    window.parent.document.body.querySelectorAll(`${turntableID}-panel`).length == 1
+  ) {
+    window.addEventListener('message', (_msgEvt) => {
+      if (_msgEvt.data.type == 'print:globals') {
+        logGlobals();
+      } else if (_msgEvt.data.type == 'subject:show') {
+        $turntable.hidePopover();
+        $turntable.showPopover();
+      } else if (_msgEvt.data.type == 'subject:load') {
+        $turntable.hidePopover();
+        turntableBehavior.loadTurntable(testCards[0]);
+      } else if (_msgEvt.data.type == 'subject:hide') {
+        $turntable.hidePopover();
+      } else {
+        console.warn(`Received unknown msg type: ${_msgEvt.data.type}`);
+      }
+    });
 
-  window.parent.postMessage({type: 'loaded'});
+    window.parent.postMessage({type: 'loaded'});
+  }
 });
