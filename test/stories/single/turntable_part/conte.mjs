@@ -3,7 +3,7 @@
  */
 
 /* This files imports should be specified as part of the importmap in subject.page.pug */
-import { default as _tg } from '../_meta/_glods.mjs';
+import { default as _tg } from './clones/_glods.clone.mjs';
 import { default as getTurntable } from 'turntable_part';
 
 
