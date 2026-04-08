@@ -1,6 +1,8 @@
 {
     "include": [
-        "single/**/conte.mjs"
+        "single/**/conte.mjs",
+        "single/**/_tankoban.mjs",
+        "single/**/clones/*.clone.mjs"
     ],
     "compilerOptions": {
         "noEmit": true,
@@ -17,6 +19,11 @@
         ],
         "module": "esnext",
         "target": "esnext",
+        "baseUrl": ".",
+        "paths": {
+            "turntable_part": ["../../source/behavior/parts/turntable.part.mjs"],
+            "pcs:types": ["../../source/behavior/_meta/_typedefs.mjs"]
+        },
         "types": [
             "./_.d.ts"
         ]
