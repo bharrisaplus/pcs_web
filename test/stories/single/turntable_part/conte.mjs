@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (_msgEvt.data.type == 'print:globals') {
       logGlobals();
     } else if (_msgEvt.data.type == 'subject:show') {
+      $turntable.hidePopover();
       $turntable.showPopover();
     } else if (_msgEvt.data.type == 'subject:load') {
       $turntable.hidePopover();
@@ -46,5 +47,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  window.parent.postMessage({type: 'loaded'}, '*');
+  window.parent.postMessage({type: 'loaded'});
 });
