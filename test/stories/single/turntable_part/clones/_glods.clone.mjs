@@ -1,7 +1,9 @@
-/* clone of source/behavior/_meta/_glods.mjs */
+/**
+ * @import {GlobalDeclarations, PCSEventTypes} from 'pcs:types';
+ */
 
 
-/** @see PCSEventTypes */
+/** @type {PCSEventTypes} */
 const all_events = {
   kick: 'kick',
   needle: 'needle',
@@ -13,11 +15,11 @@ const all_events = {
   fresh: "fresh"
 };
 
-/** @see GlobalDeclarations */
-const _globals = {
+/** @see {GlobalDeclarations} */
+const _globals = Object.freeze({
   appID: "test-shell",
-  notices: all_events,
-  dyes: ['green-dye', 'red-dye', 'blue-dye', 'purple-dye'],
+  notices: Object.freeze(all_events),
+  dyes: Object.freeze(['green-dye', 'red-dye', 'blue-dye', 'purple-dye']),
   pcs_cardTitle: 'Magnified view of card',
   pcs_cardDesc: 'A single card up close and personal',
   pcs_cardRef: '#test-card',
@@ -25,11 +27,11 @@ const _globals = {
   c_Max: 14,
   c_TitlePrefix: 'Number',
   c_DescPrefix: "Card in position",
-  c_SuiteList: ["Spade", "Diamond", "Club", "Heart"],
-  c_NameList: [
+  c_SuiteList: Object.freeze(["Spade", "Diamond", "Club", "Heart"]),
+  c_NameList: Object.freeze([
     'Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King'
-  ]
-};
+  ])
+});
 
 
 export default _globals;
