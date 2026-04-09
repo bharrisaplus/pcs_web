@@ -8,6 +8,7 @@ distribution/2026_*
 coverage
 test/stories/_td.mjs
 test/stories/_z.mjs
+test/stories/_a.mjs
 .brwud
 
 # Pages hosting

@@ -38,6 +38,12 @@ tasks:
     cmds:
       - pnpm rollup -c {{.TEST_DIR}}/_rollup.config.mjs
 
+  rear-preface_axe:
+    vars:
+      AXE_NODE_NAME: "axe-core"
+    cmds:
+      - cp {{.PROJECT_DIR}}/node_modules/{{.AXE_NODE_NAME}}/axe.js {{.STOREY_DIR}}/_a.js
+
   rear_preface:
     cmds:
       - task: rear-preface-td
