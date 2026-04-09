@@ -2,12 +2,20 @@ import { default as NodeProcess } from 'node:process';
 import { default as NodePath } from 'node:path';
 
 
-let buildEnvUrl;
-const
-  _dir = import.meta.dirname,
-   bezel = {
+const _dir = import.meta.dirname;
+
+const getBezel = async () => {
+  const
+    _build_path = NodeProcess.env.BUILD_DIR || NodePath.resolve(_dir, '../build'),
+    _build_g_url = NodePath.relative(_dir,
+      NodePath.resolve(_build_path, './manifest.mjs')
+    ).split(NodePath.sep).join('/'),
+    /** @type {BuildGlobals} */
+    _build_g_import = (await import(_build_g_url)).default;
+
+   return Object.freeze({
     project_path: NodeProcess.env.PROJECT_DIR || NodePath.resolve(_dir, '../'),
-    build_path: NodeProcess.env.BUILD_DIR || NodePath.resolve(_dir, '../build'),
+    build_path: _build_path,
     source_path: NodeProcess.env.SOURCES_DIR || NodePath.resolve(_dir, '../source'),
     common_path: NodeProcess.env.COMMON_DIR || NodePath.resolve(_dir, '../distribution/common'),
     spec_path: NodeProcess.env.SPEC_DIR || NodePath.resolve(_dir, './specs'),
@@ -26,18 +34,15 @@ const
       NodePath.resolve(_dir, '../../distribution/common/favicons'),
     tankoban_port: 54321,
     // Stories to run; see stories/tankoban.js
-    story_path_allow: [
+    story_path_allow: Object.freeze([
       'turntable_part'
-    ],
-    buildEnv: {}
-  };
+    ]),
 
+    buildEnv: Object.freeze(_build_g_import)
+  });
+};
 
-buildEnvUrl = NodePath.relative(_dir,
-  NodePath.resolve(bezel.build_path, './manifest.mjs')
-).split(NodePath.sep).join('/')
+const compassBezel = await getBezel();
 
-bezel.buildEnv = (await import(buildEnvUrl)).default;
-
-export default bezel;
+export default Object.freeze(compassBezel);
 
