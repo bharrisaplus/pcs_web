@@ -26,6 +26,7 @@ const
     NodePath.resolve(_dir, './story_preface.styl'),
     NodePath.resolve(_dir, './_td.mjs'),
     NodePath.resolve(_dir, './_z.mjs'),
+    NodePath.resolve(_dir, './_a.js'),
     NodePath.resolve(testShared.cssreset_path, './reset.min.css'),
     NodePath.resolve(testShared.favicon_path, './sqwiggle.ico'),
   ],
@@ -45,10 +46,11 @@ const
     }
     return result;
   }),
-  cssReset = foundPreface ? await NodeFS.readFile(requiredFiles[4], { encoding: 'utf8' }) : '',
-  faviconIco = foundPreface ? await NodeFS.readFile(requiredFiles[5]) : '',
+  cssReset = foundPreface ? await NodeFS.readFile(requiredFiles[5], { encoding: 'utf8' }) : '',
+  faviconIco = foundPreface ? await NodeFS.readFile(requiredFiles[6]) : '',
   prefaceTD = foundPreface ? await NodeFS.readFile(requiredFiles[2], { encoding: 'utf8' }) : '',
-  prefaceZ = foundPreface ? await NodeFS.readFile(requiredFiles[3], { encoding: 'utf8' }) : '';
+  prefaceZ = foundPreface ? await NodeFS.readFile(requiredFiles[3], { encoding: 'utf8' }) : '',
+  prefaceA = foundPreface ? await NodeFS.readFile(requiredFiles[4], { encoding: 'utf8' }) : '';
 
 const rootDocFcn = foundPreface ? pugCompile(`
 doctype html
@@ -201,7 +203,8 @@ const headerForMime = (dotExt = '') => {
 const TankoBanServer = http.createServer(async (req, res) => {
   let
     greeting, lookupExt, lookupContent, resCode, resHeader,
-    isRoot = false, isCSSReset = false, isFavicon = false, isTDJS = false, isZJS = false, foundContent = false,
+    isRoot = false, isCSSReset = false, isFavicon = false, isTDJS = false, isZJS = false, isAJS = false,
+    foundContent = false,
     lookupUrl = req.url || '';
 
   if (lookupUrl) {
@@ -229,6 +232,10 @@ const TankoBanServer = http.createServer(async (req, res) => {
       resHeader = headerForMime('.mjs');
       resCode = 200;
       isZJS = true;
+    } else if (lookupUrl == '/a.js') {
+      resHeader = headerForMime('.js');
+      resCode = 200;
+      isAJS = true;
     } else {
       if (testShared.story_path_allow.some((_conte) => lookupUrl.startsWith(`/${_conte}`))) {
         lookupExt = NodePath.extname(lookupUrl);
@@ -340,6 +347,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
     case isCSSReset: res.write(cssReset); break;
     case isTDJS: res.write(prefaceTD); break;
     case isZJS: res.write(prefaceZ); break;
+    case isAJS: res.write(prefaceA); break;
     case foundContent: res.write(lookupContent); break;
     default: res.write(rootDocFcn({ greetMsg: greeting }))
   }
