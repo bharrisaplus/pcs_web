@@ -1,3 +1,7 @@
+/**
+ * @import {SourceMap} from 'rollup';
+ */
+
 import { argv as NodeArgParse, exit as NodeExit } from 'node:process';
 import { default as NodePath } from 'node:path';
 import { default as NodeFS } from 'node:fs/promises';
@@ -10,6 +14,9 @@ import { rollup } from 'rollup';
 import { default as testShared } from '../compass.mjs';
 
 
+let
+  /** @type {Map<string, SourceMap>} */
+  bundleMaps = new Map();
 const
   _dir = import.meta.dirname,
   isVerbose = NodeArgParse[2] == '-v' || NodeArgParse[2] == '--verbose',
@@ -120,12 +127,18 @@ const grabJSBundle = async (grabPath = 'missing') => {
       input: NodePath.resolve(testShared.project_path, `./${grabPath}`),
       external: (modID, _) => { return modID?.endsWith('_glods.mjs'); }
     }),
-    { output: rollupOutput } = await rollupBundle.generate({ format: 'es' });
+    { output: rollupOutput } = await rollupBundle.generate({
+      format: 'es',
+      sourcemap: true,
+      sourcemapExcludeSources: false,
+      sourcemapBaseUrl: testShared.buildEnv.localhost_url
+    });
 
   for (const maybeChunk of rollupOutput) {
     if (maybeChunk.type == 'asset') { continue; }
 
     result.push(maybeChunk.code);
+    bundleMaps.set(`/${maybeChunk.fileName}.map`, maybeChunk.map);
   }
 
   await rollupBundle.close();
@@ -173,8 +186,9 @@ const headerForMime = (dotExt = '') => {
     case '.css': result = { 'Content-Type': 'text/css' }; break;
     case '.svg': result = { 'Content-Type': 'image/svg+xml' }; break;
     case '.html': result = { 'Content-Type': 'text/html' }; break;
-    case '.json': result = { 'Content-Type': 'application/json' }; break;
     case '.ico': result = { 'Content-Type': 'image/x-icon' }; break;
+    case '.map':
+    case '.json': result = { 'Content-Type': 'application/json' }; break;
     default: result = { 'Content-Type': 'text/plain' }
   }
 
@@ -275,6 +289,20 @@ const TankoBanServer = http.createServer(async (req, res) => {
           greeting = `Not Found`;
           resHeader = headerForMime('.html');
           resCode = 404;
+          foundContent = false;
+        }
+      } else if (NodePath.extname(lookupUrl).endsWith('.map')) {
+        lookupContent = bundleMaps.get(lookupUrl);
+
+        if (lookupContent) {
+          lookupContent = JSON.stringify(lookupContent);
+          resHeader = headerForMime('.map');
+          resCode = 200;
+          foundContent = true;
+        } else {
+          greeting = 'Not Found';
+          resHeader = headerForMime('.html');
+          resCode = 200;
           foundContent = false;
         }
       } else {
