@@ -7,6 +7,7 @@ distribution/2026_*
 !distribution/.gitkeep
 coverage
 test/stories/_td.mjs
+.brwud
 
 # Pages hosting
 docs/**/*
