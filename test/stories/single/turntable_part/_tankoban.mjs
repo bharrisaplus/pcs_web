@@ -99,5 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     $subjLoad.disabled = true;
 
     $overlay.classList.add('lift');
+    window.frames[0].focus();
+    window.frames[0].postMessage({ type: 'subject:test' });
   });
 });

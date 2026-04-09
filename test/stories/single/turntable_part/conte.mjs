@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         $turntable.hidePopover();
         run_tests();
         zaReport({ reporter: zaTapReporter });
+        window.parent.postMessage({type: 'finished'});
       } else {
         console.warn(`Received unknown msg type: ${_msgEvt.data.type}`);
       }
