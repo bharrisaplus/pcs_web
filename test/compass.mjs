@@ -19,12 +19,12 @@ const getBezel = async () => {
     source_path: NodeProcess.env.SOURCES_DIR || NodePath.resolve(_dir, '../source'),
     common_path: NodeProcess.env.COMMON_DIR || NodePath.resolve(_dir, '../distribution/common'),
     spec_path: NodeProcess.env.SPEC_DIR || NodePath.resolve(_dir, './specs'),
-    story_path: NodeProcess.env.STORY_DIR || NodePath.resolve(_dir, './stories'),
-    conte_oneshot_path: NodeProcess.env.STORY_DIR ?
-      NodePath.resolve(NodeProcess.env.STORY_DIR, './single') :
+    story_path: NodeProcess.env.STOREY_DIR || NodePath.resolve(_dir, './stories'),
+    conte_oneshot_path: NodeProcess.env.STOREY_DIR ?
+      NodePath.resolve(NodeProcess.env.STOREY_DIR, './single') :
       NodePath.resolve(_dir, './stories/single'),
-    conte_omnibus_path: NodeProcess.env.STORY_DIR ?
-      NodePath.resolve(NodeProcess.env.STORY_DIR, './stories/single') :
+    conte_omnibus_path: NodeProcess.env.STOREY_DIR ?
+      NodePath.resolve(NodeProcess.env.STOREY_DIR, './stories/single') :
       NodePath.resolve(_dir, './stories/single'),
     cssreset_path: NodeProcess.env.COMMON_DIR ?
       NodePath.resolve(NodeProcess.env.COMMON_DIR, './vendor/meyerweb') :

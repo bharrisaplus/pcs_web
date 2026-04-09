@@ -36,12 +36,17 @@ tasks:
     vars:
       ZORA_NODE_NAME: 'zora'
     cmds:
-      - cp {{.PROJECT_DIR}}/node_modules/{{.ZORA_NODE_NAME}}/dist/index.js {{.STORY_DIR}}/_z.mjs
+      - cp {{.PROJECT_DIR}}/node_modules/{{.ZORA_NODE_NAME}}/dist/index.js {{.STOREY_DIR}}/_z.mjs
 
   rear_preface:
     cmds:
       - task: rear-preface-td
       - task: rear-preface_z
+
+  play_storey:
+    aliases: ["storeo"]
+    cmds:
+      - node {{.STOREY_DIR}}/tankoban.mjs
 
 
   # coverage
