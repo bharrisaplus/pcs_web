@@ -107,6 +107,9 @@ importers:
       testdouble:
         specifier: ^3.20.2
         version: 3.20.2
+      zora:
+        specifier: ^6.0.0
+        version: 6.0.0
 
 packages:
 
@@ -2855,6 +2858,9 @@ packages:
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+
+  zora@6.0.0:
+    resolution: {integrity: sha512-uDOZ5VwwURiU9B+5BY5z/ByM9WWC1A5SJpEBg0HL9Qy2zsKnzfizsa+ABWZFJ8onGN1MU2evzAGAuAxybjoYEQ==}
 
 snapshots:
 
@@ -5917,3 +5923,5 @@ snapshots:
       window-size: 0.1.0
 
   yocto-queue@0.1.0: {}
+
+  zora@6.0.0: {}
