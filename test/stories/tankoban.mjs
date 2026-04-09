@@ -10,6 +10,7 @@ import http from 'node:http';
 import { renderFile as pugRender, compile as pugCompile } from 'pug';
 import { render as stylRender } from 'stylus';
 import { rollup } from 'rollup';
+import { default as RollupIstanbulInstrument } from 'rollup-plugin-istanbul';
 
 import { default as testShared } from '../compass.mjs';
 
@@ -129,7 +130,14 @@ const grabJSBundle = async (grabPath = 'missing') => {
   const
     rollupBundle = await rollup({
       input: NodePath.resolve(testShared.project_path, `./${grabPath}`),
-      external: (modID, _) => { return modID?.endsWith('_glods.mjs'); }
+      external: (modID, _) => { return modID?.endsWith('_glods.mjs'); },
+      plugins: RollupIstanbulInstrument({
+        sourceMap:  true,
+        instrumenterConfig: {
+          esModule: true,
+          produceSourceMap: true
+        }
+      })
     }),
     { output: rollupOutput } = await rollupBundle.generate({
       format: 'es',
