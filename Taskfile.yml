@@ -37,7 +37,7 @@ tasks:
     vars:
       RUN_BROWSER_MSG: "To start browser run: 'chromedev --user-data-dir=$BRWUD_DIR'"
     cmds:
-      - cmd: echo {{.RUN_BROWSER_MSG}}}
+      - cmd: echo {{.RUN_BROWSER_MSG}}
         platforms: [windows]
       - cmd: echo {{.BROWSER_DBG_MSG}}
 
