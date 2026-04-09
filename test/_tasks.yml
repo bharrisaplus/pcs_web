@@ -32,9 +32,16 @@ tasks:
     cmds:
       - pnpm rollup -c {{.TEST_DIR}}/_rollup.config.mjs
 
+  rear-preface_z:
+    vars:
+      ZORA_NODE_NAME: 'zora'
+    cmds:
+      - cp {{.PROJECT_DIR}}/node_modules/{{.ZORA_NODE_NAME}}/dist/index.js {{.STORY_DIR}}/_z.mjs
+
   rear_preface:
     cmds:
       - task: rear-preface-td
+      - task: rear-preface_z
 
 
   # coverage
