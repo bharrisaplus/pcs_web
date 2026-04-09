@@ -17,6 +17,10 @@
         "./rollup.config.mjs",
         "./postcss.config.mjs",
         "./eslint.config.mjs",
+        "test/compass.mjs",
+        "test/_rollup.config.mjs",
+        "test/stories/tankoban.mjs",
+        "build/manifest.mjs",
         "build/_rollup.config.mjs",
         "build/_postcss.config.mjs"
     ],
