@@ -9,7 +9,6 @@ import { hold as zaHold, test as zaTest, report as zaReport, createTAPReporter }
 import { default as _tg } from './clones/_glods.clone.mjs';
 import { default as getTurntable } from 'turntable_part';
 
-zaHold();
 
 const
   turntableID = '#turntable',
@@ -38,6 +37,13 @@ const run_tests = () => {
   });
 };
 
+zaHold();
+window.axe.configure({
+  rules: [ // Just a popover so not all rules need apply
+    {id: "landmark-one-main",  enabled: false },
+    {id: "page-has-heading-one",  enabled: false }
+  ]
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('#card-sheet defs symbol:not(:has(rect))')?.forEach(($cSymbol, cIdx) => {
@@ -72,6 +78,14 @@ document.addEventListener('DOMContentLoaded', () => {
         run_tests();
         zaReport({ reporter: zaTapReporter });
         window.parent.postMessage({type: 'finished'});
+      } else if (_msgEvt.data.type == 'subject:a11y') {
+        window.axe.run().then((results) => {
+          if (results.violations.length) {
+            for (const a11yIssue of results.violations) {
+              console.debug(a11yIssue);
+            }
+          }
+        });
       } else {
         console.warn(`Received unknown msg type: ${_msgEvt.data.type}`);
       }
