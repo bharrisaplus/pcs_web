@@ -349,5 +349,26 @@ if (!foundPreface) {
   NodeProcess.exit(1);
 }
 
+NodeProcess.on('SIGINT', () => { // Ctrl + C
+  console.log('Stopping');
+  NodeProcess.exit(0);
+});
+
+NodeProcess.on('SIGQUIT', () => { // Ctrl + \
+  console.log('Quitting');
+  NodeProcess.exit(0);
+});
+
+NodeProcess.on('SIGTERM', () => { // Terminate/Kill
+  console.log('Terminating process');
+  NodeProcess.exit(0);
+});
+
+NodeProcess.on('exit', () => {
+  console.log('Closing');
+  NodeProcess.exit(0);
+});
+
+
 console.log(`Listening on ${testShared.tankoban_port}...`);
 TankoBanServer.listen(testShared.tankoban_port);
