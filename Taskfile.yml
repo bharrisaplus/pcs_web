@@ -59,6 +59,11 @@ tasks:
         platforms: [windows]
       - cmd: echo {{.BROWSER_DBG_MSG}}
 
+  clear_browser_userdir:
+    silent: true
+    cmds:
+      - rm -rf {{.BRWUD_DIR}}/**
+
   nitScript:
     cmds:
       - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs {{.CLI_ARGS}}
