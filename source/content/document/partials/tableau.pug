@@ -31,7 +31,7 @@ ol#tableau(style="display: none;").hide-before-load
             - card_common_name = `Joker`
             - card_svg_ref_id = `pcs-card`
 
-        li.playing-card(id=`card-${card_svg_ref_id}` data-oid=cardIdx aria-description=`${orderPrefix}: ${card_common_name}`)
+        li.playing-card(id=`card-${card_svg_ref_id}` data-oid=cardIdx aria-haspopup="dialog" aria-description=`${orderPrefix}: ${card_common_name}`)
             svg(role="img" aria-labelledby="playing-card-title playing-card-description")
                 title(id="playing-card-title")=`${orderPrefix}: ${card_common_name}`
                 desc(id="playing-card-description")=`Card in position ${cardIdx + 1}`
