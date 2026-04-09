@@ -2,7 +2,7 @@
  * @import {SourceMap} from 'rollup';
  */
 
-import { argv as NodeArgParse, exit as NodeExit } from 'node:process';
+import { default as NodeProcess } from 'node:process';
 import { default as NodePath } from 'node:path';
 import { default as NodeFS } from 'node:fs/promises';
 import http from 'node:http';
@@ -19,7 +19,7 @@ let
   bundleMaps = new Map();
 const
   _dir = import.meta.dirname,
-  isVerbose = NodeArgParse[2] == '-v' || NodeArgParse[2] == '--verbose',
+  isVerbose = NodeProcess.argv[2] == '-v' || NodeProcess.argv[2] == '--verbose',
 
   requiredFiles = [
     NodePath.resolve(_dir, './story_preface.pug'),
@@ -346,7 +346,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
 if (!foundPreface) {
   console.error(`Preface files not found - check:`);
   console.debug(requiredFiles.toString());
-  NodeExit(1);
+  NodeProcess.exit(1);
 }
 
 console.log(`Listening on ${testShared.tankoban_port}...`);
