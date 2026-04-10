@@ -14,6 +14,7 @@ import { default as RollupIstanbulInstrument } from 'rollup-plugin-istanbul';
 import { createContext as istanbulCtx } from 'istanbul-lib-report';
 import { default as istanbulCoverage } from 'istanbul-lib-coverage';
 import { create as istanbulReport } from 'istanbul-reports';
+import { default as ansiColorStrip } from 'strip-color';
 
 import { default as testShared } from '../compass.mjs';
 
@@ -195,6 +196,10 @@ const maybeGrabFile = async (maybePath = 'missing', maybeType = '') => {
 
 
 const getCovSummary = (covObj = {}) => {
+  /** @type {string[]} */
+  let result = [];
+  const ogWrite = NodeProcess.stdout.write.bind(NodeProcess.stdout);
+
   try {
     const
       _map = istanbulCoverage.createCoverageMap(covObj),
@@ -206,13 +211,19 @@ const getCovSummary = (covObj = {}) => {
 
       _reporter = istanbulReport('text');
 
+    NodeProcess.stdout.write = (wrtChnk, _) => {
+      result.push(ansiColorStrip(wrtChnk.toString()));
+      return true;
+    };
+
     _reporter.execute(_ctx);
 
+    NodeProcess.stdout.write = ogWrite;
   } catch (covErr) {
     console.error(covErr);
   }
 
-  return 'Result';
+  return result.join('');
 };
 
 
@@ -260,7 +271,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
       });
     } catch (uploadErr) {
       console.error(uploadErr);
-      uploadDump = null;
+      uploadDump = '';
       res.end('coverage upload: fail');
     }
   } else { // GET
