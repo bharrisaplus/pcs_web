@@ -1,28 +1,14 @@
-/**
- * @import {SourceMap} from 'rollup';
- */
-
 import { default as NodeProcess } from 'node:process';
 import { default as NodePath } from 'node:path';
 import { default as NodeFS } from 'node:fs/promises';
 import http from 'node:http';
 
-import { renderFile as pugRender, compile as pugCompile } from 'pug';
-import { render as stylRender } from 'stylus';
-import { rollup } from 'rollup';
-import { default as RollupIstanbulInstrument } from 'rollup-plugin-istanbul';
-import { createContext as istanbulCtx } from 'istanbul-lib-report';
-import { default as istanbulCoverage } from 'istanbul-lib-coverage';
-import { create as istanbulReport } from 'istanbul-reports';
-import { default as ansiColorStrip } from 'strip-color';
+import { compile as pugCompile } from 'pug';
 
 import { default as testShared } from '../compass.mjs';
+import { default as util } from './assisstant.mjs';
 
-
-let
-  /** @type {Map<string, SourceMap>} */
-  bundleMaps = new Map(),
-  lastCovObj = {};
+let lastCovObj = {};
 const
   isVerbose = NodeProcess.argv[2] == '-v' || NodeProcess.argv[2] == '--verbose',
 
@@ -71,164 +57,6 @@ html(lang="en")
       h1 #{greetMsg}
   `) : function(){};
 
-const grabPug = (grabPath = 'missing', grabType = 'conte') => {
-  let result;
-
-  switch(grabType) {
-    case 'conte': {
-      result = pugRender(
-        NodePath.resolve(testShared.storey_ch_path, `./${grabPath}/_conte.page.pug`)
-      ); break;
-    }
-    case 'subject': {
-      result = pugRender(NodePath.resolve(testShared.storey_ch_path, `./${grabPath}.page.pug`)); break;
-    }
-    default: result = pugRender(NodePath.resolve(testShared.source_path, `./${grabPath}`));
-  }
-
-  return result;
-};
-
-
-const grabStyl = async (grabPath = 'missing', isConte = true) => {
-  let _tmp, result;
-  const grabDir = NodePath.dirname(grabPath);
-
-  if (isConte) {
-    _tmp = await NodeFS.readFile(
-      NodePath.resolve(testShared.storey_ch_path,`./${grabDir}/_conte.main.styl`), { encoding: 'utf8' }
-    );
-  } else {
-    _tmp = await NodeFS.readFile(NodePath.resolve(testShared.source_path,
-      `./${NodePath.dirname(grabPath)}/${NodePath.basename(grabPath, '.css')}.styl`), { encoding: 'utf8' }
-    );
-  }
-
-  result = stylRender(_tmp, {paths: [
-    testShared.storey_ch_path,
-    `${testShared.storey_ch_path}/${isConte ? grabDir : ''}`,
-    `${testShared.source_path}/presentation`,
-  ]});
-
-  return result;
-};
-
-
-const grabJSBundle = async (grabPath = 'missing') => {
-  let result = [];
-
-  const
-    rollupBundle = await rollup({
-      input: NodePath.resolve(testShared.project_path, `./${grabPath}`),
-      external: (modID, _) => { return modID?.endsWith('_glods.mjs'); },
-      plugins: RollupIstanbulInstrument({
-        sourceMap:  true,
-        instrumenterConfig: {
-          esModule: true,
-          produceSourceMap: true
-        }
-      })
-    }),
-    { output: rollupOutput } = await rollupBundle.generate({
-      format: 'es',
-      sourcemap: true,
-      sourcemapExcludeSources: false,
-      sourcemapBaseUrl: testShared.buildEnv.localhost_url
-    });
-
-  for (const maybeChunk of rollupOutput) {
-    if (maybeChunk.type == 'asset') { continue; }
-
-    result.push(maybeChunk.code);
-    bundleMaps.set(`/${maybeChunk.fileName}.map`, maybeChunk.map);
-  }
-
-  await rollupBundle.close();
-
-  return result.join("\n");
-};
-
-
-const maybeGrabFile = async (maybePath = 'missing', maybeType = '') => {
-  let result;
-
-  try {
-    switch(maybeType) {
-      case 'pugConte': result = grabPug(maybePath); break;
-      case 'pugSubject': result = grabPug(maybePath, 'subject'); break;
-      case 'pug': result = grabPug(maybePath, 'other'); break;
-      case 'stylusConte': result = await grabStyl(maybePath); break;
-      case 'stylus': result = await grabStyl(maybePath, false); break;
-      case 'bundle': result = await grabJSBundle(maybePath); break;
-      case 'bibl':  {
-        result = await NodeFS.readFile(
-          NodePath.resolve(testShared.storey_ch_path, `./${maybePath}`)
-        ); break;
-      }
-      default: { // most text
-        result = await NodeFS.readFile(
-          NodePath.resolve(testShared.storey_ch_path, `./${maybePath}`), { encoding: 'utf8' }
-        );
-      }
-    }
-  } catch (contentErr) {
-    console.error(contentErr);
-    result = null;
-  }
-
-  return result;
-};
-
-
-const getCovSummary = (covObj = {}) => {
-  /** @type {string[]} */
-  let result = [];
-  const ogWrite = NodeProcess.stdout.write.bind(NodeProcess.stdout);
-
-  try {
-    const
-      _map = istanbulCoverage.createCoverageMap(covObj),
-
-      _ctx = istanbulCtx({
-        defaultSummarizer: 'nested',
-        coverageMap: _map
-      }),
-
-      _reporter = istanbulReport('text');
-
-    NodeProcess.stdout.write = (wrtChnk, _) => {
-      result.push(ansiColorStrip(wrtChnk.toString()));
-      return true;
-    };
-
-    _reporter.execute(_ctx);
-
-    NodeProcess.stdout.write = ogWrite;
-  } catch (covErr) {
-    console.error(covErr);
-  }
-
-  return result.join('');
-};
-
-
-const headerForMime = (dotExt = '') => {
-  let result;
-  switch(dotExt) {
-    case '.js':
-    case '.mjs': result = { 'Content-Type': 'text/javascript' }; break;
-    case '.css': result = { 'Content-Type': 'text/css' }; break;
-    case '.svg': result = { 'Content-Type': 'image/svg+xml' }; break;
-    case '.html': result = { 'Content-Type': 'text/html' }; break;
-    case '.ico': result = { 'Content-Type': 'image/x-icon' }; break;
-    case '.map':
-    case '.json': result = { 'Content-Type': 'application/json' }; break;
-    default: result = { 'Content-Type': 'text/plain' }
-  }
-
-  return result;
-};
-
 
 const TankoBanServer = http.createServer(async (req, res) => {
   let
@@ -240,7 +68,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
 
   if (!lookupUrl) {
     greeting = `Not Found`;
-    resHeader = headerForMime('.html');
+    resHeader = util.headerForMime('.html');
     resCode = 404;
     foundContent = false;
 
@@ -262,35 +90,35 @@ const TankoBanServer = http.createServer(async (req, res) => {
   } else { // GET
     if(okRootPaths.indexOf(lookupUrl) != -1) {
       greeting = `Hello`;
-      resHeader = headerForMime('.html');
+      resHeader = util.headerForMime('.html');
       resCode = 200;
       isRoot = true;
     } else if (lookupUrl == "/reset.css") {
-      resHeader = headerForMime('.css');
+      resHeader = util.headerForMime('.css');
       resCode = 200;
       isCSSReset = true;
     } else if (lookupUrl == "/main.css") {
-      resHeader = headerForMime('.css');
+      resHeader = util.headerForMime('.css');
       resCode = 200;
     } else if (lookupUrl == '/favicon.ico') {
-      resHeader = headerForMime('.ico');
+      resHeader = util.headerForMime('.ico');
       resCode = 200;
       isFavicon = true;
     } else if (lookupUrl == '/td.mjs') {
-      resHeader = headerForMime('.mjs');
+      resHeader = util.headerForMime('.mjs');
       resCode = 200;
       isTDJS = true;
     } else if (lookupUrl == '/z.mjs') {
-      resHeader = headerForMime('.mjs');
+      resHeader = util.headerForMime('.mjs');
       resCode = 200;
       isZJS = true;
     } else if (lookupUrl == '/a.js') {
-      resHeader = headerForMime('.js');
+      resHeader = util.headerForMime('.js');
       resCode = 200;
       isAJS = true;
     } else if (lookupUrl == '/getlastcov') {
-      lookupContent = getCovSummary(lastCovObj);
-      resHeader = headerForMime('.txt');
+      lookupContent = util.getCovSum(lastCovObj);
+      resHeader = util.headerForMime('.txt');
       foundContent = true;
 
       if (lookupContent) {
@@ -304,21 +132,21 @@ const TankoBanServer = http.createServer(async (req, res) => {
         lookupExt = NodePath.extname(lookupUrl);
 
         if (lookupExt == '') {
-          lookupContent = await maybeGrabFile(lookupUrl,
+          lookupContent = await util.maybeGrabFile(lookupUrl,
             lookupUrl.endsWith(`/subject`) ? 'pugSubject' : 'pugConte'
           );
-          resHeader = headerForMime('.html');
+          resHeader = util.headerForMime('.html');
         } else if (['.js','.mjs','.svg','.json'].indexOf(lookupExt) != -1) {
-          lookupContent = await maybeGrabFile(lookupUrl);
-          resHeader = headerForMime(lookupExt);
+          lookupContent = await util.maybeGrabFile(lookupUrl);
+          resHeader = util.headerForMime(lookupExt);
         } else if (lookupExt == '.css') {
-          lookupContent = await maybeGrabFile(
+          lookupContent = await util.maybeGrabFile(
             lookupUrl, lookupUrl.endsWith('conte.css') ? 'stylusConte' : 'stylus'
           );
-          resHeader = headerForMime('.css');
+          resHeader = util.headerForMime('.css');
         } else {
-          lookupContent = await maybeGrabFile(lookupUrl, 'bibl');
-          resHeader = headerForMime(lookupExt);
+          lookupContent = await util.maybeGrabFile(lookupUrl, 'bibl');
+          resHeader = util.headerForMime(lookupExt);
         }
 
         if (lookupContent) {
@@ -326,66 +154,66 @@ const TankoBanServer = http.createServer(async (req, res) => {
           foundContent = true;
         } else {
           greeting = `Not Found`;
-          resHeader = headerForMime('.html');
+          resHeader = util.headerForMime('.html');
           resCode = 404;
           foundContent = false;
         }
       } else if (lookupUrl.startsWith(coveragePathPrefix)) {
-        lookupContent = await maybeGrabFile(lookupUrl, 'bundle');
+        lookupContent = await util.maybeGrabFile(lookupUrl, 'bundle');
 
         if (lookupContent) {
-          resHeader = headerForMime('.mjs');
+          resHeader = util.headerForMime('.mjs');
           resCode = 200;
           foundContent = true;
         } else {
           greeting = `Not Found`;
-          resHeader = headerForMime('.html');
+          resHeader = util.headerForMime('.html');
           resCode = 404;
           foundContent = false;
         }
       } else if (lookupUrl.startsWith(contentPathPrefix)) {
-        lookupContent = await maybeGrabFile(lookupUrl, 'pug');
+        lookupContent = await util.maybeGrabFile(lookupUrl, 'pug');
 
         if (lookupContent){
-          resHeader = headerForMime('.html');
+          resHeader = util.headerForMime('.html');
           resCode = 200;
           foundContent = true;
         } else {
           greeting = `Not Found`;
-          resHeader = headerForMime('.html');
+          resHeader = util.headerForMime('.html');
           resCode = 404;
           foundContent = false;
         }
       } else if (lookupUrl.startsWith(presentationPathPrefix)) { 
-        lookupContent = await maybeGrabFile(lookupUrl, 'stylus');
+        lookupContent = await util.maybeGrabFile(lookupUrl, 'stylus');
 
         if (lookupContent){
-          resHeader = headerForMime('.css');
+          resHeader = util.headerForMime('.css');
           resCode = 200;
           foundContent = true;
         } else {
           greeting = `Not Found`;
-          resHeader = headerForMime('.html');
+          resHeader = util.headerForMime('.html');
           resCode = 404;
           foundContent = false;
         }
       } else if (NodePath.extname(lookupUrl).endsWith('.map')) {
-        lookupContent = bundleMaps.get(lookupUrl);
+        lookupContent = util.getSourceMap(lookupUrl);
 
         if (lookupContent) {
           lookupContent = JSON.stringify(lookupContent);
-          resHeader = headerForMime('.map');
+          resHeader = util.headerForMime('.map');
           resCode = 200;
           foundContent = true;
         } else {
           greeting = 'Not Found';
-          resHeader = headerForMime('.html');
+          resHeader = util.headerForMime('.html');
           resCode = 200;
           foundContent = false;
         }
       } else {
         greeting = `Not Found`;
-        resHeader = headerForMime('.html');
+        resHeader = util.headerForMime('.html');
         resCode = 404;
         foundContent = false;
       }
