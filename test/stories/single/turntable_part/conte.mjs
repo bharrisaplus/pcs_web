@@ -12,7 +12,9 @@ import { default as getTurntable } from 'turntable_part';
 
 let
   /** @type {Number} */
-  testCardIdx;
+  testCardIdx,
+  /** @type {string[]} */
+  zaTapLines = [];
 const
   turntableID = '#turntable',
   /** @type {HTMLElement} */
@@ -22,7 +24,10 @@ const
   logGlobals = () => { console.debug(_tg); },
   /** @type {CardIntri[]} */
   testCards = [],
-  zaTapReporter = createTAPReporter();
+  zaTapLogger = (/** @type {string} */ zaTapLogLine) => { zaTapLines.push(zaTapLogLine); },
+  zaTapSerializer = (/** @type {any} */ zaTapVal) => { return JSON.stringify(zaTapVal); },
+  zaTapReporter = createTAPReporter({ log: zaTapLogger, serialize: zaTapSerializer });
+
 
 const getIdx = (cur = 0) => {
   let result;
@@ -52,10 +57,11 @@ const run_tests = () => {
   });
 };
 
+
 testCardIdx = getIdx();
 zaHold();
 window.axe.configure({
-  rules: [ // Just a popover so not all rules need apply
+  rules: [ // Just testing a popover so not all rules need apply
     {id: "landmark-one-main",  enabled: false },
     {id: "page-has-heading-one",  enabled: false }
   ]
@@ -92,8 +98,14 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (_msgEvt.data.type == 'subject:test') {
         $turntable.hidePopover();
         run_tests();
-        zaReport({ reporter: zaTapReporter });
-        window.parent.postMessage({type: 'finished'});
+        zaReport({ reporter: zaTapReporter }).then(() => {
+          window.__tap__ = zaTapLines.join('\n');
+          window.parent.postMessage({type: 'finished'});
+          zaTapLines = [];
+        }, (rejReason) => {
+          console.warn("issue with zora reporter");
+          console.debug(rejReason)
+        });
       } else if (_msgEvt.data.type == 'subject:a11y') {
         window.axe.run().then((results) => {
           if (results.violations.length) {

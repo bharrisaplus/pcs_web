@@ -45,7 +45,7 @@ const makeTableauPart = (containerID, eventCancel) => {
    * @see Part.Tableau#updateOrder
    */
   const set_items_from = (newItems) => {
-    /** @type {HTMLElement[]} [description] */
+    /** @type {HTMLElement[]} */
     const _$tmpItems = Array.from(document.querySelectorAll(itemSelector));
 
     if (newItems.length < 52) { return; }
