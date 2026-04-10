@@ -1,5 +1,5 @@
 /**
- * @import { CardIntri, Part } from '../../../../source/behavior/_meta/_typedefs.mjs'
+ * @import { CardIntri, Part, PCSEvent } from '../../../../source/behavior/_meta/_typedefs.mjs'
  */
 
 /* This files imports should be specified as part of the importmap in subject.page.pug */
@@ -13,6 +13,8 @@ import { default as helper } from './fixture.mjs';
 /** @type {Number} */
 let testCardIdx;
 const
+  /** @type {HTMLElement} */
+  $shell = document.querySelector(`#${_tg.appID}`),
   turntableID = '#turntable',
   /** @type {HTMLElement} */
   $turntable = document.querySelector(turntableID),
@@ -51,6 +53,18 @@ document.addEventListener('DOMContentLoaded', () => {
       desc: `${_tg.c_DescPrefix} ${cIdx + 1}`,
       symbolRef: `#${symbolID}`
     });
+  });
+
+  $shell.addEventListener(_tg.notices.scratch, (/** @type {PCSEvent} */ _pcsevt) => {
+    console.log("Spinning");
+
+    if (_pcsevt.detail.msg == 'prv') {
+      testCardIdx = helper.sanitize_card_id(testCardIdx-1);
+    } else if (_pcsevt.detail.msg == 'nxt') {
+      testCardIdx = helper.sanitize_card_id(testCardIdx+1);
+    }
+
+    turntableBehavior.spinTurntable(testCards[testCardIdx]);
   });
 
   if (
