@@ -89,13 +89,13 @@ html(lang="en")
       console.info(result);
   `) : function(){};
 
-const grabPug = (grabPath = 'missing', grabType = 'panel') => {
+const grabPug = (grabPath = 'missing', grabType = 'conte') => {
   let result;
 
   switch(grabType) {
-    case 'panel': {
+    case 'conte': {
       result = pugRender(
-        NodePath.resolve(testShared.storey_ch_path, `./${grabPath}/panel.page.pug`)
+        NodePath.resolve(testShared.storey_ch_path, `./${grabPath}/_conte.page.pug`)
       ); break;
     }
     case 'subject': {
@@ -108,13 +108,13 @@ const grabPug = (grabPath = 'missing', grabType = 'panel') => {
 };
 
 
-const grabStyl = async (grabPath = 'missing', isSketch = true) => {
+const grabStyl = async (grabPath = 'missing', isConte = true) => {
   let _tmp, result;
   const grabDir = NodePath.dirname(grabPath);
 
-  if (isSketch) {
+  if (isConte) {
     _tmp = await NodeFS.readFile(
-      NodePath.resolve(testShared.storey_ch_path,`./${grabDir}/sketch.main.styl`), { encoding: 'utf8' }
+      NodePath.resolve(testShared.storey_ch_path,`./${grabDir}/_conte.main.styl`), { encoding: 'utf8' }
     );
   } else {
     _tmp = await NodeFS.readFile(NodePath.resolve(testShared.source_path,
@@ -124,7 +124,7 @@ const grabStyl = async (grabPath = 'missing', isSketch = true) => {
 
   result = stylRender(_tmp, {paths: [
     testShared.storey_ch_path,
-    `${testShared.storey_ch_path}/${isSketch ? grabDir : ''}`,
+    `${testShared.storey_ch_path}/${isConte ? grabDir : ''}`,
     `${testShared.source_path}/presentation`,
   ]});
 
@@ -172,10 +172,10 @@ const maybeGrabFile = async (maybePath = 'missing', maybeType = '') => {
 
   try {
     switch(maybeType) {
-      case 'pugpanel': result = grabPug(maybePath); break;
+      case 'pugConte': result = grabPug(maybePath); break;
       case 'pugsubject': result = grabPug(maybePath, 'subject'); break;
       case 'pug': result = grabPug(maybePath, 'other'); break;
-      case 'stylusSketch': result = await grabStyl(maybePath); break;
+      case 'stylusConte': result = await grabStyl(maybePath); break;
       case 'stylus': result = await grabStyl(maybePath, false); break;
       case 'bundle': result = await grabJSBundle(maybePath); break;
       case 'bibl':  {
@@ -323,14 +323,14 @@ const TankoBanServer = http.createServer(async (req, res) => {
 
         if (lookupExt == '') {
           lookupContent = await maybeGrabFile(lookupUrl,
-            lookupUrl.endsWith(`/subject`) ? 'pugsubject' : 'pugpanel'
+            lookupUrl.endsWith(`/subject`) ? 'pugsubject' : 'pugConte'
           );
           resHeader = headerForMime('.html');
         } else if (['.js','.mjs','.svg','.json'].indexOf(lookupExt) != -1) {
           lookupContent = await maybeGrabFile(lookupUrl);
           resHeader = headerForMime(lookupExt);
         } else if (lookupExt == '.css') {
-          lookupContent = await maybeGrabFile(lookupUrl, 'stylusSketch');
+          lookupContent = await maybeGrabFile(lookupUrl, 'stylusConte');
           resHeader = headerForMime('.css');
         } else {
           lookupContent = await maybeGrabFile(lookupUrl, 'bibl');
