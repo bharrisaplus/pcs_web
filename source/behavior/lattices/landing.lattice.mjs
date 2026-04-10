@@ -38,7 +38,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
     tapCount = 0;
   const
     args = { tableauID, turntableID, ribbonID, exportBaseID, itemVault },
-    /** @type {HTMLElement} [description] */
+    /** @type {HTMLElement} */
     $appShell = document.querySelector(`#${_g.appID}`);
 
 
@@ -195,7 +195,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
   /** @param {PCSEvent} _pcsevt - {@link PCSEvent} */ 
   const maybe_refresh_items = (_pcsevt) => {
     let freshList = [];
-    /** @type {HTMLButtonElement} [description] */
+    /** @type {HTMLButtonElement} */
     const $panelClear = document.querySelector(panel.clearBtn);
 
     if (
