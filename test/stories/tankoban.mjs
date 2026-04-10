@@ -11,13 +11,17 @@ import { renderFile as pugRender, compile as pugCompile } from 'pug';
 import { render as stylRender } from 'stylus';
 import { rollup } from 'rollup';
 import { default as RollupIstanbulInstrument } from 'rollup-plugin-istanbul';
+import { createContext as istanbulCtx } from 'istanbul-lib-report';
+import { default as istanbulCoverage } from 'istanbul-lib-coverage';
+import { create as istanbulReport } from 'istanbul-reports';
 
 import { default as testShared } from '../compass.mjs';
 
 
 let
   /** @type {Map<string, SourceMap>} */
-  bundleMaps = new Map();
+  bundleMaps = new Map(),
+  lastCovObj = {};
 const
   _dir = import.meta.dirname,
   isVerbose = NodeProcess.argv[2] == '-v' || NodeProcess.argv[2] == '--verbose',
@@ -190,6 +194,28 @@ const maybeGrabFile = async (maybePath = 'missing', maybeType = '') => {
 };
 
 
+const getCovSummary = (covObj = {}) => {
+  try {
+    const
+      _map = istanbulCoverage.createCoverageMap(covObj),
+
+      _ctx = istanbulCtx({
+        defaultSummarizer: 'nested',
+        coverageMap: _map
+      }),
+
+      _reporter = istanbulReport('text');
+
+    _reporter.execute(_ctx);
+
+  } catch (covErr) {
+    console.error(covErr);
+  }
+
+  return 'Result';
+};
+
+
 const headerForMime = (dotExt = '') => {
   let result;
   switch(dotExt) {
@@ -213,9 +239,31 @@ const TankoBanServer = http.createServer(async (req, res) => {
     greeting, lookupExt, lookupContent, resCode, resHeader,
     isRoot = false, isCSSReset = false, isFavicon = false, isTDJS = false, isZJS = false, isAJS = false,
     foundContent = false,
-    lookupUrl = req.url || '';
+    lookupUrl = req.url || '', uploadDump = '';
 
-  if (lookupUrl) {
+
+  if (!lookupUrl) {
+    greeting = `Not Found`;
+    resHeader = headerForMime('.html');
+    resCode = 404;
+    foundContent = false;
+
+    res.writeHead(resCode, resHeader);
+    res.write(rootDocFcn({ greetMsg: greeting }))
+    res.end();
+  } else if (lookupUrl == '/pushcov') { // POST
+    try {
+      req.on('data', (chnk) => { uploadDump += chnk; });
+      req.on('end', () => {
+        lastCovObj = JSON.parse(uploadDump);
+        res.end('coverage upload: success');
+      });
+    } catch (uploadErr) {
+      console.error(uploadErr);
+      uploadDump = null;
+      res.end('coverage upload: fail');
+    }
+  } else { // GET
     if(okRootPaths.indexOf(lookupUrl) != -1) {
       greeting = `Hello`;
       resHeader = headerForMime('.html');
@@ -228,7 +276,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
     } else if (lookupUrl == "/main.css") {
       resHeader = headerForMime('.css');
       resCode = 200;
-    } else if (lookupUrl == '/favicon.ico' || NodePath.extname(lookupUrl) == '.ico') {
+    } else if (lookupUrl == '/favicon.ico') {
       resHeader = headerForMime('.ico');
       resCode = 200;
       isFavicon = true;
@@ -244,6 +292,17 @@ const TankoBanServer = http.createServer(async (req, res) => {
       resHeader = headerForMime('.js');
       resCode = 200;
       isAJS = true;
+    } else if (lookupUrl == '/getlastcov') {
+      lookupContent = getCovSummary(lastCovObj);
+      resHeader = headerForMime('.txt');
+      foundContent = true;
+
+      if (lookupContent) {
+        resCode = 200;
+      } else {
+        resCode = 404;
+        lookupContent = 'no coverage';
+      }
     } else {
       if (testShared.story_path_allow.some((_conte) => lookupUrl.startsWith(`/${_conte}`))) {
         lookupExt = NodePath.extname(lookupUrl);
@@ -267,7 +326,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
         if (lookupContent) {
           resCode = 200;
           foundContent = true;
-        } else { // Couldn't read file
+        } else {
           greeting = `Not Found`;
           resHeader = headerForMime('.html');
           resCode = 404;
@@ -333,34 +392,29 @@ const TankoBanServer = http.createServer(async (req, res) => {
         foundContent = false;
       }
     }
-  } else {
-    greeting = `Not Found`;
-    resHeader = headerForMime('.html');
-    resCode = 404;
-    foundContent = false;
-  }
 
-  if (isVerbose) {
-    if (isRoot || isFavicon || isCSSReset || isTDJS || foundContent) {
-      console.debug(`Responding to: ${lookupUrl}`);
-    } else {
-      console.warn(`Responding (404) to: ${lookupUrl}`);
+    if (isVerbose) {
+      if (isRoot || isFavicon || isCSSReset || isTDJS || foundContent) {
+        console.debug(`Responding to: ${lookupUrl}`);
+      } else {
+        console.warn(`Responding (404) to: ${lookupUrl}`);
+      }
     }
+
+    res.writeHead(resCode, resHeader);
+
+    switch(true) {
+      case isFavicon: res.write(faviconIco); break;
+      case isCSSReset: res.write(cssReset); break;
+      case isTDJS: res.write(prefaceTD); break;
+      case isZJS: res.write(prefaceZ); break;
+      case isAJS: res.write(prefaceA); break;
+      case foundContent: res.write(lookupContent); break;
+      default: res.write(rootDocFcn({ greetMsg: greeting }))
+    }
+
+    res.end();
   }
-
-  res.writeHead(resCode, resHeader);
-
-  switch(true) {
-    case isFavicon: res.write(faviconIco); break;
-    case isCSSReset: res.write(cssReset); break;
-    case isTDJS: res.write(prefaceTD); break;
-    case isZJS: res.write(prefaceZ); break;
-    case isAJS: res.write(prefaceA); break;
-    case foundContent: res.write(lookupContent); break;
-    default: res.write(rootDocFcn({ greetMsg: greeting }))
-  }
-
-  res.end();
 });
 
 
