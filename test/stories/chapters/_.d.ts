@@ -1,8 +1,6 @@
 import axe from "axe-core";
 
 declare global {
-  const td;
-
   interface Window {
     printTestGlobals: () => void;
     __coverage__;
