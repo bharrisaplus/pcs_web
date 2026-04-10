@@ -24,7 +24,8 @@
             "pcs:types": ["../../../source/behavior/_meta/_typedefs.mjs"]
         },
         "types": [
-            "./_.d.ts"
+            "./_.d.ts",
+            "../../../source/behavior/_meta/_.d.ts"
         ]
     },
     "typedocOptions": {
