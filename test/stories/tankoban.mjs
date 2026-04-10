@@ -96,11 +96,11 @@ const grabPug = (grabPath = 'missing', grabType = 'panel') => {
   switch(grabType) {
     case 'panel': {
       result = pugRender(
-        NodePath.resolve(testShared.conte_oneshot_path, `./${grabPath}/panel.page.pug`)
+        NodePath.resolve(testShared.storey_ch_path, `./${grabPath}/panel.page.pug`)
       ); break;
     }
     case 'subject': {
-      result = pugRender(NodePath.resolve(testShared.conte_oneshot_path, `./${grabPath}.page.pug`)); break;
+      result = pugRender(NodePath.resolve(testShared.storey_ch_path, `./${grabPath}.page.pug`)); break;
     }
     default: result = pugRender(NodePath.resolve(testShared.source_path, `./${grabPath}`));
   }
@@ -115,7 +115,7 @@ const grabStyl = async (grabPath = 'missing', isSketch = true) => {
 
   if (isSketch) {
     _tmp = await NodeFS.readFile(
-      NodePath.resolve(testShared.conte_oneshot_path,`./${grabDir}/sketch.main.styl`), { encoding: 'utf8' }
+      NodePath.resolve(testShared.storey_ch_path,`./${grabDir}/sketch.main.styl`), { encoding: 'utf8' }
     );
   } else {
     _tmp = await NodeFS.readFile(NodePath.resolve(testShared.source_path,
@@ -123,7 +123,7 @@ const grabStyl = async (grabPath = 'missing', isSketch = true) => {
     );
   }
 
-  result = stylRender(_tmp, {paths: [testShared.story_path, `${testShared.source_path}/presentation`]});
+  result = stylRender(_tmp, {paths: [testShared.storey_path, `${testShared.source_path}/presentation`]});
 
   return result;
 };
@@ -177,12 +177,12 @@ const maybeGrabFile = async (maybePath = 'missing', maybeType = '') => {
       case 'bundle': result = await grabJSBundle(maybePath); break;
       case 'bibl':  {
         result = await NodeFS.readFile(
-          NodePath.resolve(testShared.conte_oneshot_path, `./${maybePath}`)
+          NodePath.resolve(testShared.storey_ch_path, `./${maybePath}`)
         ); break;
       }
       default: { // most text
         result = await NodeFS.readFile(
-          NodePath.resolve(testShared.conte_oneshot_path, `./${maybePath}`), { encoding: 'utf8' }
+          NodePath.resolve(testShared.storey_ch_path, `./${maybePath}`), { encoding: 'utf8' }
         );
       }
     }
@@ -315,7 +315,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
         lookupContent = 'no coverage';
       }
     } else {
-      if (testShared.story_path_allow.some((_conte) => lookupUrl.startsWith(`/${_conte}`))) {
+      if (testShared.storey_path_allow.some((_conte) => lookupUrl.startsWith(`/${_conte}`))) {
         lookupExt = NodePath.extname(lookupUrl);
 
         if (lookupExt == '') {
