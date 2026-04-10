@@ -15,7 +15,7 @@ const all_events = {
   fresh: "fresh"
 };
 
-/** @see {GlobalDeclarations} */
+/** {@link GlobalDeclarations} */
 const _globals = Object.freeze({
   appID: "test-shell",
   notices: Object.freeze(all_events),
