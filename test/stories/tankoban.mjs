@@ -66,27 +66,9 @@ html(lang="en")
     link(ref="stylesheet" href="/reset.css")
     style.
       html { background-color: gray; }
-    script(type="importmap").
-      {
-        "imports": {
-          "testdouble": "/td.mjs"
-        }
-      }
   body
     header
       h1 #{greetMsg}
-    script(type="module").
-      import { default as td } from 'testdouble';
-
-      let result;
-      const mockdObj = td.object(['hello']);
-
-      td.when(mockdObj.hello()).thenReturn('world');
-
-      result = mockdObj.hello();
-
-      console.debug(td.explain(mockdObj.hello));
-      console.info(result);
   `) : function(){};
 
 const grabPug = (grabPath = 'missing', grabType = 'conte') => {
@@ -173,7 +155,7 @@ const maybeGrabFile = async (maybePath = 'missing', maybeType = '') => {
   try {
     switch(maybeType) {
       case 'pugConte': result = grabPug(maybePath); break;
-      case 'pugsubject': result = grabPug(maybePath, 'subject'); break;
+      case 'pugSubject': result = grabPug(maybePath, 'subject'); break;
       case 'pug': result = grabPug(maybePath, 'other'); break;
       case 'stylusConte': result = await grabStyl(maybePath); break;
       case 'stylus': result = await grabStyl(maybePath, false); break;
@@ -323,14 +305,16 @@ const TankoBanServer = http.createServer(async (req, res) => {
 
         if (lookupExt == '') {
           lookupContent = await maybeGrabFile(lookupUrl,
-            lookupUrl.endsWith(`/subject`) ? 'pugsubject' : 'pugConte'
+            lookupUrl.endsWith(`/subject`) ? 'pugSubject' : 'pugConte'
           );
           resHeader = headerForMime('.html');
         } else if (['.js','.mjs','.svg','.json'].indexOf(lookupExt) != -1) {
           lookupContent = await maybeGrabFile(lookupUrl);
           resHeader = headerForMime(lookupExt);
         } else if (lookupExt == '.css') {
-          lookupContent = await maybeGrabFile(lookupUrl, 'stylusConte');
+          lookupContent = await maybeGrabFile(
+            lookupUrl, lookupUrl.endsWith('conte.css') ? 'stylusConte' : 'stylus'
+          );
           resHeader = headerForMime('.css');
         } else {
           lookupContent = await maybeGrabFile(lookupUrl, 'bibl');
