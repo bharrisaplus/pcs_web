@@ -17,7 +17,7 @@ if (NodeProcess.env.BUILD_TARGET == "story_preface:testdouble") {
   targetConfig = {
     input: 'testdouble_browser',
     output: {
-      file: NodePath.resolve(testShared.storey_path, './_td.mjs'),
+      file: NodePath.resolve(testShared.storey_ch_path, './_td.mjs'),
       format: 'es'
     },
     plugins: [
@@ -34,7 +34,7 @@ if (NodeProcess.env.BUILD_TARGET == "story_preface:testdouble") {
   targetConfig = {
     input: 'zora_browser',
     output: {
-      file: NodePath.resolve(testShared.storey_path, './_z.mjs'),
+      file: NodePath.resolve(testShared.storey_ch_path, './_z.mjs'),
       format: 'es'
     },
     plugins: [

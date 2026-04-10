@@ -9,6 +9,9 @@ coverage
 test/stories/_td.mjs
 test/stories/_z.mjs
 test/stories/_a.js
+test/stories/*/_td.mjs
+test/stories/*/_z.mjs
+test/stories/*/_a.js
 .brwud
 
 # Pages hosting

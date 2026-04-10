@@ -24,15 +24,14 @@ let
   bundleMaps = new Map(),
   lastCovObj = {};
 const
-  _dir = import.meta.dirname,
   isVerbose = NodeProcess.argv[2] == '-v' || NodeProcess.argv[2] == '--verbose',
 
   requiredFiles = [
-    NodePath.resolve(_dir, './story_preface.pug'),
-    NodePath.resolve(_dir, './story_preface.styl'),
-    NodePath.resolve(_dir, './_td.mjs'),
-    NodePath.resolve(_dir, './_z.mjs'),
-    NodePath.resolve(_dir, './_a.js'),
+    NodePath.resolve(testShared.storey_ch_path, './_preface.pug'),
+    NodePath.resolve(testShared.storey_ch_path, './_preface.styl'),
+    NodePath.resolve(testShared.storey_ch_path, './_td.mjs'),
+    NodePath.resolve(testShared.storey_ch_path, './_z.mjs'),
+    NodePath.resolve(testShared.storey_ch_path, './_a.js'),
     NodePath.resolve(testShared.cssreset_path, './reset.min.css'),
     NodePath.resolve(testShared.favicon_path, './sqwiggle.ico'),
   ],
@@ -46,7 +45,7 @@ const
   foundPreface = requiredFiles.every(async (reqFl) => {
     let result;
     try {
-      result = await NodeFS.stat(NodePath.resolve(_dir, reqFl))
+      result = await NodeFS.stat(reqFl);
     } catch {
       result = false;
     }
@@ -123,7 +122,11 @@ const grabStyl = async (grabPath = 'missing', isSketch = true) => {
     );
   }
 
-  result = stylRender(_tmp, {paths: [testShared.storey_path, `${testShared.source_path}/presentation`]});
+  result = stylRender(_tmp, {paths: [
+    testShared.storey_ch_path,
+    `${testShared.storey_ch_path}/${isSketch ? grabDir : ''}`,
+    `${testShared.source_path}/presentation`,
+  ]});
 
   return result;
 };
