@@ -10,6 +10,9 @@ import { default as _tg } from './clones/_glods.clone.mjs';
 import { default as getTurntable } from 'turntable_part';
 
 
+let
+  /** @type {Number} */
+  testCardIdx;
 const
   turntableID = '#turntable',
   /** @type {HTMLElement} */
@@ -20,6 +23,18 @@ const
   /** @type {CardIntri[]} */
   testCards = [],
   zaTapReporter = createTAPReporter();
+
+const getIdx = (cur = 0) => {
+  let result;
+
+  switch (true) {
+    case (cur >= _tg.c_Max): result = _tg.c_Max - 1; break;
+    case (cur < 0): result = 0; break;
+    default: result = cur;
+  }
+
+  return result;
+};
 
 
 const run_tests = () => {
@@ -37,6 +52,7 @@ const run_tests = () => {
   });
 };
 
+testCardIdx = getIdx();
 zaHold();
 window.axe.configure({
   rules: [ // Just a popover so not all rules need apply
@@ -70,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         $turntable.showPopover();
       } else if (_msgEvt.data.type == 'subject:load') {
         $turntable.hidePopover();
-        turntableBehavior.loadTurntable(testCards[0]);
+        turntableBehavior.loadTurntable(testCards[testCardIdx]);
       } else if (_msgEvt.data.type == 'subject:hide') {
         $turntable.hidePopover();
       } else if (_msgEvt.data.type == 'subject:test') {
