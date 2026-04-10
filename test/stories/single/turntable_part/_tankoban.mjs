@@ -50,6 +50,7 @@ window.addEventListener('message', (_msgEvt) => {
     $subja11y.disabled = false;
 
     $overlay.classList.remove('lift');
+    console.info(window.frames[0].__tap__);
     window.__coverage__ = window.frames[0].__coverage__;
   } else { return; }
 });
