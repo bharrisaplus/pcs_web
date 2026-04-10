@@ -26,7 +26,7 @@ tasks:
 
   # integration(like) tests
 
-  rear-preface-td:
+  rear-preface_td:
     env:
       BUILD_TARGET: story_preface:testdouble
     cmds:
@@ -42,12 +42,19 @@ tasks:
     vars:
       AXE_NODE_NAME: "axe-core"
     cmds:
-      - cp {{.PROJECT_DIR}}/node_modules/{{.AXE_NODE_NAME}}/axe.js {{.STOREY_DIR}}/_a.js
+      - cp {{.PROJECT_DIR}}/node_modules/{{.AXE_NODE_NAME}}/axe.js {{.STOREY_DIR}}/chapters/_a.js
 
   rear_preface:
     cmds:
       - task: rear-preface-td
       - task: rear-preface_z
+      - task: rear-preface_axe
+
+  clear_preface:
+    cmds:
+      - rm -rf {{.STOREY_DIR}}/chapters/_a.js
+      - rm -rf {{.STOREY_DIR}}/chapters/_td.js
+      - rm -rf {{.STOREY_DIR}}/chapters/_z.js
 
   play_storey:
     aliases: ["storeo"]
