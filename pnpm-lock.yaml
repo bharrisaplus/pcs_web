@@ -59,6 +59,9 @@ importers:
       eslint-plugin-compat:
         specifier: ^7.0.1
         version: 7.0.1(eslint@9.39.4)
+      istanbul-lib-coverage:
+        specifier: ^3.2.2
+        version: 3.2.2
       istanbul-lib-report:
         specifier: ^3.0.1
         version: 3.0.1
