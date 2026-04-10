@@ -17,6 +17,40 @@ const
   $overlay = document.querySelector('#test-overlay');
 
 
+const uplCov = async () => {
+  let uploadSummary, uploadResp;
+  const covObj = window.__coverage__;
+
+  if (!covObj) { return; }
+
+  try {
+    uploadResp = await fetch('/pushcov', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(covObj)
+    });
+
+    uploadSummary = await uploadResp.text();
+    console.info(uploadSummary);
+  } catch (upErr) {
+    console.error(upErr);
+  }
+};
+
+
+const chkCov = async () => {
+  let covResp, covSummary;
+  try {
+    covResp = await fetch('/getlastcov'),
+    covSummary = await covResp.text();
+
+    console.info(covSummary);
+  } catch (covErr) {
+    console.error(covErr);
+  }
+};
+
+
 $subjShow.setAttribute('id', 'show');
 $subjHide.setAttribute('id', 'hide');
 $subjLoad.setAttribute('id', 'loadone');
@@ -43,6 +77,7 @@ window.addEventListener('message', (_msgEvt) => {
   } else if (_msgEvt.data.type == 'finished') {
     if (!runningTest) { return; }
 
+    runningTest = false;
     $subjRun.disabled = false;
     $subjHide.disabled = false;
     $subjShow.disabled = false;
@@ -52,6 +87,7 @@ window.addEventListener('message', (_msgEvt) => {
     $overlay.classList.remove('lift');
     console.info(window.frames[0].__tap__);
     window.__coverage__ = window.frames[0].__coverage__;
+    uplCov().then(() => { chkCov(); });
   } else { return; }
 });
 
