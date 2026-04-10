@@ -318,7 +318,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
         lookupContent = 'no coverage';
       }
     } else {
-      if (testShared.storey_path_allow.some((_conte) => lookupUrl.startsWith(`/${_conte}`))) {
+      if (testShared.storey_ch_allow.some((_ch) => lookupUrl.startsWith(`/${_ch}`))) {
         lookupExt = NodePath.extname(lookupUrl);
 
         if (lookupExt == '') {

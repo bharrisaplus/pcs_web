@@ -33,7 +33,7 @@ const getBezel = async () => {
       NodePath.resolve(_dir, '../../distribution/common/favicons'),
     tankoban_port: 54321,
     // Stories to run; see stories/tankoban.js
-    storey_path_allow: Object.freeze([
+    storey_ch_allow: Object.freeze([
       'turntable_part'
     ]),
 
