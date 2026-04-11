@@ -24,25 +24,25 @@ const
   /** @type {HTMLButtonElement} */
   $turntablePrv = document.querySelector(turntableBehavior.prevBtn),
   /** @type {HTMLButtonElement} */
-  $turntableNxt = $turntable.querySelector(turntableBehavior.nextBtn),
+  $turntableNxt = document.querySelector(turntableBehavior.nextBtn),
   /** @type {SVGElement} */
   $testSheet = document.querySelector('#card-sheet'),
   /** @type {CardIntri[]} */
   testCards = [];
 
 
-const subjectTests = () => {
+const subjectTests = async () => {
   helper.chk('Should be ok', (z) => {
-    let testResult, testExplntn;
+    let swearResult, swearExplntn;
     const mockObj = td.object(['hello']);
 
     td.when(mockObj.hello()).thenReturn('world');
 
-    testResult = mockObj.hello();
-    testExplntn = td.explain(mockObj.hello);
+    swearResult = mockObj.hello();
+    swearExplntn = td.explain(mockObj.hello);
 
-    z.same(testResult, 'world', "Should return world from hello");
-    z.same(testExplntn.callCount, 1, "Should call hello once");
+    z.same(swearResult, 'world', "Should return world from hello");
+    z.same(swearExplntn.callCount, 1, "Should call hello once");
   });
 };
 

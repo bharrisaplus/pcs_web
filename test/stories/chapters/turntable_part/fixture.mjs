@@ -27,8 +27,13 @@ const get_bound_idx = (cur = 0) => {
 /**
  * @param  {Function} runFnc
  */
-const test_routine = (runFnc) => {
-  runFnc();
+const test_routine = async (runFnc) => {
+  try {
+    await runFnc();
+  } catch (tstErr) {
+    console.warn("Issue during test routine");
+    console.error(tstErr);
+  }
 
   zaReport({ reporter: zaTapReporter }).then(() => {
     window.__tap__ = zaTapLines.join('\n');
@@ -39,6 +44,7 @@ const test_routine = (runFnc) => {
     console.debug(rejReason)
   });
 };
+
 
 const getFixtures = () => {
   return Object.freeze({
