@@ -32,6 +32,25 @@ const
 
 
 const subjectTests = async () => {
+  const getImport = async () => {
+    const
+      mockCWrn = td.replace(console, 'warn', td.func('console_log')),
+      mockCDbg = td.replace(console, 'debug', td.func('console_log')),
+      mockCErr = td.replace(console, 'error', td.func()),
+      mockCInf = td.replace(console, 'info', td.func()),
+
+      moduleImport = await import(`turntable_part`);
+
+    return Object.freeze({
+      freshModule: moduleImport.default(turntableID),
+      module_console_warn: mockCWrn,
+      module_console_debug: mockCDbg,
+      module_console_error: mockCErr,
+      module_console_info: mockCInf,
+    });
+  };
+
+
   helper.zaTest('Should be ok', (z) => {
     let swearResult, swearExplntn;
     const mockObj = td.object(['hello']);
@@ -44,6 +63,28 @@ const subjectTests = async () => {
     z.same(swearResult, 'world', "Should return world from hello");
     z.same(swearExplntn.callCount, 1, "Should call hello once");
   });
+
+
+  helper.zaTest('Should import', async (z) => {
+    let swearResult, swearExplntn
+    const
+      impMeta = await getImport();
+
+    impMeta.freshModule.loadTurntable(testCards[0]);
+
+    swearResult = impMeta.freshModule.cursor;
+
+    await helper.waaitt();
+    $turntable.hidePopover();
+
+    swearExplntn = td.explain(impMeta.module_console_debug);
+
+    td.reset();
+
+
+    z.same(swearExplntn.callCount, 3, "call devlog expected number of times");
+    z.deepEqual(swearResult, [0, 15], "loaded expected card");
+  }, { timeout: 12000 });
 };
 
 
