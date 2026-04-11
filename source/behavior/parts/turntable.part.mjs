@@ -17,6 +17,7 @@ import { default as logger } from "../hands/scribe.hand.mjs";
 const makeTurntablePart = (containerID, eventCancel) => {
   let
     _tccount = 0,
+    /** @type {Number} id for timer {@link window.setTimeout}  */
     _tidyTimeout;
 
   const
