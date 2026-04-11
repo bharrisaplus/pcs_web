@@ -49,7 +49,7 @@ const test_routine = async (runFnc) => {
 const getFixtures = () => {
   return Object.freeze({
     run_tests: test_routine,
-    chk: zaTest,
+    zaTest: zaTest,
     sanitize_card_id: get_bound_idx
   });
 };

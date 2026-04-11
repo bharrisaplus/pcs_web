@@ -32,7 +32,7 @@ const
 
 
 const subjectTests = async () => {
-  helper.chk('Should be ok', (z) => {
+  helper.zaTest('Should be ok', (z) => {
     let swearResult, swearExplntn;
     const mockObj = td.object(['hello']);
 
