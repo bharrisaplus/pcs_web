@@ -10,8 +10,9 @@ import { default as getTurntable } from 'turntable_part';
 
 import { default as helper } from './fixture.mjs';
 
+
 /** @type {Number} */
-let testCardIdx;
+let testCardIdx = helper.sanitize_card_id();
 const
   /** @type {HTMLElement} */
   $shell = document.querySelector(`#${_tg.appID}`),
@@ -20,6 +21,12 @@ const
   $turntable = document.querySelector(turntableID),
   /** @type {Part.Turntable} */
   turntableBehavior = getTurntable(turntableID),
+  /** @type {HTMLButtonElement} */
+  $turntablePrv = document.querySelector(turntableBehavior.prevBtn),
+  /** @type {HTMLButtonElement} */
+  $turntableNxt = $turntable.querySelector(turntableBehavior.nextBtn),
+  /** @type {SVGElement} */
+  $testSheet = document.querySelector('#card-sheet'),
   /** @type {CardIntri[]} */
   testCards = [];
 
@@ -40,10 +47,8 @@ const subjectTests = () => {
 };
 
 
-testCardIdx = helper.sanitize_card_id();
-
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('#card-sheet defs symbol:not(:has(rect))')?.forEach(($cSymbol, cIdx) => {
+  $testSheet.querySelectorAll('defs symbol:not(:has(rect))')?.forEach(($cSymbol, cIdx) => {
     let symbolID = $cSymbol.getAttribute('id');
 
     testCards.push({
@@ -58,14 +63,15 @@ document.addEventListener('DOMContentLoaded', () => {
   $shell.addEventListener(_tg.notices.scratch, (/** @type {PCSEvent} */ _pcsevt) => {
     console.log("Spinning");
 
-    if (_pcsevt.detail.msg == 'prv') {
-      testCardIdx = helper.sanitize_card_id(testCardIdx-1);
-    } else if (_pcsevt.detail.msg == 'nxt') {
-      testCardIdx = helper.sanitize_card_id(testCardIdx+1);
+    if (_pcsevt.detail.msg == 'prv' && _pcsevt.detail.$dispatcher === $turntablePrv) {
+      testCardIdx = helper.sanitize_card_id(turntableBehavior.cursor[0] - 1);
+    } else if (_pcsevt.detail.msg == 'nxt' && _pcsevt.detail.$dispatcher == $turntableNxt) {
+      testCardIdx = helper.sanitize_card_id(turntableBehavior.cursor[0] + 1);
     }
 
     turntableBehavior.spinTurntable(testCards[testCardIdx]);
   });
+
 
   if (
     window.frameElement &&
@@ -75,15 +81,25 @@ document.addEventListener('DOMContentLoaded', () => {
       if (_msgEvt.data.type == 'print:globals') {
         console.debug(_tg);
       } else if (_msgEvt.data.type == 'subject:show') {
-        $turntable.hidePopover();
+        if (turntableBehavior.isOpen) { $turntable.hidePopover(); }
+
         $turntable.showPopover();
+        testCardIdx = helper.sanitize_card_id();
       } else if (_msgEvt.data.type == 'subject:load') {
-        $turntable.hidePopover();
+        testCardIdx = helper.sanitize_card_id();
+
+        if (turntableBehavior.isOpen) { $turntable.hidePopover(); }
+
         turntableBehavior.loadTurntable(testCards[testCardIdx]);
       } else if (_msgEvt.data.type == 'subject:hide') {
-        $turntable.hidePopover();
+       if (turntableBehavior.isOpen) { $turntable.hidePopover(); }
+
+        testCardIdx = helper.sanitize_card_id();
       } else if (_msgEvt.data.type == 'subject:test') {
-        $turntable.hidePopover();
+        testCardIdx = helper.sanitize_card_id();
+        
+        if (turntableBehavior.isOpen) { $turntable.hidePopover(); }
+        
         helper.run_tests(subjectTests);
       } else if (_msgEvt.data.type == 'subject:a11y') {
         window.axe.run().then((results) => {
