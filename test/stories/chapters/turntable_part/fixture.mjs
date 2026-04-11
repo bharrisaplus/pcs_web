@@ -50,7 +50,25 @@ const getFixtures = () => {
   return Object.freeze({
     run_tests: test_routine,
     zaTest: zaTest,
-    sanitize_card_id: get_bound_idx
+    sanitize_card_id: get_bound_idx,
+
+    waaitt(ms = 2000) {
+      const fMS = ms >= 1000 ? ms : 1000;
+
+      // oxlint-disable-next-line compat/compat
+      return window.scheduler.postTask(() => {}, { // Shinynew but no Safari for now
+        delay: fMS <= 30000 ? fMS : 30000,
+        priority: 'user-blocking'
+      });
+    },
+
+    wait(msec = 2000) { // The classic
+      const fMSec = msec >= 1000 ? msec : 1000;
+
+      return new Promise(function (resolve) {
+        setTimeout(resolve, fMSec <= 30000 ? fMSec : 30000)
+      });
+    }
   });
 };
 
