@@ -42,20 +42,6 @@ const turntable_part_tests = async (/** @type {CardIntri[]} */ testInfos) => {
   }
 
 
-  zaTest('Should be ok', (z) => {
-    let swearResult, swearExplntn;
-    const mockObj = td.object(['hello']);
-
-    td.when(mockObj.hello()).thenReturn('world');
-
-    swearResult = mockObj.hello();
-    swearExplntn = td.explain(mockObj.hello);
-
-    z.same(swearResult, 'world', "Should return world from hello");
-    z.same(swearExplntn.callCount, 1, "Should call hello once");
-  });
-
-
   zaTest('Should import', async (z) => {
     let swearResult, swearExplntn
     const
