@@ -7,7 +7,7 @@ import { default as _tg } from './clones/_glods.clone.mjs';
 import { default as getTurntable } from 'turntable_part';
 
 import { default as fx } from './fixture.mjs';
-import { default as turntableTests } from './subject.mjs';
+import { default as turntableTests } from './storey.mjs';
 
 
 let
