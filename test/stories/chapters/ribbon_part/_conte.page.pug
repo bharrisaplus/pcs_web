@@ -1,0 +1,18 @@
+extends ../preface.pug
+
+block story_preface_title
+    title turntable:part
+
+block story_preface_sheets
+    link(rel="stylesheet" href="/ribbon_part/conte.css")
+
+block story_preface_entry
+    #ribbon-panel
+        .subject-membrane
+            //iframe.subject-frame(src="/ribbon_part/subject" sandbox="allow-same-origin allow-scripts allow-downloads")
+        #test-overlay
+            h2 Test Running ⌛
+        #ctrl-band.load-curtain
+
+block story_preface_scripts
+    script(src="/ribbon_part/_tankoban.mjs")

@@ -34,7 +34,8 @@ const getBezel = async () => {
     tankoban_port: 54321,
     // Stories to run; see stories/tankoban.js
     storey_ch_allow: Object.freeze([
-      'turntable_part'
+      'turntable_part',
+      'ribbon_part'
     ]),
 
     buildEnv: Object.freeze(_build_g_import)
