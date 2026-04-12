@@ -19,15 +19,15 @@ html(lang="en")
                     "zora": "/z.mjs",
                     "./clones/_glods.clone.mjs": "/turntable_part/clones/_glods.clone.mjs",
                     "./fixture.mjs": "/turntable_part/fixture.mjs",
+                    "./subject.mjs": "/turntable_part/subject.mjs",
                     "/source/behavior/_meta/_glods.mjs": "/turntable_part/clones/_glods.clone.mjs",
                     "turntable_part": "/source/behavior/parts/turntable.part.mjs"
                 }
             }
-
     body#test-shell
         #container
             include ../../../../source/content/document/partials/turntable.pug
         footer
             #graphic-assets
                 include ../../../../source/content/graphic/misc/minipacket.svg
-            script(src="/turntable_part/subject.mjs" type="module" defer)
+            script(src="/turntable_part/appa.mjs" type="module" defer)
