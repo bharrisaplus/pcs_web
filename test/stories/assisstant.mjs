@@ -72,7 +72,6 @@ const js_to_bundle = async (grabPath = 'missing') => {
       input: NodePath.resolve(testShared.project_path, `./${grabPath}`),
       external: (modID, _) => { return modID?.endsWith('_glods.mjs'); },
       plugins: RollupIstanbulInstrument({
-        sourceMap:  true,
         instrumenterConfig: {
           esModule: true,
           produceSourceMap: true
