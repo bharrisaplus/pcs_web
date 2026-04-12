@@ -16,6 +16,8 @@ const turntable_part_tests = async (/** @type {CardIntri[]} */ testInfos) => {
     turntableID = '#turntable',
     /** @type {HTMLElement} */
     $turntable = document.querySelector(turntableID),
+    /** @type {HTMLElement} */
+    $turntableOff = $turntable.querySelector('.turntable-off'),
 
     getImport = async () => {
       const
@@ -31,7 +33,7 @@ const turntable_part_tests = async (/** @type {CardIntri[]} */ testInfos) => {
         module_console_warn: mockCWrn,
         module_console_debug: mockCDbg,
         module_console_error: mockCErr,
-        module_console_info: mockCInf,
+        module_console_info: mockCInf
       });
     };
 
@@ -42,26 +44,69 @@ const turntable_part_tests = async (/** @type {CardIntri[]} */ testInfos) => {
   }
 
 
-  zaTest('Should import', async (z) => {
-    let swearResult, swearExplntn
+  await zaTest('Should handle normal conditions', async (z) => {
+    let swearResults = [], swearExplntns = [];
     const
-      impMeta = await getImport();
+      impMeta = await getImport(),
+      /** @type {HTMLButtonElement} */
+      $nxtBtn = document.querySelector(impMeta.freshModule.nextBtn),
+      /** @type {HTMLButtonElement} */
+      $prvBtn = document.querySelector(impMeta.freshModule.prevBtn);
 
     impMeta.freshModule.loadTurntable(testInfos[0]);
-
-    swearResult = impMeta.freshModule.cursor;
-
-    await fx.waaitt();
-    $turntable.hidePopover();
-
-    swearExplntn = td.explain(impMeta.module_console_debug);
+    await fx.waaitt(700);
+    swearResults.push(impMeta.freshModule.cursor);
+    $nxtBtn.click();
+    await fx.waaitt(400);
+    swearResults.push(impMeta.freshModule.cursor);
+    $prvBtn.click();
+    await fx.wait(400);
+    swearResults.push(impMeta.freshModule.cursor);
+    $turntableOff.click();
+    await fx.waaitt(700);
+    swearExplntns.push(td.explain(impMeta.module_console_debug));
 
     td.reset();
 
 
-    z.same(swearExplntn.callCount, 3, "call devlog expected number of times");
-    z.deepEqual(swearResult, [0, 15], "loaded expected card");
-  }, { timeout: 12000 });
+    z.same(swearExplntns[0].callCount, 5, "call devlog expected number of times");
+    z.same(swearResults[0].toString(), '0,15', "loaded expected card");
+    z.same(swearResults[1].toString(), '1,5', "loaded expected card");
+    z.same(swearResults[2].toString(), swearResults[0].toString(), "loaded expected card");
+  }, { timeout: 6000 });
+
+
+  await zaTest('Should handle edges', async (z) => {
+    let swearResults = [], swearExplntns = [];
+    const
+      impMeta = await getImport(),
+      /** @type {HTMLButtonElement} */
+      $nxtBtn = document.querySelector(impMeta.freshModule.nextBtn),
+      /** @type {HTMLButtonElement} */
+      $prvBtn = document.querySelector(impMeta.freshModule.prevBtn);
+
+    impMeta.freshModule.loadTurntable(testInfos[0]);
+    await fx.waaitt(700);
+    swearResults.push([$prvBtn.disabled, $nxtBtn.disabled]);
+    $turntableOff.click();
+    await fx.waaitt(700);
+    impMeta.freshModule.loadTurntable(testInfos[testInfos.length - 1]);
+    await fx.waaitt(700);
+    swearResults.push([$prvBtn.disabled, $nxtBtn.disabled]);
+    $turntableOff.click();
+    await fx.wait(700);
+    swearExplntns.push(td.explain(impMeta.module_console_debug));
+
+    td.reset();
+
+
+    z.same(swearExplntns[0].callCount, 6, "call devlog expected number of times");
+    z.same(swearResults[0].toString(), 'true,false', "prevent back at start edge");
+    z.same(swearResults[1].toString(), 'false,true', "prevent forward at end edge");
+  }, { timeout: 7000 });
+
+
+  if ($turntable.matches(':popover-open')) { $turntable.hidePopover(); }
 };
 
 

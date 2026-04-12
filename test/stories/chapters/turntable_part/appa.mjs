@@ -88,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         turntableTests.go(testCards).then(() => {
           turntableBehavior = getTurntable(turntableID);
-          console.log("Test(s) finished");
         }, (rejRsn) => {
           turntableBehavior = getTurntable(turntableID);
           console.warn("Issue with running test(s)");
