@@ -42,7 +42,7 @@ const getBezel = async () => {
     storey_ch_bundle_ext: Object.freeze(
       new Map([
         ['turntable.part.mjs', Object.freeze(['_glods.mjs', 'scribe.hand.mjs'])],
-        ['ribbon.part.mjs', Object.freeze(['_glods.mjs'])]
+        ['ribbon.part.mjs', Object.freeze(['_glods.mjs', 'egress.hand.mjs'])]
       ])
     ),
 
