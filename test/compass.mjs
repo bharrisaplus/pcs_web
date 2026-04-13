@@ -37,6 +37,13 @@ const getBezel = async () => {
       'turntable_part',
       'ribbon_part'
     ]),
+    // Modules imported by what's being tested; Will be mocked/cloned for a storey via importmap
+    //     (see stories/assistant.mjs and stories/chapters/*/clones)
+    storey_ch_bundle_ext: Object.freeze(
+      new Map([
+        ['turntable.part.mjs', Object.freeze(['_glods.mjs'])]
+      ])
+    ),
 
     buildEnv: Object.freeze(_build_g_import)
   });

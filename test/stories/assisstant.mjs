@@ -66,11 +66,13 @@ const stylus_to_css = async (grabPath = 'missing', isConte = true) => {
 
 const js_to_bundle = async (grabPath = 'missing') => {
   let result = [];
-
   const
+    bundleExtrnls = testShared.storey_ch_bundle_ext.get(NodePath.basename(grabPath)) || [],
     rollupBundle = await rollup({
       input: NodePath.resolve(testShared.project_path, `./${grabPath}`),
-      external: (modID, _) => { return modID?.endsWith('_glods.mjs'); },
+      external: (modID, _) => {
+        return bundleExtrnls.some( (bundleExt) => modID?.endsWith(bundleExt) )
+      },
       plugins: RollupIstanbulInstrument({
         instrumenterConfig: {
           esModule: true,
