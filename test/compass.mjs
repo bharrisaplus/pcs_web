@@ -41,7 +41,8 @@ const getBezel = async () => {
     //     (see stories/assistant.mjs and stories/chapters/*/clones)
     storey_ch_bundle_ext: Object.freeze(
       new Map([
-        ['turntable.part.mjs', Object.freeze(['_glods.mjs'])]
+        ['turntable.part.mjs', Object.freeze(['_glods.mjs'])],
+        ['ribbon.part.mjs', Object.freeze(['_glods.mjs'])]
       ])
     ),
 
