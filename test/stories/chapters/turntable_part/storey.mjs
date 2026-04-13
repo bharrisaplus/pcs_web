@@ -1,5 +1,5 @@
 /**
- * @import { CardIntri, CSSelector } from 'pcs:types'
+ * @import { CardIntri, CSSelector, Hand, Part } from 'pcs:types'
  */
 
 /* This files imports should be specified as part of the importmap in subject.page.pug */
@@ -29,7 +29,9 @@ const
     const _mockScribe = (await import(modulePaths.hands.scribe)).default;
 
     return Object.freeze({
+      /** @type {Part.Turntable} */
       freshModule: (await import(modulePaths.parts.turntable)).default(turntableID),
+      /** @type {Hand.Scribe} */
       moduleLogger: _mockScribe,
     });
   };
@@ -55,68 +57,94 @@ const turntable_part_tests = async (/** @type {CardIntri[]} */ testInfos) => {
 
   $turntable.hidePopover();
 
-
-  await zaTest('Should handle normal conditions', async (z) => {
-    let swearResults = [], swearExplntns = [];
-    const
-      impMeta = await getImport(),
-      /** @type {HTMLButtonElement} */
-      $nxtBtn = document.querySelector(impMeta.freshModule.nextBtn),
-      /** @type {HTMLButtonElement} */
-      $prvBtn = document.querySelector(impMeta.freshModule.prevBtn);
-
-    impMeta.freshModule.loadTurntable(testInfos[0]);
-    await fx.waaitt(700);
-    swearResults.push(impMeta.freshModule.cursor);
-    $nxtBtn.click();
-    await fx.waaitt(400);
-    swearResults.push(impMeta.freshModule.cursor);
-    $prvBtn.click();
-    await fx.wait(400);
-    swearResults.push(impMeta.freshModule.cursor);
-    $turntableOff.click();
-    await fx.waaitt(700);
-    swearExplntns.push(td.explain(impMeta.moduleLogger.devlog));
-
-    td.reset();
+  try {
+    await zaTest('Should handle normal conditions', async (z) => {
+      let swearBhvRslts = [], swearUIRslts = [], swearExplntns = [];
+      const
+        impMeta = await getImport(),
+        /** @type {HTMLButtonElement} */
+        $nxtBtn = document.querySelector(impMeta.freshModule.nextBtn),
+        /** @type {HTMLButtonElement} */
+        $prvBtn = document.querySelector(impMeta.freshModule.prevBtn);
 
 
-    z.same(swearExplntns[0].callCount, 5, "call devlog expected number of times");
-    z.same(swearResults[0].toString(), '0,15', "loaded expected card");
-    z.same(swearResults[1].toString(), '1,5', "loaded expected card");
-    z.same(swearResults[2].toString(), swearResults[0].toString(), "loaded expected card");
-  }, { timeout: 6000 });
+      swearUIRslts.push(document.querySelectorAll(`${turntableID}:popover-open`).length);
+      impMeta.freshModule.loadTurntable(testInfos[0]);
+      await fx.waaitt(700);
+      swearBhvRslts.push(impMeta.freshModule.cursor);
+      swearUIRslts.push(
+        document.querySelectorAll(`${turntableID}:popover-open [data-spot="0"][data-oglo="15"]`).length
+      );
+      $nxtBtn.click();
+      await fx.waaitt(100);
+      swearBhvRslts.push(impMeta.freshModule.cursor);
+      swearUIRslts.push(
+        document.querySelectorAll(`${turntableID}:popover-open [data-spot="1"][data-oglo="5"]`).length
+      );
+      $prvBtn.click();
+      await fx.wait(100);
+      swearBhvRslts.push(impMeta.freshModule.cursor);
+      swearUIRslts.push(
+        document.querySelectorAll(`${turntableID}:popover-open [data-spot="0"][data-oglo="15"]`).length
+      );
+      $turntableOff.click();
+      await fx.waaitt(700);
+      swearUIRslts.push(document.querySelectorAll(`${turntableID}:popover-open`).length);
+      swearExplntns.push(td.explain(impMeta.moduleLogger.devlog));
+
+      td.reset();
 
 
-  await zaTest('Should handle edges', async (z) => {
-    let swearResults = [], swearExplntns = [];
-    const
-      impMeta = await getImport(),
-      /** @type {HTMLButtonElement} */
-      $nxtBtn = document.querySelector(impMeta.freshModule.nextBtn),
-      /** @type {HTMLButtonElement} */
-      $prvBtn = document.querySelector(impMeta.freshModule.prevBtn);
+      z.same(swearExplntns[0].callCount, 5, "log expected number of times");
+      z.same(swearBhvRslts.toString(), '0,15,1,5,0,15', "performed expected behavior when loading cards");
+      z.same(swearUIRslts.toString(), '0,1,1,1,0', "showed expected content in DOM");
+    }); // May need to set timeout in ms specificaly like { timeout: 6000 }
+  } catch (t1E) {
+    console.error(t1E);
+  }
 
-    impMeta.freshModule.loadTurntable(testInfos[0]);
-    await fx.waaitt(700);
-    swearResults.push([$prvBtn.disabled, $nxtBtn.disabled]);
-    $turntableOff.click();
-    await fx.waaitt(700);
-    impMeta.freshModule.loadTurntable(testInfos[testInfos.length - 1]);
-    await fx.waaitt(700);
-    swearResults.push([$prvBtn.disabled, $nxtBtn.disabled]);
-    $turntableOff.click();
-    await fx.wait(700);
-    swearExplntns.push(td.explain(impMeta.moduleLogger.devlog));
-
-    td.reset();
+  try {
+    await zaTest('Should handle edges', async (z) => {
+      let swearBhvRslts = [], swearUIRslts = [], swearExplntns = [];
+      const
+        impMeta = await getImport(),
+        /** @type {HTMLButtonElement} */
+        $nxtBtn = document.querySelector(impMeta.freshModule.nextBtn),
+        /** @type {HTMLButtonElement} */
+        $prvBtn = document.querySelector(impMeta.freshModule.prevBtn);
 
 
-    z.same(swearExplntns[0].callCount, 6, "call devlog expected number of times");
-    z.same(swearResults[0].toString(), 'true,false', "prevent back at start edge");
-    z.same(swearResults[1].toString(), 'false,true', "prevent forward at end edge");
-  }, { timeout: 7000 });
+      swearUIRslts.push(document.querySelectorAll(`${turntableID}:popover-open`).length);
+      impMeta.freshModule.loadTurntable(testInfos[0]);
+      await fx.waaitt(700);
+      swearBhvRslts.push([$prvBtn.disabled, $nxtBtn.disabled]);
+      swearUIRslts.push(
+        document.querySelectorAll(`${turntableID}:popover-open [data-spot="0"][data-oglo="15"]`).length
+      );
+      $turntableOff.click();
+      await fx.waaitt(700);
+      swearUIRslts.push(document.querySelectorAll(`${turntableID}:popover-open`).length);
+      impMeta.freshModule.loadTurntable(testInfos[testInfos.length - 1]);
+      await fx.waaitt(700);
+      swearBhvRslts.push([$prvBtn.disabled, $nxtBtn.disabled]);
+      swearUIRslts.push(
+        document.querySelectorAll(`${turntableID}:popover-open [data-spot="13"][data-oglo="39"]`).length
+      );
+      $turntableOff.click();
+      await fx.wait(700);
+      swearUIRslts.push(document.querySelectorAll(`${turntableID}:popover-open`).length);
+      swearExplntns.push(td.explain(impMeta.moduleLogger.devlog));
 
+      td.reset();
+
+
+      z.same(swearExplntns[0].callCount, 6, "log expected number of times");
+      z.same(swearBhvRslts.toString(), 'true,false,false,true', "performed expected behavior at edges");
+      z.same(swearUIRslts.toString(), '0,1,0,1,0', "showed expected DOM content");
+    }); // May need to set timeout in ms specificaly like { timeout: 6000 }
+  } catch (t2E) {
+    console.error(t2E);
+  }
 
   if ($turntable.matches(':popover-open')) { $turntable.hidePopover(); }
 };
