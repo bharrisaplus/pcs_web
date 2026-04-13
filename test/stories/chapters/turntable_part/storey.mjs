@@ -10,38 +10,50 @@ import { default as _tg } from './clones/_glods.clone.mjs';
 import { default as fx } from './fixture.mjs';
 
 
+const
+  /** @type {CSSelector} */
+  turntableID = '#turntable',
+  /** @type {CSSelector} */
+  turntableCloseSelector = '.turntable-off',
+
+  modulePaths = { // see importmap in subject.page.pug
+    hands: {
+      scribe: 'scribe_hand_clone',
+    },
+    parts: {
+      turntable: 'turntable_part'
+    }
+  },
+
+  getImport = async () => {
+    const _mockScribe = (await import(modulePaths.hands.scribe)).default;
+
+    return Object.freeze({
+      freshModule: (await import(modulePaths.parts.turntable)).default(turntableID),
+      moduleLogger: _mockScribe,
+    });
+  };
+
+
 const turntable_part_tests = async (/** @type {CardIntri[]} */ testInfos) => {
   const
-    /** @type {CSSelector} */
-    turntableID = '#turntable',
     /** @type {HTMLElement} */
     $turntable = document.querySelector(turntableID),
     /** @type {HTMLElement} */
-    $turntableOff = $turntable.querySelector('.turntable-off'),
-
-    modulePaths = { // see importmap in subject.page.pug
-      hands: {
-        scribe: 'scribe_hand_clone',
-      },
-      parts: {
-        turntable: 'turntable_part'
-      }
-    },
-
-    getImport = async () => {
-      const _mockScribe = (await import(modulePaths.hands.scribe)).default;
-
-      return Object.freeze({
-        freshModule: (await import(modulePaths.parts.turntable)).default(turntableID),
-        moduleLogger: _mockScribe,
-      });
-    };
+    $turntableOff = $turntable.querySelector(turntableCloseSelector);
 
 
   if (!testInfos || !Array.isArray(testInfos || testInfos.length == 0)) {
     console.warn("Missing required info to run test(s)");
     return;
   }
+
+  if (!$turntable || !$turntableOff) {
+    console.warn("Missing required $elements to run test(s)");
+    return;
+  }
+
+  $turntable.hidePopover();
 
 
   await zaTest('Should handle normal conditions', async (z) => {
