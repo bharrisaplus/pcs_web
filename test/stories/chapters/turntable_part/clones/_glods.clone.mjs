@@ -22,7 +22,7 @@ const _globals = Object.freeze({
   dyes: Object.freeze(['green-dye', 'red-dye', 'blue-dye', 'purple-dye']),
   pcs_cardTitle: 'Magnified view of card',
   pcs_cardDesc: 'A single card up close and personal',
-  pcs_cardRef: '#test-card',
+  pcs_cardRef: '#pcs-card',
   pcs_clippre: "Cards:\n====\n",
   c_Max: 14,
   c_TitlePrefix: 'Number',

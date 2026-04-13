@@ -30,6 +30,7 @@ html(lang="en")
         #container
             include ../../../../source/content/document/partials/turntable.pug
         footer
-            #graphic-assets
+            #graphic-assets(style="display:none;")
+                include ../../../../source/content/graphic/misc/pcs-card.svg
                 include ../../../../source/content/graphic/misc/minipacket.svg
             script(src="/turntable_part/appa.mjs" type="module" defer)
