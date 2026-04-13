@@ -66,7 +66,7 @@ window.addEventListener('message', (_msgEvt) => {
     $subjRun.disabled = false;
     $subja11y.disabled = false;
 
-    $overlay.classList.remove('lift');
+    $overlay.classList.remove('lower');
     console.clear();
     console.info(window.frames[0].__tap__);
     window.__coverage__ = window.frames[0].__coverage__;
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     $subjRun.disabled = true;
     $subja11y.disabled = true;
 
-    $overlay.classList.add('lift');
+    $overlay.classList.add('lower');
     window.frames[0].focus();
     window.frames[0].postMessage({ type: 'subject:test' });
   });
