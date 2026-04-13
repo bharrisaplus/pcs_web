@@ -17,3 +17,4 @@ const getScribeHandClone = () => {
 const singleClone = getScribeHandClone();
 
 export default singleClone;
+export const debugName = "pcs:hand:scribe:clone";
