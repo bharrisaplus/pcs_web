@@ -6,7 +6,6 @@
 import { hold as zaHold, test as zaTest, report as zaReport, createTAPReporter } from 'zora';
 import { default as td } from 'testdouble';
 
-import { default as _tg } from './clones/_glods.clone.mjs';
 import { default as fx } from './fixture.mjs';
 
 
