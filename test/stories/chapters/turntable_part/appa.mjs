@@ -88,6 +88,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         turntableTests.go(testCards).then(() => {
           turntableBehavior = getTurntable(turntableID);
+          document.querySelector(
+            `${turntableID} .turntable-pickup use`)?.setAttribute('href', _tg.pcs_cardRef
+          );
         }, (rejRsn) => {
           turntableBehavior = getTurntable(turntableID);
           console.warn("Issue with running test(s)");
