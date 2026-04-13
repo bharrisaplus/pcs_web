@@ -19,21 +19,21 @@ const turntable_part_tests = async (/** @type {CardIntri[]} */ testInfos) => {
     /** @type {HTMLElement} */
     $turntableOff = $turntable.querySelector('.turntable-off'),
 
-    getImport = async () => {
-      const
-        mockCWrn = td.replace(console, 'warn', td.func('console_log')),
-        mockCDbg = td.replace(console, 'debug', td.func('console_log')),
-        mockCErr = td.replace(console, 'error', td.func()),
-        mockCInf = td.replace(console, 'info', td.func()),
+    modulePaths = { // see importmap in subject.page.pug
+      hands: {
+        scribe: 'scribe_hand_clone',
+      },
+      parts: {
+        turntable: 'turntable_part'
+      }
+    },
 
-        moduleImport = await import(`turntable_part`);
+    getImport = async () => {
+      const _mockScribe = (await import(modulePaths.hands.scribe)).default;
 
       return Object.freeze({
-        freshModule: moduleImport.default(turntableID),
-        module_console_warn: mockCWrn,
-        module_console_debug: mockCDbg,
-        module_console_error: mockCErr,
-        module_console_info: mockCInf
+        freshModule: (await import(modulePaths.parts.turntable)).default(turntableID),
+        moduleLogger: _mockScribe,
       });
     };
 
@@ -64,7 +64,7 @@ const turntable_part_tests = async (/** @type {CardIntri[]} */ testInfos) => {
     swearResults.push(impMeta.freshModule.cursor);
     $turntableOff.click();
     await fx.waaitt(700);
-    swearExplntns.push(td.explain(impMeta.module_console_debug));
+    swearExplntns.push(td.explain(impMeta.moduleLogger.devlog));
 
     td.reset();
 
@@ -95,7 +95,7 @@ const turntable_part_tests = async (/** @type {CardIntri[]} */ testInfos) => {
     swearResults.push([$prvBtn.disabled, $nxtBtn.disabled]);
     $turntableOff.click();
     await fx.wait(700);
-    swearExplntns.push(td.explain(impMeta.module_console_debug));
+    swearExplntns.push(td.explain(impMeta.moduleLogger.devlog));
 
     td.reset();
 
