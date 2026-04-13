@@ -1,16 +1,14 @@
 /**
- * @import {Hand} from 'pcs:types';
+ * @import {Hand, Part} from 'pcs:types';
  */
 
 import { default as td } from 'testdouble';
 
 
 const getScribeHandClone = () => {
-  /** @type {Hand.Scribe} */
+  /** {@link Hand.Scribe} - {@link Part.Turntable} */
   const cloneScribeHand = {
-    devlog: () => {},
-    issuelog: () => {},
-    notilog: () => {}
+    devlog: () => {}
   };
 
   return td.object(cloneScribeHand);
