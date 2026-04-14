@@ -1,0 +1,41 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        title ribbon:storey:subject
+        link(id="subject-styl" rel="stylesheet" href="/presentation/index.main.css")
+        style.
+            #test-shell {
+                container: shell / size;
+                display: flex;
+                min-width: 375px;
+                align-items: center;
+            }
+
+            #container {
+                height: fit-content;
+                max-height: calc(100% - 18px);
+                width: calc(100% - 18px);
+                max-width: calc(100% - 18px);
+                padding: 9px;
+                background-color: gainsboro;
+                border-radius: 18px;
+            }
+        script(type="text/javascript" src="/a.js")
+        script(type="importmap").
+            {
+                "imports": {
+                    "testdouble": "/td.mjs",
+                    "zora": "/z.mjs",
+                    "./clones/_glods.clone.mjs": "/ribbon_part/clones/_glods.clone.mjs",
+                    "/source/behavior/_meta/_glods.mjs": "/ribbon_part/clones/_glods.clone.mjs",
+                    "/source/behavior/hands/egress.hand.mjs": "/ribbon_part/clones/egress_hand.clone.mjs",
+                    "egress_hand_clone": "/ribbon_part/clones/egress_hand.clone.mjs",
+                    "ribbon_part": "/source/behavior/parts/ribbon.part.mjs"
+                }
+            }
+    body#test-shell
+        main#container
+            include ../../../../source/content/document/partials/ribbon.pug
+        footer
+            script(src="/ribbon_part/appa.mjs" type="module" defer)
