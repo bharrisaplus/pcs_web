@@ -4,6 +4,7 @@
     font: normal 16px/1 monospace
 
 body:has(#turntable-panel)
+    position: relative
     display: flex
     height: calc(100% - 1rem)
     width: calc(100% - 1rem)
@@ -12,6 +13,15 @@ body:has(#turntable-panel)
     justify-content: center
     align-items: center
     background-color: #4ecfec
+
+    & header
+        position: absolute
+        top: 1rem
+        left: 1rem
+
+        & h1
+            font-size: 1.5rem
+
 
 #turntable-panel
     display: flex

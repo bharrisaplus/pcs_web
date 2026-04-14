@@ -1,12 +1,14 @@
 extends ../preface.pug
 
 block story_preface_title
-    title turntable:part
+    title conte:turntable
 
 block story_preface_sheets
     link(rel="stylesheet" href="/turntable_part/conte.css")
 
 block story_preface_entry
+    header
+        h1 Turntable
     #turntable-panel
         .subject-membrane
             iframe.subject-frame(src="/turntable_part/subject" sandbox="allow-same-origin allow-scripts allow-downloads")
