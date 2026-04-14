@@ -152,14 +152,14 @@ const makeRibbonPart = (containerID) => {
         $clawImgBtn.blur();
         $shuffleBtn.blur();
         $resetBtn.blur();
-      }, 4000);
+      }, 2000);
 
       window.setTimeout(() => {
         $clawDrop.removeAttribute("href");
         $clawDrop.textContent = "";
 
         $clawDrop.blur();
-      }, 8000);
+      }, 4000);
     }
 
     return result;
