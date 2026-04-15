@@ -410,8 +410,7 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
 
   try {
     await zaTest("Should handle copy to clipboard", async (z) => {
-      let
-        outcome, swearBhvRslts = [], swearUIRslts = [], swearExplntns = [];
+      let outcome, swearBhvRslts = [], swearUIRslts = [], swearExplntns = [];
       const
         imagineTxt = "Totheclipboard\nAndanother",
         impMeta = await getImport();
@@ -450,7 +449,7 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
 
       z.ok(outcome, "result is truthy");
       z.same(swearExplntns[0].callCount, 1, "attempted clipboard write");
-      z.same(swearUIRslts.toString(), "0,0,0,0,0,1,1,1,1,1,0,0,0,0,0", "no inputs disabled");
+      z.same(swearUIRslts.toString(), "0,0,0,0,0,1,1,1,1,1,0,0,0,0,0", "disabled inputs as expected");
       z.same(swearBhvRslts.toString(), 'false,true,false', "busy as expected");
     });
   } catch (t6E) {
@@ -460,8 +459,7 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
 
   try {
     await zaTest("Should handle canvas rasterizing", async (z) => {
-      let
-        outcomes = [], swearBhvRslts = [], swearUIRslts = [], swearExplntns = [];
+      let outcomes = [], swearBhvRslts = [], swearUIRslts = [], swearExplntns = [];
       const
         imagineColor = '',
         imagineSprites = [''],
@@ -511,7 +509,51 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
       z.same(outcomes[1], imagineUrl, "updated download link");
       z.same(outcomes[2], null, "cleared download link");
       z.same(swearExplntns[0].callCount, 1, "attempted image generation");
-      z.same(swearUIRslts.toString(), "0,0,0,0,0,1,1,1,1,1,0,0,0,0,0", "no inputs disabled");
+      z.same(swearUIRslts.toString(), "0,0,0,0,0,1,1,1,1,1,0,0,0,0,0", "disabled inputs as expected");
+      z.same(swearBhvRslts.toString(), 'false,true,false', "busy as expected");
+    });
+  } catch (t7E) {
+    console.error(t7E);
+  }
+
+
+  try {
+    await zaTest("Should handle reset", async (z) => {
+      let swearBhvRslts = [], swearUIRslts = [], swearExplntns = [];
+      const
+        impMeta = await getImport();
+
+
+      swearBhvRslts.push(impMeta.freshModule.isBusy);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.dyeInput}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.clearBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.copyBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.mingleBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.downloadBtn}:disabled`).length);
+
+      impMeta.freshModule.resetCtrls();
+
+      swearBhvRslts.push(impMeta.freshModule.isBusy);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.dyeInput}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.clearBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.copyBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.mingleBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.downloadBtn}:disabled`).length);
+      await fx.waaitt(1501);
+      swearBhvRslts.push(impMeta.freshModule.isBusy);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.dyeInput}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.clearBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.copyBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.mingleBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.downloadBtn}:disabled`).length);
+      swearExplntns.push(td.explain(impMeta.moduleExporter.generateImage));
+
+      td.reset();
+      impMeta.freshModule = null;
+      impMeta.moduleExporter = null;
+
+
+      z.same(swearUIRslts.toString(), "0,0,0,0,0,1,1,1,1,1,0,0,0,0,0", "disabled inputs as expected");
       z.same(swearBhvRslts.toString(), 'false,true,false', "busy as expected");
     });
   } catch (t7E) {
