@@ -6,6 +6,8 @@
 import { default as _tg } from './clones/_glods.clone.mjs';
 import { default as getRibbon } from 'ribbon_part';
 
+import { default as ribbonTests } from './storey.mjs';
+
 
 let ribbonBehavior;
 const
@@ -60,7 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
   ) {
     window.addEventListener('message', (_msgEvt) => {
       if (_msgEvt.data.type == 'subject:test') {
-        console.debug("run test");
+        ribbonTests.go().then(() => {}, (rejRsn) => {
+          console.warn("Issue with running test(s)");
+          console.error(rejRsn);
+        });
       } else if (_msgEvt.data.type == 'subject:a11y') {
         window.axe.run().then((results) => {
           if (results.violations.length) {
