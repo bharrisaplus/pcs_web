@@ -1,0 +1,35 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        title tableau:storey:subject
+        link(id="subject-styl" rel="stylesheet" href="/presentation/index.main.css")
+        style.
+            #test-shell {
+                container: shell / size;
+                display: flex;
+                min-width: 300px;
+                align-items: center;
+            }
+
+            #container {
+                height: fit-content;
+                max-height: calc(100% - 9px);
+                width: calc(100% - 9px);
+                max-width: calc(100% - 9px);
+                padding: 4.5px;
+                background-color: green;
+                border-radius: 18px;
+            }
+        script(type="text/javascript" src="/a.js")
+        script(type="importmap").
+            {
+                "imports": {
+                    "./clones/_glods.clone.mjs": "/ribbon_part/clones/_glods.clone.mjs"
+                }
+            }
+    body#test-shell
+        main#container
+            include ../../../../source/content/document/partials/tableau.pug
+        footer
+            script(src="/tableau_part/appa.mjs" type="module" defer)

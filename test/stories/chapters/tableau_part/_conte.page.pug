@@ -1,0 +1,20 @@
+extends ../preface.pug
+
+block story_preface_title
+    title conte:tableau
+
+block story_preface_sheets
+    link(rel="stylesheet" href="/tableau_part/conte.css")
+
+block story_preface_entry
+    header
+        h1 Ribbon
+    main#tableau-panel
+        .subject-membrane
+            iframe.subject-frame(src="/tableau_part/subject" sandbox="allow-same-origin allow-scripts allow-downloads")
+        #test-overlay
+            h2 Test Running ⌛
+        #ctrl-band.load-curtain
+
+block story_preface_scripts
+    script(src="/tableau_part/_tankoban.mjs")
