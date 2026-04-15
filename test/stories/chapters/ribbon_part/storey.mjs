@@ -14,6 +14,8 @@ import { default as fx } from './fixture.mjs';
 const
   /** @type {CSSelector} */
   ribbonID = '#ribbon',
+  /** @type {CSSelector} */
+  ribbonRedownloadSelector = '.claw-drop',
 
   modulePaths = { // see importmap in subject.page.pug
     hands: {
@@ -453,6 +455,67 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
     });
   } catch (t6E) {
     console.error(t6E);
+  }
+
+
+  try {
+    await zaTest("Should handle canvas rasterizing", async (z) => {
+      let
+        outcomes = [], swearBhvRslts = [], swearUIRslts = [], swearExplntns = [];
+      const
+        imagineColor = '',
+        imagineSprites = [''],
+        imagineSelector = '.thing',
+        imagineUrl = ' ',
+        $dropZone = document.querySelector(`${ribbonID} ${ribbonRedownloadSelector}`),
+        impMeta = await getImport();
+
+
+      td.when(
+        impMeta.moduleExporter.generateImage(imagineColor, imagineSprites, imagineSelector)
+      ).thenResolve(imagineUrl);
+
+      swearBhvRslts.push(impMeta.freshModule.isBusy);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.dyeInput}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.clearBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.copyBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.mingleBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.downloadBtn}:disabled`).length);
+
+      outcomes.push(await impMeta.freshModule.prepareImg(imagineColor, imagineSprites, imagineSelector));
+
+      swearBhvRslts.push(impMeta.freshModule.isBusy);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.dyeInput}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.clearBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.copyBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.mingleBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.downloadBtn}:disabled`).length);
+      await fx.waaitt(2001);
+      swearBhvRslts.push(impMeta.freshModule.isBusy);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.dyeInput}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.clearBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.copyBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.mingleBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.downloadBtn}:disabled`).length);
+      outcomes.push($dropZone.getAttribute('href'));
+      await fx.waaitt(2000);
+      outcomes.push($dropZone.getAttribute('href'));
+      swearExplntns.push(td.explain(impMeta.moduleExporter.generateImage));
+
+      td.reset();
+      impMeta.freshModule = null;
+      impMeta.moduleExporter = null;
+
+
+      z.ok(outcomes[0], "result is truthy");
+      z.same(outcomes[1], imagineUrl, "updated download link");
+      z.same(outcomes[2], null, "cleared download link");
+      z.same(swearExplntns[0].callCount, 1, "attempted image generation");
+      z.same(swearUIRslts.toString(), "0,0,0,0,0,1,1,1,1,1,0,0,0,0,0", "no inputs disabled");
+      z.same(swearBhvRslts.toString(), 'false,true,false', "busy as expected");
+    });
+  } catch (t7E) {
+    console.error(t7E);
   }
 };
 
