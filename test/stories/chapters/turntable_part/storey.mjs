@@ -27,12 +27,12 @@ const
   getImport = async () => {
     const _mockScribe = (await import(modulePaths.hands.scribe)).default;
 
-    return Object.freeze({
+    return {
       /** @type {Part.Turntable} */
       freshModule: (await import(modulePaths.parts.turntable)).default(turntableID),
       /** @type {Hand.Scribe} */
       moduleLogger: _mockScribe,
-    });
+    };
   };
 
 
@@ -92,6 +92,8 @@ const turntable_part_tests = async (/** @type {CardIntri[]} */ testInfos) => {
       swearExplntns.push(td.explain(impMeta.moduleLogger.devlog));
 
       td.reset();
+      impMeta.freshModule = null;
+      impMeta.moduleLogger = null;
 
 
       z.same(swearExplntns[0].callCount, 5, "log expected number of times");
@@ -136,6 +138,8 @@ const turntable_part_tests = async (/** @type {CardIntri[]} */ testInfos) => {
       swearExplntns.push(td.explain(impMeta.moduleLogger.devlog));
 
       td.reset();
+      impMeta.freshModule = null;
+      impMeta.moduleLogger = null;
 
 
       z.same(swearExplntns[0].callCount, 6, "log expected number of times");
