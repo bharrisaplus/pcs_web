@@ -15,9 +15,9 @@ import { default as getRibbon } from '../parts/ribbon.part.mjs';
 const lattice_name = "pcs:lattice:landing";
 
 /**
- * @param  {CSSelector} tableauID The dingus element - {@link CSSStyleRule.selectorText} - {@link Part.Tableau}
- * @param  {CSSelector} turntableID The hud element - {@link CSSStyleRule.selectorText} - {@link Part.Turntable}
- * @param  {CSSelector} ribbonID the panel element - {@link CSSStyleRule.selectorText} - {@link Part.Ribbon}
+ * @param  {CSSelector} tableauID The dingus element - {@link Part.Tableau}
+ * @param  {CSSelector} turntableID The hud element - {@link Part.Turntable}
+ * @param  {CSSelector} ribbonID the panel element - {@link Part.Ribbon}
  * @param  {CSSelector} exportBaseID the svg "spritesheet"
  *
  * @param  {Bank.Deck} itemVault The card state - {@link Bank.Deck}
