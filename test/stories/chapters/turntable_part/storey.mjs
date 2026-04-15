@@ -1,9 +1,10 @@
 /**
  * @import { CardIntri, CSSelector, Hand, Part } from 'pcs:types'
+ * @import { ITestFunction } from 'zora';
  */
 
 /* This files imports should be specified as part of the importmap in subject.page.pug */
-import { hold as zaHold, test as zaTest, report as zaReport, createTAPReporter } from 'zora';
+import { hold as zaHold, createHarness, createTAPReporter } from 'zora';
 import { default as td } from 'testdouble';
 
 import { default as fx } from './fixture.mjs';
@@ -36,7 +37,11 @@ const
   };
 
 
-const turntable_part_tests = async (/** @type {CardIntri[]} */ testInfos) => {
+/**
+ * @param  {CardIntri[]} testInfos
+ * @param  {ITestFunction} zaTest
+ */
+const turntable_part_tests = async (testInfos, zaTest) => {
   const
     /** @type {HTMLElement} */
     $turntable = document.querySelector(turntableID),
@@ -158,6 +163,7 @@ const test_routine = async (/** @type {CardIntri[]} */ routineInfos) => {
   /** @type {string[]} */
   let zaTapLines = [];
   const
+    zaHarness = createHarness({onlyMode: false}),
     zaTapReporter = createTAPReporter({
       log: (/** @type {string} */ zaTapLogLine) => { zaTapLines.push(zaTapLogLine); },
       serialize: (/** @type {any} */ zaTapVal) => { return JSON.stringify(zaTapVal); },
@@ -167,8 +173,8 @@ const test_routine = async (/** @type {CardIntri[]} */ routineInfos) => {
   try {
     window.__stampt__ = Date.now();
 
-    await turntable_part_tests(routineInfos);
-    await zaReport({ reporter: zaTapReporter });
+    await turntable_part_tests(routineInfos, zaHarness.test);
+    await zaHarness.report({ reporter: zaTapReporter });
 
     window.__tap__ = zaTapLines.join('\n');
     zaTapLines = [];

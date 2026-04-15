@@ -1,9 +1,10 @@
 /**
  * @import { CSSelector, Hand, Part } from 'pcs:types'
+ * @import { ITestFunction } from 'zora'
  */
 
 /* This files imports should be specified as part of the importmap in subject.page.pug */
-import { hold as zaHold, test as zaTest, report as zaReport, createTAPReporter } from 'zora';
+import { hold as zaHold, createHarness, createTAPReporter } from 'zora';
 import { default as td } from 'testdouble';
 
 
@@ -32,7 +33,7 @@ const
   };
 
 
-const turntable_part_tests = async () => {
+const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
   const
     /** @type {HTMLElement} */
     $ribbon = document.querySelector(ribbonID);
@@ -81,6 +82,7 @@ const test_routine = async () => {
   /** @type {string[]} */
   let zaTapLines = [];
   const
+    zaHarness = createHarness({onlyMode: false}),
     zaTapReporter = createTAPReporter({
       log: (/** @type {string} */ zaTapLogLine) => { zaTapLines.push(zaTapLogLine); },
       serialize: (/** @type {any} */ zaTapVal) => { return JSON.stringify(zaTapVal); },
@@ -90,8 +92,8 @@ const test_routine = async () => {
   try {
     window.__stampt__ = Date.now();
 
-    await turntable_part_tests();
-    await zaReport({ reporter: zaTapReporter });
+    await turntable_part_tests(zaHarness.test);
+    await zaHarness.report({ reporter: zaTapReporter });
 
     window.__tap__ = zaTapLines.join('\n');
     zaTapLines = [];
