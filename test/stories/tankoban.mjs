@@ -116,7 +116,11 @@ const TankoBanServer = http.createServer(async (req, res) => {
       resHeader = util.headerForMime('.js');
       resCode = 200;
       isAJS = true;
-    } else if (lookupUrl == '/getlastcov') {
+    } else if (lookupUrl == '/cardsot.svg') {
+      resHeader = util.headerForMime('.svg');
+      resCode = 200;
+      lookupContent = util.maybeGrabFile(lookupUrl, 'cards');
+    } else if (lookupUrl == '/getlastcov' || lookupUrl == '/getlastcov/') {
       lookupContent = util.getCovSum(lastCovObj);
       resHeader = util.headerForMime('.txt');
       foundContent = true;
@@ -128,12 +132,14 @@ const TankoBanServer = http.createServer(async (req, res) => {
         lookupContent = 'no coverage';
       }
     } else {
-      if (testShared.storey_ch_allow.some((_ch) => lookupUrl.startsWith(`/${_ch}`))) {
+      if (testShared.storey_ch_allow.some(
+        (_ch) => lookupUrl.startsWith(`/${_ch}`) || lookupUrl.startsWith(`/${_ch}/`)
+      )) {
         lookupExt = NodePath.extname(lookupUrl);
 
         if (lookupExt == '') {
           lookupContent = await util.maybeGrabFile(lookupUrl,
-            lookupUrl.endsWith(`/subject`) ? 'pugSubject' : 'pugConte'
+            lookupUrl.endsWith(`/subject`) || lookupUrl.endsWith(`/subject/`) ? 'pugSubject' : 'pugConte'
           );
           resHeader = util.headerForMime('.html');
         } else if (['.js','.mjs','.svg','.json'].indexOf(lookupExt) != -1) {

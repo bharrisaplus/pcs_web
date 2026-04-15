@@ -20,6 +20,10 @@ import { default as testShared } from '../compass.mjs';
 
 /** @type {Map<string, SourceMap>} */
 let bundleMaps = new Map();
+const sourceContentData = {
+  CARD_SOT_URL: `${testShared.LHOST_URL}${testShared.CARD_SOT_NAME}`
+};
+
 
 const pug_to_html = (grabPath = 'missing', grabType = 'conte') => {
   let result;
@@ -31,7 +35,9 @@ const pug_to_html = (grabPath = 'missing', grabType = 'conte') => {
       ); break;
     }
     case 'subject': {
-      result = pugRender(NodePath.resolve(testShared.storey_ch_path, `./${grabPath}.page.pug`)); break;
+      result = pugRender(
+        NodePath.resolve(testShared.storey_ch_path, `./${grabPath}.page.pug`), sourceContentData
+      ); break;
     }
     default: result = pugRender(NodePath.resolve(testShared.source_path, `./${grabPath}`));
   }
@@ -111,6 +117,11 @@ const read_and_transform = async (maybePath = 'missing', maybeType = '') => {
       case 'stylusConte': result = await stylus_to_css(maybePath); break;
       case 'stylus': result = await stylus_to_css(maybePath, false); break;
       case 'bundle': result = await js_to_bundle(maybePath); break;
+      case 'cards': {
+        result = await NodeFS.readFile(
+          NodePath.resolve(testShared.source_path, './content/graphic/misc/carddeck.svg'), { encoding: 'utf8' }
+        ); break;
+      }
       case 'bibl':  {
         result = await NodeFS.readFile(
           NodePath.resolve(testShared.storey_ch_path, `./${maybePath}`)

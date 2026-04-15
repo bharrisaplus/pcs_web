@@ -19,7 +19,9 @@ const getBezel = async () => {
     source_path: NodeProcess.env.SOURCES_DIR || NodePath.resolve(_dir, '../source'),
     common_path: NodeProcess.env.COMMON_DIR || NodePath.resolve(_dir, '../distribution/common'),
     spec_path: NodeProcess.env.SPEC_DIR || NodePath.resolve(_dir, './specs'),
-    
+    LHOST_URL: NodeProcess.env.LHOST_URL || (new URL('localhost:9090')).toString(),
+    CARD_SOT_NAME: NodeProcess.env.CARD_SOT_NAME || 'cardsot.svg',
+  
     // test specific
     storey_path: NodeProcess.env.STOREY_DIR || NodePath.resolve(_dir, './stories'),
     storey_ch_path: NodeProcess.env.STOREY_DIR ?
@@ -35,14 +37,16 @@ const getBezel = async () => {
     // Stories to run; see stories/tankoban.js
     storey_ch_allow: Object.freeze([
       'turntable_part',
-      'ribbon_part'
+      'ribbon_part',
+      'tableau_part'
     ]),
     // Modules imported by what's being tested; Will be mocked/cloned for a storey via importmap
     //     (see stories/assistant.mjs and stories/chapters/*/clones)
     storey_ch_bundle_ext: Object.freeze(
       new Map([
         ['turntable.part.mjs', Object.freeze(['_glods.mjs', 'scribe.hand.mjs'])],
-        ['ribbon.part.mjs', Object.freeze(['_glods.mjs', 'egress.hand.mjs'])]
+        ['ribbon.part.mjs', Object.freeze(['_glods.mjs', 'egress.hand.mjs'])],
+        ['tableau.parg.mjs', Object.freeze(['_glods.mjs'])]
       ])
     ),
 
