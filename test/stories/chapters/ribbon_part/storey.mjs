@@ -59,7 +59,6 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
         },
         swearUIRslts = [];
       const
-        swearTxt = "Totheclipboard\nAndanother",
         abCntrllr = new AbortController(),
         /** @type {HTMLElement} */
         $testshell = document.querySelector(`#${_tg.appID}`),
@@ -67,8 +66,6 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
         /** @type {HTMLSelectElement} */
         $colorChng = document.querySelector(impMeta.freshModule.dyeInput);
 
-
-      td.when(impMeta.moduleExporter.exportText(swearTxt)).thenResolve(true);
 
       $testshell.addEventListener(_tg.notices.blend, () => {
         swearBhvRslts.eventChecks.push(_tg.notices.blend);
@@ -262,8 +259,8 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
       z.same(swearBhvRslts.busyChecks.toString(), 'false,false,false', "no busy signal");
       z.same(swearBhvRslts.eventChecks.toString(), 'trace', 'events fired as expected');
     });
-  } catch (t2E) {
-    console.error(t2E);
+  } catch (t3E) {
+    console.error(t3E);
   }
 
 
@@ -333,8 +330,8 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
       z.same(swearBhvRslts.busyChecks.toString(), 'false,false,false', "no busy signal");
       z.same(swearBhvRslts.eventChecks.toString(), 'blend', 'events fired as expected');
     });
-  } catch (t2E) {
-    console.error(t2E);
+  } catch (t4E) {
+    console.error(t4E);
   }
 
 
@@ -404,8 +401,58 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
       z.same(swearBhvRslts.busyChecks.toString(), 'false,false,false', "no busy signal");
       z.same(swearBhvRslts.eventChecks.toString(), 'fresh', 'events fired as expected');
     });
-  } catch (t2E) {
-    console.error(t2E);
+  } catch (t5E) {
+    console.error(t5E);
+  }
+
+
+  try {
+    await zaTest("Should handle copy to clipboard", async (z) => {
+      let
+        outcome, swearBhvRslts = [], swearUIRslts = [], swearExplntns = [];
+      const
+        imagineTxt = "Totheclipboard\nAndanother",
+        impMeta = await getImport();
+
+
+      td.when(impMeta.moduleExporter.exportText(imagineTxt)).thenResolve(true);
+
+      swearBhvRslts.push(impMeta.freshModule.isBusy);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.dyeInput}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.clearBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.copyBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.mingleBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.downloadBtn}:disabled`).length);
+
+      outcome = await impMeta.freshModule.composeTxt(imagineTxt.split("\n"));
+
+      swearBhvRslts.push(impMeta.freshModule.isBusy);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.dyeInput}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.clearBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.copyBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.mingleBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.downloadBtn}:disabled`).length);
+      await fx.waaitt(1501);
+      swearBhvRslts.push(impMeta.freshModule.isBusy);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.dyeInput}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.clearBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.copyBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.mingleBtn}:disabled`).length);
+      swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.downloadBtn}:disabled`).length);
+      swearExplntns.push(td.explain(impMeta.moduleExporter.exportText));
+
+      td.reset();
+      impMeta.freshModule = null;
+      impMeta.moduleExporter = null;
+
+
+      z.ok(outcome, "result is truthy");
+      z.same(swearExplntns[0].callCount, 1, "attempted clipboard write");
+      z.same(swearUIRslts.toString(), "0,0,0,0,0,1,1,1,1,1,0,0,0,0,0", "no inputs disabled");
+      z.same(swearBhvRslts.toString(), 'false,true,false', "busy as expected");
+    });
+  } catch (t6E) {
+    console.error(t6E);
   }
 };
 
