@@ -3,9 +3,7 @@ let
   loadedSubject = false,
   runningTest = false;
 const
-  /** @type {HTMLButtonElement} */
   $subjRun = document.createElement('button'),
-  /** @type {HTMLButtonElement} */
   $subja11y = document.createElement('button'),
   /** @type {HTMLElement} */
   $overlay = document.querySelector('#test-overlay');

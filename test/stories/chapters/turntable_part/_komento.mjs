@@ -3,15 +3,10 @@ let
   loadedSubject = false,
   runningTest = false;
 const
-  /** @type {HTMLButtonElement} */
   $subjShow = document.createElement('button'),
-  /** @type {HTMLButtonElement} */
   $subjHide = document.createElement('button'),
-    /** @type {HTMLButtonElement} */
   $subjLoad = document.createElement('button'),
-  /** @type {HTMLButtonElement} */
   $subjRun = document.createElement('button'),
-  /** @type {HTMLButtonElement} */
   $subja11y = document.createElement('button'),
   /** @type {HTMLElement} */
   $overlay = document.querySelector('#test-overlay');
