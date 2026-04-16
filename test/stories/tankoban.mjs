@@ -6,7 +6,7 @@ import http from 'node:http';
 import { compile as pugCompile } from 'pug';
 
 import { default as testShared } from '../compass.mjs';
-import { default as util } from './assisstant.mjs';
+import { default as util } from './haishin.mjs';
 
 let lastCovObj = {};
 const
