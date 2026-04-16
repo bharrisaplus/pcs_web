@@ -6,6 +6,14 @@ block story_preface_title
 block story_preface_sheets
     link(rel="stylesheet" href="/tableau_part/conte.css")
 
+block storey_preface_importmap
+    script(type="importmap").
+        {
+            "imports": {
+                "storey:fixtures": "/tanto.mjs"
+            }
+        }
+
 block story_preface_entry
     header
         h1 Tableau
@@ -17,4 +25,4 @@ block story_preface_entry
         #ctrl-band.load-curtain
 
 block story_preface_scripts
-    script(src="/tableau_part/_komento.mjs")
+    script(src="/tableau_part/_komento.mjs" type="module")
