@@ -192,7 +192,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
           foundContent = false;
         }
       } else if (NodePath.extname(lookupUrl).endsWith('.map')) {
-        lookupContent = util.getSourceMap(lookupUrl);
+        lookupContent = await util.maybeGrabFile(lookupUrl, 'sourcemap');
 
         if (lookupContent) {
           lookupContent = JSON.stringify(lookupContent);

@@ -1,6 +1,3 @@
-/**
- * @import {SourceMap} from 'rollup';
- */
 
 import { default as NodePath } from 'node:path';
 import { default as NodeFS } from 'node:fs/promises';
@@ -20,7 +17,7 @@ import { default as testShared } from '../compass.mjs';
 
 let
   rtTempDirectory = '',
-  /** @type {Map<string, SourceMap>} */
+  /** @type {Map<string, string>} */
   bundleMaps = new Map();
 const subjectData = {
   CARD_SOT_URL: `${testShared.LHOST_URL}${testShared.CARD_SOT_NAME}`
@@ -88,10 +85,27 @@ const js_to_bundle = async (grabPath = 'missing') => {
     });
 
   for (const maybeChunk of rollupOutput) {
+    let
+      srcmapFile,
+      srcmapFilePath = NodePath.resolve(rtTempDirectory, `./${maybeChunk.fileName}.map`);
+
     if (maybeChunk.type == 'asset') { continue; }
 
+    try {
+      srcmapFile = await NodeFS.open(srcmapFilePath, 'w+');
+
+      srcmapFile.writeFile(maybeChunk.map.toString());
+    } catch (smErr) {
+      console.warn("Could not write sourcemap");
+      console.error(smErr);
+    } finally {
+      if (srcmapFile) {
+        srcmapFile.close();
+      }
+    }
+
     result.push(maybeChunk.code);
-    bundleMaps.set(`/${maybeChunk.fileName}.map`, maybeChunk.map);
+    bundleMaps.set(`/${maybeChunk.fileName}.map`, srcmapFilePath);
   }
 
   await rollupBundle.close();
@@ -110,6 +124,7 @@ const read_and_transform = async (maybePath = 'missing', maybeType = '') => {
       case 'stylusConte': result = await stylus_to_css(maybePath); break;
       case 'stylus': result = await stylus_to_css(maybePath, false); break;
       case 'bundle': result = await js_to_bundle(maybePath); break;
+      case 'sourcemap': result = await NodeFS.readFile(bundleMaps.get(maybePath), { encoding: 'utf8' }); break;
       case 'bibl':  {
         result = await NodeFS.readFile(NodePath.resolve(testShared.storey_ch_path, `./${maybePath}`));
         break;
@@ -184,7 +199,6 @@ const getAssistant = () => {
     maybeGrabFile: read_and_transform,
     getCovSum: coverage_report,
     headerForMime: content_header,
-    getSourceMap: (/** @type {string} */ maybeKey) => { return bundleMaps.get(maybeKey); },
 
     get tmpDir() {
       return rtTempDirectory;
