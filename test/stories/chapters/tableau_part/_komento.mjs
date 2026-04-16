@@ -3,9 +3,8 @@ let
   loadedSubject = false,
   runningTest = false;
 const
-  /** @type {HTMLButtonElement} */
+  $subjPrnt = document.createElement('button'),
   $subjRun = document.createElement('button'),
-  /** @type {HTMLButtonElement} */
   $subja11y = document.createElement('button'),
   /** @type {HTMLElement} */
   $overlay = document.querySelector('#test-overlay');
@@ -45,6 +44,7 @@ const chkCov = async () => {
 };
 
 
+$subjPrnt.setAttribute('id', 'sprint');
 $subjRun.setAttribute('id', 'runtest');
 $subja11y.setAttribute('id', 'a11ycheck');
 
@@ -53,8 +53,10 @@ window.addEventListener('message', (_msgEvt) => {
     if (loadedSubject) { return; }
 
     loadedSubject = true;
+    $subjPrnt.textContent = "Print order";
     $subjRun.textContent = "Run Test";
     $subja11y.textContent = "Check a11y";
+    document.querySelector('#ctrl-band')?.appendChild($subjPrnt);
     document.querySelector('#ctrl-band')?.appendChild($subjRun);
     document.querySelector('#ctrl-band')?.appendChild($subja11y);
     document.querySelector('#ctrl-band')?.classList.remove('load-curtain');
@@ -63,6 +65,7 @@ window.addEventListener('message', (_msgEvt) => {
     if (!runningTest) { return; }
 
     runningTest = false;
+    $subjPrnt.disabled = false;
     $subjRun.disabled = false;
     $subja11y.disabled = false;
 
@@ -76,11 +79,23 @@ window.addEventListener('message', (_msgEvt) => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  $subjPrnt.addEventListener('click', (_clickEvt) => {
+    if (!loadedSubject || _clickEvt.target != $subjPrnt) { return; }
+
+    $subjPrnt.disabled = true;
+
+    window.frames[0].focus();
+    window.frames[0].postMessage({ type: 'subject:print' });
+    window.setTimeout(() => {
+      $subjPrnt.disabled = false;
+    }, 1250);
+  });
+
   $subjRun.addEventListener('click', (_clickEvt) => {
-    if (_clickEvt.target != $subjRun) { return; }
-    if (!loadedSubject) { return; }
+    if (!loadedSubject || _clickEvt.target != $subjRun) { return; }
 
     runningTest = true;
+    $subjPrnt.disabled = true;
     $subjRun.disabled = true;
     $subja11y.disabled = true;
 
@@ -90,8 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   $subja11y.addEventListener('click', (_clickEvt) => {
-    if (_clickEvt.target != $subja11y) { return; }
-    if (!loadedSubject) { return; }
+    if (!loadedSubject || _clickEvt.target != $subja11y) { return; }
 
     $subja11y.disabled = true;
 

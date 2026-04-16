@@ -40,7 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.parent.document.body.querySelectorAll(`${tableauID}-panel`).length == 1
   ) {
     window.addEventListener('message', (_msgEvt) => {
-      if (_msgEvt.data.type == 'subject:test') {
+      if (_msgEvt.data.type == 'subject:print') {
+        console.debug(tableauBehavior.currentOrder);
+      } else if (_msgEvt.data.type == 'subject:test') {
         console.debug("run tests");
         listenController.abort();
 
