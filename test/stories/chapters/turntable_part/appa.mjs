@@ -6,13 +6,13 @@
 import { default as _tg } from './clones/_glods.clone.mjs';
 import { default as getTurntable } from 'turntable_part';
 
-import { default as fx } from './fixture.mjs';
+import { default as fx } from 'storey:fixtures';
 import { default as turntableTests } from './storey.mjs';
 
 
 let
   /** @type {Number} */
-  testCardIdx = fx.sanitize_card_id(),
+  testCardIdx,
   /** @type {Part.Turntable} */
   turntableBehavior;
 const
@@ -47,15 +47,15 @@ document.addEventListener('DOMContentLoaded', () => {
       _pcsevt.detail.msg == 'prv' &&
       _pcsevt.detail.$dispatcher === document.querySelector(turntableBehavior.prevBtn)
     ) {
-      testCardIdx = fx.sanitize_card_id(turntableBehavior.cursor[0] - 1);
+      testCardIdx = fx.i_capp(turntableBehavior.cursor[0] - 1, _tg.c_Max);
     } else if (
       _pcsevt.detail.msg == 'nxt' &&
       _pcsevt.detail.$dispatcher === document.querySelector(turntableBehavior.nextBtn)
     ) {
-      testCardIdx = fx.sanitize_card_id(turntableBehavior.cursor[0] + 1);
+      testCardIdx = fx.i_capp(turntableBehavior.cursor[0] + 1, _tg.c_Max);
     }
 
-    turntableBehavior.spinTurntable(testCards[testCardIdx]);
+    turntableBehavior.spinTurntable(testCards[testCardIdx || 0]);
   });
 
 
@@ -69,28 +69,30 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (_msgEvt.data.type == 'subject:show') {
         if (turntableBehavior.isOpen) { $turntable.hidePopover(); }
 
-        $turntable.showPopover();
-        testCardIdx = fx.sanitize_card_id();
-      } else if (_msgEvt.data.type == 'subject:load') {
-        testCardIdx = fx.sanitize_card_id();
+        testCardIdx = null;
 
+        document.querySelector(`${turntableID} .turntable-pickup use`)?.setAttribute('href', _tg.pcs_cardRef);
+        $turntable.showPopover();
+      } else if (_msgEvt.data.type == 'subject:load') {
         if (turntableBehavior.isOpen) { $turntable.hidePopover(); }
+
+        testCardIdx = Math.floor(Math.random() * (_tg.c_Max - 1));
 
         turntableBehavior.loadTurntable(testCards[testCardIdx]);
       } else if (_msgEvt.data.type == 'subject:hide') {
        if (turntableBehavior.isOpen) { $turntable.hidePopover(); }
 
-        testCardIdx = fx.sanitize_card_id();
+        testCardIdx = null;
       } else if (_msgEvt.data.type == 'subject:test') {
-        testCardIdx = fx.sanitize_card_id();
-        
         if (turntableBehavior.isOpen) { $turntable.hidePopover(); }
+
+        testCardIdx = null;
 
         turntableTests.go(testCards).then(() => {
           turntableBehavior = getTurntable(turntableID);
           document.querySelector(
-            `${turntableID} .turntable-pickup use`)?.setAttribute('href', _tg.pcs_cardRef
-          );
+            `${turntableID} .turntable-pickup use`
+          )?.setAttribute('href', _tg.pcs_cardRef);
         }, (rejRsn) => {
           turntableBehavior = getTurntable(turntableID);
           console.warn("Issue with running test(s)");

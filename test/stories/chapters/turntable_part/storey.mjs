@@ -7,7 +7,7 @@
 import { hold as zaHold, createHarness, createTAPReporter } from 'zora';
 import { default as td } from 'testdouble';
 
-import { default as fx } from './fixture.mjs';
+import { default as fx } from 'storey:fixtures';
 
 
 const
