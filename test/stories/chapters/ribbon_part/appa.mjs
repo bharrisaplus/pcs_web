@@ -5,7 +5,7 @@
 /* This files imports should be specified as part of the importmap in subject.page.pug */
 import { default as _tg } from './clones/_glods.clone.mjs';
 import { default as getRibbon } from 'ribbon_part';
-import { default as ribbonTests } from './storey.mjs';
+import { default as ribbonTests } from './genga.mjs';
 
 
 let
