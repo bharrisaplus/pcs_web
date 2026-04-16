@@ -2,7 +2,7 @@
  * @import { Part, PCSEvent } from 'pcs:types'
  */
 
-/* This files imports should be specified as part of the importmap in subject.page.pug */
+/* This files imports should be specified as part of the importmap in desk.page.pug */
 import { default as _tg } from './clones/_glods.clone.mjs';
 import { default as getRibbon } from 'ribbon_part';
 import { default as ribbonTests } from './genga.mjs';
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ) {
     setupListens(listenController.signal);
     window.addEventListener('message', (_msgEvt) => {
-      if (_msgEvt.data.type == 'subject:test') {
+      if (_msgEvt.data.type == 'desk:test') {
         listenController.abort();
         ribbonTests.go().then(() => {
           listenController = new AbortController();
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
           listenController = new AbortController();
           setupListens(listenController.signal);
         });
-      } else if (_msgEvt.data.type == 'subject:a11y') {
+      } else if (_msgEvt.data.type == 'desk:a11y') {
         window.axe.run().then((results) => {
           if (results.violations.length) {
             for (const a11yIssue of results.violations) {

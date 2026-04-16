@@ -3,40 +3,40 @@ import { default as fx } from 'storey:fixtures';
 
 
 let
-  loadedSubject = false,
+  loadedDesk = false,
   runningTest = false;
 const
-  $subjPrnt = document.createElement('button'),
-  $subjRun = document.createElement('button'),
-  $subja11y = document.createElement('button'),
+  $deskPrnt = document.createElement('button'),
+  $deskRun = document.createElement('button'),
+  $deska11y = document.createElement('button'),
   /** @type {HTMLElement} */
   $overlay = document.querySelector('#test-overlay');
 
 
-$subjPrnt.setAttribute('id', 'sprint');
-$subjRun.setAttribute('id', 'runtest');
-$subja11y.setAttribute('id', 'a11ycheck');
+$deskPrnt.setAttribute('id', 'sprint');
+$deskRun.setAttribute('id', 'runtest');
+$deska11y.setAttribute('id', 'a11ycheck');
 
 window.addEventListener('message', (_msgEvt) => {
   if (_msgEvt.data.type == 'loaded') {
-    if (loadedSubject) { return; }
+    if (loadedDesk) { return; }
 
-    loadedSubject = true;
-    $subjPrnt.textContent = "Print order";
-    $subjRun.textContent = "Run Test";
-    $subja11y.textContent = "Check a11y";
-    document.querySelector('#ctrl-band')?.appendChild($subjPrnt);
-    document.querySelector('#ctrl-band')?.appendChild($subjRun);
-    document.querySelector('#ctrl-band')?.appendChild($subja11y);
+    loadedDesk = true;
+    $deskPrnt.textContent = "Print order";
+    $deskRun.textContent = "Run Test";
+    $deska11y.textContent = "Check a11y";
+    document.querySelector('#ctrl-band')?.appendChild($deskPrnt);
+    document.querySelector('#ctrl-band')?.appendChild($deskRun);
+    document.querySelector('#ctrl-band')?.appendChild($deska11y);
     document.querySelector('#ctrl-band')?.classList.remove('load-curtain');
     window.printTestGlobals = function () { window.frames[0].postMessage({ type: 'print:globals'}); };
   } else if (_msgEvt.data.type == 'finished') {
     if (!runningTest) { return; }
 
     runningTest = false;
-    $subjPrnt.disabled = false;
-    $subjRun.disabled = false;
-    $subja11y.disabled = false;
+    $deskPrnt.disabled = false;
+    $deskRun.disabled = false;
+    $deska11y.disabled = false;
 
     $overlay.classList.remove('lower');
     console.clear();
@@ -48,40 +48,40 @@ window.addEventListener('message', (_msgEvt) => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  $subjPrnt.addEventListener('click', (_clickEvt) => {
-    if (!loadedSubject || _clickEvt.target != $subjPrnt) { return; }
+  $deskPrnt.addEventListener('click', (_clickEvt) => {
+    if (!loadedDesk || _clickEvt.target != $deskPrnt) { return; }
 
-    $subjPrnt.disabled = true;
+    $deskPrnt.disabled = true;
 
     window.frames[0].focus();
-    window.frames[0].postMessage({ type: 'subject:print' });
+    window.frames[0].postMessage({ type: 'desk:print' });
     window.setTimeout(() => {
-      $subjPrnt.disabled = false;
+      $deskPrnt.disabled = false;
     }, 1250);
   });
 
-  $subjRun.addEventListener('click', (_clickEvt) => {
-    if (!loadedSubject || _clickEvt.target != $subjRun) { return; }
+  $deskRun.addEventListener('click', (_clickEvt) => {
+    if (!loadedDesk || _clickEvt.target != $deskRun) { return; }
 
     runningTest = true;
-    $subjPrnt.disabled = true;
-    $subjRun.disabled = true;
-    $subja11y.disabled = true;
+    $deskPrnt.disabled = true;
+    $deskRun.disabled = true;
+    $deska11y.disabled = true;
 
     $overlay.classList.add('lower');
     window.frames[0].focus();
-    window.frames[0].postMessage({ type: 'subject:test' });
+    window.frames[0].postMessage({ type: 'desk:test' });
   });
 
-  $subja11y.addEventListener('click', (_clickEvt) => {
-    if (!loadedSubject || _clickEvt.target != $subja11y) { return; }
+  $deska11y.addEventListener('click', (_clickEvt) => {
+    if (!loadedDesk || _clickEvt.target != $deska11y) { return; }
 
-    $subja11y.disabled = true;
+    $deska11y.disabled = true;
 
     window.frames[0].focus();
-    window.frames[0].postMessage({ type: 'subject:a11y' });
+    window.frames[0].postMessage({ type: 'desk:a11y' });
     window.setTimeout(() => {
-      $subja11y.disabled = false;
+      $deska11y.disabled = false;
     }, 1250);
   });
 });

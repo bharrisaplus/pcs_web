@@ -2,7 +2,7 @@
  * @import {CSSelector, PCSEvent, CardIntri} from 'pcs:types'
  */
 
-/* This files imports should be specified as part of the importmap in subject.page.pug */
+/* This files imports should be specified as part of the importmap in desk.page.pug */
 import { default as _tg } from './clones/_glods.clone.mjs';
 import { default as getTableau } from 'tableau_part';
 import { default as tableauTests } from './genga.mjs';
@@ -43,9 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.parent.document.body.querySelectorAll(`${tableauID}-panel`).length == 1
   ) {
     window.addEventListener('message', (_msgEvt) => {
-      if (_msgEvt.data.type == 'subject:print') {
+      if (_msgEvt.data.type == 'desk:print') {
         console.debug(tableauBehavior.currentOrder);
-      } else if (_msgEvt.data.type == 'subject:test') {
+      } else if (_msgEvt.data.type == 'desk:test') {
         /** @type {CardIntri[]} */
         let testCards = tableauBehavior.currentOrder.map((_itm, _idx) => {
           const
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             _tg.notices.needle, handleTableauNeedle, { signal: listenController.signal }
           );
         });
-      } else if (_msgEvt.data.type == 'subject:a11y') {
+      } else if (_msgEvt.data.type == 'desk:a11y') {
         window.axe.run().then((results) => {
           if (results.violations.length) {
             for (const a11yIssue of results.violations) {

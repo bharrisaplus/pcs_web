@@ -2,7 +2,7 @@
  * @import { CardIntri, Part, PCSEvent } from 'pcs:types'
  */
 
-/* This files imports should be specified as part of the importmap in subject.page.pug */
+/* This files imports should be specified as part of the importmap in desk.page.pug */
 import { default as _tg } from './clones/_glods.clone.mjs';
 import { default as getTurntable } from 'turntable_part';
 import { default as fx } from 'storey:fixtures';
@@ -65,24 +65,24 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('message', (_msgEvt) => {
       if (_msgEvt.data.type == 'print:globals') {
         console.debug(_tg);
-      } else if (_msgEvt.data.type == 'subject:show') {
+      } else if (_msgEvt.data.type == 'desk:show') {
         if (turntableBehavior.isOpen) { $turntable.hidePopover(); }
 
         testCardIdx = null;
 
         document.querySelector(`${turntableID} .turntable-pickup use`)?.setAttribute('href', _tg.pcs_cardRef);
         $turntable.showPopover();
-      } else if (_msgEvt.data.type == 'subject:load') {
+      } else if (_msgEvt.data.type == 'desk:load') {
         if (turntableBehavior.isOpen) { $turntable.hidePopover(); }
 
         testCardIdx = Math.floor(Math.random() * (_tg.c_Max - 1));
 
         turntableBehavior.loadTurntable(testCards[testCardIdx]);
-      } else if (_msgEvt.data.type == 'subject:hide') {
+      } else if (_msgEvt.data.type == 'desk:hide') {
        if (turntableBehavior.isOpen) { $turntable.hidePopover(); }
 
         testCardIdx = null;
-      } else if (_msgEvt.data.type == 'subject:test') {
+      } else if (_msgEvt.data.type == 'desk:test') {
         if (turntableBehavior.isOpen) { $turntable.hidePopover(); }
 
         testCardIdx = null;
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
           console.warn("Issue with running test(s)");
           console.error(rejRsn);
         });
-      } else if (_msgEvt.data.type == 'subject:a11y') {
+      } else if (_msgEvt.data.type == 'desk:a11y') {
         window.axe.run().then((results) => {
           if (results.violations.length) {
             for (const a11yIssue of results.violations) {

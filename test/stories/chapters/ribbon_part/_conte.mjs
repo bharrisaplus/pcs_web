@@ -3,35 +3,35 @@ import { default as fx } from 'storey:fixtures';
 
 
 let
-  loadedSubject = false,
+  loadedDesk = false,
   runningTest = false;
 const
-  $subjRun = document.createElement('button'),
-  $subja11y = document.createElement('button'),
+  $deskRun = document.createElement('button'),
+  $deska11y = document.createElement('button'),
   /** @type {HTMLElement} */
   $overlay = document.querySelector('#test-overlay');
 
 
-$subjRun.setAttribute('id', 'runtest');
-$subja11y.setAttribute('id', 'a11ycheck');
+$deskRun.setAttribute('id', 'runtest');
+$deska11y.setAttribute('id', 'a11ycheck');
 
 window.addEventListener('message', (_msgEvt) => {
   if (_msgEvt.data.type == 'loaded') {
-    if (loadedSubject) { return; }
+    if (loadedDesk) { return; }
 
-    loadedSubject = true;
-    $subjRun.textContent = "Run Test";
-    $subja11y.textContent = "Check a11y";
-    document.querySelector('#ctrl-band')?.appendChild($subjRun);
-    document.querySelector('#ctrl-band')?.appendChild($subja11y);
+    loadedDesk = true;
+    $deskRun.textContent = "Run Test";
+    $deska11y.textContent = "Check a11y";
+    document.querySelector('#ctrl-band')?.appendChild($deskRun);
+    document.querySelector('#ctrl-band')?.appendChild($deska11y);
     document.querySelector('#ctrl-band')?.classList.remove('load-curtain');
     window.printTestGlobals = function () { window.frames[0].postMessage({ type: 'print:globals'}); };
   } else if (_msgEvt.data.type == 'finished') {
     if (!runningTest) { return; }
 
     runningTest = false;
-    $subjRun.disabled = false;
-    $subja11y.disabled = false;
+    $deskRun.disabled = false;
+    $deska11y.disabled = false;
 
     $overlay.classList.remove('lower');
     console.clear();
@@ -43,29 +43,29 @@ window.addEventListener('message', (_msgEvt) => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  $subjRun.addEventListener('click', (_clickEvt) => {
-    if (_clickEvt.target != $subjRun) { return; }
-    if (!loadedSubject) { return; }
+  $deskRun.addEventListener('click', (_clickEvt) => {
+    if (_clickEvt.target != $deskRun) { return; }
+    if (!loadedDesk) { return; }
 
     runningTest = true;
-    $subjRun.disabled = true;
-    $subja11y.disabled = true;
+    $deskRun.disabled = true;
+    $deska11y.disabled = true;
 
     $overlay.classList.add('lower');
     window.frames[0].focus();
-    window.frames[0].postMessage({ type: 'subject:test' });
+    window.frames[0].postMessage({ type: 'desk:test' });
   });
 
-  $subja11y.addEventListener('click', (_clickEvt) => {
-    if (_clickEvt.target != $subja11y) { return; }
-    if (!loadedSubject) { return; }
+  $deska11y.addEventListener('click', (_clickEvt) => {
+    if (_clickEvt.target != $deska11y) { return; }
+    if (!loadedDesk) { return; }
 
-    $subja11y.disabled = true;
+    $deska11y.disabled = true;
 
     window.frames[0].focus();
-    window.frames[0].postMessage({ type: 'subject:a11y' });
+    window.frames[0].postMessage({ type: 'desk:a11y' });
     window.setTimeout(() => {
-      $subja11y.disabled = false;
+      $deska11y.disabled = false;
     }, 1250);
   });
 });

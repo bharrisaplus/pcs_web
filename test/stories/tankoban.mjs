@@ -147,7 +147,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
 
         if (lookupExt == '') {
           lookupContent = await util.maybeGrabFile(lookupUrl,
-            lookupUrl.endsWith(`/subject`) || lookupUrl.endsWith(`/subject/`) ? 'pugSubject' : 'pugConte'
+            lookupUrl.endsWith(`/desk`) || lookupUrl.endsWith(`/desk/`) ? 'pugDesk' : 'pugConte'
           );
           resHeader = util.headerForMime('.html');
         } else if (['.js','.mjs','.svg','.json'].indexOf(lookupExt) != -1) {

@@ -19,7 +19,7 @@ let
   rtTempDirectory = '',
   /** @type {Map<string, string>} */
   bundleMaps = new Map();
-const subjectData = {
+const deskData = {
   CARD_SOT_URL: `${testShared.LHOST_URL}${testShared.CARD_SOT_NAME}`
 };
 
@@ -30,7 +30,7 @@ const pug_to_html = (grabPath = 'missing', isConte = true) => {
   if (isConte) {
     result = pugRender(NodePath.resolve(testShared.storey_ch_path, `./${grabPath}/_conte.page.pug`));
   } else {
-    result = pugRender(NodePath.resolve(testShared.storey_ch_path, `./${grabPath}.page.pug`), subjectData);
+    result = pugRender(NodePath.resolve(testShared.storey_ch_path, `./${grabPath}.page.pug`), deskData);
   }
 
   return result;
@@ -120,7 +120,7 @@ const read_and_transform = async (maybePath = 'missing', maybeType = '') => {
   try {
     switch(maybeType) {
       case 'pugConte': result = pug_to_html(maybePath); break;
-      case 'pugSubject': result = pug_to_html(maybePath, false); break;
+      case 'pugDesk': result = pug_to_html(maybePath, false); break;
       case 'stylusConte': result = await stylus_to_css(maybePath); break;
       case 'stylus': result = await stylus_to_css(maybePath, false); break;
       case 'bundle': result = await js_to_bundle(maybePath); break;

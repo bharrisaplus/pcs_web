@@ -3,7 +3,7 @@
  * @import { ITestFunction } from 'zora';
  */
 
-/* This files imports should be specified as part of the importmap in subject.page.pug */
+/* This files imports should be specified as part of the importmap in desk.page.pug */
 import { hold as zaHold, createHarness, createTAPReporter } from 'zora';
 import { default as td } from 'testdouble';
 
@@ -16,7 +16,7 @@ const
   /** @type {CSSelector} */
   turntableCloseSelector = '.turntable-off',
 
-  modulePaths = { // see importmap in subject.page.pug
+  modulePaths = { // see importmap in desk.page.pug
     hands: {
       scribe: 'scribe_hand_clone',
     },
