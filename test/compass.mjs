@@ -48,7 +48,7 @@ const getBezel = async () => {
       new Map([
         ['turntable.part.mjs', Object.freeze(['_glods.mjs', 'scribe.hand.mjs'])],
         ['ribbon.part.mjs', Object.freeze(['_glods.mjs', 'egress.hand.mjs'])],
-        ['tableau.parg.mjs', Object.freeze(['_glods.mjs'])]
+        ['tableau.part.mjs', Object.freeze(['_glods.mjs'])]
       ])
     ),
 
