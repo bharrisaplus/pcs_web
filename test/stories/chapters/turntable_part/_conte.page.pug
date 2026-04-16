@@ -1,9 +1,9 @@
 extends ../preface.pug
 
-block story_preface_title
+block storey_preface_title
     title conte:turntable
 
-block story_preface_sheets
+block storey_preface_sheets
     link(rel="stylesheet" href="/turntable_part/conte.css")
 
 block storey_preface_importmap
@@ -14,7 +14,7 @@ block storey_preface_importmap
             }
         }
 
-block story_preface_entry
+block storey_preface_entry
     header
         h1 Turntable
     #turntable-panel
@@ -24,5 +24,5 @@ block story_preface_entry
             h2 Test Running ⌛
         #ctrl-band.load-curtain
 
-block story_preface_scripts
+block storey_preface_scripts
     script(src="/turntable_part/_conte.mjs" type="module")

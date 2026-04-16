@@ -28,13 +28,13 @@ tasks:
 
   rear-preface_td:
     env:
-      BUILD_TARGET: story_preface:testdouble
+      BUILD_TARGET: storey_preface:testdouble
     cmds:
       - pnpm rollup -c {{.TEST_DIR}}/_rollup.config.mjs
 
   rear-preface_z:
     env:
-      BUILD_TARGET: story_preface:zora
+      BUILD_TARGET: storey_preface:zora
     cmds:
       - pnpm rollup -c {{.TEST_DIR}}/_rollup.config.mjs
 

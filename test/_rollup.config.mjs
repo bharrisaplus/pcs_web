@@ -13,7 +13,7 @@ import { default as testShared } from './compass.mjs'
 
 let targetConfig;
 
-if (NodeProcess.env.BUILD_TARGET == "story_preface:testdouble") {
+if (NodeProcess.env.BUILD_TARGET == "storey_preface:testdouble") {
   targetConfig = {
     input: 'testdouble_browser',
     output: {
@@ -30,7 +30,7 @@ if (NodeProcess.env.BUILD_TARGET == "story_preface:testdouble") {
       RollupNodePolyfills()
     ]
   };
-} else if (NodeProcess.env.BUILD_TARGET == "story_preface:zora") {
+} else if (NodeProcess.env.BUILD_TARGET == "storey_preface:zora") {
   targetConfig = {
     input: 'zora_browser',
     output: {
