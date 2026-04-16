@@ -11,7 +11,10 @@ const all_events = {
 /** {@link GlobalDeclarations} */
 const _globals = Object.freeze({
   appID: "test-shell",
-  notices: Object.freeze(all_events)
+  notices: Object.freeze(all_events),
+  c_Max: 52,
+  c_TitlePrefix: 'Number',
+  c_DescPrefix: "Card in position"
 });
 
 

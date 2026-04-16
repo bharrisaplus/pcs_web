@@ -1,9 +1,10 @@
 /**
- * @import {PCSEvent} from 'pcs:types'
+ * @import {CSSelector, PCSEvent, CardIntri} from 'pcs:types'
  */
 
 /* This files imports should be specified as part of the importmap in subject.page.pug */
 import { default as _tg } from './clones/_glods.clone.mjs';
+import { default as tableauTests } from './storey.mjs';
 
 import { default as getTableau } from 'tableau_part';
 
@@ -11,6 +12,8 @@ import { default as getTableau } from 'tableau_part';
 let listenController = new AbortController();
 const
   tableauID = '#tableau',
+  /** @type {CSSelector} */
+  tableauItemSelector = '.playing-card',
   /** @type {HTMLElement} */
   $shell = document.querySelector(`#${_tg.appID}`),
   /** @type {HTMLElement} */
@@ -35,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $tableau.setAttribute('style', '');
   $tableau.classList.remove('hide-before-load');
 
+
   if (
     window.frameElement &&
     window.parent.document.body.querySelectorAll(`${tableauID}-panel`).length == 1
@@ -43,12 +47,44 @@ document.addEventListener('DOMContentLoaded', () => {
       if (_msgEvt.data.type == 'subject:print') {
         console.debug(tableauBehavior.currentOrder);
       } else if (_msgEvt.data.type == 'subject:test') {
-        console.debug("run tests");
-        listenController.abort();
+        /** @type {CardIntri[]} */
+        let testCards = tableauBehavior.currentOrder.map((_itm, _idx) => {
+          const
+            $item = $tableau.querySelectorAll(`${tableauID} ${tableauItemSelector}`)[_idx],
+            itemID = $item?.querySelector(`svg use`)?.getAttribute('href') || '';
 
-        listenController = new AbortController();
+          return {
+            oglo: _itm,
+            spot: _idx,
+            title: `${_tg.c_TitlePrefix} ${_idx + 1}:...`,
+            desc: `${_tg.c_DescPrefix} ${_idx + 1}`,
+            symbolRef: itemID
+          };
+        });
 
-        $shell.addEventListener(_tg.notices.needle, handleTableauNeedle, { signal: listenController.signal });
+
+        if (testCards.some( (crd) => !crd.symbolRef )) {
+          console.warn("Some items are missing an id")
+          return;
+        }
+
+        tableauTests.go(testCards).then(() => {
+          listenController.abort();
+
+          listenController = new AbortController();
+
+          $shell.addEventListener(
+            _tg.notices.needle, handleTableauNeedle, { signal: listenController.signal }
+          );
+        }, () => {
+          listenController.abort();
+
+          listenController = new AbortController();
+
+          $shell.addEventListener(
+            _tg.notices.needle, handleTableauNeedle, { signal: listenController.signal }
+          );
+        });
       } else if (_msgEvt.data.type == 'subject:a11y') {
         window.axe.run().then((results) => {
           if (results.violations.length) {
