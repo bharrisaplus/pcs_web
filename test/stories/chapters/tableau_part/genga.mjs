@@ -14,6 +14,8 @@ import { default as fx } from 'storey:fixtures';
 const
   /** @type {CSSelector} */
   tableauID = '#tableau',
+  /** @type {CSSelector} */
+  tableauItemSelector = '.playing-card',
 
   modulePaths = { // see importmap in desk.page.pug
     parts: {
@@ -51,21 +53,71 @@ const tableau_part_tests = async (testInfos, zaTest) => {
 
 
   try {
-    await zaTest('Should handle normal conditions', async (z) => {
-      let swearBhvRslts = [];
+    await zaTest('Should load correctly', async (z) => {
+      let swearBhvRslts = [], swearUIRslts = [];
       const impMeta = await getImport();
 
 
-      swearBhvRslts.push(impMeta.freshModule.currentOrder.length == _tg.c_Max);
-      await fx.waaitt(100);
+      swearBhvRslts.push(impMeta.freshModule.currentOrder.length);
+      swearUIRslts.push(document.querySelectorAll(`${tableauID} ${tableauItemSelector}`).length);
 
       td.reset();
+      impMeta.freshModule = null;
 
 
-      z.ok(swearBhvRslts[0], "stub assertion");
+      z.same(swearBhvRslts[0], swearUIRslts[0], "correct number of $elements and list items");
     }); // May need to set timeout in ms specificaly like { timeout: 6000 }
   } catch (t1E) {
     console.error(t1E);
+  }
+
+  try {
+    await zaTest('Should handle click', async (z) => {
+      let
+        swearUIRslts = [],
+        swearBhvRslts = {
+          /** @type {Array<number[]>} */
+          orderChks: [],
+          /** @type {number[]} */
+          lenChks: [],
+          /** @type {string[]} */
+          eventChks: []
+        };
+      const
+        pickIdx = Math.floor(Math.random() * _tg.c_Max),
+        listenController = new AbortController(),
+        imagineOrder = Array.from({ length: _tg.c_Max }, (_, _idx) => { return _idx }),
+        impMeta = await getImport(),
+        /** @type {HTMLElement} */
+        $testshell = document.querySelector(`#${_tg.appID}`),
+        /** @type {HTMLElement[]} */
+        $items = Array.from(document.querySelectorAll(`${tableauID} ${tableauItemSelector}`));
+
+
+      $testshell.addEventListener(_tg.notices.needle, () => {
+        swearBhvRslts.eventChks.push(_tg.notices.needle);
+      }, { signal: listenController.signal });
+
+      swearBhvRslts.orderChks.push(impMeta.freshModule.currentOrder);
+      swearBhvRslts.lenChks.push(impMeta.freshModule.currentOrder.length);
+      swearUIRslts.push(document.querySelectorAll(`${tableauID} ${tableauItemSelector}`).length);
+
+      $items[pickIdx]?.click();
+      await fx.waaitt(100);
+
+
+      td.reset();
+      impMeta.freshModule = null;
+      listenController.abort();
+
+
+      z.same(swearBhvRslts.lenChks[0], _tg.c_Max, "number of items is correct");
+      z.same(swearBhvRslts.eventChks.toString(), "needle", "events fired as expected");
+      z.same(swearBhvRslts.orderChks[0].toString(), imagineOrder.toString(), "item order is correct");
+      z.same(swearUIRslts[0], _tg.c_Max, "number of $elements is correct");
+    }); // May need to set timeout in ms specificaly like { timeout: 6000 }
+  } catch (t2E) {
+    console.error(t2E);
   }
 };
 
