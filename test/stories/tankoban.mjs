@@ -247,6 +247,12 @@ if (!foundPreface) {
   NodeProcess.exit(1);
 }
 
+if (!util.tmpDir) {
+  console.warn(`Missing temp directory`);
+  NodeProcess.exit(1);
+}
+
+
 NodeProcess.on('SIGINT', () => { // Ctrl + C
   console.log('Stopping');
   NodeProcess.exit(0);
@@ -263,10 +269,17 @@ NodeProcess.on('SIGTERM', () => { // Terminate/Kill
 });
 
 NodeProcess.on('exit', () => {
-  console.log('Closing');
-  NodeProcess.exit(0);
+  NodeFS.rmdir(util.tmpDir).then(() => {
+    NodeProcess.exit(0);
+  }, () => {
+    NodeProcess.exit(0);
+  });
 });
 
+
+if (isVerbose) {
+  console.log(`Temp directory located at: ${util.tmpDir}`);
+}
 
 console.log(`Listening on ${testShared.tankoban_port}...`);
 TankoBanServer.listen(testShared.tankoban_port);

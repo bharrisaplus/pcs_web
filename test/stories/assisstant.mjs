@@ -18,8 +18,10 @@ import { default as ansiColorStrip } from 'strip-color';
 import { default as testShared } from '../compass.mjs';
 
 
-/** @type {Map<string, SourceMap>} */
-let bundleMaps = new Map();
+let
+  rtTempDirectory = '',
+  /** @type {Map<string, SourceMap>} */
+  bundleMaps = new Map();
 const subjectData = {
   CARD_SOT_URL: `${testShared.LHOST_URL}${testShared.CARD_SOT_NAME}`
 };
@@ -182,11 +184,26 @@ const getAssistant = () => {
     maybeGrabFile: read_and_transform,
     getCovSum: coverage_report,
     headerForMime: content_header,
-    getSourceMap: (/** @type {string} */ maybeKey) => { return bundleMaps.get(maybeKey); }
+    getSourceMap: (/** @type {string} */ maybeKey) => { return bundleMaps.get(maybeKey); },
+
+    get tmpDir() {
+      return rtTempDirectory;
+    }
   });
 };
 
 
 const singleAssistant = getAssistant();
+
+
+try {
+  rtTempDirectory = await NodeFS.mkdtemp(`${testShared.storey_tmp_dir}_`, { encoding: 'utf8' });
+
+} catch (fsErr) {
+  rtTempDirectory = '';
+  console.warn("Could not create tmp directory - check permissions:");
+  console.debug(testShared.storey_tmp_dir);
+  console.error(fsErr);
+}
 
 export default singleAssistant;

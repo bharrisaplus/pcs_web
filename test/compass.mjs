@@ -1,5 +1,6 @@
 import { default as NodeProcess } from 'node:process';
 import { default as NodePath } from 'node:path';
+import { default as NodeOS } from 'node:os';
 
 
 const _dir = import.meta.dirname;
@@ -23,6 +24,7 @@ const getBezel = async () => {
     CARD_SOT_NAME: NodeProcess.env.CARD_SOT_NAME || 'cardsot.svg',
   
     // test specific
+    storey_tmp_dir: NodePath.resolve(NodeOS.tmpdir(), './pcs/test/storey'),
     storey_path: NodeProcess.env.STOREY_DIR || NodePath.resolve(_dir, './stories'),
     storey_ch_path: NodeProcess.env.STOREY_DIR ?
       NodePath.resolve(NodeProcess.env.STOREY_DIR, './chapters') :
