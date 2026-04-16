@@ -3,6 +3,14 @@
         "./*_part/*.mjs",
         "./*_part/clones/*.clone.mjs"
     ],
+    "files": [
+        "./tanto.mjs"
+    ],
+    "exclude": [
+        "./_a.js",
+        "./_td.mjs",
+        "./_z.mjs"
+    ],
     "compilerOptions": {
         "noEmit": true,
         "allowJs": true,
@@ -23,7 +31,8 @@
             "turntable_part": ["../../../source/behavior/parts/turntable.part.mjs"],
             "ribbon_part": ["../../../source/behavior/parts/ribbon.part.mjs"],
             "tableau_part": ["../../../source/behavior/parts/tableau.part.mjs"],
-            "pcs:types": ["../../../source/behavior/_meta/_typedefs.mjs"]
+            "pcs:types": ["../../../source/behavior/_meta/_typedefs.mjs"],
+            "storey:fixtures": ["./tanto.mjs"]
         },
         "types": [
             "./_.d.ts",
