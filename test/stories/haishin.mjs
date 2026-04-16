@@ -24,11 +24,11 @@ const deskData = {
 };
 
 
-const pug_to_html = (grabPath = 'missing', isConte = true) => {
+const pug_to_html = (grabPath = 'missing', isEKonte = true) => {
   let result;
 
-  if (isConte) {
-    result = pugRender(NodePath.resolve(testShared.storey_ch_path, `./${grabPath}/_conte.page.pug`));
+  if (isEKonte) {
+    result = pugRender(NodePath.resolve(testShared.storey_ch_path, `./${grabPath}/_ekonte.page.pug`));
   } else {
     result = pugRender(NodePath.resolve(testShared.storey_ch_path, `./${grabPath}.page.pug`), deskData);
   }
@@ -37,13 +37,13 @@ const pug_to_html = (grabPath = 'missing', isConte = true) => {
 };
 
 
-const stylus_to_css = async (grabPath = 'missing', isConte = true) => {
+const stylus_to_css = async (grabPath = 'missing', isEkonte = true) => {
   let _tmp, result;
   const grabDir = NodePath.dirname(grabPath);
 
-  if (isConte) {
+  if (isEkonte) {
     _tmp = await NodeFS.readFile(
-      NodePath.resolve(testShared.storey_ch_path,`./${grabDir}/_conte.main.styl`), { encoding: 'utf8' }
+      NodePath.resolve(testShared.storey_ch_path,`./${grabDir}/_ekonte.main.styl`), { encoding: 'utf8' }
     );
   } else {
     _tmp = await NodeFS.readFile(NodePath.resolve(testShared.source_path,
@@ -53,7 +53,7 @@ const stylus_to_css = async (grabPath = 'missing', isConte = true) => {
 
   result = stylRender(_tmp, {paths: [
     testShared.storey_ch_path,
-    `${testShared.storey_ch_path}/${isConte ? grabDir : ''}`,
+    `${testShared.storey_ch_path}/${isEkonte ? grabDir : ''}`,
     `${testShared.source_path}/presentation`,
   ]});
 
@@ -119,9 +119,9 @@ const read_and_transform = async (maybePath = 'missing', maybeType = '') => {
 
   try {
     switch(maybeType) {
-      case 'pugConte': result = pug_to_html(maybePath); break;
+      case 'pugEKonte': result = pug_to_html(maybePath); break;
       case 'pugDesk': result = pug_to_html(maybePath, false); break;
-      case 'stylusConte': result = await stylus_to_css(maybePath); break;
+      case 'stylusEKonte': result = await stylus_to_css(maybePath); break;
       case 'stylus': result = await stylus_to_css(maybePath, false); break;
       case 'bundle': result = await js_to_bundle(maybePath); break;
       case 'sourcemap': result = await NodeFS.readFile(bundleMaps.get(maybePath), { encoding: 'utf8' }); break;
@@ -135,8 +135,8 @@ const read_and_transform = async (maybePath = 'missing', maybeType = '') => {
         );
       }
     }
-  } catch (contentErr) {
-    console.error(contentErr);
+  } catch (retrErr) {
+    console.error(retrErr);
     result = null;
   }
 

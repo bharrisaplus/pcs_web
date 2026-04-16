@@ -147,7 +147,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
 
         if (lookupExt == '') {
           lookupContent = await util.maybeGrabFile(lookupUrl,
-            lookupUrl.endsWith(`/desk`) || lookupUrl.endsWith(`/desk/`) ? 'pugDesk' : 'pugConte'
+            lookupUrl.endsWith(`/desk`) || lookupUrl.endsWith(`/desk/`) ? 'pugDesk' : 'pugEKonte'
           );
           resHeader = util.headerForMime('.html');
         } else if (['.js','.mjs','.svg','.json'].indexOf(lookupExt) != -1) {
@@ -155,7 +155,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
           resHeader = util.headerForMime(lookupExt);
         } else if (lookupExt == '.css') {
           lookupContent = await util.maybeGrabFile(
-            lookupUrl, lookupUrl.endsWith('conte.css') ? 'stylusConte' : 'stylus'
+            lookupUrl, lookupUrl.endsWith('ekonte.css') ? 'stylusEKonte' : 'stylus'
           );
           resHeader = util.headerForMime('.css');
         } else {

@@ -1,10 +1,10 @@
 extends ../preface.pug
 
 block storey_preface_title
-    title conte:turntable
+    title ekonte:ribbon
 
 block storey_preface_sheets
-    link(rel="stylesheet" href="/turntable_part/conte.css")
+    link(rel="stylesheet" href="/ribbon_part/ekonte.css")
 
 block storey_preface_importmap
     script(type="importmap").
@@ -16,13 +16,13 @@ block storey_preface_importmap
 
 block storey_preface_entry
     header
-        h1 Turntable
-    #turntable-panel
+        h1 Ribbon
+    main#ribbon-panel
         .desk-membrane
-            iframe.desk-frame(src="/turntable_part/desk" sandbox="allow-same-origin allow-scripts allow-downloads")
+            iframe.desk-frame(src="/ribbon_part/desk" sandbox="allow-same-origin allow-scripts allow-downloads")
         #test-overlay
             h2 Test Running ⌛
         #ctrl-band.load-curtain
 
 block storey_preface_scripts
-    script(src="/turntable_part/_conte.mjs" type="module")
+    script(src="/ribbon_part/_ekonte.mjs" type="module")
