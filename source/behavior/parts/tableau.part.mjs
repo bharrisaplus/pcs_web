@@ -21,14 +21,19 @@ const makeTableauPart = (containerID, eventCancel) => {
    * @param  {number} itemIdx
    */
   const _setupItem = ($item, itemIdx) => {
-    $item.addEventListener('click', (_clickEvt) => {
+    $item.addEventListener('click', (/** @type {PointerEvent} */ _clickEvt) => {
+      /** @type {PCSEvent} */
+      let needleDown;
+
       if (
-        !(_clickEvt.target instanceof window.HTMLElement) ||
+        (
+          !(_clickEvt.target instanceof window.HTMLElement) &&
+          !(_clickEvt.target instanceof window.SVGElement)
+        ) ||
         $item !== _clickEvt.target && $item !== _clickEvt.target?.parentElement
       ) { return; }
 
-      /** @type {PCSEvent} */
-      const needleDown = new CustomEvent(_g.notices.needle, {
+      needleDown = new CustomEvent(_g.notices.needle, {
         detail: {
           msg: itemIdx.toString(),
           $dispatcher: $item
