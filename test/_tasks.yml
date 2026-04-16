@@ -59,7 +59,7 @@ tasks:
   play_storey:
     aliases: ["storeo"]
     cmds:
-      - node {{.STOREY_DIR}}/tankoban.mjs
+      - node {{.STOREY_DIR}}/tankoban.mjs {{.CLI_ARGS}}
 
 
   # coverage
