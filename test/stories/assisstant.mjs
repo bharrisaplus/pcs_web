@@ -20,26 +20,18 @@ import { default as testShared } from '../compass.mjs';
 
 /** @type {Map<string, SourceMap>} */
 let bundleMaps = new Map();
-const sourceContentData = {
+const subjectData = {
   CARD_SOT_URL: `${testShared.LHOST_URL}${testShared.CARD_SOT_NAME}`
 };
 
 
-const pug_to_html = (grabPath = 'missing', grabType = 'conte') => {
+const pug_to_html = (grabPath = 'missing', isConte = true) => {
   let result;
 
-  switch(grabType) {
-    case 'conte': {
-      result = pugRender(
-        NodePath.resolve(testShared.storey_ch_path, `./${grabPath}/_conte.page.pug`)
-      ); break;
-    }
-    case 'subject': {
-      result = pugRender(
-        NodePath.resolve(testShared.storey_ch_path, `./${grabPath}.page.pug`), sourceContentData
-      ); break;
-    }
-    default: result = pugRender(NodePath.resolve(testShared.source_path, `./${grabPath}`));
+  if (isConte) {
+    result = pugRender(NodePath.resolve(testShared.storey_ch_path, `./${grabPath}/_conte.page.pug`));
+  } else {
+    result = pugRender(NodePath.resolve(testShared.storey_ch_path, `./${grabPath}.page.pug`), subjectData);
   }
 
   return result;
@@ -112,8 +104,7 @@ const read_and_transform = async (maybePath = 'missing', maybeType = '') => {
   try {
     switch(maybeType) {
       case 'pugConte': result = pug_to_html(maybePath); break;
-      case 'pugSubject': result = pug_to_html(maybePath, 'subject'); break;
-      case 'pug': result = pug_to_html(maybePath, 'other'); break;
+      case 'pugSubject': result = pug_to_html(maybePath, false); break;
       case 'stylusConte': result = await stylus_to_css(maybePath); break;
       case 'stylus': result = await stylus_to_css(maybePath, false); break;
       case 'bundle': result = await js_to_bundle(maybePath); break;

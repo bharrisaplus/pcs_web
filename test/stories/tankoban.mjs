@@ -26,7 +26,6 @@ const
   okRootPaths = ['/', '/index.html', '/index', '/tankoban.html', '/tankoban'],
 
   coveragePathPrefix = '/source/behavior',
-  contentPathPrefix = '/content',
   presentationPathPrefix = '/presentation',
 
   foundPreface = requiredFiles.every(async (reqFl) => {
@@ -171,19 +170,6 @@ const TankoBanServer = http.createServer(async (req, res) => {
 
         if (lookupContent) {
           resHeader = util.headerForMime('.mjs');
-          resCode = 200;
-          foundContent = true;
-        } else {
-          greeting = `Not Found`;
-          resHeader = util.headerForMime('.html');
-          resCode = 404;
-          foundContent = false;
-        }
-      } else if (lookupUrl.startsWith(contentPathPrefix)) {
-        lookupContent = await util.maybeGrabFile(lookupUrl, 'pug');
-
-        if (lookupContent){
-          resHeader = util.headerForMime('.html');
           resCode = 200;
           foundContent = true;
         } else {
