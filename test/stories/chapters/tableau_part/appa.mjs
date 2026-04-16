@@ -67,17 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
+        listenController.abort();
         tableauTests.go(testCards).then(() => {
-          listenController.abort();
-
           listenController = new AbortController();
 
           $shell.addEventListener(
             _tg.notices.needle, handleTableauNeedle, { signal: listenController.signal }
           );
         }, () => {
-          listenController.abort();
-
           listenController = new AbortController();
 
           $shell.addEventListener(
