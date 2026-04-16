@@ -117,15 +117,9 @@ const read_and_transform = async (maybePath = 'missing', maybeType = '') => {
       case 'stylusConte': result = await stylus_to_css(maybePath); break;
       case 'stylus': result = await stylus_to_css(maybePath, false); break;
       case 'bundle': result = await js_to_bundle(maybePath); break;
-      case 'cards': {
-        result = await NodeFS.readFile(
-          NodePath.resolve(testShared.source_path, './content/graphic/misc/carddeck.svg'), { encoding: 'utf8' }
-        ); break;
-      }
       case 'bibl':  {
-        result = await NodeFS.readFile(
-          NodePath.resolve(testShared.storey_ch_path, `./${maybePath}`)
-        ); break;
+        result = await NodeFS.readFile(NodePath.resolve(testShared.storey_ch_path, `./${maybePath}`));
+        break;
       }
       default: { // most text
         result = await NodeFS.readFile(

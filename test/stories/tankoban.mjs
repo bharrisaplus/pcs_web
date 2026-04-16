@@ -20,6 +20,7 @@ const
     NodePath.resolve(testShared.storey_ch_path, './_a.js'),
     NodePath.resolve(testShared.cssreset_path, './reset.min.css'),
     NodePath.resolve(testShared.favicon_path, './sqwiggle.ico'),
+    NodePath.resolve(testShared.source_path, './content/graphic/misc/carddeck.svg')
   ],
 
   okRootPaths = ['/', '/index.html', '/index', '/tankoban.html', '/tankoban'],
@@ -41,7 +42,8 @@ const
   faviconIco = foundPreface ? await NodeFS.readFile(requiredFiles[6]) : '',
   prefaceTD = foundPreface ? await NodeFS.readFile(requiredFiles[2], { encoding: 'utf8' }) : '',
   prefaceZ = foundPreface ? await NodeFS.readFile(requiredFiles[3], { encoding: 'utf8' }) : '',
-  prefaceA = foundPreface ? await NodeFS.readFile(requiredFiles[4], { encoding: 'utf8' }) : '';
+  prefaceA = foundPreface ? await NodeFS.readFile(requiredFiles[4], { encoding: 'utf8' }) : '',
+  cardSOT = foundPreface ? await NodeFS.readFile(requiredFiles[7], { encoding: 'utf8' }) : '';
 
 const rootDocFcn = foundPreface ? pugCompile(`
 doctype html
@@ -62,7 +64,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
   let
     greeting, lookupExt, lookupContent, resCode, resHeader,
     isRoot = false, isCSSReset = false, isFavicon = false, isTDJS = false, isZJS = false, isAJS = false,
-    foundContent = false,
+    isCSOT = false, foundContent = false,
     lookupUrl = req.url || '', uploadDump = '';
 
 
@@ -119,7 +121,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
     } else if (lookupUrl == '/cardsot.svg') {
       resHeader = util.headerForMime('.svg');
       resCode = 200;
-      lookupContent = util.maybeGrabFile(lookupUrl, 'cards');
+      isCSOT = true;
     } else if (lookupUrl == '/getlastcov' || lookupUrl == '/getlastcov/') {
       lookupContent = util.getCovSum(lastCovObj);
       resHeader = util.headerForMime('.txt');
@@ -226,7 +228,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
     }
 
     if (isVerbose) {
-      if (isRoot || isFavicon || isCSSReset || isTDJS || foundContent) {
+      if (isRoot || isFavicon || isCSSReset || isTDJS || isZJS || isAJS || isCSOT || foundContent) {
         console.debug(`Responding to: ${lookupUrl}`);
       } else {
         console.warn(`Responding (404) to: ${lookupUrl}`);
@@ -241,6 +243,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
       case isTDJS: res.write(prefaceTD); break;
       case isZJS: res.write(prefaceZ); break;
       case isAJS: res.write(prefaceA); break;
+      case isCSOT: res.write(cardSOT); break;
       case foundContent: res.write(lookupContent); break;
       default: res.write(rootDocFcn({ greetMsg: greeting }))
     }
