@@ -1,6 +1,64 @@
 
+const uploadCoverage = async () => {
+  let uploadSummary, uploadResp;
+  const covObj = window.__coverage__;
+
+  if (!covObj) { return; }
+
+  try {
+    uploadResp = await fetch('/pushcov', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(covObj)
+    });
+
+    uploadSummary = await uploadResp.text();
+    console.info(uploadSummary);
+  } catch (upErr) {
+    console.error(upErr);
+  }
+};
+
+
+const checkCoverage = async () => {
+  let covResp, covSummary;
+  try {
+    covResp = await fetch('/getlastcov'),
+    covSummary = await covResp.text();
+
+    console.info(covSummary);
+  } catch (covErr) {
+    console.error(covErr);
+  }
+};
+
+
 const getFixtures = () => {
   return Object.freeze({
+    uplCov: uploadCoverage,
+    chkCov: checkCoverage,
+
+    covRoutine: async () => {
+      let didUpload = false;
+
+      try {
+        await uploadCoverage();
+        didUpload = true;
+      } catch (upErr) {
+        console.warn("Issue uploading coverage");
+        console.error(upErr);
+      }
+
+      if (!didUpload) { return; }
+
+      try {
+        await checkCoverage();
+      } catch (chkErr) {
+        console.warn("Issue retrieving coverage summary");
+        console.error(chkErr); 
+      }
+    },
+
     i_capp: (/** @type {number} */ cur, /** @type {number} */ upperBound) => {
       let result = 0;
 

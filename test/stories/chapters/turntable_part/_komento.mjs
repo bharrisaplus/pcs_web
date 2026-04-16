@@ -1,3 +1,4 @@
+import { default as fx } from 'storey:fixtures';
 
 let
   loadedSubject = false,
@@ -10,40 +11,6 @@ const
   $subja11y = document.createElement('button'),
   /** @type {HTMLElement} */
   $overlay = document.querySelector('#test-overlay');
-
-
-const uplCov = async () => {
-  let uploadSummary, uploadResp;
-  const covObj = window.__coverage__;
-
-  if (!covObj) { return; }
-
-  try {
-    uploadResp = await fetch('/pushcov', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(covObj)
-    });
-
-    uploadSummary = await uploadResp.text();
-    console.info(uploadSummary);
-  } catch (upErr) {
-    console.error(upErr);
-  }
-};
-
-
-const chkCov = async () => {
-  let covResp, covSummary;
-  try {
-    covResp = await fetch('/getlastcov'),
-    covSummary = await covResp.text();
-
-    console.info(covSummary);
-  } catch (covErr) {
-    console.error(covErr);
-  }
-};
 
 
 $subjShow.setAttribute('id', 'show');
@@ -83,7 +50,7 @@ window.addEventListener('message', (_msgEvt) => {
     console.clear();
     console.info(window.frames[0].__tap__);
     window.__coverage__ = window.frames[0].__coverage__;
-    uplCov().then(() => { chkCov(); });
+    fx.covRoutine();
   } else { return; }
 });
 
