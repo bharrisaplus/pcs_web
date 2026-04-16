@@ -1,7 +1,4 @@
 
-import { default as _tg } from './clones/_glods.clone.mjs';
-
-
 const getFixtures = () => {
   return Object.freeze({
     waaitt: async (ms = 2000) => {
