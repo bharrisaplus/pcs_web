@@ -2,11 +2,16 @@
 /* This files imports should be specified as part of the importmap in subject.page.pug */
 import { default as _tg } from './clones/_glods.clone.mjs';
 
-
-const tableauID = '#tableau';
+const
+  tableauID = '#tableau',
+  /** @type {HTMLElement} */
+  $shell = document.querySelector(`#${_tg.appID}`),
+  /** @type {HTMLElement} */
+  $tableau = $shell.querySelector(tableauID);
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.debug(_tg);
+  $tableau.setAttribute('style', '');
+  $tableau.classList.remove('hide-before-load');
 
   if (
     window.frameElement &&
