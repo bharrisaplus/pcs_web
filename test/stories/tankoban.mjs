@@ -18,6 +18,7 @@ const
     NodePath.resolve(testShared.storey_ch_path, './_td.mjs'),
     NodePath.resolve(testShared.storey_ch_path, './_z.mjs'),
     NodePath.resolve(testShared.storey_ch_path, './_a.js'),
+    NodePath.resolve(testShared.storey_ch_path, './tanto.mjs'),
     NodePath.resolve(testShared.cssreset_path, './reset.min.css'),
     NodePath.resolve(testShared.favicon_path, './sqwiggle.ico'),
     NodePath.resolve(testShared.source_path, './content/graphic/misc/carddeck.svg')
@@ -37,12 +38,14 @@ const
     }
     return result;
   }),
-  cssReset = foundPreface ? await NodeFS.readFile(requiredFiles[5], { encoding: 'utf8' }) : '',
-  faviconIco = foundPreface ? await NodeFS.readFile(requiredFiles[6]) : '',
+  cssReset = foundPreface ? await NodeFS.readFile(requiredFiles[6], { encoding: 'utf8' }) : '',
+  faviconIco = foundPreface ? await NodeFS.readFile(requiredFiles[7]) : '',
   prefaceTD = foundPreface ? await NodeFS.readFile(requiredFiles[2], { encoding: 'utf8' }) : '',
   prefaceZ = foundPreface ? await NodeFS.readFile(requiredFiles[3], { encoding: 'utf8' }) : '',
   prefaceA = foundPreface ? await NodeFS.readFile(requiredFiles[4], { encoding: 'utf8' }) : '',
-  cardSOT = foundPreface ? await NodeFS.readFile(requiredFiles[7], { encoding: 'utf8' }) : '';
+  cardSOT = foundPreface ? await NodeFS.readFile(requiredFiles[8], { encoding: 'utf8' }) : '',
+  tanto = foundPreface ? await NodeFS.readFile(requiredFiles[5], { encoding: 'utf8' }) : '';
+
 
 const rootDocFcn = foundPreface ? pugCompile(`
 doctype html
@@ -63,7 +66,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
   let
     greeting, lookupExt, lookupContent, resCode, resHeader,
     isRoot = false, isCSSReset = false, isFavicon = false, isTDJS = false, isZJS = false, isAJS = false,
-    isCSOT = false, foundContent = false,
+    isCSOT = false, isTanto = false, foundContent = false,
     lookupUrl = req.url || '', uploadDump = '';
 
 
@@ -117,6 +120,10 @@ const TankoBanServer = http.createServer(async (req, res) => {
       resHeader = util.headerForMime('.js');
       resCode = 200;
       isAJS = true;
+    } else if (lookupUrl == '/tanto.mjs') {
+      resHeader = util.headerForMime('.mjs');
+      resCode = 200;
+      isTanto = true;
     } else if (lookupUrl == '/cardsot.svg') {
       resHeader = util.headerForMime('.svg');
       resCode = 200;
@@ -214,7 +221,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
     }
 
     if (isVerbose) {
-      if (isRoot || isFavicon || isCSSReset || isTDJS || isZJS || isAJS || isCSOT || foundContent) {
+      if (isRoot || isFavicon || isCSSReset || isTDJS || isZJS || isAJS || isCSOT || isTanto || foundContent) {
         console.debug(`Responding to: ${lookupUrl}`);
       } else {
         console.warn(`Responding (404) to: ${lookupUrl}`);
@@ -229,6 +236,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
       case isTDJS: res.write(prefaceTD); break;
       case isZJS: res.write(prefaceZ); break;
       case isAJS: res.write(prefaceA); break;
+      case isTanto: res.write(tanto); break;
       case isCSOT: res.write(cardSOT); break;
       case foundContent: res.write(lookupContent); break;
       default: res.write(rootDocFcn({ greetMsg: greeting }))
