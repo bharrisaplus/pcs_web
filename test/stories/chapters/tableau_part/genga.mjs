@@ -85,7 +85,7 @@ const tableau_part_tests = async (testInfos, zaTest) => {
         };
       const
         pickIdx = Math.floor(Math.random() * _tg.c_Max),
-        listenController = new AbortController(),
+        abCntrllr = new AbortController(),
         imagineOrder = Array.from({ length: _tg.c_Max }, (_, _idx) => { return _idx }),
         impMeta = await getImport(),
         /** @type {HTMLElement} */
@@ -96,7 +96,7 @@ const tableau_part_tests = async (testInfos, zaTest) => {
 
       $testshell.addEventListener(_tg.notices.needle, () => {
         swearBhvRslts.eventChks.push(_tg.notices.needle);
-      }, { signal: listenController.signal });
+      }, { signal: abCntrllr.signal });
 
       swearBhvRslts.orderChks.push(impMeta.freshModule.currentOrder);
       swearBhvRslts.lenChks.push(impMeta.freshModule.currentOrder.length);
@@ -108,7 +108,7 @@ const tableau_part_tests = async (testInfos, zaTest) => {
 
       td.reset();
       impMeta.freshModule = null;
-      listenController.abort();
+      abCntrllr.abort();
 
 
       z.same(swearBhvRslts.lenChks[0], _tg.c_Max, "number of items is correct");
