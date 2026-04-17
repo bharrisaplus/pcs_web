@@ -53,7 +53,7 @@ const makeTableauPart = (containerID, eventCancel) => {
     /** @type {HTMLLIElement[]} */
     const _$tmpItems = Array.from(document.querySelectorAll(itemSelector));
 
-    if (newItems.length < 52) { return; }
+    if (newItems.length < _g.c_Max) { return; }
 
     eventCancel.abort();
     eventCancel = new AbortController();
