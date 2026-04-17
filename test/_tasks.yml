@@ -86,8 +86,9 @@ tasks:
     vars:
       SPEC_PATH: '{{.PROJECT_DIR}}/test/specs/{{.CLI_ARGS}}.spec.mjs'
       C8_CONFIG: '{{.PROJECT_DIR}}/c8rc.spec.json'
+      COV_PATH: '{{.COVERAGE_DIR}}/spec/oneoff/{{.CLI_ARGS}}'
     cmds:
-      - pnpm c8 -c {{.C8_CONFIG}} -r lcovonly tape {{.SPEC_PATH}} | pnpm tap-nyc
+      - pnpm c8 -c {{.C8_CONFIG}} -o {{.COV_PATH}} -r lcovonly tape {{.SPEC_PATH}} | pnpm tap-nyc
 
   spec_all_lcov:
     aliases: ["specallcov"]
