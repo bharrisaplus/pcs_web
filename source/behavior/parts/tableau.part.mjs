@@ -17,17 +17,17 @@ const makeTableauPart = (containerID, eventCancel) => {
   const itemSelector = `${containerID} .playing-card`;
 
   /**
-   * @param  {HTMLElement} $item
+   * @param  {HTMLLIElement} $item
    * @param  {number} itemIdx
    */
   const _setupItem = ($item, itemIdx) => {
-    $item.addEventListener('click', (/** @type {PointerEvent} */ _clickEvt) => {
+    $item.addEventListener('click', (_clickEvt) => {
       /** @type {PCSEvent} */
       let needleDown;
 
       if (
         (
-          !(_clickEvt.target instanceof window.HTMLElement) &&
+          !(_clickEvt.target instanceof window.HTMLLIElement) &&
           !(_clickEvt.target instanceof window.SVGElement)
         ) ||
         $item !== _clickEvt.target && $item !== _clickEvt.target?.parentElement
@@ -50,7 +50,7 @@ const makeTableauPart = (containerID, eventCancel) => {
    * @see Part.Tableau#updateOrder
    */
   const set_items_from = (newItems) => {
-    /** @type {HTMLElement[]} */
+    /** @type {HTMLLIElement[]} */
     const _$tmpItems = Array.from(document.querySelectorAll(itemSelector));
 
     if (newItems.length < 52) { return; }
@@ -80,7 +80,7 @@ const makeTableauPart = (containerID, eventCancel) => {
 
 
   if (document.querySelectorAll(itemSelector).length > 0 ) {
-    /** @type {HTMLElement[]} */
+    /** @type {HTMLLIElement[]} */
     let $items = Array.from(document.querySelectorAll(itemSelector));
 
     $items.forEach(_setupItem);
@@ -90,7 +90,7 @@ const makeTableauPart = (containerID, eventCancel) => {
     updateOrder: set_items_from,
 
     get currentOrder () {
-      /** @type {HTMLElement[]} */
+      /** @type {HTMLLIElement[]} */
       const $items = Array.from(document.querySelectorAll(itemSelector));
 
       return $items.filter(

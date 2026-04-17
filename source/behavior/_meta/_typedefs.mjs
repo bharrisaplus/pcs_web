@@ -30,7 +30,7 @@
 /**
  * @typedef {Object} PCSEventInitDetail
  * @property {string} [msg]
- * @property {HTMLElement|HTMLButtonElement|HTMLSelectElement} $dispatcher
+ * @property {HTMLElement|HTMLLIElement|HTMLButtonElement|HTMLSelectElement} $dispatcher
  */
 
 /**

@@ -101,7 +101,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
   /** @param {PCSEvent} _pcsevt */
   const maybe_change_color = (_pcsevt) => {
     let dyeIndex;
-    /** @type {HTMLElement} */
+    /** @type {HTMLSelectElement} */
     const $panelDye = document.querySelector(panel.dyeInput);
 
     if (panel.isBusy || hud.isOpen || !_pcsevt.detail?.msg || _pcsevt.detail?.$dispatcher !== $panelDye) {

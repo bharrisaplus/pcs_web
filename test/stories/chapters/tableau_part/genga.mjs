@@ -90,7 +90,7 @@ const tableau_part_tests = async (testInfos, zaTest) => {
         impMeta = await getImport(),
         /** @type {HTMLElement} */
         $testshell = document.querySelector(`#${_tg.appID}`),
-        /** @type {HTMLElement[]} */
+        /** @type {HTMLLIElement[]} */
         $items = Array.from(document.querySelectorAll(`${tableauID} ${tableauItemSelector}`));
 
 
