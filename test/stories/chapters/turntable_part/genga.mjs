@@ -95,19 +95,19 @@ const turntable_part_tests = async (testInfos, zaTest) => {
       await fx.waaitt(700);
       swearBhvRslts.push(impMeta.freshModule.cursor);
       swearUIRslts.push(
-        document.querySelectorAll(`${turntableID}:popover-open [data-spot="0"][data-oglo="15"]`).length
+        document.querySelectorAll(`${turntableID}:popover-open [data-spot="0"][data-oglo="0"]`).length
       );
       $nxtBtn.click();
       await fx.waaitt(100);
       swearBhvRslts.push(impMeta.freshModule.cursor);
       swearUIRslts.push(
-        document.querySelectorAll(`${turntableID}:popover-open [data-spot="1"][data-oglo="5"]`).length
+        document.querySelectorAll(`${turntableID}:popover-open [data-spot="1"][data-oglo="1"]`).length
       );
       $prvBtn.click();
       await fx.wait(100);
       swearBhvRslts.push(impMeta.freshModule.cursor);
       swearUIRslts.push(
-        document.querySelectorAll(`${turntableID}:popover-open [data-spot="0"][data-oglo="15"]`).length
+        document.querySelectorAll(`${turntableID}:popover-open [data-spot="0"][data-oglo="0"]`).length
       );
       $turntableOff.click();
       await fx.waaitt(700);
@@ -121,7 +121,7 @@ const turntable_part_tests = async (testInfos, zaTest) => {
 
 
       z.same(swearExplntns[0].callCount, 5, "log expected number of times");
-      z.same(swearBhvRslts.toString(), '0,15,1,5,0,15', "performed expected behavior when loading cards");
+      z.same(swearBhvRslts.toString(), '0,0,1,1,0,0', "performed expected behavior when loading cards");
       z.same(swearUIRslts.toString(), '0,1,1,1,0', "showed expected content in DOM");
     }); // May need to set timeout in ms specificaly like { timeout: 6000 }
   } catch (t1E) {
@@ -145,7 +145,7 @@ const turntable_part_tests = async (testInfos, zaTest) => {
       await fx.waaitt(700);
       swearBhvRslts.push([$prvBtn.disabled, $nxtBtn.disabled]);
       swearUIRslts.push(
-        document.querySelectorAll(`${turntableID}:popover-open [data-spot="0"][data-oglo="15"]`).length
+        document.querySelectorAll(`${turntableID}:popover-open [data-spot="0"][data-oglo="0"]`).length
       );
       $turntableOff.click();
       await fx.waaitt(700);
@@ -154,7 +154,7 @@ const turntable_part_tests = async (testInfos, zaTest) => {
       await fx.waaitt(700);
       swearBhvRslts.push([$prvBtn.disabled, $nxtBtn.disabled]);
       swearUIRslts.push(
-        document.querySelectorAll(`${turntableID}:popover-open [data-spot="13"][data-oglo="39"]`).length
+        document.querySelectorAll(`${turntableID}:popover-open [data-spot="13"][data-oglo="13"]`).length
       );
       $turntableOff.click();
       await fx.wait(700);
