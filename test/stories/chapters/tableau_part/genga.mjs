@@ -79,10 +79,10 @@ const tableau_part_tests = async (testInfos, zaTest) => {
         swearBhvRslts = {
           /** @type {Array<number[]>} */
           orderChks: [],
-          /** @type {number[]} */
-          lenChks: [],
           /** @type {string[]} */
-          eventChks: []
+          eventChks: [],
+          /** @type {string[]} */
+          dispatcherChks: []
         };
       const
         pickIdx = Math.floor(Math.random() * _tg.c_Max),
@@ -95,12 +95,12 @@ const tableau_part_tests = async (testInfos, zaTest) => {
         $items = Array.from(document.querySelectorAll(`${tableauID} ${tableauItemSelector}`));
 
 
-      $testshell.addEventListener(_tg.notices.needle, () => {
+      $testshell.addEventListener(_tg.notices.needle, (/** @type {PCSEvent} */ _pcsevt) => {
         swearBhvRslts.eventChks.push(_tg.notices.needle);
+        swearBhvRslts.dispatcherChks.push(_pcsevt.detail?.$dispatcher?.dataset.oid);
       }, { signal: abCntrllr.signal });
 
       swearBhvRslts.orderChks.push(impMeta.freshModule.currentOrder);
-      swearBhvRslts.lenChks.push(impMeta.freshModule.currentOrder.length);
       swearUIRslts.push(document.querySelectorAll(`${tableauID} ${tableauItemSelector}`).length);
 
       $items[pickIdx]?.click();
@@ -112,8 +112,10 @@ const tableau_part_tests = async (testInfos, zaTest) => {
       abCntrllr.abort();
 
 
-      z.same(swearBhvRslts.lenChks[0], _tg.c_Max, "number of items is correct");
       z.same(swearBhvRslts.eventChks.toString(), "needle", "events fired as expected");
+      z.same(swearBhvRslts.dispatcherChks.toString(), testInfos[pickIdx].oglo.toString(),
+        "events fired expected $elements"
+      );
       z.same(swearBhvRslts.orderChks[0].toString(), imagineOrder.toString(), "item order is correct");
       z.same(swearUIRslts[0], _tg.c_Max, "number of $elements is correct");
     }); // May need to set timeout in ms specificaly like { timeout: 6000 }
@@ -186,7 +188,7 @@ const tableau_part_tests = async (testInfos, zaTest) => {
     z.same(swearBhvRslts.eventChks.toString(), "needle,needle", "events fired as expected");
     z.same(
       swearBhvRslts.dispatcherChks.toString(), `${swearOGOIDs[swearPicks[0]]},${swearMixOIDs[swearPicks[1]]}`,
-      "event fired expected $elements"
+      "events fired expected $elements"
     );
     z.same(swearBhvRslts.orderChks[1].toString(), swearMixOIDs.toString(), "item order after is correct");
     z.same(swearUIRslts[1].toString(), swearMix$Order.toString(), "$element order after is correct");
