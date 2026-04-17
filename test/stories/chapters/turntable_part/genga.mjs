@@ -123,7 +123,7 @@ const turntable_part_tests = async (testInfos, zaTest) => {
       z.same(swearExplntns[0].callCount, 5, "log expected number of times");
       z.same(swearBhvRslts.toString(), '0,0,1,1,0,0', "performed expected behavior when loading cards");
       z.same(swearUIRslts.toString(), '0,1,1,1,0', "showed expected content in DOM");
-    }); // May need to set timeout in ms specificaly like { timeout: 6000 }
+    }, { timeout: 6000 });
   } catch (t1E) {
     console.error(t1E);
   }
@@ -169,7 +169,7 @@ const turntable_part_tests = async (testInfos, zaTest) => {
       z.same(swearExplntns[0].callCount, 6, "log expected number of times");
       z.same(swearBhvRslts.toString(), 'true,false,false,true', "performed expected behavior at edges");
       z.same(swearUIRslts.toString(), '0,1,0,1,0', "showed expected DOM content");
-    }); // May need to set timeout in ms specificaly like { timeout: 6000 }
+    }, { timeout: 6000 });
   } catch (t2E) {
     console.error(t2E);
   }
