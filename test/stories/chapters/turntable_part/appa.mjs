@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let symbolID = $cSymbol.getAttribute('id');
 
     testCards.push({
-      oglo: Number.parseInt(symbolID.slice(-2), 10),
+      oglo: cIdx,
       spot: cIdx,
       title: `${_tg.c_TitlePrefix} ${cIdx + 1}:...`,
       desc: `${_tg.c_DescPrefix} ${cIdx + 1}`,
