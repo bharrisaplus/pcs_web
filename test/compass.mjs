@@ -20,6 +20,7 @@ const getBezel = async () => {
     source_path: NodeProcess.env.SOURCES_DIR || NodePath.resolve(_dir, '../source'),
     common_path: NodeProcess.env.COMMON_DIR || NodePath.resolve(_dir, '../distribution/common'),
     spec_path: NodeProcess.env.SPEC_DIR || NodePath.resolve(_dir, './specs'),
+    cov_path: NodeProcess.env.COVERAGE_DIR || NodePath.resolve(_dir, '../coverage'), 
     LHOST_URL: NodeProcess.env.LHOST_URL || (new URL('localhost:9090')).toString(),
     CARD_SOT_NAME: NodeProcess.env.CARD_SOT_NAME || 'cardsot.svg',
   
