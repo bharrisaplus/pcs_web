@@ -1,5 +1,5 @@
 /**
- * @import { CardIntri, CSSelector, Hand, Part } from 'pcs:types'
+ * @import { PCSEvent, CardIntri, CSSelector, Hand, Part } from 'pcs:types'
  * @import { ITestFunction } from 'zora';
  */
 
@@ -7,6 +7,7 @@
 import { hold as zaHold, createHarness, createTAPReporter } from 'zora';
 import { default as td } from 'testdouble';
 
+import { default as _tg } from './clones/_glods.clone.mjs';
 import { default as fx } from 'storey:fixtures';
 
 
@@ -59,6 +60,7 @@ const turntable_part_tests = async (testInfos, zaTest) => {
     return;
   }
 
+
   $turntable.hidePopover();
 
   try {
@@ -66,10 +68,26 @@ const turntable_part_tests = async (testInfos, zaTest) => {
       let swearBhvRslts = [], swearUIRslts = [], swearExplntns = [];
       const
         impMeta = await getImport(),
+        abCntrllr = new AbortController(),
+        /** @type {HTMLElement} */
+        $testshell = document.querySelector(`#${_tg.appID}`),
         /** @type {HTMLButtonElement} */
         $nxtBtn = document.querySelector(impMeta.freshModule.nextBtn),
         /** @type {HTMLButtonElement} */
         $prvBtn = document.querySelector(impMeta.freshModule.prevBtn);
+
+
+      $testshell.addEventListener(_tg.notices.scratch, (/** @type {PCSEvent} */ _pcsevt) => {
+        let cardIdx = 0;
+
+        if (_pcsevt.detail.msg == 'prv' && _pcsevt.detail.$dispatcher === $prvBtn) {
+          cardIdx = fx.i_capp(impMeta.freshModule.cursor[0] - 1, _tg.c_Max);
+        } else if (_pcsevt.detail.msg == 'nxt' && _pcsevt.detail.$dispatcher === $nxtBtn) {
+          cardIdx = fx.i_capp(impMeta.freshModule.cursor[0] + 1, _tg.c_Max);
+        }
+
+        impMeta.freshModule.spinTurntable(testInfos[cardIdx]);
+      }, { signal: abCntrllr.signal });
 
 
       swearUIRslts.push(document.querySelectorAll(`${turntableID}:popover-open`).length);
@@ -99,6 +117,7 @@ const turntable_part_tests = async (testInfos, zaTest) => {
       td.reset();
       impMeta.freshModule = null;
       impMeta.moduleLogger = null;
+      abCntrllr.abort();
 
 
       z.same(swearExplntns[0].callCount, 5, "log expected number of times");
