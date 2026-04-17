@@ -372,3 +372,19 @@
 @container shell (width < 800px)
     #ribbon .ribbon-flourish
         clip-path: polygon(0% 0%, 85% 0%, 100% 100%, 0% 100%)
+
+
+/*
+    scrolling
+ */
+
+#tableau::-webkit-scrollbar-track
+    background: transparent
+
+#tableau::-webkit-scrollbar-thumb
+    background: var(--card-shimmer)
+    border-radius: 9px
+
+@supports (scrollbar-color: var(--card-shimmer) transparent)
+    #tableau
+        scrollbar-color: var(--card-shimmer) transparent
