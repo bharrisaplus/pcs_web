@@ -16,7 +16,7 @@ export default {
 		"stylus/single-line-comment": null,
 		"plugin/no-unsupported-browser-features": [ true,
 			{
-				"ignore": ["css-nesting"],
+				"ignore": ["css-clip-path"],
 				"severity": 'warning'
 			}
 		]
