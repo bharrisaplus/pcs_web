@@ -48,16 +48,14 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (_msgEvt.data.type == 'desk:test') {
         /** @type {CardIntri[]} */
         let testCards = tableauBehavior.currentOrder.map((_itm, _idx) => {
-          const
-            $item = $tableau.querySelectorAll(`${tableauID} ${tableauItemSelector}`)[_idx],
-            itemID = $item?.querySelector(`svg use`)?.getAttribute('href') || '';
+          const $item = $tableau.querySelectorAll(`${tableauID} ${tableauItemSelector}`)[_idx];
 
           return {
             oglo: _itm,
             spot: _idx,
             title: `${_tg.c_TitlePrefix} ${_idx + 1}:...`,
             desc: `${_tg.c_DescPrefix} ${_idx + 1}`,
-            symbolRef: itemID
+            symbolRef: `#${$item?.getAttribute('id').split("card-")[1] || ''}`
           };
         });
 
@@ -68,9 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         listenController.abort();
-        tableauTests.go(testCards).then(() => {
+        tableauTests.go(Array.from(testCards)).then(() => {
           listenController = new AbortController();
 
+          tableauBehavior.updateOrder(testCards);
           $shell.addEventListener(
             _tg.notices.needle, handleTableauNeedle, { signal: listenController.signal }
           );
