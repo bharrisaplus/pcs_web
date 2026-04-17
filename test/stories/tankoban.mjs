@@ -8,9 +8,13 @@ import { compile as pugCompile } from 'pug';
 import { default as testShared } from '../compass.mjs';
 import { default as util } from './haishin.mjs';
 
-let lastCovObj = {};
+let
+  lastCovObj = {},
+  lastCh = '',
+  recordingCov = false;
 const
-  isVerbose = NodeProcess.argv[2] == '-v' || NodeProcess.argv[2] == '--verbose',
+  isVerbose = NodeProcess.argv.slice(2).includes('-v') || NodeProcess.argv.slice(2).includes('--verbose'),
+  doRecordCov = NodeProcess.argv.slice(2).includes('-cov') || NodeProcess.argv.slice(2).includes('--coverage'),
 
   requiredFiles = [
     NodePath.resolve(testShared.storey_ch_path, './_preface.pug'),
@@ -135,6 +139,15 @@ const TankoBanServer = http.createServer(async (req, res) => {
 
       if (lookupContent) {
         resCode = 200;
+
+        if (doRecordCov && !recordingCov) {
+          recordingCov = true;
+
+          util.saveCov(JSON.stringify(lastCovObj, null, 4), lastCh).then(
+            () => { recordingCov = false; },
+            () => { recordingCov = false; }
+          );
+        }
       } else {
         resCode = 404;
         lookupContent = 'no coverage';
@@ -150,6 +163,7 @@ const TankoBanServer = http.createServer(async (req, res) => {
             lookupUrl.endsWith(`/desk`) || lookupUrl.endsWith(`/desk/`) ? 'pugDesk' : 'pugEKonte'
           );
           resHeader = util.headerForMime('.html');
+          lastCh = lookupUrl.split('/')[1];
         } else if (['.js','.mjs','.svg','.json'].indexOf(lookupExt) != -1) {
           lookupContent = await util.maybeGrabFile(lookupUrl);
           resHeader = util.headerForMime(lookupExt);
@@ -171,6 +185,10 @@ const TankoBanServer = http.createServer(async (req, res) => {
           resHeader = util.headerForMime('.html');
           resCode = 404;
           foundContent = false;
+
+          if (lookupExt == '' && !(lookupUrl.endsWith(`/desk`) || lookupUrl.endsWith(`/desk/`))) {
+            lastCh = '';
+          }
         }
       } else if (lookupUrl.startsWith(coveragePathPrefix)) {
         lookupContent = await util.maybeGrabFile(lookupUrl, 'bundle');

@@ -144,6 +144,24 @@ const read_and_transform = async (maybePath = 'missing', maybeType = '') => {
 };
 
 
+const persist_coverage = async (covStr = '', covDir = '') => {
+  let writePath, writeName;
+
+  if (!covDir || (covDir.trim()).length == 0) { return; }
+
+  try {
+    writePath = NodePath.resolve(testShared.cov_path, `./storey/oneoff/`),
+    writeName = `./${NodePath.basename(covDir)}-coverage.json`;
+
+    await NodeFS.mkdir(writePath, { recursive: true });
+    await NodeFS.writeFile(NodePath.resolve(writePath, `./${writeName}`), covStr);
+  } catch (rdErr) {
+    console.warn("Could not write coverage json");
+    console.error(rdErr);
+  }
+};
+
+
 const coverage_report = (covObj = {}) => {
   /** @type {string[]} */
   let result = [];
@@ -198,6 +216,7 @@ const getAssistant = () => {
   return Object.freeze({
     maybeGrabFile: read_and_transform,
     getCovSum: coverage_report,
+    saveCov: persist_coverage,
     headerForMime: content_header,
 
     get tmpDir() {
