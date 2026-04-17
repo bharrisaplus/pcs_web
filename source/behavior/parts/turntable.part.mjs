@@ -61,10 +61,10 @@ const makeTurntablePart = (containerID, eventCancel) => {
    * @returns {boolean}
    */
   const _update = (_updateInfo) => {
-    let result;
+    let result = false;
 
-    if (_updateInfo.oglo <= -1 || _updateInfo.oglo >= _g.c_Max) { result = false; }
-    if (_updateInfo.spot <= -1 || _updateInfo.spot >= _g.c_Max) { result = false; }
+    if (_updateInfo.oglo <= -1 || _updateInfo.oglo >= _g.c_Max) { return result; }
+    if (_updateInfo.spot <= -1 || _updateInfo.spot >= _g.c_Max) { return result; }
 
     $pickup.setAttribute('data-spot', _updateInfo.spot.toString());
     $pickup.setAttribute('data-oglo', _updateInfo.oglo.toString());
