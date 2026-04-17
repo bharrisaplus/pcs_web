@@ -11,6 +11,13 @@ html(lang="en")
             html { background-color: gray; }
         block storey_preface_sheets
         block storey_preface_importmap
+            script(type="importmap").
+                {
+                    "imports": {
+                        "storey:fixtures": "/tanto.mjs"
+                    }
+                }
+
     body
         block storey_preface_entry
             h1 Load your ekonte
