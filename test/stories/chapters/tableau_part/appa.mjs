@@ -13,7 +13,7 @@ const
   tableauID = '#tableau',
   /** @type {CSSelector} */
   tableauItemSelector = '.playing-card',
-  /** @type {HTMLElement} */
+  /** @type {HTMLBodyElement} */
   $shell = document.querySelector(`#${_tg.appID}`),
   /** @type {HTMLElement} */
   $tableau = $shell.querySelector(tableauID),

@@ -69,7 +69,7 @@ const turntable_part_tests = async (testInfos, zaTest) => {
       const
         impMeta = await getImport(),
         abCntrllr = new AbortController(),
-        /** @type {HTMLElement} */
+        /** @type {HTMLBodyElement} */
         $testshell = document.querySelector(`#${_tg.appID}`),
         /** @type {HTMLButtonElement} */
         $nxtBtn = document.querySelector(impMeta.freshModule.nextBtn),

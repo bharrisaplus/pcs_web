@@ -62,7 +62,7 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
         swearUIRslts = [];
       const
         abCntrllr = new AbortController(),
-        /** @type {HTMLElement} */
+        /** @type {HTMLBodyElement} */
         $testshell = document.querySelector(`#${_tg.appID}`),
         impMeta = await getImport(),
         /** @type {HTMLSelectElement} */
@@ -136,7 +136,7 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
         swearUIRslts = [];
       const
         abCntrllr = new AbortController(),
-        /** @type {HTMLElement} */
+        /** @type {HTMLBodyElement} */
         $testshell = document.querySelector(`#${_tg.appID}`),
         impMeta = await getImport(),
         /** @type {HTMLButtonElement} */
@@ -207,7 +207,7 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
         swearUIRslts = [];
       const
         abCntrllr = new AbortController(),
-        /** @type {HTMLElement} */
+        /** @type {HTMLBodyElement} */
         $testshell = document.querySelector(`#${_tg.appID}`),
         impMeta = await getImport(),
         /** @type {HTMLButtonElement} */
@@ -278,7 +278,7 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
         swearUIRslts = [];
       const
         abCntrllr = new AbortController(),
-        /** @type {HTMLElement} */
+        /** @type {HTMLBodyElement} */
         $testshell = document.querySelector(`#${_tg.appID}`),
         impMeta = await getImport(),
         /** @type {HTMLButtonElement} */
@@ -349,7 +349,7 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
         swearUIRslts = [];
       const
         abCntrllr = new AbortController(),
-        /** @type {HTMLElement} */
+        /** @type {HTMLBodyElement} */
         $testshell = document.querySelector(`#${_tg.appID}`),
         impMeta = await getImport(),
         /** @type {HTMLButtonElement} */

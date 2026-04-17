@@ -16,7 +16,7 @@ let
   turntableBehavior,
   listenController = new AbortController();
 const
-  /** @type {HTMLElement} */
+  /** @type {HTMLBodyElement} */
   $shell = document.querySelector(`#${_tg.appID}`),
   turntableID = '#turntable',
   /** @type {HTMLElement} */

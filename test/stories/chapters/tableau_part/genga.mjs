@@ -88,7 +88,7 @@ const tableau_part_tests = async (testInfos, zaTest) => {
         abCntrllr = new AbortController(),
         imagineOrder = Array.from({ length: _tg.c_Max }, (_, _idx) => { return _idx }),
         impMeta = await getImport(),
-        /** @type {HTMLElement} */
+        /** @type {HTMLBodyElement} */
         $testshell = document.querySelector(`#${_tg.appID}`),
         /** @type {HTMLLIElement[]} */
         $items = Array.from(document.querySelectorAll(`${tableauID} ${tableauItemSelector}`));

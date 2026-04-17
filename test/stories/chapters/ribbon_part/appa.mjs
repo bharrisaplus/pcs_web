@@ -13,7 +13,7 @@ let
   ribbonBehavior,
   listenController = new AbortController();
 const
-  /** @type {HTMLElement} */
+  /** @type {HTMLBodyElement} */
   $shell = document.querySelector(`#${_tg.appID}`),
   ribbonID = '#ribbon',
   /** @type {HTMLElement} */

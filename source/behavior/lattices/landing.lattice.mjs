@@ -38,7 +38,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
     tapCount = 0;
   const
     args = { tableauID, turntableID, ribbonID, exportBaseID, itemVault },
-    /** @type {HTMLElement} */
+    /** @type {HTMLBodyElement} */
     $appShell = document.querySelector(`#${_g.appID}`);
 
 
