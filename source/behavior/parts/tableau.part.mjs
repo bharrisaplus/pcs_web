@@ -59,7 +59,7 @@ const makeTableauPart = (containerID, eventCancel) => {
     eventCancel = new AbortController();
 
     _$tmpItems.forEach((_$itm, _itmIdx) => {
-      _$itm.setAttribute('id', `card-${newItems[_itmIdx].symbolRef}`);
+      _$itm.setAttribute('id', `card-${newItems[_itmIdx].symbolRef.split("#")[1]}`);
       _$itm.setAttribute('data-oid', `${newItems[_itmIdx].oglo}`);
       _$itm.setAttribute('aria-description', newItems[_itmIdx].title);
 
