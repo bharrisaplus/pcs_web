@@ -13,7 +13,8 @@ let
   /** @type {Number} */
   testCardIdx,
   /** @type {Part.Turntable} */
-  turntableBehavior;
+  turntableBehavior,
+  listenController = new AbortController();
 const
   /** @type {HTMLElement} */
   $shell = document.querySelector(`#${_tg.appID}`),
@@ -24,6 +25,22 @@ const
   $testSheet = document.querySelector('#card-sheet'),
   /** @type {CardIntri[]} */
   testCards = [];
+
+const handleTurntableScratch = (/** @type {PCSEvent} */ _pcsevt) => {
+  if (
+    _pcsevt.detail.msg == 'prv' &&
+    _pcsevt.detail.$dispatcher === document.querySelector(turntableBehavior.prevBtn)
+  ) {
+    testCardIdx = fx.i_capp(turntableBehavior.cursor[0] - 1, _tg.c_Max);
+  } else if (
+    _pcsevt.detail.msg == 'nxt' &&
+    _pcsevt.detail.$dispatcher === document.querySelector(turntableBehavior.nextBtn)
+  ) {
+    testCardIdx = fx.i_capp(turntableBehavior.cursor[0] + 1, _tg.c_Max);
+  }
+
+  turntableBehavior.spinTurntable(testCards[testCardIdx || 0]);
+};
 
 
 turntableBehavior = getTurntable(turntableID);
@@ -41,21 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  $shell.addEventListener(_tg.notices.scratch, (/** @type {PCSEvent} */ _pcsevt) => {
-    if (
-      _pcsevt.detail.msg == 'prv' &&
-      _pcsevt.detail.$dispatcher === document.querySelector(turntableBehavior.prevBtn)
-    ) {
-      testCardIdx = fx.i_capp(turntableBehavior.cursor[0] - 1, _tg.c_Max);
-    } else if (
-      _pcsevt.detail.msg == 'nxt' &&
-      _pcsevt.detail.$dispatcher === document.querySelector(turntableBehavior.nextBtn)
-    ) {
-      testCardIdx = fx.i_capp(turntableBehavior.cursor[0] + 1, _tg.c_Max);
-    }
-
-    turntableBehavior.spinTurntable(testCards[testCardIdx || 0]);
-  });
+  $shell.addEventListener(_tg.notices.scratch, handleTurntableScratch, { signal: listenController.signal });
 
 
   if (
@@ -84,16 +87,31 @@ document.addEventListener('DOMContentLoaded', () => {
         testCardIdx = null;
       } else if (_msgEvt.data.type == 'desk:test') {
         if (turntableBehavior.isOpen) { $turntable.hidePopover(); }
+        listenController.abort();
 
         testCardIdx = null;
 
         turntableTests.go(testCards).then(() => {
           turntableBehavior = getTurntable(turntableID);
+          listenController = new AbortController();
+
           document.querySelector(
             `${turntableID} .turntable-pickup use`
           )?.setAttribute('href', _tg.pcs_cardRef);
+          $shell.addEventListener(
+            _tg.notices.scratch, handleTurntableScratch, { signal: listenController.signal }
+          );
         }, (rejRsn) => {
           turntableBehavior = getTurntable(turntableID);
+          listenController = new AbortController();
+
+          document.querySelector(
+            `${turntableID} .turntable-pickup use`
+          )?.setAttribute('href', _tg.pcs_cardRef);
+          $shell.addEventListener(
+            _tg.notices.scratch, handleTurntableScratch, { signal: listenController.signal }
+          );
+
           console.warn("Issue with running test(s)");
           console.error(rejRsn);
         });
