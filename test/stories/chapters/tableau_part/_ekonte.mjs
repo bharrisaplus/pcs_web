@@ -49,7 +49,7 @@ window.addEventListener('message', (_msgEvt) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   $deskPrnt.addEventListener('click', (_clickEvt) => {
-    if (!loadedDesk || _clickEvt.target != $deskPrnt) { return; }
+    if (!loadedDesk || runningTest || _clickEvt.target != $deskPrnt) { return; }
 
     $deskPrnt.disabled = true;
 
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   $deskRun.addEventListener('click', (_clickEvt) => {
-    if (!loadedDesk || _clickEvt.target != $deskRun) { return; }
+    if (!loadedDesk || runningTest || _clickEvt.target != $deskRun) { return; }
 
     runningTest = true;
     $deskPrnt.disabled = true;
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   $deska11y.addEventListener('click', (_clickEvt) => {
-    if (!loadedDesk || _clickEvt.target != $deska11y) { return; }
+    if (!loadedDesk || runningTest || _clickEvt.target != $deska11y) { return; }
 
     $deska11y.disabled = true;
 

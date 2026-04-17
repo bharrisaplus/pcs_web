@@ -44,8 +44,8 @@ window.addEventListener('message', (_msgEvt) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   $deskRun.addEventListener('click', (_clickEvt) => {
+    if (!loadedDesk || runningTest) { return; }
     if (_clickEvt.target != $deskRun) { return; }
-    if (!loadedDesk) { return; }
 
     runningTest = true;
     $deskRun.disabled = true;
@@ -57,8 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   $deska11y.addEventListener('click', (_clickEvt) => {
+    if (!loadedDesk || runningTest) { return; }
     if (_clickEvt.target != $deska11y) { return; }
-    if (!loadedDesk) { return; }
 
     $deska11y.disabled = true;
 
