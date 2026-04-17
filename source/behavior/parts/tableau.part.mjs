@@ -79,7 +79,12 @@ const makeTableauPart = (containerID, eventCancel) => {
   };
 
 
-  document.querySelectorAll(itemSelector)?.forEach(_setupItem);
+  if (document.querySelectorAll(itemSelector).length > 0 ) {
+    /** @type {HTMLElement[]} */
+    let $items = Array.from(document.querySelectorAll(itemSelector));
+
+    $items.forEach(_setupItem);
+  }
 
   return Object.freeze({
     updateOrder: set_items_from,
@@ -89,7 +94,7 @@ const makeTableauPart = (containerID, eventCancel) => {
       const $items = Array.from(document.querySelectorAll(itemSelector));
 
       return $items.filter(
-        ( $item) => $item.dataset.oid && $item.dataset.oid.length <= 2
+        ($item) => $item.dataset.oid && $item.dataset.oid.length <= 2
       ).map(
         ($item) => Number.parseInt($item.dataset.oid)
       );
