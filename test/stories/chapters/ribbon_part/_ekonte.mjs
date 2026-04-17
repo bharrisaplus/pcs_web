@@ -9,7 +9,7 @@ const
   $deskRun = document.createElement('button'),
   $deska11y = document.createElement('button'),
   /** @type {HTMLElement} */
-  $overlay = document.querySelector('#test-overlay');
+  $overlay = document.querySelector('#test-curtain');
 
 
 $deskRun.setAttribute('id', 'runtest');
@@ -33,7 +33,7 @@ window.addEventListener('message', (_msgEvt) => {
     $deskRun.disabled = false;
     $deska11y.disabled = false;
 
-    $overlay.classList.remove('lower');
+    $overlay.classList.remove('lift');
     console.clear();
     console.info(window.frames[0].__tap__);
     window.__coverage__ = window.frames[0].__coverage__;
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     $deskRun.disabled = true;
     $deska11y.disabled = true;
 
-    $overlay.classList.add('lower');
+    $overlay.classList.add('lift');
     window.frames[0].focus();
     window.frames[0].postMessage({ type: 'desk:test' });
   });

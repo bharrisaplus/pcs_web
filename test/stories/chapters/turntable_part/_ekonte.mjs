@@ -10,7 +10,7 @@ const
   $deskRun = document.createElement('button'),
   $deska11y = document.createElement('button'),
   /** @type {HTMLElement} */
-  $overlay = document.querySelector('#test-overlay');
+  $overlay = document.querySelector('#test-curtain');
 
 
 $deskShow.setAttribute('id', 'show');
