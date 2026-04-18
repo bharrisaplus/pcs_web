@@ -123,7 +123,7 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
 
 
   /** @param {PCSEvent} _pcsevt */
-  const maybe_output_txt = async (_pcsevt) => {
+  const maybe_output_txt = (_pcsevt) => {
     const
       /** @type {HTMLButtonElement} */
       $panelCopy = document.querySelector(panel.copyBtn),
@@ -138,13 +138,16 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
       return;
     }
 
-    await panel.composeTxt(itemLabels);
-    appLogger.notilog(`Copied text to clipboard`);
+    panel.composeTxt(itemLabels).then((composeTxtResult) => {
+      if (composeTxtResult) {
+        appLogger.notilog(`Copied text to clipboard`);
+      }
+    }, () => {});
   };
 
 
   /** @param {PCSEvent} _pcsevt */
-  const maybe_download_img = async (_pcsevt) => {
+  const maybe_download_img = (_pcsevt) => {
     const
       /** @type {HTMLButtonElement} */
       $panelDwnld = document.querySelector(panel.downloadBtn),
@@ -163,9 +166,11 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
       return;
     }
 
-    await panel.prepareImg(currentColor, itemRefs, exportBaseID);
-
-    appLogger.notilog(`Downloaded image`);
+    panel.prepareImg(currentColor, itemRefs, exportBaseID).then((prepareImgResult) => {
+      if (prepareImgResult) {
+        appLogger.notilog(`Downloaded image`);
+      }
+    }, () => {});
   };
 
 
