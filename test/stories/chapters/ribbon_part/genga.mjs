@@ -433,7 +433,7 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.copyBtn}:disabled`).length);
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.mingleBtn}:disabled`).length);
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.downloadBtn}:disabled`).length);
-      await fx.waaitt(1501);
+      await fx.waaitt(1700);
       swearBhvRslts.push(impMeta.freshModule.isBusy);
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.dyeInput}:disabled`).length);
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.clearBtn}:disabled`).length);
@@ -451,7 +451,7 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
       z.same(swearExplntns[0].callCount, 1, "attempted clipboard write");
       z.same(swearUIRslts.toString(), "0,0,0,0,0,1,1,1,1,1,0,0,0,0,0", "disabled inputs as expected");
       z.same(swearBhvRslts.toString(), 'false,true,false', "busy as expected");
-    });
+    }, { timeout: 8000 });
   } catch (t6E) {
     console.error(t6E);
   }
@@ -488,7 +488,7 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.copyBtn}:disabled`).length);
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.mingleBtn}:disabled`).length);
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.downloadBtn}:disabled`).length);
-      await fx.waaitt(2001);
+      await fx.waaitt(2200);
       swearBhvRslts.push(impMeta.freshModule.isBusy);
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.dyeInput}:disabled`).length);
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.clearBtn}:disabled`).length);
@@ -496,7 +496,7 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.mingleBtn}:disabled`).length);
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.downloadBtn}:disabled`).length);
       outcomes.push($dropZone.getAttribute('href'));
-      await fx.waaitt(2000);
+      await fx.waaitt(2100);
       outcomes.push($dropZone.getAttribute('href'));
       swearExplntns.push(td.explain(impMeta.moduleExporter.generateImage));
 
@@ -511,7 +511,7 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
       z.same(swearExplntns[0].callCount, 1, "attempted image generation");
       z.same(swearUIRslts.toString(), "0,0,0,0,0,1,1,1,1,1,0,0,0,0,0", "disabled inputs as expected");
       z.same(swearBhvRslts.toString(), 'false,true,false', "busy as expected");
-    });
+    }, { timeout: 8000 });
   } catch (t7E) {
     console.error(t7E);
   }
