@@ -4,40 +4,29 @@ let
   loadedDesk = false,
   runningTest = false,
   /** @type {HTMLElement} */
-  $overlay;
-const
-  $deskShow = document.createElement('button'),
-  $deskHide = document.createElement('button'),
-  $deskLoad = document.createElement('button'),
-  $deskRun = document.createElement('button'),
-  $deska11y = document.createElement('button');
+  $overlay,
+  /** @type {HTMLButtonElement} */
+  $deskShow,
+  /** @type {HTMLButtonElement} */
+  $deskHide,
+  /** @type {HTMLButtonElement} */
+  $deskLoad,
+  /** @type {HTMLButtonElement} */
+  $deskRun,
+  /** @type {HTMLButtonElement} */
+  $deska11y;
 
-
-$deskShow.setAttribute('id', 'show');
-$deskHide.setAttribute('id', 'hide');
-$deskLoad.setAttribute('id', 'loadone');
-$deskRun.setAttribute('id', 'runtest');
-$deska11y.setAttribute('id', 'a11ycheck');
 
 window.addEventListener('message', (_msgEvt) => {
   if (_msgEvt.data.type == 'loaded') {
     if (loadedDesk) { return; }
 
-    loadedDesk = true;
-    $deskShow.textContent = "Show";
-    $deskHide.textContent = "Hide";
-    $deskLoad.textContent = "Load Cards";
-    $deskRun.textContent = "Run Test";
-    $deska11y.textContent = "Check a11y";
-    document.querySelector('#ctrl-band')?.appendChild($deskShow);
-    document.querySelector('#ctrl-band')?.appendChild($deskHide);
-    document.querySelector('#ctrl-band')?.appendChild($deskLoad);
-    document.querySelector('#ctrl-band')?.appendChild($deskRun);
-    document.querySelector('#ctrl-band')?.appendChild($deska11y);
     document.querySelector('#ctrl-band')?.classList.remove('load-curtain');
+
+    loadedDesk = true;
     window.printTestGlobals = function () { window.frames[0].postMessage({ type: 'print:globals'}); };
   } else if (_msgEvt.data.type == 'finished') {
-    if (!runningTest) { return; }
+    if (!runningTest || !loadedDesk) { return; }
 
     runningTest = false;
     $deskRun.disabled = false;
@@ -49,13 +38,20 @@ window.addEventListener('message', (_msgEvt) => {
     $overlay.classList.remove('lift');
     console.clear();
     console.info(window.frames[0].__tap__);
+
     window.__coverage__ = window.frames[0].__coverage__;
+
     fx.covRoutine();
   } else { return; }
 });
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  $deskShow = document.querySelector('#showit');
+  $deskHide = document.querySelector('#hideit');
+  $deskLoad = document.querySelector('#loadit');
+  $deskRun = document.querySelector('#runtest');
+  $deska11y = document.querySelector('#a11ycheck');
   $overlay = document.querySelector('#test-curtain');
 
   $deskHide.addEventListener('click', (_clickEvt) => {

@@ -13,5 +13,12 @@ block storeyboard_entry
     .desk-membrane
         iframe.desk-frame(src="/turntable_part/desk" sandbox="allow-same-origin allow-scripts allow-downloads")
 
+block storeyboard_actionbar
+    button#showit Show
+    button#hideit Hide
+    button#loadit Load Cards
+    button#runtest Run Test(s)
+    button#a11ycheck Check a11y
+
 block storeyboard_scripts
     script(src="/turntable_part/_ekonte.mjs" type="module")
