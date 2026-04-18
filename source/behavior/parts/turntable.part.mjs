@@ -9,8 +9,8 @@ import { default as logger } from "../hands/scribe.hand.mjs";
 
 
 /**
- * @param  {CSSelector} containerID - {@link CSSStyleRule.selectorText}
- * @param  {AbortController} eventCancel - {@link AbortController}
+ * @param  {CSSelector} containerID
+ * @param  {AbortController} eventCancel
  *
  * @return {Part.Turntable} a card closeup popover - {@link Part.Turntable}
  */
@@ -189,7 +189,7 @@ let
 /**
  * Ensure single turntable per page but allow recycling
  *
- * @param {string} getTurntableContainerID - {@link CSSStyleRule.selectorText}
+ * @param {CSSelector} getTurntableContainerID
  *
  * @returns {Part.Turntable} fresh Turntable for the page - {@link Part.Turntable}
  */

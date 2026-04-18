@@ -8,7 +8,7 @@ import { default as _g } from '../_meta/_glods.mjs';
 
 
 /**
- * @param  {CSSelector} containerID - {@link CSSStyleRule.selectorText}
+ * @param  {CSSelector} containerID
  * @param  {AbortController} eventCancel - {@link AbortController}
  *
  * @return {Part.Tableau} a surface for cards - {@link Part.Tableau}
@@ -110,7 +110,7 @@ let
   singleCancel;
 
 /**
- * @param {string} getTableauContainerID - {@link CSSStyleRule.selectorText}
+ * @param {CSSelector} getTableauContainerID
  *
  * @returns {Part.Tableau} sole Tableau for the page - {@link Part.Turntable}
  */

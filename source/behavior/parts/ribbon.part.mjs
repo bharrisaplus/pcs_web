@@ -9,7 +9,7 @@ import { default as outHand } from '../hands/egress.hand.mjs';
 
 
 /**
- * @param {CSSelector} containerID {@link CSSStyleRule.selectorText}
+ * @param {CSSelector} containerID
  *
  * @returns {Part.Ribbon} the control panel - {@link Part.Ribbon}
  */
@@ -107,7 +107,7 @@ const makeRibbonPart = (containerID) => {
   /**
    * @param {string} renderColor
    * @param  {string[]} renderExports
-   * @param  {CSSelector} renderBase {@link CSSStyleRule.selectorText}
+   * @param  {CSSelector} renderBase
    *
    * @return {Promise<Boolean>}
    * @see Part.Ribbon#prepareImg
@@ -301,7 +301,7 @@ const makeRibbonPart = (containerID) => {
 let singleRibbon;
 
 /**
- * @param {CSSelector} getRibbonContainerID {@link CSSStyleRule.selectorText}
+ * @param {CSSelector} getRibbonContainerID
  *
  * @return {Part.Ribbon}
  */

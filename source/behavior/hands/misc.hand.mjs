@@ -19,8 +19,8 @@ const makeMiscHand = () => {
   /**
    * Grab svg assets and inline them.
    *
-   * @param  {VerifynLoad} assetMap - {@link CSSStyleRule.selectorText}
-   * @param  {CSSelector} assetDump - {@link CSSStyleRule.selectorText}
+   * @param  {VerifynLoad} assetMap
+   * @param  {CSSelector} assetDump
    *
    * @return {Promise<boolean>}
    * @see Hand.Misc#warmUp
@@ -99,8 +99,8 @@ const makeMiscHand = () => {
    *      <tick/> <- this is animating and we'll let it run a bit
    *    </indicator>
    *
-   * @param  {CSSelector} indicatorSelector - {@link CSSStyleRule.selectorText}
-   * @param  {CSSelector} tickSelector - {@link CSSStyleRule.selectorText}
+   * @param  {CSSelector} indicatorSelector
+   * @param  {CSSelector} tickSelector
    * @see Hand.Misc#startAfter
    */
   const watch_for_indicator_tick = (indicatorSelector, tickSelector) => {

@@ -194,8 +194,8 @@
  *
  * @property {Boolean} isOpen
  * @property {number[]} cursor
- * @property {string} nextBtn - {@link CSSStyleRule.selectorText}
- * @property {string} prevBtn - {@link CSSStyleRule.selectorText}
+ * @property {CSSelector} nextBtn
+ * @property {CSSelector} prevBtn
  * @property {function(CardIntri) :void} loadTurntable
  * @property {function(CardIntri) :void} spinTurntable
  * @memberof Part
