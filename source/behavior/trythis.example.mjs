@@ -1,10 +1,11 @@
 /** Only used for test purposes. See test/specs/trythis_example.spec.mjs */
 
+/** @globals console, document */
+
 /**
  * @import {CSSelector} from './_meta/_typedefs.mjs'
  */
 
-/** @globals console, document */
 
 import { default as tryLogger } from './hands/scribe.hand.mjs';
 
@@ -14,15 +15,15 @@ const someFunc = () => {
 };
 
 
-const otherFunc = (aSelector) => {
-	document.querySelector(aSelector).addEventListener('click', () => {
+const otherFunc = (/** @type {CSSelector} */ aSelector) => {
+	document.querySelector(aSelector)?.addEventListener('click', () => {
 		console.log("Called event");
 	});
 };
 
 
-const anotherFunc = (elSelector) => {
-	document.querySelector(elSelector).addEventListener('click', () => {
+const anotherFunc = (/** @type {CSSelector} */ elSelector) => {
+	document.querySelector(elSelector)?.addEventListener('click', () => {
 		tryLogger.devlog("Will dev log");
 	});
 }
