@@ -3,14 +3,14 @@ html(lang="en")
     head
         meta(charset="UTF-8")
         meta(name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no")
-        block storey_preface_title
-            title Tankoban
+        block storeyboard_title
+            title Preface
         link(rel="icon" type="image/x-icon" href="/favicon.ico")
         link(rel="stylesheet" href="/reset.css")
         style.
             html { background-color: gray; }
-        block storey_preface_sheets
-        block storey_preface_importmap
+        block storeyboard_sheets
+        block storeyboard_importmap
             script(type="importmap").
                 {
                     "imports": {
@@ -19,11 +19,11 @@ html(lang="en")
                 }
 
     body
-        block storey_header
-        block storey_preface_entry
+        block storeyboard_header
+        block storeyboard_entry
         block storey_test_overlay
             #test-curtain
                 h2 Test Running ⌛
 
         footer
-            block storey_preface_scripts
+            block storeyboard_scripts

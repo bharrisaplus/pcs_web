@@ -1,20 +1,20 @@
 extends ../preface.pug
 
-block storey_preface_title
+block storeyboard_title
     title ekonte:ribbon
 
-block storey_preface_sheets
+block storeyboard_sheets
     link(rel="stylesheet" href="/ribbon_part/ekonte.css")
 
-block storey_header
+block storeyboard_header
     header
         h1 Ribbon
 
-block storey_preface_entry
+block storeyboard_entry
     main#ribbon-panel
         .desk-membrane
             iframe.desk-frame(src="/ribbon_part/desk" sandbox="allow-same-origin allow-scripts allow-downloads")
         #ctrl-band.load-curtain
 
-block storey_preface_scripts
+block storeyboard_scripts
     script(src="/ribbon_part/_ekonte.mjs" type="module")
