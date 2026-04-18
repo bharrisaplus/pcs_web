@@ -6,32 +6,26 @@ let
   loadedDesk = false,
   runningTest = false,
   /** @type {HTMLElement} */
-  $overlay;
-const
-  $deskPrnt = document.createElement('button'),
-  $deskRun = document.createElement('button'),
-  $deska11y = document.createElement('button');
+  $overlay,
+  /** @type {HTMLButtonElement} */
+  $deskPrnt,
+  /** @type {HTMLButtonElement} */
+  $deskRun,
+  /** @type {HTMLButtonElement} */
+  $deska11y;
 
-
-$deskPrnt.setAttribute('id', 'sprint');
-$deskRun.setAttribute('id', 'runtest');
-$deska11y.setAttribute('id', 'a11ycheck');
 
 window.addEventListener('message', (_msgEvt) => {
   if (_msgEvt.data.type == 'loaded') {
     if (loadedDesk) { return; }
 
     loadedDesk = true;
-    $deskPrnt.textContent = "Print order";
-    $deskRun.textContent = "Run Test";
-    $deska11y.textContent = "Check a11y";
-    document.querySelector('#ctrl-band')?.appendChild($deskPrnt);
-    document.querySelector('#ctrl-band')?.appendChild($deskRun);
-    document.querySelector('#ctrl-band')?.appendChild($deska11y);
+
     document.querySelector('#ctrl-band')?.classList.remove('load-curtain');
+
     window.printTestGlobals = function () { window.frames[0].postMessage({ type: 'print:globals'}); };
   } else if (_msgEvt.data.type == 'finished') {
-    if (!runningTest) { return; }
+    if (!runningTest || !loadedDesk) { return; }
 
     runningTest = false;
     $deskPrnt.disabled = false;
@@ -41,13 +35,18 @@ window.addEventListener('message', (_msgEvt) => {
     $overlay.classList.remove('lift');
     console.clear();
     console.info(window.frames[0].__tap__);
+
     window.__coverage__ = window.frames[0].__coverage__;
+
     fx.covRoutine();
   } else { return; }
 });
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  $deskPrnt = document.querySelector('#sprint');
+  $deskRun = document.querySelector('#runtest');
+  $deska11y = document.querySelector('#a11ycheck');
   $overlay = document.querySelector('#test-curtain');
 
   $deskPrnt.addEventListener('click', (_clickEvt) => {

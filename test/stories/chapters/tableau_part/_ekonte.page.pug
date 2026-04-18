@@ -13,5 +13,10 @@ block storeyboard_entry
     .desk-membrane
         iframe.desk-frame(src="/tableau_part/desk" sandbox="allow-same-origin allow-scripts allow-downloads")
 
+block storeyboard_actionbar
+    button#sprint Print Current Order
+    button#runtest Run Test(s)
+    button#a11ycheck Check a11y
+
 block storeyboard_scripts
     script(src="/tableau_part/_ekonte.mjs" type="module")
