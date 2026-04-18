@@ -6,43 +6,44 @@ let
   loadedDesk = false,
   runningTest = false,
   /** @type {HTMLElement} */
-  $overlay;
-const
-  $deskRun = document.createElement('button'),
-  $deska11y = document.createElement('button');
-
-
-$deskRun.setAttribute('id', 'runtest');
-$deska11y.setAttribute('id', 'a11ycheck');
+  $overlay,
+  /** @type {HTMLButtonElement} */
+  $deskRun,
+  /** @type {HTMLButtonElement} */
+  $deska11y;
 
 window.addEventListener('message', (_msgEvt) => {
   if (_msgEvt.data.type == 'loaded') {
     if (loadedDesk) { return; }
 
-    loadedDesk = true;
-    $deskRun.textContent = "Run Test";
-    $deska11y.textContent = "Check a11y";
-    document.querySelector('#ctrl-band')?.appendChild($deskRun);
-    document.querySelector('#ctrl-band')?.appendChild($deska11y);
     document.querySelector('#ctrl-band')?.classList.remove('load-curtain');
+
+    loadedDesk = true;
     window.printTestGlobals = function () { window.frames[0].postMessage({ type: 'print:globals'}); };
   } else if (_msgEvt.data.type == 'finished') {
-    if (!runningTest) { return; }
+    if (!runningTest || !loadedDesk) { return; }
 
     runningTest = false;
     $deskRun.disabled = false;
     $deska11y.disabled = false;
 
-    $overlay.classList.remove('lift');
     console.clear();
     console.info(window.frames[0].__tap__);
+    $overlay.classList.remove('lift');
+
     window.__coverage__ = window.frames[0].__coverage__;
+
     fx.covRoutine();
-  } else { return; }
+  } else {
+    console.warn(`Unknown message type received: ${_msgEvt.data.type}`);
+    return;
+  }
 });
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  $deskRun = document.querySelector('#runtest');
+  $deska11y = document.querySelector('#a11ycheck');
   $overlay = document.querySelector('#test-curtain');
 
   $deskRun.addEventListener('click', (_clickEvt) => {
