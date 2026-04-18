@@ -11,10 +11,9 @@ block storeyboard_header
         h1 Ribbon
 
 block storeyboard_entry
-    main#ribbon-panel
-        .desk-membrane
-            iframe.desk-frame(src="/ribbon_part/desk" sandbox="allow-same-origin allow-scripts allow-downloads")
-        #ctrl-band.load-curtain
+    .desk-membrane
+        iframe.desk-frame(src="/ribbon_part/desk" sandbox="allow-same-origin allow-scripts allow-downloads")
+    #ctrl-band.load-curtain
 
 block storeyboard_scripts
     script(src="/ribbon_part/_ekonte.mjs" type="module")

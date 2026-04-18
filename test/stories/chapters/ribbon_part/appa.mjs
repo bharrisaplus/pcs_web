@@ -61,7 +61,7 @@ ribbonBehavior = getRibbon(ribbonID);
 document.addEventListener('DOMContentLoaded', () => {
   if (
     window.frameElement &&
-    window.parent.document.body.querySelectorAll(`${ribbonID}-panel`).length == 1
+    window.parent.document.body.querySelectorAll('#e-panel').length == 1
   ) {
     setupListens(listenController.signal);
     window.addEventListener('message', (_msgEvt) => {

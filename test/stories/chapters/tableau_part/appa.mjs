@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (
     window.frameElement &&
-    window.parent.document.body.querySelectorAll(`${tableauID}-panel`).length == 1
+    window.parent.document.body.querySelectorAll('#e-panel').length == 1
   ) {
     window.addEventListener('message', (_msgEvt) => {
       if (_msgEvt.data.type == 'desk:print') {
