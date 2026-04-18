@@ -23,8 +23,10 @@ const getBezel = async () => {
     cov_path: NodeProcess.env.COVERAGE_DIR || NodePath.resolve(_dir, '../coverage'), 
     LHOST_URL: NodeProcess.env.LHOST_URL || (new URL('localhost:9090')).toString(),
     CARD_SOT_NAME: NodeProcess.env.CARD_SOT_NAME || 'cardsot.svg',
-  
+    BROWSER_DBG_PORT: NodeProcess.env.BRW_DBG_PORT ? Number.parseInt(NodeProcess.env.BRW_DBG_PORT) : 28133,
+
     // test specific
+    storey_port: NodeProcess.env.LHOST_PORT ? Number.parseInt(NodeProcess.env.LHOST_PORT) : 54321,
     storey_tmp_dir: NodePath.resolve(NodeOS.tmpdir(), './pcs/test/storey'),
     storey_path: NodeProcess.env.STOREY_DIR || NodePath.resolve(_dir, './stories'),
     storey_ch_path: NodeProcess.env.STOREY_DIR ?
@@ -36,7 +38,6 @@ const getBezel = async () => {
     favicon_path: NodeProcess.env.COMMON_DIR ?
       NodePath.resolve(NodeProcess.env.COMMON_DIR, './favicons') :
       NodePath.resolve(_dir, '../../distribution/common/favicons'),
-    tankoban_port: 54321,
     // Stories to run; see stories/tankoban.js
     storey_ch_allow: Object.freeze([
       'turntable_part',

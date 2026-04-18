@@ -307,5 +307,5 @@ if (isVerbose) {
   console.log(`Temp directory located at: ${util.tmpDir}`);
 }
 
-console.log(`Listening on ${testShared.tankoban_port}...`);
-TankoBanServer.listen(testShared.tankoban_port);
+console.log(`Listening on ${testShared.storey_port}...`);
+TankoBanServer.listen(testShared.storey_port);
