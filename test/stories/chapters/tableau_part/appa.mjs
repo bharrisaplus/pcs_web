@@ -73,18 +73,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         listenController.abort();
         tableauTests.go(Array.from(testCards)).then(() => {
+          window.parent.postMessage({type: 'finished'});
+
           listenController = new AbortController();
 
           tableauBehavior.updateOrder(testCards);
           $shell.addEventListener(
             _tg.notices.needle, handleTableauNeedle, { signal: listenController.signal }
           );
-        }, () => {
+        }, (rejRsn) => {
+          window.parent.postMessage({type: 'finished'});
+
           listenController = new AbortController();
 
           $shell.addEventListener(
             _tg.notices.needle, handleTableauNeedle, { signal: listenController.signal }
           );
+
+          console.warn("Issue with running test(s)");
+          console.error(rejRsn);
         });
       } else if (_msgEvt.data.type == 'desk:a11y') {
         window.axe.run().then((results) => {

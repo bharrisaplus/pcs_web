@@ -581,8 +581,6 @@ const test_routine = async () => {
 
     window.__tap__ = zaTapLines.join('\n');
     zaTapLines = [];
-
-    window.parent.postMessage({type: 'finished'});
   } catch (tstErr) {
     console.warn("Issue during test routine");
     console.error(tstErr);

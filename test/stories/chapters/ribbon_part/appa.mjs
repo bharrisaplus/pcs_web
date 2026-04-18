@@ -70,13 +70,20 @@ document.addEventListener('DOMContentLoaded', () => {
       if (_msgEvt.data.type == 'desk:test') {
         listenController.abort();
         ribbonTests.go().then(() => {
+          window.parent.postMessage({type: 'finished'});
+
           listenController = new AbortController();
+
           setupListens(listenController.signal);
         }, (rejRsn) => {
+          window.parent.postMessage({type: 'finished'});
+
+          listenController = new AbortController();
+
+          setupListens(listenController.signal);
+
           console.warn("Issue with running test(s)");
           console.error(rejRsn);
-          listenController = new AbortController();
-          setupListens(listenController.signal);
         });
       } else if (_msgEvt.data.type == 'desk:a11y') {
         window.axe.run().then((results) => {

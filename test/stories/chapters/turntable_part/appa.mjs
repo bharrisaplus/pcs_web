@@ -96,6 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
         testCardIdx = null;
 
         turntableTests.go(testCards).then(() => {
+          window.parent.postMessage({type: 'finished'});
+
           turntableBehavior = getTurntable(turntableID);
           listenController = new AbortController();
 
@@ -106,6 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
             _tg.notices.scratch, handleTurntableScratch, { signal: listenController.signal }
           );
         }, (rejRsn) => {
+          window.parent.postMessage({type: 'finished'});
+
           turntableBehavior = getTurntable(turntableID);
           listenController = new AbortController();
 
