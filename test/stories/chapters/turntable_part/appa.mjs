@@ -10,19 +10,20 @@ import { default as turntableTests } from './genga.mjs';
 
 
 let
-  /** @type {Number} */
-  testCardIdx,
+  listenController = new AbortController(),
   /** @type {Part.Turntable} */
   turntableBehavior,
-  listenController = new AbortController();
-const
   /** @type {HTMLBodyElement} */
-  $shell = document.querySelector(`#${_tg.appID}`),
-  turntableID = '#turntable',
+  $shell,
   /** @type {HTMLElement} */
-  $turntable = document.querySelector(turntableID),
+  $turntable,
   /** @type {SVGElement} */
-  $testSheet = document.querySelector('#card-sheet'),
+  $testSheet,
+  /** @type {Number} */
+  testCardIdx;
+
+const
+  turntableID = '#turntable',
   /** @type {CardIntri[]} */
   testCards = [];
 
@@ -43,9 +44,12 @@ const handleTurntableScratch = (/** @type {PCSEvent} */ _pcsevt) => {
 };
 
 
-turntableBehavior = getTurntable(turntableID);
-
 document.addEventListener('DOMContentLoaded', () => {
+  $shell = document.querySelector(`#${_tg.appID}`),
+  $turntable = document.querySelector(turntableID),
+  $testSheet = document.querySelector('#card-sheet')
+  turntableBehavior = getTurntable(turntableID);
+
   $testSheet.querySelectorAll('defs symbol:not(:has(rect))')?.forEach(($cSymbol, cIdx) => {
     let symbolID = $cSymbol.getAttribute('id');
 

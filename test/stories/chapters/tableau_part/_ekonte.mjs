@@ -4,13 +4,13 @@ import { default as fx } from 'storey:fixtures';
 
 let
   loadedDesk = false,
-  runningTest = false;
+  runningTest = false,
+  /** @type {HTMLElement} */
+  $overlay;
 const
   $deskPrnt = document.createElement('button'),
   $deskRun = document.createElement('button'),
-  $deska11y = document.createElement('button'),
-  /** @type {HTMLElement} */
-  $overlay = document.querySelector('#test-curtain');
+  $deska11y = document.createElement('button');
 
 
 $deskPrnt.setAttribute('id', 'sprint');
@@ -48,6 +48,8 @@ window.addEventListener('message', (_msgEvt) => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  $overlay = document.querySelector('#test-curtain');
+
   $deskPrnt.addEventListener('click', (_clickEvt) => {
     if (!loadedDesk || runningTest || _clickEvt.target != $deskPrnt) { return; }
 

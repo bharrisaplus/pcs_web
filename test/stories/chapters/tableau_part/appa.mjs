@@ -1,5 +1,5 @@
 /**
- * @import {CSSelector, PCSEvent, CardIntri} from 'pcs:types'
+ * @import {CSSelector, PCSEvent, CardIntri, Part} from 'pcs:types'
  */
 
 /* This files imports should be specified as part of the importmap in desk.page.pug */
@@ -8,16 +8,18 @@ import { default as getTableau } from 'tableau_part';
 import { default as tableauTests } from './genga.mjs';
 
 
-let listenController = new AbortController();
+let
+  listenController = new AbortController(),
+  /** @type {Part.Tableau} */
+  tableauBehavior,
+  /** @type {HTMLBodyElement} */
+  $shell,
+  /** @type {HTMLElement} */
+  $tableau;
 const
   tableauID = '#tableau',
   /** @type {CSSelector} */
-  tableauItemSelector = '.playing-card',
-  /** @type {HTMLBodyElement} */
-  $shell = document.querySelector(`#${_tg.appID}`),
-  /** @type {HTMLElement} */
-  $tableau = $shell.querySelector(tableauID),
-  tableauBehavior = getTableau(tableauID);
+  tableauItemSelector = '.playing-card';
 
 
 const handleTableauNeedle = (/** @type {PCSEvent} */ _pcsevt) => {
@@ -32,6 +34,10 @@ const handleTableauNeedle = (/** @type {PCSEvent} */ _pcsevt) => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  $shell = document.querySelector(`#${_tg.appID}`);
+  $tableau = $shell.querySelector(tableauID);
+  tableauBehavior = getTableau(tableauID);
+
   $shell.addEventListener(_tg.notices.needle, handleTableauNeedle, { signal: listenController.signal });
 
   $tableau.setAttribute('style', '');

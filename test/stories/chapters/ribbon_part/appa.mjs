@@ -9,15 +9,15 @@ import { default as ribbonTests } from './genga.mjs';
 
 
 let
+  listenController = new AbortController(),
   /** @type {Part.Ribbon} */
   ribbonBehavior,
-  listenController = new AbortController();
-const
   /** @type {HTMLBodyElement} */
-  $shell = document.querySelector(`#${_tg.appID}`),
-  ribbonID = '#ribbon',
+  $shell,
   /** @type {HTMLElement} */
-  $ribbon = document.querySelector(ribbonID),
+  $ribbon;
+const
+  ribbonID = '#ribbon',
 
   setupListens = (/** @type {AbortSignal} */ listenSignal) => {
     $shell.addEventListener(_tg.notices.blend, (/** @type {PCSEvent} */ _pcsevt) => {
@@ -56,9 +56,11 @@ const
   };
 
 
-ribbonBehavior = getRibbon(ribbonID);
-
 document.addEventListener('DOMContentLoaded', () => {
+  $shell = document.querySelector(`#${_tg.appID}`);
+  $ribbon = document.querySelector(ribbonID);
+  ribbonBehavior = getRibbon(ribbonID);
+
   if (
     window.frameElement &&
     window.parent.document.body.querySelectorAll('#e-panel').length == 1

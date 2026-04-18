@@ -2,15 +2,15 @@ import { default as fx } from 'storey:fixtures';
 
 let
   loadedDesk = false,
-  runningTest = false;
+  runningTest = false,
+  /** @type {HTMLElement} */
+  $overlay;
 const
   $deskShow = document.createElement('button'),
   $deskHide = document.createElement('button'),
   $deskLoad = document.createElement('button'),
   $deskRun = document.createElement('button'),
-  $deska11y = document.createElement('button'),
-  /** @type {HTMLElement} */
-  $overlay = document.querySelector('#test-curtain');
+  $deska11y = document.createElement('button');
 
 
 $deskShow.setAttribute('id', 'show');
@@ -56,6 +56,8 @@ window.addEventListener('message', (_msgEvt) => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  $overlay = document.querySelector('#test-curtain');
+
   $deskHide.addEventListener('click', (_clickEvt) => {
     if (!loadedDesk || runningTest) { return; }
     if (_clickEvt.target != $deskHide) { return; }
