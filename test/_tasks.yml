@@ -61,6 +61,11 @@ tasks:
     cmds:
       - node {{.STOREY_DIR}}/tankoban.mjs {{.CLI_ARGS}}
 
+  marathon_storey:
+    aliases: ["storeal"]
+    cmds:
+      - node {{.STOREY_DIR}}/omnibus.mjs {{.CLI_ARGS}}
+
 
   # coverage
 
