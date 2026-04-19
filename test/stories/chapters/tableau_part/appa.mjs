@@ -33,6 +33,22 @@ const handleTableauNeedle = (/** @type {PCSEvent} */ _pcsevt) => {
 };
 
 
+/** @returns {CardIntri[]} */
+const getTestCards = (/** @type {number[]} */ cardIDs) => {
+  return cardIDs.map((_itm, _idx) => {
+    const $item = $tableau.querySelectorAll(`${tableauID} ${tableauItemSelector}`)[_idx];
+
+    return {
+      oglo: _itm,
+      spot: _idx,
+      title: `${_tg.c_TitlePrefix} ${_idx + 1}:...`,
+      desc: `${_tg.c_DescPrefix} ${_idx + 1}`,
+      symbolRef: `#${$item?.getAttribute('id').split("card-")[1] || ''}`
+    };
+  });
+};
+
+
 document.addEventListener('DOMContentLoaded', () => {
   $shell = document.querySelector(`#${_tg.appID}`);
   $tableau = $shell.querySelector(tableauID);
@@ -54,18 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (_msgEvt.data.type == 'desk:print') {
         console.debug(tableauBehavior.currentOrder);
       } else if (_msgEvt.data.type == 'desk:test') {
-        /** @type {CardIntri[]} */
-        let testCards = tableauBehavior.currentOrder.map((_itm, _idx) => {
-          const $item = $tableau.querySelectorAll(`${tableauID} ${tableauItemSelector}`)[_idx];
-
-          return {
-            oglo: _itm,
-            spot: _idx,
-            title: `${_tg.c_TitlePrefix} ${_idx + 1}:...`,
-            desc: `${_tg.c_DescPrefix} ${_idx + 1}`,
-            symbolRef: `#${$item?.getAttribute('id').split("card-")[1] || ''}`
-          };
-        });
+        let testCards = getTestCards(tableauBehavior.currentOrder);
 
 
         if (testCards.some( (crd) => !crd.symbolRef )) {
@@ -110,5 +115,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     window.parent.postMessage({type: 'loaded'});
+  } else {
+    globalThis.runTests = async () => {
+      let result = false;
+      const testCards = getTestCards(tableauBehavior.currentOrder);
+
+      if (testCards.some( (crd) => !crd.symbolRef )) {
+        console.warn("Some items are missing an id");
+        return result;
+      }
+
+      try {
+        listenController.abort();
+        await tableauTests.go(testCards);
+        result = true;
+      } catch (rErr) {
+        console.error(rErr);
+        result = false;
+      }
+
+      return result;
+    };
   }
 });

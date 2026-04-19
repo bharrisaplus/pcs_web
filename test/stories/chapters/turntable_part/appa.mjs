@@ -137,5 +137,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.parent.postMessage({type: 'loaded'});
+  } else {
+    globalThis.runTests = async () => {
+      let result;
+
+      try {
+        listenController.abort();
+        await turntableTests.go(testCards);
+        result = true;
+      } catch (rErr) {
+        console.error(rErr);
+        result = false;
+      }
+
+      return result;
+    };
   }
 });

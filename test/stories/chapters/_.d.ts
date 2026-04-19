@@ -1,7 +1,10 @@
 import axe from "axe-core";
 
 declare global {
-  var printTestGlobals: () => void;
+  var
+    printTestGlobals: () => void,
+    runTests: () => Promise<boolean>;
+
 
   interface Window {
     __coverage__;
