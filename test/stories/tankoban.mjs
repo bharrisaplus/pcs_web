@@ -66,7 +66,7 @@ html(lang="en")
   `) : function(){};
 
 
-const TankoBanServer = http.createServer(async (req, res) => {
+const TankobanServer = http.createServer(async (req, res) => {
   let
     greeting, lookupExt, lookupContent, resCode, resHeader,
     isRoot = false, isCSSReset = false, isFavicon = false, isTDJS = false, isZJS = false, isAJS = false,
@@ -295,11 +295,18 @@ NodeProcess.on('SIGTERM', () => { // Terminate/Kill
 });
 
 NodeProcess.on('exit', () => {
-  NodeFS.rmdir(util.tmpDir).then(() => {
-    NodeProcess.exit(0);
-  }, () => {
-    NodeProcess.exit(0);
-  });
+  try {
+    if (TankobanServer && TankobanServer.listening) {
+      TankobanServer.closeAllConnections();
+    }
+
+    NodeFS.rmdir(util.tmpDir).then(() => {
+      NodeProcess.exit(0);
+    }, () => {
+      NodeProcess.exit(0);
+    });
+  } catch { NodeProcess.exit(0); }
+
 });
 
 
@@ -308,4 +315,4 @@ if (isVerbose) {
 }
 
 console.log(`Listening on ${testShared.storey_port}...`);
-TankoBanServer.listen(testShared.storey_port);
+TankobanServer.listen(testShared.storey_port);
