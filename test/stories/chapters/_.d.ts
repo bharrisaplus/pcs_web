@@ -1,8 +1,9 @@
 import axe from "axe-core";
 
 declare global {
+  var printTestGlobals: () => void;
+
   interface Window {
-    printTestGlobals: () => void;
     __coverage__;
     __tap__ :string;
     __stampt__ :number;

@@ -49,7 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.parent.document.body.querySelectorAll('#e-panel').length == 1
   ) {
     window.addEventListener('message', (_msgEvt) => {
-      if (_msgEvt.data.type == 'desk:print') {
+      if (_msgEvt.data.type == 'print:globals') {
+        console.debug(_tg);
+      } else if (_msgEvt.data.type == 'desk:print') {
         console.debug(tableauBehavior.currentOrder);
       } else if (_msgEvt.data.type == 'desk:test') {
         /** @type {CardIntri[]} */

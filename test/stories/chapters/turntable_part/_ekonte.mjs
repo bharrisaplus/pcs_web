@@ -24,7 +24,7 @@ window.addEventListener('message', (_msgEvt) => {
     document.querySelector('#ctrl-band')?.classList.remove('load-curtain');
 
     loadedDesk = true;
-    window.printTestGlobals = function () { window.frames[0].postMessage({ type: 'print:globals'}); };
+    globalThis.printTestGlobals = function () { window.frames[0].postMessage({ type: 'print:globals'}); };
   } else if (_msgEvt.data.type == 'finished') {
     if (!runningTest || !loadedDesk) { return; }
 

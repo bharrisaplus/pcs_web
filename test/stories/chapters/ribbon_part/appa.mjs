@@ -67,7 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
   ) {
     setupListens(listenController.signal);
     window.addEventListener('message', (_msgEvt) => {
-      if (_msgEvt.data.type == 'desk:test') {
+      if (_msgEvt.data.type == 'print:globals') {
+        console.debug(_tg);
+      } else if (_msgEvt.data.type == 'desk:test') {
         listenController.abort();
         ribbonTests.go().then(() => {
           window.parent.postMessage({type: 'finished'});
