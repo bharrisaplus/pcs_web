@@ -4,16 +4,16 @@ import { default as NodeFS } from 'node:fs/promises';
 import http from 'node:http';
 
 import { render as pugRender } from 'pug';
+import { default as CRI } from 'chrome-remote-interface';
 
 import { default as testShared } from '../compass.mjs';
 import { default as util } from './haishin.mjs';
 
-
-let
-  currentCovObj = {},
-  currentChapter = '';
-
+/** @type {CRI.Client} */
+let brwCtrl;
 const
+  isVerbose = NodeProcess.argv.slice(2).includes('-v') || NodeProcess.argv.slice(2).includes('--verbose'),
+
   requiredFiles = [
     NodePath.resolve(testShared.storey_ch_path, './_td.mjs'),
     NodePath.resolve(testShared.storey_ch_path, './_z.mjs'),
@@ -166,6 +166,14 @@ const OmnibusServer = http.createServer(async (req, res) => {
     foundContent = false;
   }
 
+  if (isVerbose) {
+    if (isFavicon || isCSSReset || isTDJS || isZJS || isAJS || isCSOT || isTanto || foundContent) {
+      console.debug(`Responding to: ${lookupUrl}`);
+    } else {
+      console.warn(`Responding (404) to: ${lookupUrl}`);
+    }
+  }
+
   res.writeHead(resCode, resHeader);
 
   switch(true) {
@@ -218,17 +226,60 @@ NodeProcess.on('SIGTERM', () => { // Terminate/Kill
 });
 
 NodeProcess.on('exit', () => {
-  NodeFS.rmdir(util.tmpDir).then(() => {
-    NodeProcess.exit(0);
-  }, () => {
-    NodeProcess.exit(0);
-  });
+  try {
+    if (OmnibusServer && OmnibusServer.listening) {
+      OmnibusServer.closeAllConnections();
+    }
+
+    NodeFS.rmdir(util.tmpDir).then(() => {
+      NodeProcess.exit(0);
+    }, () => {
+      NodeProcess.exit(0);
+    });
+  } catch { NodeProcess.exit(0); }
 });
 
 
 OmnibusServer.listen(testShared.storey_port);
 
 console.log(`Listening on ${testShared.storey_port}...`);
+
 console.log(`Controlling on ${testShared.BROWSER_DBG_PORT}...`);
-console.info(`Checking ${currentChapter}`);
-console.debug(currentCovObj);
+
+try {
+  brwCtrl = await CRI({
+    host: 'localhost',
+    port: testShared.BROWSER_DBG_PORT
+  });
+
+  await brwCtrl.Runtime.enable();
+  await brwCtrl.DOM.enable();
+  await brwCtrl.Page.enable();
+
+  for (const stryCh of testShared.storey_ch_allow) {
+    let testPageDoc, testPageBody, foundElement, foundFunc;
+
+    await brwCtrl.Page.navigate({
+      url: `http://localhost:${testShared.storey_port}/${stryCh}/desk`
+    });
+
+    await brwCtrl.Page.loadEventFired();
+
+    testPageDoc = await brwCtrl.DOM.getDocument();
+    testPageBody = await brwCtrl.DOM.querySelector({ nodeId: testPageDoc.root.nodeId, selector: 'body' });
+    foundElement = await brwCtrl.DOM.querySelectorAll({ nodeId: testPageBody.nodeId, selector: '#container' });
+    foundFunc = await brwCtrl.Runtime.evaluate({ expression: "typeof runTests == 'function'" });
+
+    console.log("Checked: " + stryCh);
+    console.log(`Found element: ${foundElement.nodeIds.length == 1}`);
+    console.debug(`Found runTests method: ${foundFunc.result.value}`);
+  }
+} catch (oErr) {
+  console.warn("Tests failed to run");
+  console.error(oErr);
+
+  NodeProcess.exit(1);
+}
+
+console.log("Done");
+NodeProcess.exit(0);
