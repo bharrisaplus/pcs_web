@@ -35,32 +35,28 @@ tasks:
   start_browser:
     silent: true
     vars:
-      RUN_BROWSER_MSG: "To start browser run: 'chromedev --user-data-dir=$BRWUD_DIR'"
+      RUN_BROWSER_MSG: "To start browser run: 'chrometest --user-data-dir=$BRWUD_DIR'"
     cmds:
       - cmd: echo {{.RUN_BROWSER_MSG}}
-        platforms: [windows]
       - cmd: echo {{.BROWSER_DBG_MSG}}
 
   start_browser_dbg:
     silent: true
     vars:
-      RUN_BROWSER_MSG: "To start browser run: 'chromedev --remote-debugging-port=$BRW_DBG_PORT --user-data-dir=$BRWUD_DIR'"
+      RUN_BROWSER_MSG: "To start browser run: 'chrometest --remote-debugging-port=$BRW_DBG_PORT --user-data-dir=$BRWUD_DIR'"
     cmds:
       - cmd: echo {{.RUN_BROWSER_MSG}}
-        platforms: [windows]
       - cmd: echo {{.BROWSER_DBG_MSG}}
 
   start_browser_hdbg:
     silent: true
     vars:
-      RUN_BROWSER_MSG: "To start browser run: 'chromedev --headless --remote-debugging-port=$BRW_DBG_PORT --user-data-dir=$BRWUD_DIR'"
+      RUN_BROWSER_MSG: "To start browser run: 'chrometest --headless --remote-debugging-port=$BRW_DBG_PORT --user-data-dir=$BRWUD_DIR'"
     cmds:
       - cmd: echo {{.RUN_BROWSER_MSG}}
-        platforms: [windows]
       - cmd: echo {{.BROWSER_DBG_MSG}}
 
   clear_browser_userdir:
-    silent: true
     cmds:
       - rm -rf {{.BRWUD_DIR}}/**
 
