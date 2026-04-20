@@ -13,6 +13,7 @@ import { default as util } from './haishin.mjs';
 let brwCtrl;
 const
   isVerbose = NodeProcess.argv.slice(2).includes('-v') || NodeProcess.argv.slice(2).includes('--verbose'),
+  showTapOut = NodeProcess.argv.slice(2).includes('-to') || NodeProcess.argv.slice(2).includes('--tapout'),
 
   requiredFiles = [
     NodePath.resolve(testShared.storey_ch_path, './_td.mjs'),
@@ -257,7 +258,10 @@ try {
   await brwCtrl.Page.enable();
 
   for (const stryCh of testShared.storey_ch_allow) {
-    let testPageDoc, testPageBody, foundElement, foundFunc;
+    let
+      testPageDoc, testPageBody, covTxt,
+      foundElement, foundTest,
+      testEval, covEval, tapEval;
 
     await brwCtrl.Page.navigate({
       url: `http://localhost:${testShared.storey_port}/${stryCh}/desk`
@@ -268,11 +272,34 @@ try {
     testPageDoc = await brwCtrl.DOM.getDocument();
     testPageBody = await brwCtrl.DOM.querySelector({ nodeId: testPageDoc.root.nodeId, selector: 'body' });
     foundElement = await brwCtrl.DOM.querySelectorAll({ nodeId: testPageBody.nodeId, selector: '#container' });
-    foundFunc = await brwCtrl.Runtime.evaluate({ expression: "typeof runTests == 'function'" });
+    foundTest = await brwCtrl.Runtime.evaluate({ expression: "typeof runTests == 'function'" });
 
-    console.log("Checked: " + stryCh);
+    if (foundElement.nodeIds.length == 1 && foundTest.result.value) {
+      testEval = await brwCtrl.Runtime.evaluate({ expression: "runTests()", awaitPromise: true });
+
+      if (testEval.result.value) {
+        covEval = await brwCtrl.Runtime.evaluate({ expression: "window.__coverage__" });
+        tapEval = await brwCtrl.Runtime.evaluate({ expression: "window.__tap__" });
+        covTxt = util.getCovSum(covEval.result.value);
+      }
+    }
+
+    if (showTapOut) {
+      if (tapEval?.result.value) {
+        console.log(tapEval.result.value);
+      } else {
+        console.warn("no tap output");
+      }
+    }
+
+    console.info("Checked: " + stryCh);
     console.log(`Found element: ${foundElement.nodeIds.length == 1}`);
-    console.debug(`Found runTests method: ${foundFunc.result.value}`);
+    console.info(`Found runTests method: ${foundTest.result.value}`);
+
+    if (foundElement.nodeIds.length == 1 && foundTest.result.value) {
+      console.log(`Test finished w/o issue: ${testEval?.result.value}`);
+      console.log(covTxt);
+    }
   }
 } catch (oErr) {
   console.warn("Tests failed to run");
