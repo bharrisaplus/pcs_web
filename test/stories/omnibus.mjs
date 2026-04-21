@@ -9,8 +9,10 @@ import { default as CRI } from 'chrome-remote-interface';
 import { default as testShared } from '../compass.mjs';
 import { default as util } from './haishin.mjs';
 
-/** @type {CRI.Client} */
-let brwCtrl;
+let
+  ec = 0,
+  /** @type {CRI.Client?} */
+  brwCtrl = null;
 const
   isVerbose = NodeProcess.argv.slice(2).includes('-v') || NodeProcess.argv.slice(2).includes('--verbose'),
   showTapOut = NodeProcess.argv.slice(2).includes('-to') || NodeProcess.argv.slice(2).includes('--tapout'),
@@ -200,44 +202,48 @@ const OmnibusServer = http.createServer(async (req, res) => {
 
 
 if (!foundReqs) {
+  ec = 1;
+
   console.error(`Preface files not found - check:`);
   console.debug(requiredFiles.toString());
-  NodeProcess.exit(1);
+  NodeProcess.exit(ec);
 }
 
 if (!util.tmpDir) {
+  ec = 1;
+
   console.warn(`Missing temp directory`);
-  NodeProcess.exit(1);
+  NodeProcess.exit(ec);
 }
 
 
 NodeProcess.on('SIGINT', () => { // Ctrl + C
   console.log('Stopping');
-  NodeProcess.exit(0);
+  NodeProcess.exit(ec);
 });
 
 NodeProcess.on('SIGQUIT', () => { // Ctrl + \
   console.log('Quitting');
-  NodeProcess.exit(0);
+  NodeProcess.exit(ec);
 });
 
 NodeProcess.on('SIGTERM', () => { // Terminate/Kill
   console.log('Terminating process');
-  NodeProcess.exit(0);
+  NodeProcess.exit(ec);
 });
 
-NodeProcess.on('exit', () => {
+NodeProcess.on('exit', (codeNum) => {
   try {
     if (OmnibusServer && OmnibusServer.listening) {
       OmnibusServer.closeAllConnections();
     }
 
     NodeFS.rmdir(util.tmpDir).then(() => {
-      NodeProcess.exit(0);
+      NodeProcess.exit(codeNum);
     }, () => {
-      NodeProcess.exit(0);
+      NodeProcess.exit(codeNum);
     });
-  } catch { NodeProcess.exit(0); }
+  } catch { NodeProcess.exit(codeNum); }
 });
 
 
@@ -301,11 +307,15 @@ try {
     }
   }
 } catch (oErr) {
+  ec = 1;
+
   console.warn("Omnibus has issue");
   console.error(oErr);
+} finally {
+  if (brwCtrl) {
+    await brwCtrl.close();
+  }
 
-  NodeProcess.exit(1);
+  console.log("Done");
+  NodeProcess.exit(ec);
 }
-
-console.log("Done");
-NodeProcess.exit(0);
