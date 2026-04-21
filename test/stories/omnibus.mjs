@@ -302,7 +302,7 @@ try {
     }
   }
 } catch (oErr) {
-  console.warn("Tests failed to run");
+  console.warn("Omnibus has issue");
   console.error(oErr);
 
   NodeProcess.exit(1);
