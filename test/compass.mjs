@@ -27,6 +27,9 @@ const getBezel = async () => {
 
     // test specific
     storey_port: NodeProcess.env.LHOST_PORT ? Number.parseInt(NodeProcess.env.LHOST_PORT) : 54321,
+    storey_cov_config_path: NodeProcess.env.PROJECT_DIR ?
+      NodePath.resolve(NodeProcess.env.PROJECT_DIR, './mcr.storey.json') :
+      NodePath.resolve(_dir, '../mcr.storey.json'),
     storey_tmp_dir: NodePath.resolve(NodeOS.tmpdir(), './pcs/test/storey'),
     storey_path: NodeProcess.env.STOREY_DIR || NodePath.resolve(_dir, './stories'),
     storey_ch_path: NodeProcess.env.STOREY_DIR ?

@@ -1,0 +1,6 @@
+{
+    "name": "pcs_web:storey",
+    "outputDir": "./coverage/storey",
+    "reports": ["lcov", "console-details"],
+    "cleanCache": true
+}
