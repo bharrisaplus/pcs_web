@@ -278,18 +278,18 @@ try {
       testEval = await brwCtrl.Runtime.evaluate({ expression: "runTests()", awaitPromise: true });
 
       if (testEval.result.value) {
+        if (showTapOut) {
+          tapEval = await brwCtrl.Runtime.evaluate({ expression: "window.__tap__" });
+        }
+
         covEval = await brwCtrl.Runtime.evaluate({ expression: "window.__coverage__" });
-        tapEval = await brwCtrl.Runtime.evaluate({ expression: "window.__tap__" });
         covTxt = util.getCovSum(covEval.result.value);
       }
     }
 
+
     if (showTapOut) {
-      if (tapEval?.result.value) {
-        console.log(tapEval.result.value);
-      } else {
-        console.warn("no tap output");
-      }
+      console.log(tapEval?.result.value || "no tap output");
     }
 
     console.info("Checked: " + stryCh);
