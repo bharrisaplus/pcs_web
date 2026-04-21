@@ -16,6 +16,7 @@ let
 const
   isVerbose = NodeProcess.argv.slice(2).includes('-v') || NodeProcess.argv.slice(2).includes('--verbose'),
   showTapOut = NodeProcess.argv.slice(2).includes('-to') || NodeProcess.argv.slice(2).includes('--tapout'),
+  keepCov = NodeProcess.argv.slice(2).includes('-kc') || NodeProcess.argv.slice(2).includes('--coverage'),
 
   requiredFiles = [
     NodePath.resolve(testShared.storey_ch_path, './_td.mjs'),
@@ -288,8 +289,10 @@ try {
           tapEval = await brwCtrl.Runtime.evaluate({ expression: "window.__tap__" });
         }
 
-        covEval = await brwCtrl.Runtime.evaluate({ expression: "window.__coverage__", returnByValue: true });
-        covTxt = util.getCovSum(covEval.result.value);
+        if (keepCov) {
+          covEval = await brwCtrl.Runtime.evaluate({ expression: "window.__coverage__", returnByValue: true });
+          covTxt = util.getCovSum(covEval.result.value);
+        }
       }
     }
 
@@ -303,6 +306,9 @@ try {
 
     if (foundElement.nodeIds.length == 1 && foundTest.result.value) {
       console.log(`Test finished w/o issue: ${testEval?.result.value}`);
+    }
+
+    if (keepCov) {
       console.log(covTxt);
     }
   }
