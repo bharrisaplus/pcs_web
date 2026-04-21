@@ -5,6 +5,7 @@ import http from 'node:http';
 
 import { render as pugRender } from 'pug';
 import { default as CRI } from 'chrome-remote-interface';
+import { default as MCR } from 'monocart-coverage-reports';
 
 import { default as testShared } from '../compass.mjs';
 import { default as util } from './haishin.mjs';
@@ -47,7 +48,13 @@ const
   prefaceZ = foundReqs ? await NodeFS.readFile(requiredFiles[1], { encoding: 'utf8' }) : '',
   prefaceA = foundReqs ? await NodeFS.readFile(requiredFiles[2], { encoding: 'utf8' }) : '',
   cardSOT = foundReqs ? await NodeFS.readFile(requiredFiles[6], { encoding: 'utf8' }) : '',
-  tanto = foundReqs ? await NodeFS.readFile(requiredFiles[3], { encoding: 'utf8' }) : '';
+  tanto = foundReqs ? await NodeFS.readFile(requiredFiles[3], { encoding: 'utf8' }) : '',
+  monocartReporter = MCR({
+      name: `PCS_WEB:Storey:Omnibus - ${Date.now()}`,
+      outputDir: NodePath.resolve(testShared.cov_path, './storey'),
+      reports: ["lcov", "console-details"],
+      cleanCache: true
+  });
 
 
 const notFoundDoc = foundReqs ? pugRender(`
@@ -291,7 +298,7 @@ try {
 
         if (keepCov) {
           covEval = await brwCtrl.Runtime.evaluate({ expression: "window.__coverage__", returnByValue: true });
-          covTxt = util.getCovSum(covEval.result.value);
+          await monocartReporter.add(covEval.result.value);
         }
       }
     }
@@ -312,6 +319,8 @@ try {
       console.log(covTxt);
     }
   }
+
+  await monocartReporter.generate();
 } catch (oErr) {
   ec = 1;
 
