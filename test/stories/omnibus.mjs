@@ -5,7 +5,7 @@ import http from 'node:http';
 
 import { render as pugRender } from 'pug';
 import { default as CRI } from 'chrome-remote-interface';
-import { default as MCR } from 'monocart-coverage-reports';
+import { CoverageReport as MonocartCoverageReport } from 'monocart-coverage-reports';
 
 import { default as testShared } from '../compass.mjs';
 import { default as util } from './haishin.mjs';
@@ -49,12 +49,7 @@ const
   prefaceA = foundReqs ? await NodeFS.readFile(requiredFiles[2], { encoding: 'utf8' }) : '',
   cardSOT = foundReqs ? await NodeFS.readFile(requiredFiles[6], { encoding: 'utf8' }) : '',
   tanto = foundReqs ? await NodeFS.readFile(requiredFiles[3], { encoding: 'utf8' }) : '',
-  monocartReporter = MCR({
-      name: `PCS_WEB:Storey:Omnibus - ${Date.now()}`,
-      outputDir: NodePath.resolve(testShared.cov_path, './storey'),
-      reports: ["lcov", "console-details"],
-      cleanCache: true
-  });
+  mcCovReport = new MonocartCoverageReport();
 
 
 const notFoundDoc = foundReqs ? pugRender(`
@@ -262,6 +257,8 @@ console.log(`Listening on ${testShared.storey_port}...`);
 console.log(`Controlling on ${testShared.BROWSER_DBG_PORT}...`);
 
 try {
+  mcCovReport.loadConfig(testShared.storey_cov_config_path);
+
   brwCtrl = await CRI({
     host: 'localhost',
     port: testShared.BROWSER_DBG_PORT
@@ -298,7 +295,7 @@ try {
 
         if (keepCov) {
           covEval = await brwCtrl.Runtime.evaluate({ expression: "window.__coverage__", returnByValue: true });
-          await monocartReporter.add(covEval.result.value);
+          await mcCovReport.add(covEval.result.value);
         }
       }
     }
@@ -320,7 +317,7 @@ try {
     }
   }
 
-  await monocartReporter.generate();
+  await mcCovReport.generate();
 } catch (oErr) {
   ec = 1;
 
