@@ -293,8 +293,7 @@ try {
     }
 
     console.info("Checked: " + stryCh);
-    console.log(`Found element: ${foundElement.nodeIds.length == 1}`);
-    console.log(`Found runTests method: ${foundTest.result.value}`);
+    console.log(`Page loaded w/o issue: ${foundElement.nodeIds.length == 1 && foundTest.result.value}`);
 
     if (foundElement.nodeIds.length == 1 && foundTest.result.value) {
       console.log(`Test finished w/o issue: ${testEval?.result.value}`);
