@@ -282,7 +282,7 @@ try {
           tapEval = await brwCtrl.Runtime.evaluate({ expression: "window.__tap__" });
         }
 
-        covEval = await brwCtrl.Runtime.evaluate({ expression: "window.__coverage__" });
+        covEval = await brwCtrl.Runtime.evaluate({ expression: "window.__coverage__", returnByValue: true });
         covTxt = util.getCovSum(covEval.result.value);
       }
     }
