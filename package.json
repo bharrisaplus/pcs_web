@@ -12,7 +12,6 @@
   "license": "GPL-3.0-only",
   "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319",
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
     "@logtape/logtape": "^2.0.5",
     "@rollup/plugin-commonjs": "^29.0.2",
     "@rollup/plugin-json": "^6.1.0",
@@ -28,7 +27,6 @@
     "c8": "^11.0.0",
     "chrome-remote-interface": "^0.34.0",
     "cssnano": "^7.1.5",
-    "eslint": "^9.39.4",
     "eslint-plugin-compat": "^7.0.1",
     "istanbul-lib-coverage": "^3.2.2",
     "istanbul-lib-report": "^3.0.1",

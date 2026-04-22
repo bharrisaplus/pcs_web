@@ -8,9 +8,6 @@ importers:
 
   .:
     devDependencies:
-      '@eslint/js':
-        specifier: ^9.39.4
-        version: 9.39.4
       '@logtape/logtape':
         specifier: ^2.0.5
         version: 2.0.5
@@ -56,9 +53,6 @@ importers:
       cssnano:
         specifier: ^7.1.5
         version: 7.1.5(postcss@8.5.10)
-      eslint:
-        specifier: ^9.39.4
-        version: 9.39.4
       eslint-plugin-compat:
         specifier: ^7.0.1
         version: 7.0.1(eslint@9.39.4)
