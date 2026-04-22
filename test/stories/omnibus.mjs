@@ -317,17 +317,18 @@ try {
     }
   }
 
+  await brwCtrl.close();
   await mcCovReport.generate();
 } catch (oErr) {
   ec = 1;
 
-  console.warn("Omnibus has issue");
-  console.error(oErr);
-} finally {
   if (brwCtrl) {
     await brwCtrl.close();
   }
 
+  console.warn("Omnibus has issue");
+  console.error(oErr);
+} finally {
   console.log("Done");
   NodeProcess.exit(ec);
 }
