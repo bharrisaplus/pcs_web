@@ -104,6 +104,11 @@ tasks:
     cmds:
       - pnpm c8 -c {{.C8_CONFIG}} -r lcovonly tape {{.SPEC_GLOB}} | pnpm tap-nyc
 
+  storey_cov:
+    aliases: ["storealcov"]
+    cmds:
+      - node {{.STOREY_DIR}}/omnibus.mjs -to -kc
+
   clear_cov:
     cmds:
       - rm -rf {{.PROJECT_DIR}}/coverage/spec
