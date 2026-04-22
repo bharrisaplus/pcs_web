@@ -128,7 +128,6 @@ const OmnibusServer = http.createServer(async (req, res) => {
       resCode = 200;
       foundContent = true;
     } else {
-      resHeader = util.headerForMime(lookupExt || '.html');
       resCode = 404;
       foundContent = false;
     }

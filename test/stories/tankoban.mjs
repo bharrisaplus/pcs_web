@@ -171,7 +171,7 @@ const TankobanServer = http.createServer(async (req, res) => {
           lookupContent = await util.maybeGrabFile(
             lookupUrl, lookupUrl.endsWith('ekonte.css') ? 'stylusEKonte' : 'stylus'
           );
-          resHeader = util.headerForMime('.css');
+          resHeader = util.headerForMime(lookupExt);
         } else {
           lookupContent = await util.maybeGrabFile(lookupUrl, 'bibl');
           resHeader = util.headerForMime(lookupExt);
@@ -181,8 +181,6 @@ const TankobanServer = http.createServer(async (req, res) => {
           resCode = 200;
           foundContent = true;
         } else {
-          greeting = `Not Found`;
-          resHeader = util.headerForMime('.html');
           resCode = 404;
           foundContent = false;
 
@@ -192,47 +190,41 @@ const TankobanServer = http.createServer(async (req, res) => {
         }
       } else if (lookupUrl.startsWith(coveragePathPrefix)) {
         lookupContent = await util.maybeGrabFile(lookupUrl, 'bundle');
+        resHeader = util.headerForMime('.mjs');
 
         if (lookupContent) {
-          resHeader = util.headerForMime('.mjs');
           resCode = 200;
           foundContent = true;
         } else {
-          greeting = `Not Found`;
-          resHeader = util.headerForMime('.html');
           resCode = 404;
           foundContent = false;
         }
       } else if (lookupUrl.startsWith(presentationPathPrefix)) { 
         lookupContent = await util.maybeGrabFile(lookupUrl, 'stylus');
+        resHeader = util.headerForMime('.css');
 
-        if (lookupContent){
-          resHeader = util.headerForMime('.css');
+        if (lookupContent) {
           resCode = 200;
           foundContent = true;
         } else {
-          greeting = `Not Found`;
-          resHeader = util.headerForMime('.html');
           resCode = 404;
           foundContent = false;
         }
       } else if (NodePath.extname(lookupUrl).endsWith('.map')) {
         lookupContent = await util.maybeGrabFile(lookupUrl, 'sourcemap');
+        resHeader = util.headerForMime('.map');
 
         if (lookupContent) {
           lookupContent = JSON.stringify(lookupContent);
-          resHeader = util.headerForMime('.map');
           resCode = 200;
           foundContent = true;
         } else {
-          greeting = 'Not Found';
-          resHeader = util.headerForMime('.html');
           resCode = 200;
           foundContent = false;
         }
       } else {
         greeting = `Not Found`;
-        resHeader = util.headerForMime('.html');
+        resHeader = util.headerForMime(NodePath.extname(lookupUrl));
         resCode = 404;
         foundContent = false;
       }
@@ -257,7 +249,13 @@ const TankobanServer = http.createServer(async (req, res) => {
       case isTanto: res.write(tanto); break;
       case isCSOT: res.write(cardSOT); break;
       case foundContent: res.write(lookupContent); break;
-      default: res.write(rootDocFcn({ greetMsg: greeting }))
+      default: {
+        if (isRoot || NodePath.extname(lookupUrl) == '.html' || NodePath.extname(lookupUrl) == '') {
+          res.write(rootDocFcn({ greetMsg: greeting }));
+        } else {
+          res.write('not found');
+        }
+      }
     }
 
     res.end();
