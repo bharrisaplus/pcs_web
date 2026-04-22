@@ -1,6 +1,7 @@
 import { default as NodeProcess } from 'node:process';
 import { default as NodePath } from 'node:path';
 import { default as NodeFS } from 'node:fs/promises';
+import { default as NodeFSSync } from 'node:fs';
 import http from 'node:http';
 
 import { compile as pugCompile } from 'pug';
@@ -298,13 +299,11 @@ NodeProcess.on('exit', (exCo) => {
       TankobanServer.closeAllConnections();
     }
 
-    NodeFS.rmdir(util.tmpDir).then(() => {
-      NodeProcess.exit(exCo);
-    }, () => {
-      NodeProcess.exit(exCo);
-    });
-  } catch { NodeProcess.exit(exCo); }
-
+    NodeFSSync.rmSync(util.tmpDir, { recursive: true, force: true });
+  } catch { console.error("Exit was not clean"); } finally {
+    console.log("Exiting");
+    NodeProcess.exit(exCo);
+  }
 });
 
 

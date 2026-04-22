@@ -1,6 +1,7 @@
 import { default as NodeProcess } from 'node:process';
 import { default as NodePath } from 'node:path';
 import { default as NodeFS } from 'node:fs/promises';
+import { default as NodeFSSync } from 'node:fs';
 import http from 'node:http';
 
 import { render as pugRender } from 'pug';
@@ -240,15 +241,18 @@ NodeProcess.on('exit', (codeNum) => {
       OmnibusServer.closeAllConnections();
     }
 
-    NodeFS.rmdir(util.tmpDir).then(() => {
-      NodeProcess.exit(codeNum);
-    }, () => {
-      NodeProcess.exit(codeNum);
-    });
-  } catch { NodeProcess.exit(codeNum); }
+    NodeFSSync.rmSync(util.tmpDir, { recursive: true, force: true });
+  } catch {
+    console.error("Exit was not clean");
+  } finally {
+    NodeProcess.exit(codeNum);
+  }
 });
 
 
+if (isVerbose) {
+  console.log(`Temp directory located at: ${util.tmpDir}`);
+}
 
 try {
   OmnibusServer.listen(testShared.storey_port);
