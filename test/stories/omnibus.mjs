@@ -249,19 +249,19 @@ NodeProcess.on('exit', (codeNum) => {
 });
 
 
-OmnibusServer.listen(testShared.storey_port);
-
-console.log(`Listening on ${testShared.storey_port}...`);
-
-console.log(`Controlling on ${testShared.BROWSER_DBG_PORT}...`);
 
 try {
+  OmnibusServer.listen(testShared.storey_port);
+  console.log(`Listening on ${testShared.storey_port}...`);
+
   mcCovReport.loadConfig(testShared.storey_cov_config_path);
 
   brwCtrl = await CRI({
     host: 'localhost',
     port: testShared.BROWSER_DBG_PORT
   });
+
+  console.log(`Controlling via ${testShared.BROWSER_DBG_PORT}...`);
 
   await brwCtrl.Runtime.enable();
   await brwCtrl.DOM.enable();
