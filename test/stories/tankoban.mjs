@@ -292,18 +292,18 @@ NodeProcess.on('SIGTERM', () => { // Terminate/Kill
   NodeProcess.exit(0);
 });
 
-NodeProcess.on('exit', () => {
+NodeProcess.on('exit', (exCo) => {
   try {
     if (TankobanServer && TankobanServer.listening) {
       TankobanServer.closeAllConnections();
     }
 
     NodeFS.rmdir(util.tmpDir).then(() => {
-      NodeProcess.exit(0);
+      NodeProcess.exit(exCo);
     }, () => {
-      NodeProcess.exit(0);
+      NodeProcess.exit(exCo);
     });
-  } catch { NodeProcess.exit(0); }
+  } catch { NodeProcess.exit(exCo); }
 
 });
 
