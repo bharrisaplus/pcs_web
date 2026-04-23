@@ -1,5 +1,6 @@
 /**
  * @import {Hand} from '../../source/behavior/_meta/_typedefs.mjs';
+ * @import {dealerFingers} from '../../source/behavior/hands/dealer.hand.mjs'
  */
 
 import { default as NodeCrypto } from 'node:crypto';
@@ -42,7 +43,7 @@ const
 
     return {
       freshModule: moduleImport.default,
-      moduleFingers: wFingers ? moduleImport.fingers : null,
+      freshFingers: wFingers ? moduleImport.getFingers : null,
       moduleConsole: mockConsole,
       moduleWindow: mockWindow,
       moduleDoc: mockDoc,
@@ -260,25 +261,42 @@ test('pcs:hand:dealer:mixUp should return non-shuffled', async (swear) => {
 
 test('pcs:hand:dealer:fingers:jitter_bugs should maybe return pseudo random numbers', async (swear) => {
   let bonafiedResult = [];
-  const impMeta = await getImport(true);
+  const
+    impMeta = await getImport(true),
+    /** @type {dealerFingers} */
+    dealerHandFingers = impMeta.freshFingers();
 
 
-  bonafiedResult.push(typeof impMeta.moduleFingers.jitter_bugs == 'function');
-  bonafiedResult.push(typeof impMeta.moduleFingers.ndpf == 'function');
+  bonafiedResult.push(dealerHandFingers.jitter_bugs());
+  bonafiedResult.push(dealerHandFingers.jitter_bugs());
 
-  swear.plan(2);
-  swear.ok(bonafiedResult[0], "Has finger method");
-  swear.ok(bonafiedResult[1], "Has finger method");
+  tdClr();
+  impMeta.freshModule = null;
+  impMeta.freshFingers = null;
+
+
+  swear.plan(3);
+  swear.ok(bonafiedResult[0].toString() != bonafiedResult[1].toString(), "no correlation between results");
+  swear.ok(bonafiedResult[0].length <= 13, "has correct number of elements");
+  swear.ok(bonafiedResult[0].length <= 13, "has correct number of elements");
 });
 
 
 test('pcs:hand:dealer:fingers:ndpf should maybe return transposed cards', async (swear) => {
   let bonafiedResult = [];
-  const impMeta = await getImport(true);
+  const
+    impMeta = await getImport(true),
+    /** @type {dealerFingers} */
+    dealerHandFingers = impMeta.freshFingers();
 
 
-  bonafiedResult.push(typeof impMeta.moduleFingers.jitter_bugs == 'function');
-  bonafiedResult.push(typeof impMeta.moduleFingers.ndpf == 'function');
+  bonafiedResult.push(typeof dealerHandFingers.jitter_bugs == 'function');
+  bonafiedResult.push(typeof dealerHandFingers.ndpf == 'function');
+
+  tdClr();
+  impMeta.freshModule = null;
+  impMeta.freshFingers = null;
+
 
   swear.plan(2);
   swear.ok(bonafiedResult[0], "Has finger method");
