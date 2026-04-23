@@ -18,7 +18,7 @@ tasks:
   spec_all:
     aliases: ["specal"]
     vars:
-      INCL_SPECS: '{dealer_hand,deck_bank,egress_hand,host_shuttle,misc_had,scribe_had}'
+      INCL_SPECS: '{dealer_hand,deck_bank,egress_hand,host_shuttle,misc_hand,scribe_hand}'
       SPEC_GLOB: '{{.PROJECT_DIR}}/test/specs/{{.INCL_SPECS}}.spec.mjs'
     cmds:
       - pnpm tape {{.SPEC_GLOB}} | pnpm tap-spec
@@ -80,7 +80,7 @@ tasks:
   spec_all_cov:
     aliases: ["specalov"]
     vars:
-      INCL_SPECS: '{dealer_hand,deck_bank,egress_hand,host_shuttle,misc_had,scribe_had}'
+      INCL_SPECS: '{dealer_hand,deck_bank,egress_hand,host_shuttle,misc_hand,scribe_hand}'
       SPEC_GLOB: '{{.PROJECT_DIR}}/test/specs/{{.INCL_SPECS}}.spec.mjs'
       C8_CONFIG: '{{.PROJECT_DIR}}/test/c8rc.spec.json'
     cmds:
@@ -98,7 +98,7 @@ tasks:
   spec_all_lcov:
     aliases: ["specallcov"]
     vars:
-      INCL_SPECS: '{dealer_hand,deck_bank,egress_hand,host_shuttle,misc_had,scribe_had}'
+      INCL_SPECS: '{dealer_hand,deck_bank,egress_hand,host_shuttle,misc_hand,scribe_hand}'
       SPEC_GLOB: '{{.PROJECT_DIR}}/test/specs/{{.INCL_SPECS}}.spec.mjs'
       C8_CONFIG: '{{.PROJECT_DIR}}/test/c8rc.spec.json'
     cmds:
