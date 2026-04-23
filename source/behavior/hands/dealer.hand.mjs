@@ -7,13 +7,6 @@ import { default as _g } from '../_meta/_glods.mjs';
 import { default as appLogger } from './scribe.hand.mjs';
 
 
-
-/**
- * @typedef {Object} dealerFingers
- * @property {function(number=, number=) :number[]} jitter_bugs
- * @property {function(number[], number[]) :number[]} ndpf
- */
-
 /** @type {dealerFingers["jitter_bugs"]} */
 const jitter_bugs = (max = _g.c_Max, uBound = 13) => {
   let
@@ -182,3 +175,9 @@ export default makeDealerHand;
 /** @return {dealerFingers} */
 export const getFingers = () => Object.freeze({ jitter_bugs, ndpf });
 export const debugName = 'pcs:hand:dealer';
+
+/**
+ * @typedef {Object} dealerFingers
+ * @property {function(number=, number=) :number[]} jitter_bugs
+ * @property {function(number[], number[]) :number[]} ndpf
+ */
