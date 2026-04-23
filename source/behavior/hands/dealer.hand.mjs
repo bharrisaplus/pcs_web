@@ -7,6 +7,22 @@ import { default as _g } from '../_meta/_glods.mjs';
 import { default as appLogger } from './scribe.hand.mjs';
 
 
+const jitter_bugs = () => {
+  return [0,1,2,3];
+};
+
+
+const ndpf = (/** @type {number[]} */ cardList, /** @type {number[]} */ lucky_nums ) => {
+  let result = Array.from(cardList);
+
+  if (lucky_nums.length > 13) { return result; }
+
+  result.push(result.shift());
+
+  return result;
+};
+
+
 /** @return {Hand.Dealer} a helper for cards - {@link Hand.Dealer} */
 const makeDealerHand = () => {
   /**
@@ -119,4 +135,5 @@ const makeDealerHand = () => {
 
 
 export default makeDealerHand;
+export const fingers = { jitter_bugs, ndpf }
 export const debugName = 'pcs:hand:dealer';

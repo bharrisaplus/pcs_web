@@ -22,7 +22,8 @@ const
     }
   },
 
-  getImport = async () => {
+  getImport = async (wFingers = false) => {
+    let moduleImport;
     const
       _mockHTML = `<!doctype html><html><body></body></html>`,
       _mockScribe = tdObj(['issuelog']),
@@ -37,8 +38,11 @@ const
 
     await tdSwapEsm(modulePaths.hands.scribe, null, _mockScribe);
 
+    moduleImport = await import(`${modulePaths.hands.dealer}?v=${NodeCrypto.randomUUID()}`);
+
     return {
-      freshModule: (await import(`${modulePaths.hands.dealer}?v=${NodeCrypto.randomUUID()}`)).default,
+      freshModule: moduleImport.default,
+      moduleFingers: wFingers ? moduleImport.fingers : null,
       moduleConsole: mockConsole,
       moduleWindow: mockWindow,
       moduleDoc: mockDoc,
@@ -251,4 +255,32 @@ test('pcs:hand:dealer:mixUp should return non-shuffled', async (swear) => {
   swear.plan(2);
   swear.isEqual(bonafiedExpln.callCount, 3, 'Should log issues');
   swear.isEqual((bonafiedResult.flat()).length, 0, 'Should be blank');
+});
+
+
+test('pcs:hand:dealer:fingers:jitter_bugs should maybe return pseudo random numbers', async (swear) => {
+  let bonafiedResult = [];
+  const impMeta = await getImport(true);
+
+
+  bonafiedResult.push(typeof impMeta.moduleFingers.jitter_bugs == 'function');
+  bonafiedResult.push(typeof impMeta.moduleFingers.ndpf == 'function');
+
+  swear.plan(2);
+  swear.ok(bonafiedResult[0], "Has finger method");
+  swear.ok(bonafiedResult[1], "Has finger method");
+});
+
+
+test('pcs:hand:dealer:fingers:ndpf should maybe return transposed cards', async (swear) => {
+  let bonafiedResult = [];
+  const impMeta = await getImport(true);
+
+
+  bonafiedResult.push(typeof impMeta.moduleFingers.jitter_bugs == 'function');
+  bonafiedResult.push(typeof impMeta.moduleFingers.ndpf == 'function');
+
+  swear.plan(2);
+  swear.ok(bonafiedResult[0], "Has finger method");
+  swear.ok(bonafiedResult[1], "Has finger method");
 });
