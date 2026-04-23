@@ -67,3 +67,15 @@ tasks:
   nitSheet:
     cmds:
       - pnpm stylelint -c {{.PROJECT_DIR}}/stylelint.config.mjs {{.CLI_ARGS}} --quiet-deprecation-warnings
+
+  sechkprjc:
+    silent: true
+    cmds:
+      - echo "To run a snyk test (be sure to setup/authenticate snyk first):"
+      - echo "snyk test --package-manager=pnpm --file=pnpm-lock.yaml --remote-repo-url="https://github.com/bharrisaplus/pcs_web.git" --prune-repeated-subdependencies --source-dir=./source/behavior --org="
+
+  sechksrc:
+    silent: true
+    cmds:
+      - echo "To run a snyk code test (be sure to setup/authenticate snyk first):"
+      - echo "snyk code test --report --project-name=pcs_web --target-reference=\"$(git branch --show-current)\" --remote-repo-url=\"https://github.com/bharrisaplus/pcs_web\" --org="
