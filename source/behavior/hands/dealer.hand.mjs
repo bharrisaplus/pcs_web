@@ -50,10 +50,16 @@ const jitter_bugs = (max = _g.c_Max, uBound = 13) => {
 
 /** @type {dealerFingers["ndpf"]} */
 const ndpf = (/** @type {number[]} */ cardList, /** @type {number[]} */ lucky_nums ) => {
-  let result = Array.from(cardList);
+  /** @type {number[]} */
+  let result;
 
-  if (lucky_nums.length > 13) { return result; }
+  if (!Array.isArray(lucky_nums) || !Array.isArray(cardList)) {
+    result = [];
+    return result;
+  }
 
+  // TODO: swap positions of cards at lucky_nums
+  result = Array.from(cardList);
   result.push(result.shift());
 
   return result;
