@@ -7,11 +7,55 @@ import { default as _g } from '../_meta/_glods.mjs';
 import { default as appLogger } from './scribe.hand.mjs';
 
 
-const jitter_bugs = () => {
-  return [0,1,2,3];
+
+/**
+ * @typedef {Object} dealerFingers
+ * @property {function(number=, number=) :number[]} jitter_bugs
+ * @property {function(number[], number[]) :number[]} ndpf
+ */
+
+/** @type {dealerFingers["jitter_bugs"]} */
+const jitter_bugs = (max = _g.c_Max, uBound = 13) => {
+  let
+    /** @type {Uint8ClampedArray<ArrayBuffer>} */
+    bunchaNums,
+    /** @type {Uint8ClampedArray<ArrayBuffer>} */
+    someNums,
+    /** @type {Uint8ClampedArray<ArrayBuffer>} */
+    moreNums,
+    /** @type {Uint8ClampedArray<ArrayBuffer>} */
+    otherNums,
+    /** @type {number[]} */
+    result;
+
+
+  if (!Number.isInteger(max)|| !Number.isInteger(uBound)) {
+    result = [Math.random() * _g.c_Max];
+    return result;
+  }
+
+  result = Array(uBound).fill(0);
+  bunchaNums = new Uint8ClampedArray(Math.ceil(uBound / 4)),
+  someNums = new Uint8ClampedArray(Math.ceil(uBound / 4)),
+  moreNums = new Uint8ClampedArray(Math.ceil(uBound / 4)),
+  otherNums = new Uint8ClampedArray(Math.ceil(uBound / 4));
+
+  globalThis.crypto.getRandomValues(bunchaNums);
+  globalThis.crypto.getRandomValues(someNums);
+  globalThis.crypto.getRandomValues(moreNums);
+  globalThis.crypto.getRandomValues(otherNums);
+
+  result = Array.from([bunchaNums, someNums, moreNums, otherNums], (_nums) => _nums.values().toArray() )
+    .flat()
+    .filter((_num) => { return _num <= max || Math.floor(_num / 10) <= max })
+    .map((_num) => { return _num <= max ? _num : Math.floor(_num / max) });
+
+  result = (new Set(result)).values().toArray();
+
+  return result.slice(0, uBound);
 };
 
-
+/** @type {dealerFingers["ndpf"]} */
 const ndpf = (/** @type {number[]} */ cardList, /** @type {number[]} */ lucky_nums ) => {
   let result = Array.from(cardList);
 
@@ -135,5 +179,6 @@ const makeDealerHand = () => {
 
 
 export default makeDealerHand;
-export const fingers = { jitter_bugs, ndpf }
+/** @return {dealerFingers} */
+export const getFingers = () => Object.freeze({ jitter_bugs, ndpf });
 export const debugName = 'pcs:hand:dealer';
