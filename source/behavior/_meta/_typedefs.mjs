@@ -154,6 +154,14 @@
  * @memberof Hand
  */
 
+
+/**
+ * @typedef {Object} Hand.dealerFingers
+ * @property {function(number=, number=) :number[]} jitter_bugs
+ * @property {function(number[], number[]) :number[]} ndpf
+ * @memberof Hand
+ */
+
 /**
  * @typedef {Object} Hand.Egress
  * Exports

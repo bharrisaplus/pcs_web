@@ -7,7 +7,7 @@ import { default as _g } from '../_meta/_glods.mjs';
 import { default as appLogger } from './scribe.hand.mjs';
 
 
-/** @type {dealerFingers["jitter_bugs"]} */
+/** @type {Hand.dealerFingers["jitter_bugs"]} */
 const jitter_bugs = (max = _g.c_Max, uBound = 13) => {
   let
     /** @type {Uint8ClampedArray<ArrayBuffer>} */
@@ -48,8 +48,8 @@ const jitter_bugs = (max = _g.c_Max, uBound = 13) => {
   return result.slice(0, uBound);
 };
 
-/** @type {dealerFingers["ndpf"]} */
-const ndpf = (/** @type {number[]} */ cardList, /** @type {number[]} */ luckyNums ) => {
+/** @type {Hand.dealerFingers["ndpf"]} */
+const ndpf = (cardList, luckyNums ) => {
   let
     /** @type {number[]} */
     lottoNums = [],
@@ -199,12 +199,6 @@ const makeDealerHand = () => {
 
 
 export default makeDealerHand;
-/** @return {dealerFingers} */
+/** @return {Hand.dealerFingers} */
 export const getFingers = () => Object.freeze({ jitter_bugs, ndpf });
 export const debugName = 'pcs:hand:dealer';
-
-/**
- * @typedef {Object} dealerFingers
- * @property {function(number=, number=) :number[]} jitter_bugs
- * @property {function(number[], number[]) :number[]} ndpf
- */

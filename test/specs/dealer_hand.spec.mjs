@@ -1,6 +1,5 @@
 /**
  * @import {Hand} from '../../source/behavior/_meta/_typedefs.mjs';
- * @import {dealerFingers} from '../../source/behavior/hands/dealer.hand.mjs'
  */
 
 import { default as NodeCrypto } from 'node:crypto';
@@ -263,7 +262,7 @@ test('pcs:hand:dealer:fingers:jitter_bugs should maybe return pseudo random numb
   let bonafiedResult = [];
   const
     impMeta = await getImport(true),
-    /** @type {dealerFingers} */
+    /** @type {Hand.dealerFingers} */
     dealerHandFingers = impMeta.freshFingers();
 
 
@@ -294,7 +293,7 @@ test('pcs:hand:dealer:fingers:ndpf should return transposed cards', async (swear
       [3,5,2]
     ],
     impMeta = await getImport(true),
-    /** @type {dealerFingers} */
+    /** @type {Hand.dealerFingers} */
     dealerHandFingers = impMeta.freshFingers();
 
 
@@ -326,7 +325,7 @@ test('pcs:hand:dealer:fingers:ndpf should handle bad inputs', async (swear) => {
     '3,5,2'
     ],
     impMeta = await getImport(true),
-    /** @type {dealerFingers} */
+    /** @type {Hand.dealerFingers} */
     dealerHandFingers = impMeta.freshFingers();
 
 
