@@ -49,18 +49,39 @@ const jitter_bugs = (max = _g.c_Max, uBound = 13) => {
 };
 
 /** @type {dealerFingers["ndpf"]} */
-const ndpf = (/** @type {number[]} */ cardList, /** @type {number[]} */ lucky_nums ) => {
-  /** @type {number[]} */
-  let result;
+const ndpf = (/** @type {number[]} */ cardList, /** @type {number[]} */ luckyNums ) => {
+  let
+    /** @type {number[]} */
+    lottoNums = [],
+    /** @type {number[]} */
+    result;
 
-  if (!Array.isArray(lucky_nums) || !Array.isArray(cardList)) {
+  if (
+    !Array.isArray(luckyNums) || luckyNums.length == 0 ||
+    !Array.isArray(cardList) || cardList.length == 0
+  ) {
     result = [];
     return result;
   }
 
-  // TODO: swap positions of cards at lucky_nums
   result = Array.from(cardList);
-  result.push(result.shift());
+  lottoNums = (new Set(luckyNums).values().toArray());
+
+  for (let _idx = lottoNums.length - 1; _idx > -1; _idx-=2) {
+    const
+      pivot = lottoNums[_idx],
+      nxtpivot = lottoNums[_idx == 0 ? null : _idx-1],
+      hold = result[pivot];
+  
+    if (_idx > 0) {
+      result[pivot] = result[nxtpivot];
+      result[nxtpivot] = hold;
+    } else {
+      result[pivot] = result.pop();
+
+      result.push(hold);
+    }
+  }
 
   return result;
 };
