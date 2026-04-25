@@ -282,16 +282,24 @@ test('pcs:hand:dealer:fingers:jitter_bugs should maybe return pseudo random numb
 });
 
 
-test('pcs:hand:dealer:fingers:ndpf should maybe return transposed cards', async (swear) => {
+test('pcs:hand:dealer:fingers:ndpf should return transposed cards', async (swear) => {
   let bonafiedResult = [];
   const
+    swearCardLists = [
+      [0,1,2,3,4,5],
+      [30,29,28,27,26,25]
+    ],
+    swearLuckyNums = [
+      [3],
+      [3,5,2]
+    ],
     impMeta = await getImport(true),
     /** @type {dealerFingers} */
     dealerHandFingers = impMeta.freshFingers();
 
 
-  bonafiedResult.push(typeof dealerHandFingers.jitter_bugs == 'function');
-  bonafiedResult.push(typeof dealerHandFingers.ndpf == 'function');
+  bonafiedResult.push(dealerHandFingers.ndpf(swearCardLists[0], swearLuckyNums[0]));
+  bonafiedResult.push(dealerHandFingers.ndpf(swearCardLists[1], swearLuckyNums[1]));
 
   tdClr();
   impMeta.freshModule = null;
@@ -299,6 +307,46 @@ test('pcs:hand:dealer:fingers:ndpf should maybe return transposed cards', async 
 
 
   swear.plan(2);
-  swear.ok(bonafiedResult[0], "Has finger method");
-  swear.ok(bonafiedResult[1], "Has finger method");
+  swear.same(bonafiedResult[0].toString(), "0,1,2,5,4,3", "swapped as expected");
+  swear.same(bonafiedResult[1].toString(), "30,29,25,28,26,27",  "swapped as expected");
+});
+
+
+test('pcs:hand:dealer:fingers:ndpf should handle bad inputs', async (swear) => {
+  let bonafiedResult = [];
+  const
+    swearCardLists = [
+      [5,6,7,8,9],
+      [],
+      10
+    ],
+    swearLuckyNums = [
+      [1],
+      [],
+    '3,5,2'
+    ],
+    impMeta = await getImport(true),
+    /** @type {dealerFingers} */
+    dealerHandFingers = impMeta.freshFingers();
+
+
+  // @ts-ignore
+  bonafiedResult.push(dealerHandFingers.ndpf(swearCardLists[0], swearLuckyNums[1]));
+  // @ts-ignore
+  bonafiedResult.push(dealerHandFingers.ndpf(swearCardLists[0], swearLuckyNums[2]));
+  // @ts-ignore
+  bonafiedResult.push(dealerHandFingers.ndpf(swearCardLists[1], swearLuckyNums[0]));
+  // @ts-ignore
+  bonafiedResult.push(dealerHandFingers.ndpf(swearCardLists[2], swearLuckyNums[0]));
+
+  tdClr();
+  impMeta.freshModule = null;
+  impMeta.freshFingers = null;
+
+
+  swear.plan(4);
+  swear.same(bonafiedResult[0].toString(), "", "empty array as expected");
+  swear.same(bonafiedResult[1].toString(), "",  "empty array as expected");
+  swear.same(bonafiedResult[2].toString(), "", "empty array as expected");
+  swear.same(bonafiedResult[3].toString(), "", "empty array as expected");
 });
