@@ -56,10 +56,7 @@ const ndpf = (cardList, luckyNums ) => {
     /** @type {number[]} */
     result;
 
-  if (
-    !Array.isArray(luckyNums) || luckyNums.length == 0 ||
-    !Array.isArray(cardList) || cardList.length == 0
-  ) {
+  if (!Array.isArray(luckyNums) || !Array.isArray(cardList) || cardList.length == 0) {
     result = [];
     return result;
   }
@@ -72,7 +69,7 @@ const ndpf = (cardList, luckyNums ) => {
       pivot = lottoNums[_idx],
       nxtpivot = lottoNums[_idx == 0 ? null : _idx-1],
       hold = result[pivot];
-  
+
     if (_idx > 0) {
       result[pivot] = result[nxtpivot];
       result[nxtpivot] = hold;
