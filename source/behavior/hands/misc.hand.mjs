@@ -95,7 +95,7 @@ const makeMiscHand = () => {
           }
         }
       } else {
-        appLogger.devlog(`Unknown asset type from ${assetUrl}`, {assetGrab, assetCheck, assetBlob});
+        appLogger.devlog(`Unknown file type from asset @ ${assetUrl}`, {assetGrab, assetCheck, assetBlob});
       }
     }
 

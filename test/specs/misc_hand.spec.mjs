@@ -230,7 +230,7 @@ test("pcs:hand:misc:warmUp should have issues cont'd", async (swear) => {
   swear.isEqual(bonafiedExplntns[0].callCount, 1, "log dev");
   swear.isEqual(bonafiedExplntns[1].callCount, 2, "log issue");
   swear.isEqual(bonafiedExplntns[2].callCount, 3, "grab file");
-  swear.isEqual(bonafiedExplntns[0].calls[0].args[0], `Unknown asset type from ${swearGrabUrl}`,
+  swear.isEqual(bonafiedExplntns[0].calls[0].args[0], `Unknown file type from asset @ ${swearGrabUrl}`,
     "correct args for log dev"
   );
   swear.isEqual(bonafiedExplntns[1].calls[0].args[0], `Missing asset from ${swearGrabUrl}`,
