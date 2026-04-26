@@ -14,6 +14,10 @@ declare global {
     addEventListener(type: string, listener: EventListenerOrCustomEventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
   }
 
+  interface DOMParser {
+      parseFromString(string: string, type: DOMParserSupportedType | string): Document;
+  }
+
   // See /build/manifest.mjs
   type BuildGlobals = {
     project_path: string;

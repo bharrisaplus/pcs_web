@@ -45,7 +45,8 @@ const makeMiscHand = () => {
       let
         assetUrl,
         assetBlob,
-        assetInnards;
+        assetInnards,
+        assetDoc;
 
       if ($assetDump.querySelectorAll(assetCheck).length > 0) {
         appLogger.devlog(`Found ${assetCheck} asset inlined already`);
@@ -77,11 +78,22 @@ const makeMiscHand = () => {
       }
 
       if (assetUrl.endsWith('.svg') || assetUrl.endsWith('.html') || assetUrl.endsWith('.xml')) {
-        appLogger.devlog('Loading asset', {assetUrl, assetDump});
-        $assetDump.appendChild(
-          assetParser.parseFromString(assetInnards, assetBlob.type.split(';')[0]).firstChild
-        );
-        loadCount++;
+        try {
+          assetDoc = assetParser.parseFromString(assetInnards, assetBlob.type.split(';')[0]).documentElement;
+        } catch (pErr) {
+          assetDoc = null;
+          appLogger.issuelog('Issue loading asset', {assetGrab, assetCheck, assetBlob}, pErr, true);
+        }
+
+        if (assetDoc) {
+          if (assetDoc.matches(assetCheck)) {
+            $assetDump.appendChild(assetDoc);
+            loadCount++;
+            appLogger.devlog('Loading asset', {assetUrl, assetDump});
+          } else {
+            appLogger.devlog(`Asset not found within fetched document:`, {assetGrab, assetCheck, assetBlob});
+          }
+        }
       } else {
         appLogger.devlog(`Unknown asset type from ${assetUrl}`, {assetGrab, assetCheck, assetBlob});
       }
