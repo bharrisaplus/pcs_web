@@ -160,29 +160,51 @@ const makeDealerHand = () => {
    */
   const pcs_shuffle = (cardList, positionList) => {
     let
+      /** @type {number[]} */
       card_sample,
+      /** @type {number[]} */
       position_sample,
+      /** @type {number[]} */
       result;
 
-    if (cardList.length > 0 && cardList.length <= _g.c_Max && cardList.length === positionList.length) {
-      result = Array(cardList.length).fill(0);
-      card_sample = chance.pickset(cardList, cardList.length);
-      position_sample = chance.pickset(positionList, positionList.length);
 
-      for (let _ = 0; _ < positionList.length; _++) {
-        const
-          _card_idx = Math.floor(Math.random() * card_sample.length),
-          _pos_idx = Math.floor(Math.random() * position_sample.length);
+    if (!Array.isArray(cardList) || !Array.isArray(positionList)) {
+      appLogger.issuelog("Can't shuffle non array", {cardList, positionList}, null, false);
+      result = [];
 
-        result[position_sample[_pos_idx]] = card_sample[_card_idx];
+      return result;
+    }
 
-        card_sample.splice(_card_idx, 1);
-        position_sample.splice(_pos_idx, 1);
-      }
-    } else {
+    if (cardList.length == 0) {
+      appLogger.issuelog("Can't shuffle empty array", {cardList, positionList}, null, false);
+      result = [];
+
+      return result;
+    }
+
+    if (cardList.length > _g.c_Max || cardList.length != positionList.length) {
       appLogger.issuelog("Can't shuffle mismatched array size", {cardList, positionList}, null, false);
       result = [];
+
+      return result;
     }
+
+
+    result = Array(cardList.length).fill(0);
+    card_sample = ndpf(cardList, jitter_bugs());
+    position_sample = ndpf(positionList, jitter_bugs());
+
+    for (let _ = 0; _ < positionList.length; _++) {
+      const
+        _card_idx = Math.floor(Math.random() * card_sample.length),
+        _pos_idx = Math.floor(Math.random() * position_sample.length);
+
+      result[position_sample[_pos_idx]] = card_sample[_card_idx];
+
+      card_sample.splice(_card_idx, 1);
+      position_sample.splice(_pos_idx, 1);
+    }
+
 
     return result;
   };
