@@ -280,7 +280,36 @@ test('pcs:hand:dealer:fingers:jitter_bugs should maybe return pseudo random numb
   swear.plan(3);
   swear.ok(bonafiedResult[0].toString() != bonafiedResult[1].toString(), "no correlation between results");
   swear.ok(bonafiedResult[0].length <= 13, "has correct number of elements");
-  swear.ok(bonafiedResult[0].length <= 13, "has correct number of elements");
+  swear.ok(bonafiedResult[1].length <= 13, "has correct number of elements");
+});
+
+
+test('pcs:hand:dealer:fingers:jitter_bugs should handle bad inputs', async (swear) => {
+  let bonafiedResult = [];
+  const
+    swearMaxs = [52, '52'],
+    swearUBounds = [13, '13'],
+    impMeta = await getImport(true),
+    /** @type {Hand.dealerFingers} */
+    dealerHandFingers = impMeta.freshFingers();
+
+
+  // @ts-ignore
+  bonafiedResult.push(dealerHandFingers.jitter_bugs(swearMaxs[0], swearUBounds[1]));
+  // @ts-ignore
+  bonafiedResult.push(dealerHandFingers.jitter_bugs(swearMaxs[1], swearUBounds[0]));
+
+  tdClr();
+  impMeta.freshModule = null;
+  impMeta.freshFingers = null;
+
+
+  swear.plan(5);
+  swear.ok(bonafiedResult[0].toString() != bonafiedResult[1].toString(), "no correlation between results");
+  swear.ok(bonafiedResult[0].length == 1, "has correct number of elements");
+  swear.ok(bonafiedResult[0][0] <= 52, "has correct number of elements");
+  swear.ok(bonafiedResult[1].length == 1, "has correct number of elements");
+  swear.ok(bonafiedResult[1][0] <= 52, "has correct number of elements");
 });
 
 
