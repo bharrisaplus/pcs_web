@@ -220,10 +220,15 @@ test('pcs:hand:dealer:mixUp should return non-shuffled', async (swear) => {
 
   dealerHand = impMeta.freshModule();
 
-  for (let chkIdx = 0; chkIdx < swearCardLists.length; chkIdx++) {
-    // @ts-ignore
-    bonafiedResult.push(dealerHand.mixUp(swearCardLists[chkIdx], swearPosLists[chkIdx]));
-  }
+
+  // @ts-ignore
+  bonafiedResult.push(dealerHand.mixUp(swearCardLists[0], swearPosLists[0]));
+  // @ts-ignore
+  bonafiedResult.push(dealerHand.mixUp(swearCardLists[0], swearPosLists[1]));
+  // @ts-ignore
+  bonafiedResult.push(dealerHand.mixUp(swearCardLists[1], swearPosLists[1]));
+  // @ts-ignore
+  bonafiedResult.push(dealerHand.mixUp(swearCardLists[2], swearPosLists[2]));
 
   bonafiedExpln = tdExpln(impMeta.moduleLogger.issuelog);
 
@@ -233,7 +238,7 @@ test('pcs:hand:dealer:mixUp should return non-shuffled', async (swear) => {
 
 
   swear.plan(2);
-  swear.isEqual(bonafiedExpln.callCount, 3, 'Should log issues');
+  swear.isEqual(bonafiedExpln.callCount, 4, 'Should log issues');
   swear.isEqual((bonafiedResult.flat()).length, 0, 'Should be blank');
 });
 
