@@ -176,8 +176,12 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
 
   /** @param {PCSEvent} _pcsevt */ 
   const maybe_mix_items = (_pcsevt) => {
-    /** @type {CardIntri[]} */
-    let mixList = [];
+    
+    let
+      /** @type {number[]} */
+      mixItems,
+      /** @type {CardIntri[]} */
+      mixList = [];
     /** @type {HTMLButtonElement} */
     const $panelMix = document.querySelector(panel.mingleBtn);
 
@@ -186,7 +190,14 @@ const scaffoldLandingLattice = (tableauID, turntableID, ribbonID, exportBaseID, 
       return;
     }
 
-    itemVault.updateCards(shark.mixUp(itemVault.cards, itemVault.ndoCards));
+    mixItems = shark.mixUp(itemVault.cards, itemVault.ndoCards);
+
+    if (mixItems.length == 0) {
+      $panelMix.blur();
+      return;
+    }
+
+    itemVault.updateCards(mixItems);
 
     mixList = itemVault.cards.map((_itm, _idx) => {
       return shark.getCard(_idx, itemVault.ndoCards.indexOf(_itm));
