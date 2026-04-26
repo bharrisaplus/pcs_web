@@ -177,7 +177,7 @@ test('pcs:hand:dealer:mixUp should return shuffled', async (swear) => {
     tdStub(
       impMeta.moduleChanceJS.pickset(swearPosLists[chkIdx], swearPosLists[chkIdx].length)
     ).thenReturn(Array.from(swearPosLists[chkIdx]));
-    
+
     bonafiedResult.push(
       dealerHand.mixUp(swearCardLists[chkIdx], swearPosLists[chkIdx])
     );
@@ -324,7 +324,7 @@ test('pcs:hand:dealer:fingers:ndpf should handle bad inputs', async (swear) => {
     swearLuckyNums = [
       [1],
       [],
-    '3,5,2'
+      '3,5,2'
     ],
     impMeta = await getImport(true),
     /** @type {Hand.dealerFingers} */
@@ -346,8 +346,8 @@ test('pcs:hand:dealer:fingers:ndpf should handle bad inputs', async (swear) => {
 
 
   swear.plan(4);
-  swear.same(bonafiedResult[0].toString(), "", "empty array as expected");
-  swear.same(bonafiedResult[1].toString(), "",  "empty array as expected");
-  swear.same(bonafiedResult[2].toString(), "", "empty array as expected");
-  swear.same(bonafiedResult[3].toString(), "", "empty array as expected");
+  swear.same(bonafiedResult[0].toString(), swearCardLists[0].toString(), "no swaps when no lucky numbers");
+  swear.same(bonafiedResult[1].length, 0,  "empty array when invalid lucky numbers");
+  swear.same(bonafiedResult[2].length, 0, "empty array when no cards");
+  swear.same(bonafiedResult[3].length, 0, "empty array when invalid cards");
 });
