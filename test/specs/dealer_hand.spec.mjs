@@ -10,9 +10,9 @@ import {
   replace as tdSwap,
   replaceEsm as tdSwapEsm,
   explain as tdExpln,
-  reset as tdClr,
-  when as tdStub
+  reset as tdClr
 } from 'testdouble';
+
 
 const
   modulePaths = {
@@ -27,13 +27,11 @@ const
     const
       _mockHTML = `<!doctype html><html><body></body></html>`,
       _mockScribe = tdObj(['issuelog']),
-      _mockChance = tdObj(['pickset']),
       { document: _mockDoc, window: _mockWindow } = linkeParse(_mockHTML),
 
       mockConsole = tdSwap(globalThis, 'console', tdObj({})),
       mockWindow = tdSwap(globalThis, 'window', _mockWindow),
-      mockDoc = tdSwap(globalThis, 'document', _mockDoc),
-      mockChance = tdSwap(globalThis, 'chance', _mockChance);
+      mockDoc = tdSwap(globalThis, 'document', _mockDoc);
 
 
     await tdSwapEsm(modulePaths.hands.scribe, null, _mockScribe);
@@ -46,8 +44,7 @@ const
       moduleConsole: mockConsole,
       moduleWindow: mockWindow,
       moduleDoc: mockDoc,
-      moduleLogger: _mockScribe,
-      moduleChanceJS: mockChance
+      moduleLogger: _mockScribe
     }
   };
 
@@ -171,16 +168,7 @@ test('pcs:hand:dealer:mixUp should return shuffled', async (swear) => {
   dealerHand = impMeta.freshModule();
 
   for (let chkIdx = 0; chkIdx < swearCardLists.length; chkIdx++) {
-    tdStub(
-      impMeta.moduleChanceJS.pickset(swearCardLists[chkIdx], swearCardLists[chkIdx].length)
-    ).thenReturn(Array.from(swearCardLists[chkIdx]));
-    tdStub(
-      impMeta.moduleChanceJS.pickset(swearPosLists[chkIdx], swearPosLists[chkIdx].length)
-    ).thenReturn(Array.from(swearPosLists[chkIdx]));
-
-    bonafiedResult.push(
-      dealerHand.mixUp(swearCardLists[chkIdx], swearPosLists[chkIdx])
-    );
+    bonafiedResult.push(dealerHand.mixUp(swearCardLists[chkIdx], swearPosLists[chkIdx]));
   }
 
   bonafiedExpln = tdExpln(impMeta.moduleLogger.issuelog);
@@ -233,19 +221,8 @@ test('pcs:hand:dealer:mixUp should return non-shuffled', async (swear) => {
   dealerHand = impMeta.freshModule();
 
   for (let chkIdx = 0; chkIdx < swearCardLists.length; chkIdx++) {
-    tdStub(
-      impMeta.moduleChanceJS.pickset(swearCardLists[chkIdx], swearCardLists[chkIdx].length)
-    ).thenReturn(Array.from(swearCardLists[chkIdx]));
-
-    tdStub(
-      impMeta.moduleChanceJS.pickset(swearPosLists[chkIdx], swearPosLists[chkIdx].length)
-      // @ts-ignore
-    ).thenReturn(Array.from(swearPosLists[chkIdx]));
-
-    bonafiedResult.push(
-      // @ts-ignore
-      dealerHand.mixUp(swearCardLists[chkIdx], swearPosLists[chkIdx])
-    );
+    // @ts-ignore
+    bonafiedResult.push(dealerHand.mixUp(swearCardLists[chkIdx], swearPosLists[chkIdx]));
   }
 
   bonafiedExpln = tdExpln(impMeta.moduleLogger.issuelog);
