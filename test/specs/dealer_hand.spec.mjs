@@ -305,9 +305,11 @@ test('pcs:hand:dealer:fingers:ndpf should return transposed cards', async (swear
   impMeta.freshFingers = null;
 
 
-  swear.plan(2);
+  swear.plan(4);
   swear.same(bonafiedResult[0].toString(), "0,1,2,5,4,3", "swapped as expected");
+  swear.same(bonafiedResult[0].length, swearCardLists[0].length, "kept all items during swap");
   swear.same(bonafiedResult[1].toString(), "30,29,25,28,26,27",  "swapped as expected");
+  swear.same(bonafiedResult[1].length, swearCardLists[1].length, "kept all items during swap");
 });
 
 
