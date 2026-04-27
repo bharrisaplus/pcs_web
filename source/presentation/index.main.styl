@@ -132,9 +132,11 @@
         box-shadow: @css { 1.5px 1px var(--common-dark-fade); }
         translate: 0 1.5px
 
-    & svg[role="img"]
-        pointer-events: none
 
+#shuffle svg[role="img"],
+#reset button svg[role="img"],
+#claw button svg[role="img"]
+    pointer-events: none
 
 #pageload-curtain
     border-radius: inherit
