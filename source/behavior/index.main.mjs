@@ -10,8 +10,7 @@ import { default as appCustodian } from './hands/misc.hand.mjs';
 import { default as cobbleLanding } from './lattices/landing.lattice.mjs';
 import { default as appStore } from './banks/deck.bank.mjs';
 
-/** @type {HTMLElement} */
-let $repoLink;
+
 const
   bootOverlay = '#pageload-curtain',
   bootOverlaySpinner = '.loading-spinny',
@@ -25,33 +24,34 @@ const
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-  let willRun;
+  /** @type {HTMLElement} */
+  let $repoLink = document.querySelector(`#${_g.appID} > i.ilink`);
   const landingPage = cobbleLanding(cardView, cardOverlay, cardMenu, cardRef, appStore);
 
-  willRun = await appCustodian.startRoutine(preloadThings, preloadDest, bootOverlay, bootOverlaySpinner);
 
-  if (willRun) {
-    window.addEventListener(_g.notices.kick, () => {
-      if (landingPage.hookUp()) {
-        appLogger.devlog("pcs started");
-      } else {
-        appLogger.notilog("pcs won't start");
-      }
-    }, { once: true });
+  window.addEventListener(_g.notices.kick, () => {
+    let hookedUp = landingPage.hookUp();
 
-    $repoLink = document.querySelector(`#${_g.appID} > i.ilink`);
+    if (hookedUp) {
+      appLogger.devlog("pcs started");
+    } else {
+      appLogger.notilog("pcs won't start");
+    }
+  }, { once: true });
 
-    $repoLink?.addEventListener('click', (_clickEvt) => {
-      let _$anchor;
+  appCustodian.startRoutine(preloadThings, preloadDest, bootOverlay, bootOverlaySpinner).then(
+    (bootOK) => { bootOK ? appLogger.devlog("boot successful") : appLogger.notilog("pcs won't start"); },
+    (bootRej) => { appLogger.issuelog("pcs won't start", null, bootRej, true); }
+  );
 
-      if (_clickEvt.target !== $repoLink) { return; }
+  $repoLink.onclick = (_clickEvt) => {
+    let _$anchor;
 
-      _$anchor = document.createElement('a');
-      _$anchor.setAttribute('href', "https://github.com/bharrisaplus/pcs_web");
-      _$anchor.setAttribute('target', '_blank');
-      _$anchor.click();
-    })
-  } else {
-    appLogger.notilog("pcs won't start");
+    if (_clickEvt.target !== $repoLink) { return; }
+
+    _$anchor = document.createElement('a');
+    _$anchor.setAttribute('href', "https://github.com/bharrisaplus/pcs_web");
+    _$anchor.setAttribute('target', '_blank');
+    _$anchor.click();
   }
 });
