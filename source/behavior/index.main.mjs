@@ -25,7 +25,7 @@ const
 
 document.addEventListener('DOMContentLoaded', async () => {
   /** @type {HTMLElement} */
-  let $repoLink = document.querySelector(`#${_g.appID} > i.ilink`);
+  let $repoLink = document.querySelector(`#repolink`);
   const landingPage = cobbleLanding(cardView, cardOverlay, cardMenu, cardRef, appStore);
 
 

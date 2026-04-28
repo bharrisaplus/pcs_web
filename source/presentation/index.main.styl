@@ -23,7 +23,7 @@
     &:has(#notifications:popover-open) #ribbon,
     &:has(#notifications:popover-open) #tableau,
     &:has(#notifications:popover-open) #tableau,
-    &:has(#notifications:popover-open) i.ilink,
+    &:has(#notifications:popover-open) #repolink,
     &:has(main :popover-open) #ribbon
         cursor: default
         pointer-events: none
@@ -33,12 +33,12 @@
         cursor: default
         pointer-events: none
 
-    & i.ilink
-        display: inline
-        opacity: 0.2
-        cursor: help
-        content: ellipsis_mark()
 
+#repolink
+    display: inline
+    opacity: 0.2
+    cursor: help
+    content: ellipsis_mark()
 
 #title-marquee
     user-select: none
@@ -346,7 +346,7 @@
  */
 
 @media (hover: hover)
-    #pcs-shell i.ilink:hover
+    #repolink:hover
         opacity: 0.3
 
     #ribbon
