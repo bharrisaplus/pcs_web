@@ -33,13 +33,26 @@ $card-wspace = $card-width * 0.25
         display: none
 
 
+#qhelp,
 #repolink
-    height: 24px
+    height: 1rem
+    max-height: 1rem
     aspect-ratio: 1/1
     position: fixed
+
+    & svg
+        pointer-events: none
+
+
+#qhelp
+    top: 1rem
+    right: 1rem
+    background: transparent
+    cursor: pointer
+
+#repolink
     bottom: 0
     left: calc(50% - 24px)
-    opacity: 0.1
 
 #ribbon
     display: flex
