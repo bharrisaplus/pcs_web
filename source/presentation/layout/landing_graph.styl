@@ -296,6 +296,13 @@ $card-wspace = $card-width * 0.25
             text-overflow: ellipsis
 
 
+#icon-help
+    border-width: 2px
+    border-style: solid
+    border-radius: 9px
+    outline-width: 0
+
+
 /*
     Ancestor/Parent responsive styles
  */
@@ -355,3 +362,19 @@ $card-wspace = $card-width * 0.25
 
     #notifications
         bottom: 25%
+
+
+@media (orientation: landscape)
+    #icon-help img
+        height: 50vh
+        max-height: 50vh
+        aspect-ratio: 2/1
+        background-image: url("widehelp.svg")
+
+
+@media (orientation: portrait)
+    #icon-help img
+        height: 75vh
+        max-height: 75vh
+        aspect-ratio: 1/2
+        background-image: url("portraithelp.svg")

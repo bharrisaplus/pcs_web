@@ -20,13 +20,17 @@ const
   cardRef = '#card-sheet',
   preloadDest = ".inline-svg-assets-here",
   /** @type {VerifynLoad} */
-  preloadThings = new Map([["#card-sot", cardRef]]);
+  preloadThings = new Map([["#card-sot", cardRef]]),
+  helpSelector = "#helpdialog";
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-  /** @type {HTMLElement} */
-  let $repoLink = document.querySelector(`#repolink`);
-  const landingPage = cobbleLanding(cardView, cardOverlay, cardMenu, cardRef, appStore);
+  const
+    /** @type {HTMLElement} */
+    $repoLink = document.querySelector(`#repolink`),
+    $helpBtn = document.querySelector(`#qhelp`),
+    $helpRef = document.querySelector(helpSelector),
+    landingPage = cobbleLanding(cardView, cardOverlay, cardMenu, cardRef, appStore);
 
 
   window.addEventListener(_g.notices.kick, () => {
@@ -54,4 +58,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     _$anchor.setAttribute('target', '_blank');
     _$anchor.click();
   }
+
+  $helpBtn.onclick = (_clickEvt) => {
+    let $hlpDlg;
+
+    if (_clickEvt.target !== $helpBtn) { return; }
+
+    $hlpDlg = document.importNode($helpRef.content, true)?.querySelector('#icon-help');
+
+    if (!$hlpDlg) { return; }
+
+    $hlpDlg.onclose = () => {
+      $hlpDlg?.remove();
+      $helpBtn.disabled = true;
+
+      window.setTimeout(() => {
+        $helpBtn.disabled = true;
+      }, 1500);
+    }
+
+    document.body.appendChild($hlpDlg);
+    $hlpDlg.showModal();
+  };
 });
