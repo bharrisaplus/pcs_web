@@ -15,7 +15,7 @@ let
   /** @type {HTMLElement} */
   $repoLink,
   /** @type {HTMLButtonElement} */
-  $helpBtn,
+  $helpOpn,
   /** @type {HTMLTemplateElement} */
   $helpRef,
   /** @type {Lattice.Landing} */
@@ -35,7 +35,7 @@ const
 
 document.addEventListener('DOMContentLoaded', async () => {
   $repoLink = document.querySelector(`#repolink`);
-  $helpBtn = document.querySelector(`#qhelp`);
+  $helpOpn = document.querySelector(`#qhelp`);
   $helpRef = document.querySelector(helpSelector);
   landingPage = cobbleLanding(cardView, cardOverlay, cardMenu, cardRef, appStore);
 
@@ -66,11 +66,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     _$anchor.click();
   }
 
-  $helpBtn.onclick = (_clickEvt) => {
+  $helpOpn.onclick = (_clickEvt) => {
     /** @type {HTMLDialogElement} */
     let $hlpDlg;
 
-    if (_clickEvt.target !== $helpBtn) { return; }
+    if (_clickEvt.target !== $helpOpn) { return; }
 
     $hlpDlg = document.importNode($helpRef.content, true)?.querySelector('#icon-help');
 
@@ -78,10 +78,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     $hlpDlg.onclose = () => {
       $hlpDlg?.remove();
-      $helpBtn.disabled = true;
+      $helpOpn.disabled = true;
 
       window.setTimeout(() => {
-        $helpBtn.disabled = true;
+        $helpOpn.disabled = true;
       }, 1500);
     }
 
