@@ -11,6 +11,15 @@ import { default as cobbleLanding } from './lattices/landing.lattice.mjs';
 import { default as appStore } from './banks/deck.bank.mjs';
 
 
+let
+  /** @type {HTMLElement} */
+  $repoLink,
+  /** @type {HTMLButtonElement} */
+  $helpBtn,
+  /** @type {HTMLTemplateElement} */
+  $helpRef,
+  /** @type {Lattice.Landing} */
+  landingPage;
 const
   bootOverlay = '#pageload-curtain',
   bootOverlaySpinner = '.loading-spinny',
@@ -19,21 +28,16 @@ const
   cardMenu = '#ribbon',
   cardRef = '#card-sheet',
   preloadDest = ".inline-svg-assets-here",
+  helpSelector = "#helpdialog",
   /** @type {VerifynLoad} */
-  preloadThings = new Map([["#card-sot", cardRef]]),
-  helpSelector = "#helpdialog";
+  preloadThings = new Map([["#card-sot", cardRef]]);
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const
-    /** @type {HTMLElement} */
-    $repoLink = document.querySelector(`#repolink`),
-    /** @type {HTMLButtonElement} */
-    $helpBtn = document.querySelector(`#qhelp`),
-    /** @type {HTMLTemplateElement} */
-    $helpRef = document.querySelector(helpSelector),
-    /** @type {Lattice.Landing} */
-    landingPage = cobbleLanding(cardView, cardOverlay, cardMenu, cardRef, appStore);
+  $repoLink = document.querySelector(`#repolink`);
+  $helpBtn = document.querySelector(`#qhelp`);
+  $helpRef = document.querySelector(helpSelector);
+  landingPage = cobbleLanding(cardView, cardOverlay, cardMenu, cardRef, appStore);
 
 
   window.addEventListener(_g.notices.kick, () => {
