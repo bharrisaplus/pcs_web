@@ -14,7 +14,7 @@ import { default as appStore } from './banks/deck.bank.mjs';
 let
   /** @type {HTMLElement} */
   $repoLink,
-  /** @type {HTMLButtonElement} */
+  /** @type {HTMLElement} */
   $helpOpn,
   /** @type {HTMLTemplateElement} */
   $helpRef,
@@ -91,14 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (!$helpDlg) { return; }
 
-    $helpDlg.onclose = () => {
-      $helpDlg?.remove();
-      $helpOpn.disabled = true;
-
-      window.setTimeout(() => {
-        $helpOpn.disabled = true;
-      }, 1500);
-    }
+    $helpDlg.onclose = () => $helpDlg?.remove();
 
     document.body.appendChild($helpDlg);
     $helpDlg.showModal();
