@@ -8,6 +8,9 @@ import { default as _g } from '../_meta/_glods.mjs';
 import { default as appLogger } from '../hands/scribe.hand.mjs';
 
 
+let imgsclX = window.screen?.height ? Math.ceil(window.screen.height / 500) : 1;
+
+
 /**
  * @return {Hand.Egress} - {@link Hand.Egress}
  */
@@ -98,8 +101,8 @@ const makeEgressHand = () => {
         {type: 'image/svg+xml;charset=utf-8'}
       ));
 
-      $canvas.width = 1000;
-      $canvas.height = 400;
+      $canvas.width = 1000 * imgsclX;
+      $canvas.height = 400 * imgsclX;
 
       try {
         tmpImage.src = svgObjUrl;
