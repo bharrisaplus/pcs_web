@@ -539,7 +539,7 @@ const turntable_part_tests = async (/** @type {ITestFunction} */ zaTest) => {
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.copyBtn}:disabled`).length);
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.mingleBtn}:disabled`).length);
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.downloadBtn}:disabled`).length);
-      await fx.waaitt(1501);
+      await fx.waaitt(1600);
       swearBhvRslts.push(impMeta.freshModule.isBusy);
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.dyeInput}:disabled`).length);
       swearUIRslts.push(document.querySelectorAll(`${impMeta.freshModule.clearBtn}:disabled`).length);
