@@ -1,7 +1,7 @@
 /** @globals document, window */
 
 /**
- * @import {VerifynLoad, Lattice} from './_meta/_typedefs.mjs'
+ * @import {CSSelector, VerifynLoad, Lattice} from './_meta/_typedefs.mjs'
  */
 
 import { default as _g } from './_meta/_glods.mjs';
@@ -21,22 +21,36 @@ let
   /** @type {Lattice.Landing} */
   landingPage;
 const
+  /** @type {CSSelector} */
   bootOverlay = '#pageload-curtain',
+  /** @type {CSSelector} */
   bootOverlaySpinner = '.loading-spinny',
+  /** @type {CSSelector} */
   cardView = '#tableau',
+  /** @type {CSSelector} */
   cardOverlay = '#turntable',
+  /** @type {CSSelector} */
   cardMenu = '#ribbon',
+  /** @type {CSSelector} */
   cardRef = '#card-sheet',
+  /** @type {CSSelector} */
   preloadDest = ".inline-svg-assets-here",
-  helpSelector = "#helpdialog",
+  /** @type {CSSelector} */
+  helpRef = "#helpdialog",
+  /** @type {CSSelector} */
+  repoLink = "#repolink",
+  /** @type {CSSelector} */
+  helpOpn = "#qhelp",
+  /** @type {CSSelector} */
+  helpDlg = "#icon-help",
   /** @type {VerifynLoad} */
   preloadThings = new Map([["#card-sot", cardRef]]);
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-  $repoLink = document.querySelector(`#repolink`);
-  $helpOpn = document.querySelector(`#qhelp`);
-  $helpRef = document.querySelector(helpSelector);
+  $repoLink = document.querySelector(repoLink);
+  $helpOpn = document.querySelector(helpOpn);
+  $helpRef = document.querySelector(helpRef);
   landingPage = cobbleLanding(cardView, cardOverlay, cardMenu, cardRef, appStore);
 
 
@@ -61,6 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (_clickEvt.target !== $repoLink) { return; }
 
     _$anchor = document.createElement('a');
+
     _$anchor.setAttribute('href', "https://github.com/bharrisaplus/pcs_web");
     _$anchor.setAttribute('target', '_blank');
     _$anchor.click();
@@ -68,16 +83,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   $helpOpn.onclick = (_clickEvt) => {
     /** @type {HTMLDialogElement} */
-    let $hlpDlg;
+    let $helpDlg;
 
     if (_clickEvt.target !== $helpOpn) { return; }
 
-    $hlpDlg = document.importNode($helpRef.content, true)?.querySelector('#icon-help');
+    $helpDlg = document.importNode($helpRef.content, true)?.querySelector(helpDlg);
 
-    if (!$hlpDlg) { return; }
+    if (!$helpDlg) { return; }
 
-    $hlpDlg.onclose = () => {
-      $hlpDlg?.remove();
+    $helpDlg.onclose = () => {
+      $helpDlg?.remove();
       $helpOpn.disabled = true;
 
       window.setTimeout(() => {
@@ -85,7 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }, 1500);
     }
 
-    document.body.appendChild($hlpDlg);
-    $hlpDlg.showModal();
+    document.body.appendChild($helpDlg);
+    $helpDlg.showModal();
   };
 });
