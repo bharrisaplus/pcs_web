@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     (bootRej) => { appLogger.issuelog("pcs won't start", null, bootRej, true); }
   );
 
+
   $repoLink.onclick = (_clickEvt) => {
     let _$anchor;
 
@@ -79,7 +80,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     _$anchor.setAttribute('href', "https://github.com/bharrisaplus/pcs_web");
     _$anchor.setAttribute('target', '_blank');
     _$anchor.click();
-  }
+  };
+
 
   $helpOpn.onclick = (_clickEvt) => {
     /** @type {HTMLDialogElement} */
