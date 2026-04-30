@@ -1,7 +1,7 @@
 /** @globals document, window */
 
 /**
- * @import {VerifynLoad} from './_meta/_typedefs.mjs'
+ * @import {VerifynLoad, Lattice} from './_meta/_typedefs.mjs'
  */
 
 import { default as _g } from './_meta/_glods.mjs';
@@ -28,8 +28,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   const
     /** @type {HTMLElement} */
     $repoLink = document.querySelector(`#repolink`),
+    /** @type {HTMLButtonElement} */
     $helpBtn = document.querySelector(`#qhelp`),
+    /** @type {HTMLTemplateElement} */
     $helpRef = document.querySelector(helpSelector),
+    /** @type {Lattice.Landing} */
     landingPage = cobbleLanding(cardView, cardOverlay, cardMenu, cardRef, appStore);
 
 
@@ -60,6 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   $helpBtn.onclick = (_clickEvt) => {
+    /** @type {HTMLDialogElement} */
     let $hlpDlg;
 
     if (_clickEvt.target !== $helpBtn) { return; }
