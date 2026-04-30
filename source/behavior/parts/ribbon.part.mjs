@@ -155,6 +155,7 @@ const makeRibbonPart = (containerID) => {
       }, 2000);
 
       window.setTimeout(() => {
+        $clawDrop.download = null;
         $clawDrop.removeAttribute("href");
         $clawDrop.textContent = "";
 
