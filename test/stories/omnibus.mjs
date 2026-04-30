@@ -18,6 +18,7 @@ let
 const
   isVerbose = NodeProcess.argv.slice(2).includes('-v') || NodeProcess.argv.slice(2).includes('--verbose'),
   showTapOut = NodeProcess.argv.slice(2).includes('-to') || NodeProcess.argv.slice(2).includes('--tapout'),
+  showCovOut = NodeProcess.argv.slice(2).includes('-co') || NodeProcess.argv.slice(2).includes('--covout'),
   keepCov = NodeProcess.argv.slice(2).includes('-kc') || NodeProcess.argv.slice(2).includes('--coverage'),
 
   requiredFiles = [
@@ -296,9 +297,16 @@ try {
           tapEval = await brwCtrl.Runtime.evaluate({ expression: "window.__tap__" });
         }
 
-        if (keepCov) {
+        if (showCovOut || keepCov) {
           covEval = await brwCtrl.Runtime.evaluate({ expression: "window.__coverage__", returnByValue: true });
-          await mcCovReport.add(covEval.result.value);
+
+          if (keepCov) {
+            await mcCovReport.add(covEval.result.value);
+          }
+
+          if (showCovOut) {
+            covTxt = util.getCovSum(covEval.result.value);
+          }
         }
       }
     }
@@ -315,7 +323,7 @@ try {
       console.log(`Test finished w/o issue: ${testEval?.result.value}`);
     }
 
-    if (keepCov) {
+    if (showCovOut) {
       console.log(covTxt);
     }
   }
