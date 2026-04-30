@@ -133,11 +133,13 @@ const makeRibbonPart = (containerID) => {
 
       _imgUrl = await outHand.generateImage(renderColor, renderExports, renderBase);
 
-      result = true;
-      $clawDrop.download = 'pcs_cards.png';
-      $clawDrop.href = _imgUrl;
-      $clawDrop.click();
-      $clawDrop.textContent = "redownload here";
+      if (_imgUrl) {
+        result = true;
+        $clawDrop.download = 'pcs_cards.png';
+        $clawDrop.href = _imgUrl;
+        $clawDrop.click();
+        $clawDrop.textContent = "redownload here";
+      }
 
       window.setTimeout(() => {
         is_grabbing = false;
