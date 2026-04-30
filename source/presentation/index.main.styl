@@ -20,11 +20,12 @@
 
     &:has(main .hide-before-load) #ribbon,
     &:has(#notifications:popover-open) #ribbon,
-    &:has(#notifications:popover-open) #ribbon,
-    &:has(#notifications:popover-open) #tableau,
     &:has(#notifications:popover-open) #tableau,
     &:has(#notifications:popover-open) #repolink,
-    &:has(main :popover-open) #ribbon
+    &:has(#notifications:popover-open) #qhelp,
+    &:has(main :popover-open) #ribbon,
+    &:has(main :popover-open) #repolink,
+    &:has(main :popover-open) #qhelp
         cursor: default
         pointer-events: none
 
