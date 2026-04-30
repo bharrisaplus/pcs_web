@@ -321,7 +321,10 @@ try {
   }
 
   await brwCtrl.close();
-  await mcCovReport.generate();
+
+  if (keepCov) {
+    await mcCovReport.generate();
+  }
 } catch (oErr) {
   ec = 1;
 
