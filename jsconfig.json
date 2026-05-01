@@ -16,7 +16,7 @@
     "files": [
         "./rollup.config.mjs",
         "./postcss.config.mjs",
-        "./eslint.config.mjs",
+        "./old_eslintconfig",
         "./test/compass.mjs",
         "./test/_rollup.config.mjs",
         "./test/stories/tankoban.mjs",
