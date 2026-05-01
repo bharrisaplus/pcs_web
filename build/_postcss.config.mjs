@@ -4,7 +4,7 @@ const buildConfig = {
 	cwd: buildShared.project_path,
 	map: true,
 	plugins: {
-		'postcss-combine-duplicated-selectors': {},
+		'postcss-combine-duplicated-selectors': false,
 		autoprefixer: {},
 		cssnano: false
 	}
