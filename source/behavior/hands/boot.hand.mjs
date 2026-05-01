@@ -11,8 +11,8 @@ import { default as getHostShuttle } from '../shuttles/host.shuttle.mjs';
 
 const assetFetcher = getHostShuttle();
 
-/** @returns {Hand.Misc} a helper - {@link Hand.Misc} */
-const makeMiscHand = () => {
+/** @returns {Hand.Boot} a helper - {@link Hand.Boot} */
+const makeBootHand = () => {
   let cycleCount = 0;
 
 
@@ -23,7 +23,7 @@ const makeMiscHand = () => {
    * @param  {CSSelector} assetDump
    *
    * @return {Promise<boolean>}
-   * @see Hand.Misc#warmUp
+   * @see {@link Hand.Boot#warmUp}
    */
   const load_assets = async (assetMap, assetDump) => {
     let loadCount = 0;
@@ -113,7 +113,7 @@ const makeMiscHand = () => {
    *
    * @param  {CSSelector} indicatorSelector
    * @param  {CSSelector} tickSelector
-   * @see Hand.Misc#startAfter
+   * @see {@link Hand.Boot#startAfter}
    */
   const watch_for_indicator_tick = (indicatorSelector, tickSelector) => {
     const
@@ -160,7 +160,7 @@ const makeMiscHand = () => {
 };
 
 
-const singleMiscHand = makeMiscHand();
+const singleBootHand = makeBootHand();
 
-export default singleMiscHand;
-export const debugName = "pcs:hand:mischand";
+export default singleBootHand;
+export const debugName = "pcs:hand:boot";
