@@ -26,7 +26,7 @@ const
   ),
   modulePaths = {
     hand: {
-      misc: '../../source/behavior/hands/misc.hand.mjs',
+      boot: '../../source/behavior/hands/boot.hand.mjs',
       scribe: '../../source/behavior/hands/scribe.hand.mjs',
     },
     shuttle: {
@@ -67,8 +67,8 @@ const
 
 
     return {
-      /** @type {Hand.Misc} */
-      freshModule: (await import(`${modulePaths.hand.misc}?v=${NodeCrypto.randomUUID()}`)).default,
+      /** @type {Hand.Boot} */
+      freshModule: (await import(`${modulePaths.hand.boot}?v=${NodeCrypto.randomUUID()}`)).default,
       moduleConsole: mockConsole,
       moduleWindow: mockWindow,
       moduleEvent: mockEvent,
@@ -82,7 +82,7 @@ const
   };
 
 
-test("pcs:hand:misc:warmUp should run without issue", async (swear) => {
+test("pcs:hand:boot:warmUp should run without issue", async (swear) => {
   let bonafiedResult, bonafiedExplntns = [];
   const
     swearGrabUrl = 'https://somesite.prod/someasset.svg',
@@ -129,7 +129,7 @@ test("pcs:hand:misc:warmUp should run without issue", async (swear) => {
 });
 
 
-test('pcs:hand:misc:warmUp should have issues', async (swear) => {
+test('pcs:hand:boot:warmUp should have issues', async (swear) => {
   let bonafiedResult = [], bonafiedExplntns = [];
   const
     swearGrabUrl = 'https://prod.com/someasset.svg',
@@ -187,7 +187,7 @@ test('pcs:hand:misc:warmUp should have issues', async (swear) => {
 });
 
 
-test("pcs:hand:misc:warmUp should have issues cont'd", async (swear) => {
+test("pcs:hand:boot:warmUp should have issues cont'd", async (swear) => {
   let bonafiedResult, bonafiedExplntns = [];
   const
     swearGrabUrl = 'https://production.site/someassett',
@@ -242,7 +242,7 @@ test("pcs:hand:misc:warmUp should have issues cont'd", async (swear) => {
 });
 
 
-test('pcs:hand:misc:startAfter should run without issue', async (swear) => {
+test('pcs:hand:boot:startAfter should run without issue', async (swear) => {
   let bonafiedResult = [], bonafiedExplntns = [];
   const
       swearIterationEvent = 'animationiteration',
@@ -288,7 +288,7 @@ test('pcs:hand:misc:startAfter should run without issue', async (swear) => {
 });
 
 
-test("pcs:hand:misc:startAfter should run without issue (cont'd)", async (swear) => {
+test("pcs:hand:boot:startAfter should run without issue (cont'd)", async (swear) => {
   let bonafiedResult = [], bonafiedExplntns = [];
   const
     swearCurtainSelectorV = 'pageload-curtain',

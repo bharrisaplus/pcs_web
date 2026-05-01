@@ -6,7 +6,7 @@
 
 import { default as _g } from './_meta/_glods.mjs';
 import { default as appLogger } from './hands/scribe.hand.mjs';
-import { default as appCustodian } from './hands/misc.hand.mjs';
+import { default as appBoot } from './hands/boot.hand.mjs';
 import { default as cobbleLanding } from './lattices/landing.lattice.mjs';
 import { default as appStore } from './banks/deck.bank.mjs';
 
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }, { once: true });
 
-  appCustodian.startRoutine(preloadThings, preloadDest, bootOverlay, bootOverlaySpinner).then(
+  appBoot.startRoutine(preloadThings, preloadDest, bootOverlay, bootOverlaySpinner).then(
     (bootOK) => { bootOK ? appLogger.devlog("boot successful") : appLogger.notilog("pcs won't start"); },
     (bootRej) => { appLogger.issuelog("pcs won't start", null, bootRej, true); }
   );

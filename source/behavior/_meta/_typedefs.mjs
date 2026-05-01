@@ -136,7 +136,7 @@
  */
 
 /**
- * @typedef {Object} Hand.Misc
+ * @typedef {Object} Hand.Boot
  * Handles various tasks
  *
  * @property {function (string, string) :void} startAfter
