@@ -12,7 +12,7 @@ import { default as logger } from "../hands/scribe.hand.mjs";
  * @param  {CSSelector} containerID
  * @param  {AbortController} eventCancel
  *
- * @return {Part.Turntable} a card closeup popover - {@link Part.Turntable}
+ * @return {Part.Turntable} a popover for card closeup - {@link Part.Turntable}
  */
 const makeTurntablePart = (containerID, eventCancel) => {
   let
@@ -112,10 +112,7 @@ const makeTurntablePart = (containerID, eventCancel) => {
   };
 
 
-  /**
-   * @param {CardIntri} pickupInfo
-   * @see Part.Turntable#loadTurntable
-   */
+  /** @type {Part.Turntable["loadTurntable"]} */
   const set_pickup = (pickupInfo) => {
     if ($container.matches(':popover-open')) { return; }
 
@@ -127,10 +124,7 @@ const makeTurntablePart = (containerID, eventCancel) => {
   };
 
 
-  /**
-   * @param  {CardIntri} cueInfo
-   * @see Part.Turntable#spinTurntable
-   */
+  /** @type {Part.Turntable["spinTurntable"]} */
   const move_arm = (cueInfo) => {
     if (!$container.matches(':popover-open')) { return; }
 

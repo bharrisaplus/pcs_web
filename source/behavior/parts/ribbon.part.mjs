@@ -59,12 +59,7 @@ const makeRibbonPart = (containerID) => {
   };
 
 
-  /**
-   * @param  {string[]} txtExports
-   *
-   * @return {Promise<Boolean>}
-   * @see Part.Ribbon#composeTxt
-   */
+  /** @type {Part.Ribbon["composeTxt"]} */
   const write_out = async (txtExports) => {
     let result = false;
 
@@ -104,14 +99,7 @@ const makeRibbonPart = (containerID) => {
   };
 
 
-  /**
-   * @param {string} renderColor
-   * @param  {string[]} renderExports
-   * @param  {CSSelector} renderBase
-   *
-   * @return {Promise<Boolean>}
-   * @see Part.Ribbon#prepareImg
-   */
+  /** @type {Part.Ribbon["prepareImg"]} */
   const render_out = async (renderColor, renderExports, renderBase) => {
     let
       result = false,
@@ -169,7 +157,7 @@ const makeRibbonPart = (containerID) => {
   };
 
 
-  /** @see Part.Ribbon#resetCtrls */
+  /** @type {Part.Ribbon["resetCtrls"]} */
   const generic_cool_down = () => {
     if (is_grabbing) { return; }
 

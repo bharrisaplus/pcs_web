@@ -45,10 +45,7 @@ const makeTableauPart = (containerID, eventCancel) => {
   };
 
 
-  /**
-   * @param  {CardIntri[]} newItems
-   * @see Part.Tableau#updateOrder
-   */
+  /** @type {Part.Tableau["updateOrder"]} */
   const set_items_from = (newItems) => {
     /** @type {HTMLLIElement[]} */
     const _$tmpItems = Array.from(document.querySelectorAll(itemSelector));
