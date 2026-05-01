@@ -10,11 +10,7 @@ import { default as appLogger } from '../hands/scribe.hand.mjs';
 /** @return {Readonly<Shuttle.Host>} {@link Shuttle.Host} */
 const makeHostShuttle = () => {
 
-  /**
-   * @param  {string} resourceLink {@link URL}
-   *
-   * @return {Promise<Blob>}
-   */
+  /** @type {Shuttle.Host["grabFile"]} */
   const blob_from_url = async (resourceLink) => {
     let
       /** @type {Response} */
