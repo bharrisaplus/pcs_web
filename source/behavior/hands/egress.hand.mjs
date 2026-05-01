@@ -1,7 +1,7 @@
 /** @globals XMLSerializer, navigator, document, Image, URL */
 
 /**
- * @import {CSSelector, Hand} from '../_meta/_typedefs.mjs'
+ * @import {Hand} from '../_meta/_typedefs.mjs'
  */
 
 import { default as _g } from '../_meta/_glods.mjs';
@@ -11,18 +11,11 @@ import { default as appLogger } from '../hands/scribe.hand.mjs';
 let imgsclX = window.screen?.height ? Math.ceil(window.screen.height / 500) : 1;
 
 
-/**
- * @return {Hand.Egress} - {@link Hand.Egress}
- */
+/** @return {Hand.Egress} - {@link Hand.Egress} */
 const makeEgressHand = () => {
   const egressSerializer = new XMLSerializer();
 
-  /**
-   * @param  {string} cpyTxt
-   *
-   * @return {Promise<Boolean>}
-   * @see Hand.Egress#exportText
-   */
+  /** @type {Hand.Egress["exportText"]} */
   const copy_to_clipboard = async (cpyTxt) => {
     let result = false;
 
@@ -41,14 +34,7 @@ const makeEgressHand = () => {
   };
 
 
-  /**
-   * @param  {string} backdropColor an acceptable value for fill
-   * @param  {string[]} spriteList
-   * @param  {CSSelector} spriteSheet
-   *
-   * @return {Promise<string>} The data url for the generated image
-   * @see Hand.Egress#generteImage
-   */
+  /** @type {Hand.Egress["generateImage"]} */
   const canvasyze_rasterize = async (backdropColor, spriteList, spriteSheet) => {
     let
       imgDataUrl = "",
