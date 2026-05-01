@@ -126,7 +126,7 @@ const makeScribeHand = () => {
   };
 
 
-  window['devToast'] = console_free ? log_notification : undefined;
+  window.devToast = console_free ? log_notification : undefined;
 
   return Object.freeze({
     devlog: log_dev,

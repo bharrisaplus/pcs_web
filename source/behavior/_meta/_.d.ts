@@ -18,6 +18,10 @@ declare global {
       parseFromString(string: string, type: DOMParserSupportedType | string): Document;
   }
 
+  interface Window {
+    devToast(string) :void
+  }
+
   // See /build/manifest.mjs
   type BuildGlobals = {
     project_path: string;
