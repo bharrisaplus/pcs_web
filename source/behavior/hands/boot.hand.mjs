@@ -17,13 +17,8 @@ const makeBootHand = () => {
 
 
   /**
-   * Grab svg assets and inline them.
-   *
-   * @param  {VerifynLoad} assetMap
-   * @param  {CSSelector} assetDump
-   *
-   * @return {Promise<boolean>}
-   * @see {@link Hand.Boot#warmUp}
+   * Grab and inline.
+   * @type {Hand.Boot["warmUp"]}
    */
   const load_assets = async (assetMap, assetDump) => {
     let loadCount = 0;
@@ -104,16 +99,14 @@ const makeBootHand = () => {
 
 
   /**
-   * Looking at some container with animated child for a cue. Once the child is done with
-   *  it's animation the container will be removed from view then the event will trigger.
-   *
+   * Looking at some container with animated child for a cue.
+   * ```
    *    <indicator> <- this will transition out of view
    *      <tick/> <- this is animating and we'll let it run a bit
    *    </indicator>
-   *
-   * @param  {CSSelector} indicatorSelector
-   * @param  {CSSelector} tickSelector
-   * @see {@link Hand.Boot#startAfter}
+   *```
+   * 
+   * @type {Hand.Boot["startAfter"]}
    */
   const watch_for_indicator_tick = (indicatorSelector, tickSelector) => {
     const
