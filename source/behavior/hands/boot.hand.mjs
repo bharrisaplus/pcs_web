@@ -20,19 +20,19 @@ const makeBootHand = () => {
    * Grab and inline.
    * @type {Hand.Boot["warmUp"]}
    */
-  const load_assets = async (assetMap, assetDump) => {
+  const load_assets = async (assetMap, dumpSelector) => {
     let loadCount = 0;
     const
-      $assetDump = document.querySelector(assetDump),
+      $dumpSelector = document.querySelector(dumpSelector),
       assetParser = new DOMParser();
 
     if (assetMap.size === 0) {
-      appLogger.devlog('Nothing to retrieve', {assetMap, assetDump});
+      appLogger.devlog('Nothing to retrieve', {assetMap, dumpSelector});
       return false;
     }
 
-    if (!$assetDump) {
-      appLogger.issuelog('Nowhere to place asset', {assetMap, assetDump}, null);
+    if (!$dumpSelector) {
+      appLogger.issuelog('Nowhere to place asset', {assetMap, dumpSelector}, null);
       return false;
     };
 
@@ -43,7 +43,7 @@ const makeBootHand = () => {
         assetInnards,
         assetDoc;
 
-      if ($assetDump.querySelectorAll(assetCheck).length > 0) {
+      if ($dumpSelector.querySelectorAll(assetCheck).length > 0) {
         appLogger.devlog(`Found ${assetCheck} asset inlined already`);
         loadCount++;
         continue;
@@ -82,9 +82,9 @@ const makeBootHand = () => {
 
         if (assetDoc) {
           if (assetDoc.matches(assetCheck)) {
-            $assetDump.appendChild(assetDoc);
+            $dumpSelector.appendChild(assetDoc);
             loadCount++;
-            appLogger.devlog('Loading asset', {assetUrl, assetDump});
+            appLogger.devlog('Loading asset', {assetUrl, dumpSelector});
           } else {
             appLogger.devlog(`Asset not found within fetched document:`, {assetGrab, assetCheck, assetBlob});
           }
