@@ -1,3 +1,4 @@
+/** retired, for uptodate see .oxlintrc.json */
 import { default as ESLintJS } from '@eslint/js';
 import { defineConfig } from "eslint/config";
 import { default as stylistic } from '@stylistic/eslint-plugin';
