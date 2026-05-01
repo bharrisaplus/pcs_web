@@ -129,6 +129,13 @@
  * @memberof Bank
  */
 
+/**
+ * @typedef {Object} Bank.deckOffers
+ * @property {function() :boolean} storageAvailable
+ * @property {function(string) :boolean} isExpired
+ * @memberof Bank
+ */
+
 
 /**
  * @namespace Hand

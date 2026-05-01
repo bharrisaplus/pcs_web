@@ -10,12 +10,8 @@ import { default as _g } from '../_meta/_glods.mjs';
 const default_order = Uint8Array.from({length: _g.c_Max}, (_, card_idx) => card_idx);
 
 
-/**
- * Check if local storage is avilable
- *
- * @return {boolean}
- */
-const canPersist = () => {
+/** @type {Bank.deckOffers["storageAvailable"]} */
+const can_persist = () => {
   let ok = false;
 
   try {
@@ -33,12 +29,9 @@ const canPersist = () => {
   return ok;
 };
 
-/**
- * @param  {string} timestamp time in miliseconds
- *
- * @return {boolean}
- */
-const isTooOld = (timestamp) => {
+
+/** @type {Bank.deckOffers["isExpired"]} */
+const too_old = (timestamp) => {
   let tooOldResult;
 
   try {
@@ -71,7 +64,7 @@ const makeDeckBank = () => {
 
     topical_order = Uint8Array.from(default_order);
 
-    if (canPersist()) {
+    if (can_persist()) {
       localStorage.setItem(`${_g.appID}:cardOrder`, JSON.stringify(topical_order));
       localStorage.setItem(`${_g.appID}:cardOrder:stamp`, JSON.stringify(Date.now()));
     }
@@ -94,7 +87,7 @@ const makeDeckBank = () => {
 
     topical_order = Uint8Array.from(allNewCards);
 
-    if (canPersist()) {
+    if (can_persist()) {
       localStorage.setItem(`${_g.appID}:cardOrder`, JSON.stringify(topical_order));
       localStorage.setItem(`${_g.appID}:cardOrder:stamp`, JSON.stringify(Date.now()));
     }
@@ -109,7 +102,7 @@ const makeDeckBank = () => {
 
     back_splash = newPaintChoice;
 
-    if (canPersist()) {
+    if (can_persist()) {
       localStorage.setItem(`${_g.appID}:backgroundColor`, JSON.stringify(back_splash));
       localStorage.setItem(`${_g.appID}:backgroundColor:stamp`, JSON.stringify(Date.now()));
     }
@@ -124,7 +117,7 @@ const makeDeckBank = () => {
   };
 
 
-  if (canPersist()) {
+  if (can_persist()) {
     const
       maybeBackSplash = localStorage.getItem(`${_g.appID}:backgroundColor`),
       maybeBackSplashStamp = localStorage.getItem(`${_g.appID}:backgroundColor:stamp`),
@@ -132,7 +125,7 @@ const makeDeckBank = () => {
       maybeCardOrderStamp = localStorage.getItem(`${_g.appID}:cardOrder:stamp`);
 
     if (maybeBackSplashStamp && maybeBackSplash) {
-      if (isTooOld(maybeBackSplashStamp)) {
+      if (too_old(maybeBackSplashStamp)) {
         localStorage.removeItem(`${_g.appID}:backgroundColor`);
         localStorage.removeItem(`${_g.appID}:backgroundColor:stamp`);
       } else {
@@ -141,7 +134,7 @@ const makeDeckBank = () => {
     }
 
     if (maybeCardOrderStamp && maybeCardOrder) {
-      if (isTooOld(maybeCardOrderStamp)) {
+      if (too_old(maybeCardOrderStamp)) {
         localStorage.removeItem(`${_g.appID}:cardOrder`);
         localStorage.removeItem(`${_g.appID}:cardOrder:stamp`);
       } else {
@@ -188,4 +181,13 @@ const makeDeckBank = () => {
 const singleDeckHand = makeDeckBank();
 
 export default singleDeckHand;
+
+/** @returns {Bank.deckOffers} */
+export const getOffers = () => {
+  return Object.freeze({
+    storageAvailable: can_persist,
+    isExpired: too_old
+  });
+};
+
 export const debugName = "pcs:bank:deck";
