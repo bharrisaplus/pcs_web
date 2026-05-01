@@ -5,9 +5,7 @@
  */
 
 
-/**
- * @return {Hand.Scribe} a logger - {@link Hand.Scribe}
- */
+/** @return {Hand.Scribe} a logger - {@link Hand.Scribe} */
 const makeScribeHand = () => {
   /** @type {NotificationToast[]} */
   let toasts = [];
@@ -24,11 +22,7 @@ const makeScribeHand = () => {
     $toastRef = document.querySelector('template#toast');
 
 
-  /**
-   * @param  {string} devMsg
-   * @param  {Object} [devThingy]
-   * @see Hand.Scribe#devlog
-   */
+  /** @type {Hand.Scribe["devlog"]} */
   const log_dev = (devMsg, devThingy) => {
     if (console_free) {
       if (devMsg) { console.debug(devMsg); }
@@ -37,13 +31,7 @@ const makeScribeHand = () => {
   };
 
 
-  /**
-   * @param  {string} issueMsg
-   * @param  {Object} [issueThingy]
-   * @param  {unknown|Error|DOMException} [issueErr]
-   * @param  {boolean} [blocking]
-   * @see Hand.Scribe#issuelog
-   */
+  /** @type {Hand.Scribe["issuelog"]} */
   const log_issue = (issueMsg, issueThingy, issueErr, blocking = true) => {
     if (console_free) {
       if (blocking) {
@@ -125,10 +113,8 @@ const makeScribeHand = () => {
     toasts.push(maybeNoTo);
   };
 
-  /**
-   * @param  {string} notificationMsg
-   * @see Hand.Scribe#notilog
-   */
+
+  /** @type {Hand.Scribe["notilog"]} */
   const log_notification = (notificationMsg) => {
     if (console_free) {
       if (notificationMsg) { console.info(notificationMsg); }
