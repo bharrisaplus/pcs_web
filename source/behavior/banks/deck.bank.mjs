@@ -50,7 +50,7 @@ const too_old = (timestamp) => {
 };
 
 
-/** @returns {Readonly<Bank.Deck>} a packet of cards {@link Bank.Deck} */
+/** @returns {Readonly<Bank.Deck>} a packet of cards - {@link Bank.Deck} */
 const makeDeckBank = () => {
   let
     topical_order = Uint8Array.from(default_order),
