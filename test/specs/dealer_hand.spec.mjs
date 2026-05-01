@@ -243,7 +243,7 @@ test('pcs:hand:dealer:mixUp should return non-shuffled', async (swear) => {
 });
 
 
-test('pcs:hand:dealer:fingers:jitter_bugs should maybe return pseudo random numbers', async (swear) => {
+test('pcs:hand:dealer:fingers:entropySeeds should maybe return pseudo random numbers', async (swear) => {
   let bonafiedResult = [];
   const
     impMeta = await getImport(true),
@@ -251,8 +251,8 @@ test('pcs:hand:dealer:fingers:jitter_bugs should maybe return pseudo random numb
     dealerHandFingers = impMeta.freshFingers();
 
 
-  bonafiedResult.push(dealerHandFingers.jitter_bugs());
-  bonafiedResult.push(dealerHandFingers.jitter_bugs());
+  bonafiedResult.push(dealerHandFingers.entropySeeds());
+  bonafiedResult.push(dealerHandFingers.entropySeeds());
 
   tdClr();
   impMeta.freshModule = null;
@@ -266,7 +266,7 @@ test('pcs:hand:dealer:fingers:jitter_bugs should maybe return pseudo random numb
 });
 
 
-test('pcs:hand:dealer:fingers:jitter_bugs should handle bad inputs', async (swear) => {
+test('pcs:hand:dealer:fingers:entropySeeds should handle bad inputs', async (swear) => {
   let bonafiedResult = [];
   const
     swearMaxs = [52, '52'],
@@ -277,9 +277,9 @@ test('pcs:hand:dealer:fingers:jitter_bugs should handle bad inputs', async (swea
 
 
   // @ts-ignore
-  bonafiedResult.push(dealerHandFingers.jitter_bugs(swearMaxs[0], swearUBounds[1]));
+  bonafiedResult.push(dealerHandFingers.entropySeeds(swearMaxs[0], swearUBounds[1]));
   // @ts-ignore
-  bonafiedResult.push(dealerHandFingers.jitter_bugs(swearMaxs[1], swearUBounds[0]));
+  bonafiedResult.push(dealerHandFingers.entropySeeds(swearMaxs[1], swearUBounds[0]));
 
   tdClr();
   impMeta.freshModule = null;
@@ -295,7 +295,7 @@ test('pcs:hand:dealer:fingers:jitter_bugs should handle bad inputs', async (swea
 });
 
 
-test('pcs:hand:dealer:fingers:ndpf should return transposed cards', async (swear) => {
+test('pcs:hand:dealer:fingers:noiseFilter should return transposed cards', async (swear) => {
   let bonafiedResult = [];
   const
     swearCardLists = [
@@ -311,8 +311,8 @@ test('pcs:hand:dealer:fingers:ndpf should return transposed cards', async (swear
     dealerHandFingers = impMeta.freshFingers();
 
 
-  bonafiedResult.push(dealerHandFingers.ndpf(swearCardLists[0], swearLuckyNums[0]));
-  bonafiedResult.push(dealerHandFingers.ndpf(swearCardLists[1], swearLuckyNums[1]));
+  bonafiedResult.push(dealerHandFingers.noiseFilter(swearCardLists[0], swearLuckyNums[0]));
+  bonafiedResult.push(dealerHandFingers.noiseFilter(swearCardLists[1], swearLuckyNums[1]));
 
   tdClr();
   impMeta.freshModule = null;
@@ -327,7 +327,7 @@ test('pcs:hand:dealer:fingers:ndpf should return transposed cards', async (swear
 });
 
 
-test('pcs:hand:dealer:fingers:ndpf should handle bad inputs', async (swear) => {
+test('pcs:hand:dealer:fingers:noiseFilter should handle bad inputs', async (swear) => {
   let bonafiedResult = [];
   const
     swearCardLists = [
@@ -346,13 +346,13 @@ test('pcs:hand:dealer:fingers:ndpf should handle bad inputs', async (swear) => {
 
 
   // @ts-ignore
-  bonafiedResult.push(dealerHandFingers.ndpf(swearCardLists[0], swearLuckyNums[1]));
+  bonafiedResult.push(dealerHandFingers.noiseFilter(swearCardLists[0], swearLuckyNums[1]));
   // @ts-ignore
-  bonafiedResult.push(dealerHandFingers.ndpf(swearCardLists[0], swearLuckyNums[2]));
+  bonafiedResult.push(dealerHandFingers.noiseFilter(swearCardLists[0], swearLuckyNums[2]));
   // @ts-ignore
-  bonafiedResult.push(dealerHandFingers.ndpf(swearCardLists[1], swearLuckyNums[0]));
+  bonafiedResult.push(dealerHandFingers.noiseFilter(swearCardLists[1], swearLuckyNums[0]));
   // @ts-ignore
-  bonafiedResult.push(dealerHandFingers.ndpf(swearCardLists[2], swearLuckyNums[0]));
+  bonafiedResult.push(dealerHandFingers.noiseFilter(swearCardLists[2], swearLuckyNums[0]));
 
   tdClr();
   impMeta.freshModule = null;

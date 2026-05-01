@@ -7,7 +7,7 @@ import { default as _g } from '../_meta/_glods.mjs';
 import { default as appLogger } from './scribe.hand.mjs';
 
 
-/** @type {Hand.dealerFingers["jitter_bugs"]} */
+/** @type {Hand.dealerFingers["entropySeeds"]} */
 const jitter_bugs = (max = _g.c_Max, uBound = 13) => {
   let
     /** @type {Uint8ClampedArray<ArrayBuffer>} */
@@ -48,7 +48,8 @@ const jitter_bugs = (max = _g.c_Max, uBound = 13) => {
   return result.slice(0, uBound);
 };
 
-/** @type {Hand.dealerFingers["ndpf"]} */
+
+/** @type {Hand.dealerFingers["noiseFilter"]} */
 const ndpf = (cardList, luckyNums ) => {
   let
     /** @type {number[]} */
@@ -219,5 +220,11 @@ const makeDealerHand = () => {
 
 export default makeDealerHand;
 /** @return {Hand.dealerFingers} */
-export const getFingers = () => Object.freeze({ jitter_bugs, ndpf });
+export const getFingers = () => {
+  return Object.freeze({
+    entropySeeds: jitter_bugs,
+    noiseFilter: ndpf
+  });
+};
+
 export const debugName = 'pcs:hand:dealer';

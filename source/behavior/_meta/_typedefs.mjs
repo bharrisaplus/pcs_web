@@ -164,8 +164,8 @@
 
 /**
  * @typedef {Object} Hand.dealerFingers
- * @property {function(number=, number=) :number[]} jitter_bugs
- * @property {function(number[], number[]) :number[]} ndpf
+ * @property {function(number=, number=) :number[]} entropySeeds
+ * @property {function(number[], number[]) :number[]} noiseFilter
  * @memberof Hand
  */
 
