@@ -11,7 +11,7 @@ import { default as appLogger } from '../hands/scribe.hand.mjs';
 let imgsclX = window.screen?.height ? Math.ceil(window.screen.height / 500) : 1;
 
 
-/** @return {Hand.Egress} - {@link Hand.Egress} */
+/** @return {Hand.Egress} {@link Hand.Egress} */
 const makeEgressHand = () => {
   const egressSerializer = new XMLSerializer();
 
