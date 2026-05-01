@@ -1,8 +1,6 @@
 /** @globals document, DOMParser, window, CustomEvent */
 
-/**
- * @import {Hand} from "../_meta/_typedefs.mjs"
- */
+/** @import {Hand} from "../_meta/_typedefs.mjs" */
 
 import { default as _g } from '../_meta/_glods.mjs';
 import { default as appLogger } from '../hands/scribe.hand.mjs';

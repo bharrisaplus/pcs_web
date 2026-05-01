@@ -1,8 +1,6 @@
 /** @globals document, CustomEvent */
 
-/**
- * @import {Part, PCSEvent, CSSelector} from '../_meta/_typedefs.mjs'
- */
+/** @import {Part, PCSEvent, CSSelector} from '../_meta/_typedefs.mjs' */
 
 import { default as _g } from '../_meta/_glods.mjs';
 import { default as outHand } from '../hands/egress.hand.mjs';

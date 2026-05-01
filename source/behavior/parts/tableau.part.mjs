@@ -1,8 +1,6 @@
 /** @globals document, AbortController, CustomEvent */
 
-/**
- * @import {PCSEvent, CSSelector, Part, CardIntri} from '../_meta/_typedefs.mjs'
- */
+/** @import {PCSEvent, CSSelector, Part} from '../_meta/_typedefs.mjs' */
 
 import { default as _g } from '../_meta/_glods.mjs';
 

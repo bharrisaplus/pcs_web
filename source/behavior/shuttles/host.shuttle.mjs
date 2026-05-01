@@ -1,8 +1,6 @@
 /** @globals fetch */
 
-/**
- * @import {Shuttle} from '../_meta/_typedefs.mjs';
- */
+/** @import {Shuttle} from '../_meta/_typedefs.mjs'; */
 
 import { default as appLogger } from '../hands/scribe.hand.mjs';
 

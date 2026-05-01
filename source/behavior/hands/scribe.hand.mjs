@@ -1,8 +1,6 @@
 /** @globals window, document, console, AbortController */
 
-/**
- * @import {NotificationToast, Hand} from '../_meta/_typedefs.mjs'
- */
+/** @import {NotificationToast, Hand} from '../_meta/_typedefs.mjs' */
 
 
 /** @return {Hand.Scribe} a logger - {@link Hand.Scribe} */

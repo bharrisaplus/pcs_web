@@ -1,8 +1,6 @@
 /** @globals localStorage */
 
-/**
- * @import {Bank} from "../_meta/_typedefs.mjs"
- */
+/** @import {Bank} from "../_meta/_typedefs.mjs" */
 
 import { default as _g } from '../_meta/_glods.mjs';
 

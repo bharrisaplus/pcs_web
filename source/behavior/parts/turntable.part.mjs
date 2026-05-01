@@ -1,8 +1,6 @@
 /** @globals document, AbortController, CustomEvent, window */
 
-/**
- * @import {CSSelector, PCSEvent, Part, CardIntri} from "../_meta/_typedefs.mjs"
- */
+/** @import {CSSelector, PCSEvent, Part, CardIntri} from "../_meta/_typedefs.mjs" */
 
 import { default as _g } from "../_meta/_glods.mjs";
 import { default as logger } from "../hands/scribe.hand.mjs";
