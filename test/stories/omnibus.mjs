@@ -256,8 +256,8 @@ if (isVerbose) {
 }
 
 try {
-  OmnibusServer.listen(testShared.storey_port);
-  console.log(`Listening on ${testShared.storey_port}...`);
+  OmnibusServer.listen(testShared.SERVER_PORT);
+  console.log(`Listening on ${testShared.SERVER_PORT}...`);
 
   mcCovReport.loadConfig(testShared.storey_cov_config_path);
 
@@ -279,7 +279,7 @@ try {
       testEval, covEval, tapEval;
 
     await brwCtrl.Page.navigate({
-      url: `http://localhost:${testShared.storey_port}/${stryCh}/desk`
+      url: `http://localhost:${testShared.SERVER_PORT}/${stryCh}/desk`
     });
 
     await brwCtrl.Page.loadEventFired();

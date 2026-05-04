@@ -24,9 +24,9 @@ const getBezel = async () => {
     LHOST_URL: NodeProcess.env.LHOST_URL || (new URL('localhost:9090')).toString(),
     CARD_SOT_NAME: NodeProcess.env.CARD_SOT_NAME || 'cardsot.svg',
     BROWSER_DBG_PORT: NodeProcess.env.BRW_DBG_PORT ? Number.parseInt(NodeProcess.env.BRW_DBG_PORT) : 28133,
+    SERVER_PORT: NodeProcess.env.LHOST_PORT ? Number.parseInt(NodeProcess.env.LHOST_PORT) : 54321,
 
     // test specific
-    storey_port: NodeProcess.env.LHOST_PORT ? Number.parseInt(NodeProcess.env.LHOST_PORT) : 54321,
     storey_cov_config_path: NodeProcess.env.PROJECT_DIR ?
       NodePath.resolve(NodeProcess.env.PROJECT_DIR, './mcr.storey.json') :
       NodePath.resolve(_dir, '../mcr.storey.json'),
