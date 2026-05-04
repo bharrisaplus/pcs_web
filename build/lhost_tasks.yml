@@ -13,8 +13,8 @@ tasks:
       BUILD_OBJECTIVE: '{{.DEV_VER}}'
       BUILD_AREA: lhost
     cmds:
-      - pnpm stylus {{.PRESENTATION_REL}}/index.main.styl -m --sourcemap-base {{.DEV_REL}} -o {{.DEV_DIR}}
-      - pnpm postcss {{.DEV_DIR}}/index.main.css --config {{.PROJECT_DIR}} -o {{.DEV_DIR}}/{{.CSS_MAIN_NAME}}
+      - pnpm stylus {{.PRESENTATION_REL}}/index.main.styl -m --sourcemap-base {{.DEV_REL}}/styles -o {{.DEV_DIR}}/styles
+      - pnpm postcss {{.DEV_DIR}}/styles/index.main.css --config {{.PROJECT_DIR}} -o {{.DEV_DIR}}/styles/{{.CSS_MAIN_NAME}}
 
   rear-content:
     desc: Pug to HTML
@@ -32,7 +32,7 @@ tasks:
           VENDOR_CSS_RESET_URL: '{{.LHOST_URL}}{{.VENDOR_CSS_RESET_NAME}}'
           VENDOR_CHANCEJS_URL: '{{.LHOST_URL}}{{.VENDOR_CHANCEJS_NAME}}'
           VENDOR_HTML2CANVAS_URL: '{{.LHOST_URL}}{{.VENDOR_HTML2CANVAS_NAME}}'
-          CSS_MAIN_URL: '{{.LHOST_URL}}{{.CSS_MAIN_NAME}}'
+          CSS_MAIN_URL: '{{.LHOST_URL}}styles/{{.CSS_MAIN_NAME}}'
           ES_MAIN_URL: '{{.LHOST_URL}}{{.ES_MAIN_NAME}}'
           CARD_SOT_URL: '{{.LHOST_URL}}img/{{.CARD_SOT_NAME}}'
           BROWSERCONFIG_URL: '{{.LHOST_URL}}{{.BROWSERCONFIG_NAME}}'

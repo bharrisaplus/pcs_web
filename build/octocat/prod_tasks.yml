@@ -13,8 +13,8 @@ tasks:
       BUILD_OBJECTIVE: '{{.DEV_VER}}'
       BUILD_AREA: prod
     cmds:
-      - pnpm stylus {{.PRESENTATION_DIR}}/index.main.styl -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
-      - pnpm postcss {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}} --config {{.PROJECT_DIR}} -o {{.OCTOCAT_HOST_DIR}}/{{.CSS_MAIN_NAME}}
+      - pnpm stylus {{.PRESENTATION_DIR}}/index.main.styl -o {{.OCTOCAT_HOST_DIR}}/styles/{{.CSS_MAIN_NAME}}
+      - pnpm postcss {{.OCTOCAT_HOST_DIR}}/styles/{{.CSS_MAIN_NAME}} --config {{.PROJECT_DIR}} -o {{.OCTOCAT_HOST_DIR}}/styles/{{.CSS_MAIN_NAME}}
 
   rear-content:
     desc: Pug to HTML
@@ -32,7 +32,7 @@ tasks:
           VENDOR_CSS_RESET_URL: '{{.OCTOCAT_URL}}{{.VENDOR_CSS_RESET_NAME}}'
           VENDOR_CHANCEJS_URL: '{{.OCTOCAT_URL}}{{.VENDOR_CHANCEJS_NAME}}'
           VENDOR_HTML2CANVAS_URL: '{{.OCTOCAT_URL}}{{.VENDOR_HTML2CANVAS_NAME}}'
-          CSS_MAIN_URL: '{{.OCTOCAT_URL}}{{.CSS_MAIN_NAME}}'
+          CSS_MAIN_URL: '{{.OCTOCAT_URL}}styles/{{.CSS_MAIN_NAME}}'
           ES_MAIN_URL: '{{.OCTOCAT_URL}}{{.ES_MAIN_NAME}}'
           CARD_SOT_URL: '{{.OCTOCAT_URL}}img/{{.CARD_SOT_NAME}}'
           BROWSERCONFIG_URL: '{{.OCTOCAT_URL}}{{.BROWSERCONFIG_NAME}}'
@@ -112,7 +112,7 @@ tasks:
   sweep-presentation:
     desc: Clear out pages host directory
     cmds:
-      - rm -f {{.OCTOCAT_HOST_DIR}}/main.css
+      - rm -f {{.OCTOCAT_HOST_DIR}}/styles/main.css
 
   sweep-behavior:
     desc: Clear out pages host directory

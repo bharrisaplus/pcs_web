@@ -15,8 +15,8 @@ tasks:
       BUILD_AREA: fhost
       FHOST_URL: '{{.FHOST_URL_ROOT}}/{{.DEV_VER}}/'
     cmds:
-      - pnpm stylus {{.PRESENTATION_REL}}/index.main.styl -m --sourcemap-base {{.DEV_REL}} -o {{.DEV_DIR}}
-      - pnpm postcss {{.DEV_DIR}}/index.main.css --config {{.PROJECT_DIR}} -o {{.DEV_DIR}}/{{.CSS_MAIN_NAME}}
+      - pnpm stylus {{.PRESENTATION_REL}}/index.main.styl -m --sourcemap-base {{.DEV_REL}}/styles -o {{.DEV_DIR}}/styles
+      - pnpm postcss {{.DEV_DIR}}/styles/index.main.css --config {{.PROJECT_DIR}} -o {{.DEV_DIR}}/styles/{{.CSS_MAIN_NAME}}
 
   rear-content:
     desc: Pug to HTML
@@ -34,7 +34,7 @@ tasks:
           VENDOR_CSS_RESET_URL: '{{.FHOST_URL}}{{.VENDOR_CSS_RESET_NAME}}'
           VENDOR_CHANCEJS_URL: '{{.FHOST_URL}}{{.VENDOR_CHANCEJS_NAME}}'
           VENDOR_HTML2CANVAS_URL: '{{.FHOST_URL}}{{.VENDOR_HTML2CANVAS_NAME}}'
-          CSS_MAIN_URL: '{{.FHOST_URL}}{{.CSS_MAIN_NAME}}'
+          CSS_MAIN_URL: '{{.FHOST_URL}}/styles/{{.CSS_MAIN_NAME}}'
           ES_MAIN_URL: '{{.FHOST_URL}}{{.ES_MAIN_NAME}}'
           BROWSERCONFIG_URL: '{{.FHOST_URL}}{{.BROWSERCONFIG_NAME}}'
           WEBMANIFEST_URL: '{{.FHOST_URL}}{{.WEBMANIFEST_NAME}}'
@@ -100,8 +100,8 @@ tasks:
   sweep-presentation:
     desc: Remove generated files
     cmds:
-      - rm -f {{.DEV_DIR}}/main.{css,css.map}
-      - rm -f {{.DEV_DIR}}/index.main.{css,css.map}
+      - rm -f {{.DEV_DIR}}/styles/main.{css,css.map}
+      - rm -f {{.DEV_DIR}}/styles/index.main.{css,css.map}
 
   sweep-behavior:
     desc: Remove generated files
