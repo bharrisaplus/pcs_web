@@ -32,8 +32,6 @@ tasks:
           FAVICON_ICO_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_ICO_ALT_NAME}}'
           FAVICON_MASK_URL: '{{.FHOST_URL}}{{.FAVICON_MASK_NAME}}'
           VENDOR_CSS_RESET_URL: '{{.FHOST_URL}}{{.VENDOR_CSS_RESET_NAME}}'
-          VENDOR_CHANCEJS_URL: '{{.FHOST_URL}}{{.VENDOR_CHANCEJS_NAME}}'
-          VENDOR_HTML2CANVAS_URL: '{{.FHOST_URL}}{{.VENDOR_HTML2CANVAS_NAME}}'
           CSS_MAIN_URL: '{{.FHOST_URL}}/styles/{{.CSS_MAIN_NAME}}'
           ES_MAIN_URL: '{{.FHOST_URL}}{{.ES_MAIN_NAME}}'
           BROWSERCONFIG_URL: '{{.FHOST_URL}}{{.BROWSERCONFIG_NAME}}'
@@ -61,9 +59,7 @@ tasks:
     desc: Copy 3rd party scripts/stylesheets/etc
     cmds:
       - cp {{.COMMON_DIR}}/vendor/meyerweb/reset.css {{.DEV_DIR}}/{{.VENDOR_CSS_RESET_NAME}}
-      - cp {{.COMMON_DIR}}/vendor/html2canvas/html2canvas.js {{.DEV_DIR}}/{{.VENDOR_HTML2CANVAS_NAME}}
-      - cp {{.COMMON_DIR}}/vendor/html2canvas/html2canvas.js.map {{.DEV_DIR}}/{{.VENDOR_HTML2CANVAS_NAME}}.map
-      - echo "MeyerWeb-CSSReset placed with dev files"
+      - echo "Third-party items placed with dev files"
 
   put-meta:
     desc: Place files for offline (pwa)
@@ -111,7 +107,6 @@ tasks:
   sweep-vendor:
     desc: Remove generated files
     cmds:
-      - rm -f {{.DEV_DIR}}/html2canvas.{js,js.map}
       - rm -f {{.DEV_DIR}}/reset.css
 
   sweep-meta:
