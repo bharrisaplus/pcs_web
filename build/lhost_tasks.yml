@@ -34,14 +34,14 @@ tasks:
           VENDOR_HTML2CANVAS_URL: '{{.LHOST_URL}}{{.VENDOR_HTML2CANVAS_NAME}}'
           CSS_MAIN_URL: '{{.LHOST_URL}}{{.CSS_MAIN_NAME}}'
           ES_MAIN_URL: '{{.LHOST_URL}}{{.ES_MAIN_NAME}}'
-          CARD_SOT_URL: '{{.LHOST_URL}}{{.CARD_SOT_NAME}}'
+          CARD_SOT_URL: '{{.LHOST_URL}}img/{{.CARD_SOT_NAME}}'
           BROWSERCONFIG_URL: '{{.LHOST_URL}}{{.BROWSERCONFIG_NAME}}'
           WEBMANIFEST_URL: '{{.LHOST_URL}}{{.WEBMANIFEST_NAME}}'
     cmds:
       - echo '{{.CONTENT_DATA | toJson}}' > {{.DEV_DIR}}/content_data_options.json
       - pnpm pug {{.CONTENT_DIR}}/index.page.pug -o {{.DEV_DIR}} -O {{.DEV_DIR}}/content_data_options.json
       - mv {{.DEV_DIR}}/index.page.html {{.DEV_DIR}}/index.html
-      - cp {{.CONTENT_DIR}}/graphic/misc/carddeck.svg {{.DEV_DIR}}/{{.CARD_SOT_NAME}}
+      - cp {{.CONTENT_DIR}}/graphic/misc/carddeck.svg {{.DEV_DIR}}/img/{{.CARD_SOT_NAME}}
       - cp {{.COMMON_DIR}}/assets/img/vector/help/portrait.min.svg {{.DEV_DIR}}/img/help_portrait.svg
       - cp {{.COMMON_DIR}}/assets/img/vector/help/wide.min.svg {{.DEV_DIR}}/img/help_wide.svg
 

@@ -92,7 +92,7 @@ tasks:
     cmds:
       - rm -f {{.DEV_DIR}}/index.html
       - rm -f {{.DEV_DIR}}/content_data_options.json
-      - rm -f {{.DEV_DIR}}/{{.CARD_SOT_NAME}}
+      - rm -f {{.DEV_DIR}}/img/{{.CARD_SOT_NAME}}
       - rm -f {{.DEV_DIR}}/img/help_portrait.svg
       - rm -f {{.DEV_DIR}}/img/help_wide.svg
 
