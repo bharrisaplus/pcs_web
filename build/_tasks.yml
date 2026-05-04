@@ -12,11 +12,16 @@ includes:
 
 
 tasks:
-  rear-fhost:
-    desc: Build file://
+  ensure_dirs:
+    desc: make directories
     cmds:
       - mkdir -p {{.DEV_DIR}}
       - mkdir -p {{.DEV_DIR}}/img
+
+  rear-fhost:
+    desc: Build file://
+    cmds:
+      - task: ensure_dirs
       - task: fhost:rear-content
       - task: fhost:rear-presentation
       - task: fhost:rear-behavior
@@ -27,8 +32,7 @@ tasks:
   rear-lhost:
     desc: Build localhost://
     cmds:
-      - mkdir -p {{.DEV_DIR}}
-      - mkdir -p {{.DEV_DIR}}/img
+      - task: ensure_dirs
       - task: lhost:rear-content
       - task: lhost:rear-presentation
       - task: lhost:rear-behavior
@@ -40,8 +44,7 @@ tasks:
   sweep-fhost:
     desc: Remove files
     cmds:
-      - mkdir -p {{.DEV_DIR}}
-      - mkdir -p {{.DEV_DIR}}/img
+      - task: ensure_dirs
       - task: fhost:sweep-content
       - task: fhost:sweep-presentation
       - task: fhost:sweep-behavior
@@ -52,7 +55,7 @@ tasks:
   sweep-lhost:
     desc: Remove files
     cmds:
-      - mkdir -p {{.DEV_DIR}}
+      - task: ensure_dirs
       - task: fhost:sweep-content
       - task: fhost:sweep-presentation
       - task: fhost:sweep-behavior

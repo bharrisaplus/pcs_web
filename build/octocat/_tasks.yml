@@ -10,10 +10,16 @@ includes:
 
 
 tasks:
+  ensure_dirs:
+    desc: make directories
+    cmds:
+      - mkdir -p {{.DEV_DIR}}
+      - mkdir -p {{.DEV_DIR}}/img
+
   rear-prod:
     desc: Build octocat files
     cmds:
-      - mkdir -p {{.OCTOCAT_HOST_DIR}}
+      - task: ensure_dirs
       - task: prod:rear-content
       - task: prod:rear-presentation
       - task: prod:rear-behavior
@@ -25,7 +31,7 @@ tasks:
   sweep-prod:
     desc: Remove built octocat files
     cmds:
-      - mkdir -p {{.OCTOCAT_HOST_DIR}}
+      - task: ensure_dirs
       - task: prod:sweep-content
       - task: prod:sweep-presentation
       - task: prod:sweep-behavior
