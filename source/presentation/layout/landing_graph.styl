@@ -299,9 +299,13 @@ $card-wspace = $card-width * 0.25
     padding: 1rem
     border-width: 2px
     border-style: solid
+    flex-flow: column nowrap
 
     &:open
-        display: block
+        display: flex
+
+    & button[command="close"]
+        align-self: flex-end
 
     & img
         background-repeat: no-repeat
