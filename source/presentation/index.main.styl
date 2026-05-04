@@ -44,6 +44,11 @@
     cursor: help
     content: splatsis()
 
+    & svg
+        pointer-events: none
+        user-select: none
+
+
 #title-marquee
     user-select: none
 
@@ -360,7 +365,7 @@
 
 @media (hover: hover)
     #repolink:hover
-        opacity: 0.3
+        opacity: 0.4
 
     #ribbon
         &:has(#shuffle:hover) #shuffle-desc[role="tooltip"]
