@@ -16,6 +16,7 @@ tasks:
     desc: Build file://
     cmds:
       - mkdir -p {{.DEV_DIR}}
+      - mkdir -p {{.DEV_DIR}}/img
       - task: fhost:rear-content
       - task: fhost:rear-presentation
       - task: fhost:rear-behavior
@@ -27,6 +28,7 @@ tasks:
     desc: Build localhost://
     cmds:
       - mkdir -p {{.DEV_DIR}}
+      - mkdir -p {{.DEV_DIR}}/img
       - task: lhost:rear-content
       - task: lhost:rear-presentation
       - task: lhost:rear-behavior
@@ -39,6 +41,7 @@ tasks:
     desc: Remove files
     cmds:
       - mkdir -p {{.DEV_DIR}}
+      - mkdir -p {{.DEV_DIR}}/img
       - task: fhost:sweep-content
       - task: fhost:sweep-presentation
       - task: fhost:sweep-behavior

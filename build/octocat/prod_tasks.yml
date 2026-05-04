@@ -41,6 +41,8 @@ tasks:
       - pnpm pug {{.CONTENT_DIR}}/index.page.pug -o {{.OCTOCAT_HOST_DIR}} -O '{{.CONTENT_DATA | toJson}}'
       - mv {{.OCTOCAT_HOST_DIR}}/index.page.html {{.OCTOCAT_HOST_DIR}}/index.html
       - cp {{.CONTENT_DIR}}/graphic/misc/carddeck.svg {{.OCTOCAT_HOST_DIR}}/{{.CARD_SOT_NAME}}
+      - cp {{.COMMON_DIR}}/assets/img/vector/help/portrait.min.svg {{.DEV_DIR}}/img/help_portrait.svg
+      - cp {{.COMMON_DIR}}/assets/img/vector/help/wide.min.svg {{.DEV_DIR}}/img/help_wide.svg
 
   rear-behavior:
     desc: JS
@@ -104,6 +106,8 @@ tasks:
       - rm -f {{.OCTOCAT_HOST_DIR}}/index.html
       - rm -f {{.OCTOCAT_HOST_DIR}}/content_data_options.json
       - rm -f {{.DEV_DIR}}/{{.CARD_SOT_NAME}}
+      - rm -f {{.DEV_DIR}}/img/help_portrait.svg
+      - rm -f {{.DEV_DIR}}/img/help_wide.svg
 
   sweep-presentation:
     desc: Clear out pages host directory

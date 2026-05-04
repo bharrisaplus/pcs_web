@@ -43,6 +43,8 @@ tasks:
       - echo '{{.CONTENT_DATA | toJson}}' > {{.DEV_DIR}}/content_data_options.json
       - pnpm pug {{.CONTENT_DIR}}/index.page.pug -o {{.DEV_DIR}} -O {{.DEV_DIR}}/content_data_options.json
       - mv {{.DEV_DIR}}/index.page.html {{.DEV_DIR}}/index.html
+      - cp {{.COMMON_DIR}}/assets/img/vector/help/portrait.svg {{.DEV_DIR}}/img/help_portrait.svg
+      - cp {{.COMMON_DIR}}/assets/img/vector/help/wide.svg {{.DEV_DIR}}/img/help_wide.svg
 
   rear-behavior:
     desc: JS
@@ -91,6 +93,9 @@ tasks:
       - rm -f {{.DEV_DIR}}/index.html
       - rm -f {{.DEV_DIR}}/content_data_options.json
       - rm -f {{.DEV_DIR}}/{{.CARD_SOT_NAME}}
+      - rm -f {{.DEV_DIR}}/img/help_portrait.svg
+      - rm -f {{.DEV_DIR}}/img/help_wide.svg
+
 
   sweep-presentation:
     desc: Remove generated files
