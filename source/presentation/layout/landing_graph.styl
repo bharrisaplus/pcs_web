@@ -294,9 +294,17 @@ $card-wspace = $card-width * 0.25
 
 #icon-help
     position: fixed
+    display: none
     margin: auto auto
+    padding: 1rem
     border-width: 2px
     border-style: solid
+
+    &:open
+        display: block
+
+    & img
+        background-repeat: no-repeat
 
 
 /*
