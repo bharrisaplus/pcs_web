@@ -16,6 +16,8 @@ let
   $helpOpn,
   /** @type {HTMLTemplateElement} */
   $helpRef,
+  /** @type {HTMLDialogElement} */
+  $helpDlg,
   /** @type {Lattice.Landing} */
   landingPage;
 const
@@ -49,6 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   $repoLink = document.querySelector(repoLink);
   $helpOpn = document.querySelector(helpOpn);
   $helpRef = document.querySelector(helpRef);
+  $helpDlg = document.importNode($helpRef.content, true)?.querySelector(helpDlg);
   landingPage = cobbleLanding(cardView, cardOverlay, cardMenu, cardRef, appStore);
 
 
@@ -68,6 +71,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   );
 
 
+  if ($helpDlg) {
+    document.body.appendChild($helpDlg);
+  }
+
+
   $repoLink.onclick = (_clickEvt) => {
     let _$anchor;
 
@@ -82,18 +90,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
   $helpOpn.onclick = (_clickEvt) => {
-    /** @type {HTMLDialogElement} */
-    let $helpDlg;
+    if (_clickEvt.target !== $helpOpn || !$helpDlg) { return; }
 
-    if (_clickEvt.target !== $helpOpn) { return; }
-
-    $helpDlg = document.importNode($helpRef.content, true)?.querySelector(helpDlg);
-
-    if (!$helpDlg) { return; }
-
-    $helpDlg.onclose = () => $helpDlg?.remove();
-
-    document.body.appendChild($helpDlg);
+    $helpDlg.close();
     $helpDlg.showModal();
   };
 });
