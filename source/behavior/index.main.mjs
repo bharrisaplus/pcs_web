@@ -95,4 +95,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     $helpDlg.close();
     $helpDlg.showModal();
   };
+
+
+  window.screen.orientation.onchange = () => {
+    if (!$helpDlg || !$helpDlg.matches(":open")) { return; }
+
+    $helpDlg.close();
+    $helpDlg.showModal();
+  };
 });
