@@ -31,7 +31,7 @@ tasks:
           FAVICON_ICO_URL: '{{.FHOST_URL}}{{.FAVICON_ICO_NAME}}'
           FAVICON_ICO_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_ICO_ALT_NAME}}'
           FAVICON_MASK_URL: '{{.FHOST_URL}}{{.FAVICON_MASK_NAME}}'
-          VENDOR_CSS_RESET_URL: '{{.FHOST_URL}}{{.VENDOR_CSS_RESET_NAME}}'
+          VENDOR_CSS_RESET_URL: '{{.FHOST_URL}}/tp/{{.VENDOR_CSS_RESET_NAME}}'
           CSS_MAIN_URL: '{{.FHOST_URL}}/styles/{{.CSS_MAIN_NAME}}'
           ES_MAIN_URL: '{{.FHOST_URL}}{{.ES_MAIN_NAME}}'
           BROWSERCONFIG_URL: '{{.FHOST_URL}}{{.BROWSERCONFIG_NAME}}'
@@ -58,7 +58,7 @@ tasks:
   put-vendor:
     desc: Copy 3rd party scripts/stylesheets/etc
     cmds:
-      - cp {{.COMMON_DIR}}/vendor/meyerweb/reset.css {{.DEV_DIR}}/{{.VENDOR_CSS_RESET_NAME}}
+      - cp {{.COMMON_DIR}}/vendor/meyerweb/reset.css {{.DEV_DIR}}/tp/{{.VENDOR_CSS_RESET_NAME}}
       - echo "Third-party items placed with dev files"
 
   put-meta:
@@ -107,7 +107,7 @@ tasks:
   sweep-vendor:
     desc: Remove generated files
     cmds:
-      - rm -f {{.DEV_DIR}}/reset.css
+      - rm -f {{.DEV_DIR}}/tp/reset.css
 
   sweep-meta:
     desc: Remove generated files

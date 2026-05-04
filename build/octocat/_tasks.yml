@@ -16,6 +16,7 @@ tasks:
       - mkdir -p {{.DEV_DIR}}
       - mkdir -p {{.DEV_DIR}}/img
       - mkdir -p {{.DEV_DIR}}/styles
+      - mkdir -p {{.DEV_DIR}}/tp
 
   rear-prod:
     desc: Build octocat files
