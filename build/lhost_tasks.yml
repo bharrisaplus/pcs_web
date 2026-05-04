@@ -31,7 +31,7 @@ tasks:
           FAVICON_MASK_URL: '{{.LHOST_URL}}{{.FAVICON_MASK_NAME}}'
           VENDOR_CSS_RESET_URL: '{{.LHOST_URL}}tp/{{.VENDOR_CSS_RESET_NAME}}'
           CSS_MAIN_URL: '{{.LHOST_URL}}styles/{{.CSS_MAIN_NAME}}'
-          ES_MAIN_URL: '{{.LHOST_URL}}{{.ES_MAIN_NAME}}'
+          ES_MAIN_URL: '{{.LHOST_URL}}scripts/{{.ES_MAIN_NAME}}'
           CARD_SOT_URL: '{{.LHOST_URL}}img/{{.CARD_SOT_NAME}}'
           BROWSERCONFIG_URL: '{{.LHOST_URL}}{{.BROWSERCONFIG_NAME}}'
           WEBMANIFEST_URL: '{{.LHOST_URL}}{{.WEBMANIFEST_NAME}}'

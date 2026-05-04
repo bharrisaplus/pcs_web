@@ -31,7 +31,7 @@ tasks:
           FAVICON_MASK_URL: '{{.OCTOCAT_URL}}{{.FAVICON_MASK_NAME}}'
           VENDOR_CSS_RESET_URL: '{{.OCTOCAT_URL}}tp/{{.VENDOR_CSS_RESET_NAME}}'
           CSS_MAIN_URL: '{{.OCTOCAT_URL}}styles/{{.CSS_MAIN_NAME}}'
-          ES_MAIN_URL: '{{.OCTOCAT_URL}}{{.ES_MAIN_NAME}}'
+          ES_MAIN_URL: '{{.OCTOCAT_URL}}scripts/{{.ES_MAIN_NAME}}'
           CARD_SOT_URL: '{{.OCTOCAT_URL}}img/{{.CARD_SOT_NAME}}'
           BROWSERCONFIG_URL: '{{.OCTOCAT_URL}}{{.BROWSERCONFIG_NAME}}'
           WEBMANIFEST_URL: '{{.OCTOCAT_URL}}{{.WEBMANIFEST_NAME}}'
@@ -114,7 +114,7 @@ tasks:
   sweep-behavior:
     desc: Clear out pages host directory
     cmds:
-      - rm -f {{.OCTOCAT_HOST_DIR}}/main.{js,mjs}
+      - rm -f {{.OCTOCAT_HOST_DIR}}/scripts/main.{js,mjs}
 
   sweep-vendor:
     desc: Remove generated files

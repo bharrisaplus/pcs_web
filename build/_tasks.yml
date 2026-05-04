@@ -19,6 +19,7 @@ tasks:
       - mkdir -p {{.DEV_DIR}}/img
       - mkdir -p {{.DEV_DIR}}/styles
       - mkdir -p {{.DEV_DIR}}/tp
+      - mkdir -p {{.DEV_DIR}}/scripts
 
   rear-fhost:
     desc: Build file://

@@ -33,7 +33,7 @@ tasks:
           FAVICON_MASK_URL: '{{.FHOST_URL}}{{.FAVICON_MASK_NAME}}'
           VENDOR_CSS_RESET_URL: '{{.FHOST_URL}}/tp/{{.VENDOR_CSS_RESET_NAME}}'
           CSS_MAIN_URL: '{{.FHOST_URL}}/styles/{{.CSS_MAIN_NAME}}'
-          ES_MAIN_URL: '{{.FHOST_URL}}{{.ES_MAIN_NAME}}'
+          ES_MAIN_URL: '{{.FHOST_URL}}/scripts/{{.ES_MAIN_NAME}}'
           BROWSERCONFIG_URL: '{{.FHOST_URL}}{{.BROWSERCONFIG_NAME}}'
           WEBMANIFEST_URL: '{{.FHOST_URL}}{{.WEBMANIFEST_NAME}}'
           ON_FILE_HOST: true
@@ -102,7 +102,7 @@ tasks:
   sweep-behavior:
     desc: Remove generated files
     cmds:
-      - rm -f {{.DEV_DIR}}/main.{js,js.map,mjs}
+      - rm -f {{.DEV_DIR}}/scripts/main.{js,js.map,mjs}
 
   sweep-vendor:
     desc: Remove generated files
