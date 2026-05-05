@@ -8,6 +8,7 @@ exclude_patterns = [
     "*.min.*",
     "**/demo.main.js",
     "**/trythis.example.mjs",
+    "**/*.config.mjs",
     "**/*.d.ts",
     "**/.brwud/**",
     "**/assets/**",
