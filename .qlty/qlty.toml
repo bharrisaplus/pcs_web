@@ -3,38 +3,38 @@
 config_version = "0"
 
 exclude_patterns = [
-  "*_min.*",
-  "*-min.*",
-  "*.min.*",
-  "**/demo.main.js",
-  "**/trythis.example.js",
-  "**/*.d.ts",
-  "**/.brwud/**",
-  "**/assets/**",
-  "**/build/**",
-  "**/dist/**",
-  "**/coverage/**",
-  "**/source/content/**",
-  "**/source/presentation/**",
-  "**/distribution/**",
-  "**/node_modules/**",
-  "**/vendor/**"
+    "*_min.*",
+    "*-min.*",
+    "*.min.*",
+    "**/demo.main.js",
+    "**/trythis.example.mjs",
+    "**/*.d.ts",
+    "**/.brwud/**",
+    "**/assets/**",
+    "**/build/**",
+    "**/dist/**",
+    "**/coverage/**",
+    "**/source/content/**",
+    "**/source/presentation/**",
+    "**/distribution/**",
+    "**/node_modules/**",
+    "**/vendor/**"
 ]
 
 test_patterns = [
-  "**/test/**",
-  "**/test/specs/**",
-  "**/test/stories/**",
-  "**/test/rehearsals/**",
-  "**/*.spec.mjs",
-  "**/appa.mjs",
-  "**/genga.mjs",
+    "**/test/**",
+    "**/test/specs/**",
+    "**/test/stories/**",
+    "**/test/rehearsals/**",
+    "**/*.spec.mjs",
+    "**/appa.mjs",
+    "**/genga.mjs",
 ]
 
 [coverage]
 ignores = [
-  "**/demo.main.js",
-  "**/trythis.example.js",
+    "**/demo.main.js",
+    "**/trythis.example.mjs",
 ]
 
 [smells]
