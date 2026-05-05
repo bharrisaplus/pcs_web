@@ -1,0 +1,5 @@
+# ignore npm devDependencies
+[[PackageOverrides]]
+ecosystem = "npm"
+group = "dev"
+ignore = true
