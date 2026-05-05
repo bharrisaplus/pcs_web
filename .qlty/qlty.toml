@@ -23,14 +23,12 @@ exclude_patterns = [
 
 test_patterns = [
   "**/test/**",
-  "**/spec/**",
-  "**/stories/**",
-  "**/*.test.*",
-  "**/*.spec.*",
-  "**/*_test.*",
-  "**/*_spec.*",
-  "**/test_*.*",
-  "**/spec_*.*"
+  "**/test/specs/**",
+  "**/test/stories/**",
+  "**/test/rehearsals/**",
+  "**/*.spec.mjs",
+  "**/appa.mjs",
+  "**/genga.mjs",
 ]
 
 [smells]
