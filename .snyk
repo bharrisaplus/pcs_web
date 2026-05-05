@@ -1,2 +1,13 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities
+---
 version: v1.25.0
+
+exclude:
+  global:
+    # unused files
+    - distribution/common/vendor/chancejs
+    - distribution/common/vendor/html2canvas
+    # test files
+    - test/stories/chapters
+    - test/specs
+    - test/rehearsals/dress
