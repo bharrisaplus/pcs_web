@@ -25,6 +25,7 @@ const getBezel = async () => {
     CARD_SOT_NAME: NodeProcess.env.CARD_SOT_NAME || 'cardsot.svg',
     BROWSER_DBG_PORT: NodeProcess.env.BRW_DBG_PORT ? Number.parseInt(NodeProcess.env.BRW_DBG_PORT) : 28133,
     SERVER_PORT: NodeProcess.env.LHOST_PORT ? Number.parseInt(NodeProcess.env.LHOST_PORT) : 54321,
+    APP_DIR: NodeProcess.env.DEV_DIR || NodePath.resolve(_dir, '../distribution/demo'),
 
     // test specific
     storey_cov_config_path: NodeProcess.env.PROJECT_DIR ?
