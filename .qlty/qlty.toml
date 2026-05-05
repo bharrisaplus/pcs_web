@@ -6,8 +6,8 @@ exclude_patterns = [
   "*_min.*",
   "*-min.*",
   "*.min.*",
-  "demo.main.js",
-  "trythis.example.js",
+  "**/demo.main.js",
+  "**/trythis.example.js",
   "**/*.d.ts",
   "**/.brwud/**",
   "**/assets/**",
@@ -29,6 +29,12 @@ test_patterns = [
   "**/*.spec.mjs",
   "**/appa.mjs",
   "**/genga.mjs",
+]
+
+[coverage]
+ignores = [
+  "**/demo.main.js",
+  "**/trythis.example.js",
 ]
 
 [smells]
