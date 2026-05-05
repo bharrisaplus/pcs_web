@@ -26,11 +26,11 @@ const demoLintConfig = defineConfig([
       }]
     },
     languageOptions: {
-    	globals: {
+      globals: {
         arguments: "readonly",
         // web api
-    		window: "readonly",
-    		document: "readonly",
+        window: "readonly",
+        document: "readonly",
         HTMLElement: "readonly",
         console: "readonly",
         fetch: "readonly",
@@ -47,7 +47,7 @@ const demoLintConfig = defineConfig([
         // third party
         html2canvas: "readonly",
         chance: "readonly",
-    	}
+      }
     }
   }
 ]);

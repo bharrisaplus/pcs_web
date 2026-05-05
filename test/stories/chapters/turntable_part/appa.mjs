@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         turntableBehavior.loadTurntable(testCards[testCardIdx]);
       } else if (_msgEvt.data.type == 'desk:hide') {
-       if (turntableBehavior.isOpen) { $turntable.hidePopover(); }
+        if (turntableBehavior.isOpen) { $turntable.hidePopover(); }
 
         testCardIdx = null;
       } else if (_msgEvt.data.type == 'desk:test') {

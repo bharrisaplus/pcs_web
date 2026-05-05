@@ -11,21 +11,21 @@ import { default as tryLogger } from './hands/scribe.hand.mjs';
 
 
 const someFunc = () => {
-	console.log("Thanks for trying");
+  console.log("Thanks for trying");
 };
 
 
 const otherFunc = (/** @type {CSSelector} */ aSelector) => {
-	document.querySelector(aSelector)?.addEventListener('click', () => {
-		console.log("Called event");
-	});
+  document.querySelector(aSelector)?.addEventListener('click', () => {
+    console.log("Called event");
+  });
 };
 
 
 const anotherFunc = (/** @type {CSSelector} */ elSelector) => {
-	document.querySelector(elSelector)?.addEventListener('click', () => {
-		tryLogger.devlog("Will dev log");
-	});
+  document.querySelector(elSelector)?.addEventListener('click', () => {
+    tryLogger.devlog("Will dev log");
+  });
 }
 
 
@@ -39,9 +39,9 @@ const anotherFunc = (/** @type {CSSelector} */ elSelector) => {
 
 /** @type {ExampleModule} */
 const theModule = Object.freeze({
-	funcHere: someFunc,
-	orFuncHere: otherFunc,
-	evenFuncHere: anotherFunc
+  funcHere: someFunc,
+  orFuncHere: otherFunc,
+  evenFuncHere: anotherFunc
 });
 
 export default theModule;

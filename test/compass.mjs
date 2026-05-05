@@ -14,7 +14,7 @@ const getBezel = async () => {
     /** @type {BuildGlobals} */
     _build_g_import = (await import(_build_g_url)).default;
 
-   return Object.freeze({
+  return Object.freeze({
     project_path: NodeProcess.env.PROJECT_DIR || NodePath.resolve(_dir, '../'),
     build_path: _build_path,
     source_path: NodeProcess.env.SOURCES_DIR || NodePath.resolve(_dir, '../source'),
