@@ -49,6 +49,7 @@ mode = "comment"
 
 [[plugin]]
 name = "osv-scanner"
+config_files = ["osv-scanner.toml"]
 
 [[plugin]]
 name = "ripgrep"
