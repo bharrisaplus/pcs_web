@@ -46,27 +46,30 @@ const makeScribeHand = () => {
 
   /** @param  {string} maybeMsg */
   const _make_toast = (maybeMsg) => {
-    /** @type {NotificationToast} */
-    let maybeNoTo;
-    const
-      aToastAbort = new AbortController(),
+    let
+      /** @type {NotificationToast} */
+      maybeNoTo,
       /** @type {DocumentFragment} */
-      $toastContainer = document.importNode($toastRef.content, true),
+      $toastContainer,
       /** @type {HTMLElement} */
-      $aToast = $toastContainer.querySelector('.toast'),
+      $aToast,
       /** @type {HTMLSpanElement} */
-      $aToastMsg = $aToast.querySelector('span.toast-msg'),
+      $aToastMsg,
       /** @type {HTMLButtonElement} */
-      $aToastClose = $aToast.querySelector('button.toast-close');
+      $aToastClose;
+    const aToastAbort = new AbortController();
 
 
+    if (!$toaster || !$toastRef) { return; }
     if (!maybeMsg || maybeMsg.trim().length < 10) { return; }
 
-    if (!$toaster || !$toastRef || !$aToast || !$aToastMsg || !$aToastClose) { return; }
+    $toastContainer = document.importNode($toastRef.content, true),
+    $aToast = $toastContainer?.querySelector('.toast'),
+    $aToastMsg = $aToast?.querySelector('.toast-msg'),
+    $aToastClose = $aToast?.querySelector('.toast-close');
 
-    if (toasts.some((_toast) => _toast.$elm.querySelector('span.toast-msg')?.textContent === maybeMsg)) {
-      return;
-    }
+    if (!$aToast || !$aToastMsg || !$aToastClose) { return; }
+    if (toasts.some((_toast) => _toast.$elm.querySelector('.toast-msg')?.textContent === maybeMsg)) { return; }
 
 
     $aToastMsg.textContent = maybeMsg;
