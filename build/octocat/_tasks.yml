@@ -13,11 +13,11 @@ tasks:
   ensure_dirs:
     desc: make directories
     cmds:
-      - mkdir -p {{.DEV_DIR}}
-      - mkdir -p {{.DEV_DIR}}/img
-      - mkdir -p {{.DEV_DIR}}/styles
-      - mkdir -p {{.DEV_DIR}}/tp
-      - mkdir -p {{.DEV_DIR}}/scripts
+      - mkdir -p {{.OCTOCAT_HOST_DIR}}
+      - mkdir -p {{.OCTOCAT_HOST_DIR}}/img
+      - mkdir -p {{.OCTOCAT_HOST_DIR}}/styles
+      - mkdir -p {{.OCTOCAT_HOST_DIR}}/tp
+      - mkdir -p {{.OCTOCAT_HOST_DIR}}/scripts
 
   rear-prod:
     desc: Build octocat files
