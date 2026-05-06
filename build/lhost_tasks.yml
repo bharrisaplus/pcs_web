@@ -21,6 +21,9 @@ tasks:
     vars:
       CONTENT_DATA:
         map:
+          PAGE_URL: '{{.LHOST_URL}}'
+          SHARE_IMG_URL: '{{.LHOST_URL}}img/pcs_social.png'
+          SHARE_IMG_SQ_URL: '{{.LHOST_URL}}img/pcs_social-sq.png'
           APPLE_TOUCH_ICON_URL: '{{.LHOST_URL}}{{.APPLE_TOUCH_ICON_NAME}}'
           FAVICON_32_URL: '{{.LHOST_URL}}{{.FAVICON_32_NAME}}'
           FAVICON_32_ALT_URL: '{{.LHOST_URL}}{{.FAVICON_32_ALT_NAME}}'
@@ -42,6 +45,8 @@ tasks:
       - cp {{.CONTENT_DIR}}/graphic/misc/carddeck.svg {{.DEV_DIR}}/img/{{.CARD_SOT_NAME}}
       - cp {{.COMMON_DIR}}/assets/img/vector/help/portrait.min.svg {{.DEV_DIR}}/img/help_portrait.svg
       - cp {{.COMMON_DIR}}/assets/img/vector/help/wide.min.svg {{.DEV_DIR}}/img/help_wide.svg
+      - cp {{.COMMON_DIR}}/assets/img/raster/share/social.png {{.DEV_DIR}}/img/pcs_social.png
+      - cp {{.COMMON_DIR}}/assets/img/raster/share/social_sq.png {{.DEV_DIR}}/img/pcs_social-sq.png
 
   rear-behavior:
     desc: JS

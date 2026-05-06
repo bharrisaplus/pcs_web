@@ -21,8 +21,12 @@ tasks:
   rear-content:
     desc: Pug to HTML
     vars:
+      FHOST_URL: '{{.FHOST_URL_ROOT}}/{{.DEV_VER}}/'
       CONTENT_DATA:
         map:
+          PAGE_URL: '{{.FHOST_URL}}'
+          SHARE_IMG_URL: '{{.FHOST_URL}}img/pcs_social.png'
+          SHARE_IMG_SQ_URL: '{{.FHOST_URL}}img/pcs_social-sq.png'
           APPLE_TOUCH_ICON_URL: '{{.FHOST_URL}}{{.APPLE_TOUCH_ICON_NAME}}'
           FAVICON_32_URL: '{{.FHOST_URL}}{{.FAVICON_32_NAME}}'
           FAVICON_32_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_32_ALT_NAME}}'
@@ -31,9 +35,9 @@ tasks:
           FAVICON_ICO_URL: '{{.FHOST_URL}}{{.FAVICON_ICO_NAME}}'
           FAVICON_ICO_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_ICO_ALT_NAME}}'
           FAVICON_MASK_URL: '{{.FHOST_URL}}{{.FAVICON_MASK_NAME}}'
-          VENDOR_CSS_RESET_URL: '{{.FHOST_URL}}/tp/{{.VENDOR_CSS_RESET_NAME}}'
-          CSS_MAIN_URL: '{{.FHOST_URL}}/styles/{{.CSS_MAIN_NAME}}'
-          ES_MAIN_URL: '{{.FHOST_URL}}/scripts/{{.ES_MAIN_NAME}}'
+          VENDOR_CSS_RESET_URL: '{{.FHOST_URL}}tp/{{.VENDOR_CSS_RESET_NAME}}'
+          CSS_MAIN_URL: '{{.FHOST_URL}}styles/{{.CSS_MAIN_NAME}}'
+          ES_MAIN_URL: '{{.FHOST_URL}}scripts/{{.ES_MAIN_NAME}}'
           BROWSERCONFIG_URL: '{{.FHOST_URL}}{{.BROWSERCONFIG_NAME}}'
           WEBMANIFEST_URL: '{{.FHOST_URL}}{{.WEBMANIFEST_NAME}}'
           ON_FILE_HOST: true
@@ -43,6 +47,8 @@ tasks:
       - mv {{.DEV_DIR}}/index.page.html {{.DEV_DIR}}/index.html
       - cp {{.COMMON_DIR}}/assets/img/vector/help/portrait.svg {{.DEV_DIR}}/img/help_portrait.svg
       - cp {{.COMMON_DIR}}/assets/img/vector/help/wide.svg {{.DEV_DIR}}/img/help_wide.svg
+      - cp {{.COMMON_DIR}}/assets/img/raster/share/social.png {{.DEV_DIR}}/img/pcs_social.png
+      - cp {{.COMMON_DIR}}/assets/img/raster/share/social_sq.png {{.DEV_DIR}}/img/pcs_social-sq.png
 
   rear-behavior:
     desc: JS
