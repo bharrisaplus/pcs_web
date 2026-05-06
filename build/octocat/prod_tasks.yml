@@ -12,9 +12,15 @@ tasks:
       BUILD_TARGET: octocat
       BUILD_OBJECTIVE: '{{.DEV_VER}}'
       BUILD_AREA: prod
+    vars:
+      PRESENTATION_INPUT: '{{.PRESENTATION_DIR}}/index.main.styl'
+      PRESENTATION_GLOBALS: '{{.OCTOCAT_HOST_DIR}}/styles/gv.styl'
+      PRESENTATION_OUTPUT: '{{.OCTOCAT_HOST_DIR}}/styles/{{.CSS_MAIN_NAME}}'
     cmds:
-      - pnpm stylus {{.PRESENTATION_DIR}}/index.main.styl -o {{.OCTOCAT_HOST_DIR}}/styles/{{.CSS_MAIN_NAME}}
-      - pnpm postcss {{.OCTOCAT_HOST_DIR}}/styles/{{.CSS_MAIN_NAME}} --config {{.PROJECT_DIR}} -o {{.OCTOCAT_HOST_DIR}}/styles/{{.CSS_MAIN_NAME}}
+      - echo "\$base_url = '{{.OCTOCAT_URL}}'" > {{.PRESENTATION_GLOBALS}}
+      - pnpm stylus {{.PRESENTATION_INPUT}} --import {{.PRESENTATION_GLOBALS}} -o {{.PRESENTATION_OUTPUT}}
+      - pnpm postcss {{.PRESENTATION_OUTPUT}} --config {{.PROJECT_DIR}} -o {{.PRESENTATION_OUTPUT}}
+      - rm -rf {{.PRESENTATION_GLOBALS}}
 
   rear-content:
     desc: Pug to HTML
