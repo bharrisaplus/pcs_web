@@ -1,0 +1,31 @@
+#ribbon
+    .ribbon-swish
+        #brush
+            select(name="brush-wells" aria-label="Background Color Change" aria-description="Pick a color for the area behind cards")
+                option(value=0 selected) Choose 🎨
+                option(value=1) Emerald
+                option(value=2) Cherry
+                option(value=3) Twilight
+                option(value=4) Amethyst
+    .ribbon-bow
+        button#shuffle(aria-label="Shuffle Cards" aria-describedby="shuffle-desc")
+            include ../../graphic/icon/shashashuffle.svg
+    .ribbon-flourish
+        #reset
+            button(aria-label="Reset Cards" aria-describedby="reset-desc")
+                include ../../graphic/icon/lucide/reset-icon.svg
+        #claw
+            button.claw-txt(aria-label="Clipboard Copy" aria-describedby="clawtxt-desc")
+                include ../../graphic/icon/lucide/copy-icon.svg
+            button.claw-img(aria-label="Save Image" aria-describedby="clawimg-desc")
+                include ../../graphic/icon/lucide/copy_img-icon.svg
+            a.claw-drop
+
+    #shuffle-desc(role="tooltip")
+        | Arrange the cards in random order
+    #reset-desc(role="tooltip")
+        | Return the cards to new deck order
+    #clawimg-desc(role="tooltip")
+        | Generate image of cards for download
+    #clawtxt-desc(role="tooltip")
+        | Copy cards as text to clipboard

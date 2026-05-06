@@ -1,0 +1,63 @@
+extends document/_base/_skeleton.pug
+
+block html_head_title
+    title pcs:web
+
+block html_head
+    include document/partials/heads/_head.pug
+    if !ON_FILE_HOST
+        link(id="card-sot" rel="prefetch" href=CARD_SOT_URL)
+
+block html_head_styles
+    link(rel="stylesheet" href=VENDOR_CSS_RESET_URL)
+    link(rel="stylesheet" href=CSS_MAIN_URL)
+
+block html_body
+    body#pcs-shell
+        i#qhelp
+            include graphic/icon/helq.svg
+        header
+            #title-marquee
+                h2 
+                    b (P)
+                    | seudo&nbsp;
+                    b (C)
+                    | ard&nbsp;
+                    b (S)
+                    | huffler
+
+                svg.markl(role="img" aria-labelledby="pcs-logo-title pcs-logo-description")
+                    title(id="pcs-logo-title") pcs logo
+                    desc(id="pcs-logo-description") A scribbly sqwiggle
+                    use(href="#pcs-logo")
+
+            include document/partials/ribbon.pug
+
+        main(data-dye="green-dye")
+            #pageload-curtain
+                include document/partials/loading-indicator.pug
+
+            include document/partials/tableau.pug
+
+            include document/partials/turntable.pug
+
+        #notifications(popover="manual")
+
+        block html_body_last
+            footer
+                div.inline-svg-assets-here(style="display: none; visibility: hidden;")
+                    include graphic/misc/pcs-logo.svg
+                    include graphic/misc/pcs-card.svg
+                    if ON_FILE_HOST
+                        include graphic/misc/carddeck.svg
+
+                include document/partials/template_toast.pug
+                include document/partials/template_help.pug
+
+                if ON_FILE_HOST
+                    script(src=ES_MAIN_URL defer)
+                else
+                    script(src=ES_MAIN_URL type="module" defer)
+
+            i#repolink
+                include graphic/icon/splatsis-alt.svg

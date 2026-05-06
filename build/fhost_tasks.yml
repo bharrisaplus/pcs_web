@@ -1,0 +1,132 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+# Tasks are expected to be called from the project root or via the main Taskfile
+
+version: '3'
+
+
+tasks:
+  # Building/Transpiling/etc
+  rear-presentation:
+    desc: Stylus to CSS
+    env:
+      BUILD_TARGET: soi
+      BUILD_OBJECTIVE: '{{.DEV_VER}}'
+      BUILD_AREA: fhost
+      FHOST_URL: '{{.FHOST_URL_ROOT}}/{{.DEV_VER}}/'
+    cmds:
+      - pnpm stylus {{.PRESENTATION_REL}}/index.main.styl -m --sourcemap-base {{.DEV_REL}}/styles -o {{.DEV_DIR}}/styles
+      - pnpm postcss {{.DEV_DIR}}/styles/index.main.css --config {{.PROJECT_DIR}} -o {{.DEV_DIR}}/styles/{{.CSS_MAIN_NAME}}
+
+  rear-content:
+    desc: Pug to HTML
+    vars:
+      CONTENT_DATA:
+        map:
+          APPLE_TOUCH_ICON_URL: '{{.FHOST_URL}}{{.APPLE_TOUCH_ICON_NAME}}'
+          FAVICON_32_URL: '{{.FHOST_URL}}{{.FAVICON_32_NAME}}'
+          FAVICON_32_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_32_ALT_NAME}}'
+          FAVICON_16_URL: '{{.FHOST_URL}}{{.FAVICON_16_NAME}}'
+          FAVICON_16_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_16_ALT_NAME}}'
+          FAVICON_ICO_URL: '{{.FHOST_URL}}{{.FAVICON_ICO_NAME}}'
+          FAVICON_ICO_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_ICO_ALT_NAME}}'
+          FAVICON_MASK_URL: '{{.FHOST_URL}}{{.FAVICON_MASK_NAME}}'
+          VENDOR_CSS_RESET_URL: '{{.FHOST_URL}}/tp/{{.VENDOR_CSS_RESET_NAME}}'
+          CSS_MAIN_URL: '{{.FHOST_URL}}/styles/{{.CSS_MAIN_NAME}}'
+          ES_MAIN_URL: '{{.FHOST_URL}}/scripts/{{.ES_MAIN_NAME}}'
+          BROWSERCONFIG_URL: '{{.FHOST_URL}}{{.BROWSERCONFIG_NAME}}'
+          WEBMANIFEST_URL: '{{.FHOST_URL}}{{.WEBMANIFEST_NAME}}'
+          ON_FILE_HOST: true
+    cmds:
+      - echo '{{.CONTENT_DATA | toJson}}' > {{.DEV_DIR}}/content_data_options.json
+      - pnpm pug {{.CONTENT_DIR}}/index.page.pug -o {{.DEV_DIR}} -O {{.DEV_DIR}}/content_data_options.json
+      - mv {{.DEV_DIR}}/index.page.html {{.DEV_DIR}}/index.html
+      - cp {{.COMMON_DIR}}/assets/img/vector/help/portrait.svg {{.DEV_DIR}}/img/help_portrait.svg
+      - cp {{.COMMON_DIR}}/assets/img/vector/help/wide.svg {{.DEV_DIR}}/img/help_wide.svg
+
+  rear-behavior:
+    desc: JS
+    env:
+      BUILD_TARGET: soi
+      BUILD_OBJECTIVE: '{{.DEV_VER}}'
+      BUILD_AREA: fhost
+      FHOST_URL: '{{.FHOST_URL_ROOT}}/{{.DEV_VER}}/'
+    cmds:
+      -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
+
+  # Moving things around
+  put-vendor:
+    desc: Copy 3rd party scripts/stylesheets/etc
+    cmds:
+      - cp {{.COMMON_DIR}}/vendor/meyerweb/reset.css {{.DEV_DIR}}/tp/{{.VENDOR_CSS_RESET_NAME}}
+      - echo "Third-party items placed with dev files"
+
+  put-meta:
+    desc: Place files for offline (pwa)
+    cmds:
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle.ico {{.DEV_DIR}}/{{.FAVICON_ICO_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle-alt.ico {{.DEV_DIR}}/{{.FAVICON_ICO_ALT_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_16.png {{.DEV_DIR}}/{{.FAVICON_16_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_16-alt.png {{.DEV_DIR}}/{{.FAVICON_16_ALT_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_32.png {{.DEV_DIR}}/{{.FAVICON_32_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_32-alt.png {{.DEV_DIR}}/{{.FAVICON_32_ALT_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_180.png {{.DEV_DIR}}/{{.APPLE_TOUCH_ICON_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_192.png {{.DEV_DIR}}/{{.FAVICON_ANDROID_CHROME_192_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_512.png {{.DEV_DIR}}/{{.FAVICON_ANDROID_CHROME_512_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_70.png {{.DEV_DIR}}/{{.FAVICON_MSTILE_s70_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_144.png {{.DEV_DIR}}/{{.FAVICON_MSTILE_s144_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_150.png {{.DEV_DIR}}/{{.FAVICON_MSTILE_s150_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_310.png {{.DEV_DIR}}/{{.FAVICON_MSTILE_s310_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_310x150.png {{.DEV_DIR}}/{{.FAVICON_MSTILE_w310_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/icon-silhouette.svg {{.DEV_DIR}}/{{.FAVICON_MASK_NAME}}
+      - cp {{.CONTENT_DIR}}/webmanifest.source.json {{.DEV_DIR}}/{{.WEBMANIFEST_NAME}}
+      - echo "Favicon and Offline files placed with dev files"
+
+  # Clean up/Tear down
+  sweep-content:
+    desc: Remove generated files
+    cmds:
+      - rm -f {{.DEV_DIR}}/index.html
+      - rm -f {{.DEV_DIR}}/content_data_options.json
+      - rm -f {{.DEV_DIR}}/img/{{.CARD_SOT_NAME}}
+      - rm -f {{.DEV_DIR}}/img/help_portrait.svg
+      - rm -f {{.DEV_DIR}}/img/help_wide.svg
+
+
+  sweep-presentation:
+    desc: Remove generated files
+    cmds:
+      - rm -f {{.DEV_DIR}}/styles/main.{css,css.map}
+      - rm -f {{.DEV_DIR}}/styles/index.main.{css,css.map}
+
+  sweep-behavior:
+    desc: Remove generated files
+    cmds:
+      - rm -f {{.DEV_DIR}}/scripts/main.{js,js.map,mjs}
+
+  sweep-vendor:
+    desc: Remove generated files
+    cmds:
+      - rm -f {{.DEV_DIR}}/tp/reset.css
+
+  sweep-meta:
+    desc: Remove generated files
+    cmds:
+      - rm -f {{.DEV_DIR}}/{{.FAVICON_ICO_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.FAVICON_ICO_ALT_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.FAVICON_16_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.FAVICON_16_ALT_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.FAVICON_32_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.FAVICON_32_ALT_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.APPLE_TOUCH_ICON_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.FAVICON_ANDROID_CHROME_192_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.FAVICON_ANDROID_CHROME_512_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.FAVICON_MSTILE_s70_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.FAVICON_MSTILE_s144_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.FAVICON_MSTILE_s150_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.FAVICON_MSTILE_s310_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.FAVICON_MSTILE_w310_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.FAVICON_MASK_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.BROWSERCONFIG_NAME}}
+      - rm -f {{.DEV_DIR}}/{{.WEBMANIFEST_NAME}}
+      - rm -f {{.DEV_DIR}}/meta_data_options.json

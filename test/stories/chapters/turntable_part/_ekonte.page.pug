@@ -1,0 +1,24 @@
+extends ../preface.pug
+
+block storeyboard_title
+    title ekonte:turntable
+
+block storeyboard_sheets
+    link(rel="stylesheet" href="/turntable_part/ekonte.css")
+
+block storeyboard_header
+    h1 Turntable
+
+block storeyboard_entry
+    .desk-membrane
+        iframe.desk-frame(src="/turntable_part/desk" sandbox="allow-same-origin allow-scripts allow-downloads")
+
+block storeyboard_actionbar
+    button#showit Show
+    button#hideit Hide
+    button#loadit Load Cards
+    button#runtest Run Test(s)
+    button#a11ycheck Check a11y
+
+block storeyboard_scripts
+    script(src="/turntable_part/_ekonte.mjs" type="module")

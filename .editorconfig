@@ -1,0 +1,19 @@
+root = true
+
+[*]
+end_of_line = lf
+
+[*.{envrc,gitignore,js,json,md,yml,mjs,ts,yaml,toml,pug,styl,stylus,html,css,svg}]
+charset = utf-8
+
+[*.{js,mjs,yml,yaml,css,html}]
+indent_style = space
+indent_size = 2
+
+[*.{json,pug,styl,stylus,toml}]
+indent_style = space
+indent_size = 4
+
+[{package,.oxlintrc}.json]
+indent_style = space
+indent_size = 2

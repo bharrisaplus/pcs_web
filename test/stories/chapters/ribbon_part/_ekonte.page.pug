@@ -1,0 +1,21 @@
+extends ../preface.pug
+
+block storeyboard_title
+    title ekonte:ribbon
+
+block storeyboard_sheets
+    link(rel="stylesheet" href="/ribbon_part/ekonte.css")
+
+block storeyboard_header
+    h1 Ribbon
+
+block storeyboard_entry
+    .desk-membrane
+        iframe.desk-frame(src="/ribbon_part/desk" sandbox="allow-same-origin allow-scripts allow-downloads")
+
+block storeyboard_actionbar
+    button#runtest Run Test(s)
+    button#a11ycheck Check a11y
+
+block storeyboard_scripts
+    script(src="/ribbon_part/_ekonte.mjs" type="module")

@@ -1,0 +1,31 @@
+$base-font-size = 16px
+$base-font-families = monospace
+
+$userinput-font-families = system-ui, Georgia, serif
+
+:root
+    --normal-size: 16px
+    --medium-size: 1.125rem // 16 * 1.125 = 18px
+
+    --basic-font-stack: $base-font-families
+    --ctrls-font-stack: $userinput-font-families
+
+    --regular-weight: 400
+    --light-weight: 300
+    --medium-weight: 550
+    --heavy-weight: 700
+
+    font: normal var(--normal-size)/1 var(--basic-font-stack)
+
+#title-marquee h2
+    font-size: var(--medium-size)
+
+    & b
+        font-weight: var(--medium-weight)
+
+textarea,
+input,
+button,
+select,
+option
+    font-family: var(--ctrls-font-stack)

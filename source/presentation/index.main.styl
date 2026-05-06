@@ -1,0 +1,428 @@
+@import 'color/palette.styl'
+@import 'typography/_typeset.styl'
+@import 'layout/_graph.styl'
+@import 'stroboscopic/_flick.styl'
+// Page specific
+@import 'typography/landing_typeset.styl'
+@import 'layout/landing_graph.styl'
+
+
+#pcs-shell
+    & main[data-dye="green-dye"]
+        background: var(--bg-emerald)
+    & main[data-dye="red-dye"]
+        background: var(--bg-cherry)
+    & main[data-dye="blue-dye"]
+        background: var(--bg-twilight)
+    & main[data-dye="purple-dye"]
+        background: var(--bg-amethyst)
+
+    &:has(main .hide-before-load) #ribbon,
+    &:has(#notifications:popover-open) #ribbon,
+    &:has(#notifications:popover-open) #tableau,
+    &:has(#notifications:popover-open) #repolink,
+    &:has(#notifications:popover-open) #qhelp,
+    &:has(dialog:open) #ribbon,
+    &:has(dialog:open) #tableau,
+    &:has(dialog:open) #repolink,
+    &:has(dialog:open) #qhelp,
+    &:has(main :popover-open) #ribbon,
+    &:has(main :popover-open) #repolink,
+    &:has(main :popover-open) #qhelp
+        cursor: default
+        pointer-events: none
+
+    &:has(#brush select:disabled) main #tableau .playing-card,
+    &:has(#ribbon button:disabled) main #tableau .playing-card
+        cursor: default
+        pointer-events: none
+
+
+#qhelp svg
+    fill: rgba(75,75,75, 0.25)
+    pointer-events: none
+    user-select: none
+
+#repolink
+    display: inline
+    opacity: 0.2
+    cursor: help
+
+    & svg
+        pointer-events: none
+        user-select: none
+
+
+#title-marquee
+    user-select: none
+
+#ribbon
+    & .ribbon-swish,
+    & .ribbon-flourish
+        background-color: var(--common-dark-fade-alt)
+
+    & .ribbon-bow
+        background-color: transparent
+
+    & .ribbon-swish
+        clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 0% 100%)
+
+    & .ribbon-flourish
+        clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%)
+
+    & [role="tooltip"]
+        visibility: hidden
+        color: var(--card-base)
+        background-color: var(--common-dark)
+        border-radius: 18px
+
+    & button:disabled,
+    & select:disabled
+        pointer-events: none
+
+    &:has(button:active) #shuffle-desc[role="tooltip"],
+    &:has(button:active) #reset-desc[role="tooltip"],
+    &:has(button:active) #clawtxt-desc[role="tooltip"],
+    &:has(button:active) #clawimg-desc[role="tooltip"],
+    &:has(button:disabled) #shuffle-desc[role="tooltip"],
+    &:has(button:disabled) #reset-desc[role="tooltip"],
+    &:has(button:disabled) #clawtxt-desc[role="tooltip"],
+    &:has(button:disabled) #clawimg-desc[role="tooltip"]
+        visibility: hidden
+
+    &:has(#shuffle:focus) #shuffle-desc[role="tooltip"]
+        visibility: visible
+
+    &:has(#reset button:focus) #reset-desc[role="tooltip"]
+        visibility: visible
+
+    &:has(#claw .claw-txt:focus) #clawtxt-desc[role="tooltip"]
+        visibility: visible
+
+    &:has(#claw .claw-img:focus) #clawimg-desc[role="tooltip"]
+        visibility: visible
+
+
+#brush
+    & select[name="brush-wells"]
+        border-style: ridge
+        cursor: pointer
+
+        & option:nth-of-type(2)
+            background-color: var(--emerald-fade)
+
+        & option:nth-of-type(3)
+            background-color: var(--cherry-fade)
+
+        & option:nth-of-type(4)
+            background-color: var(--twilight-fade)
+
+        & option:nth-of-type(5)
+            background-color: var(--amethyst-fade)
+
+
+#shuffle
+    border-color: var(--common-dark-fade)
+    border-style: ridge
+    cursor: pointer
+
+#claw .claw-drop
+    border-radius: 18px
+    border-style: dashed
+    border-color: var(--common-dark-fade)
+
+#reset button,
+#claw button
+    outline-width: 2px
+    outline-style: ridge
+    outline-color: var(--claw-button-sob)
+    translate: 0 0
+    box-shadow: @css { 3px 2.5px var(--common-dark-fade); }
+    cursor: pointer
+
+    &:active
+        box-shadow: @css { 1.5px 1px var(--common-dark-fade); }
+        translate: 0 1.5px
+
+
+#shuffle svg[role="img"],
+#reset button svg[role="img"],
+#claw button svg[role="img"]
+    pointer-events: none
+
+#pageload-curtain
+    border-radius: inherit
+    background-color: var(--common-dark-fade-alt)
+
+    & .loading-indicator
+        background-color: transparent
+
+        & .loading-spinny
+            background-color: var(--card-base)
+            rotate: 0deg
+
+        & .loading-dots
+            background-color: inherit
+            user-select: none
+            pointer-events: none
+
+            & span
+                color: var(--card-base)
+                opacity: 0
+
+
+#tableau
+    background-color: inherit
+    border-radius: inherit
+    list-style: none
+
+    &:has(+ :popover-open) .playing-card
+        cursor: default
+        pointer-events: none
+
+    & .playing-card
+        cursor: pointer
+        rotate: 0deg
+        box-shadow: none
+
+
+#turntable
+    background-color: inherit
+    border-color: var(--turntable-dustcover-mix)
+    border-radius: inherit
+    opacity: 0
+
+    &::backdrop
+        border-radius: inherit
+        background-color: transparent
+        backdrop-filter: none
+
+    &:popover-open
+        opacity: 1
+
+        &::backdrop
+            background-color: var(--turntable-dustcover)
+            backdrop-filter: blur(3px)
+
+    & button
+        cursor: pointer
+
+    & .turntable-off
+        color: var(--card-base)
+        background-color: transparent
+        border-color: transparent
+
+    & .turntable-pickup
+        cursor: default
+        user-select: none
+
+    & .turntable-cue-lever
+        background-color: transparent
+
+        & button
+            background-color: var(--card-base)
+            border-color: var(--turntable-dustcover-mix)
+            border-radius: 18%
+
+            &:disabled
+                cursor: auto
+
+    & .turntable-cue-lever-spacer
+        color: var(--card-base)
+
+    & .turntable-cue-lever-regression:disabled + .turntable-cue-lever-spacer:has(+ .turntable-cue-lever-progression:disabled)
+        &::before
+            content: "\2234"
+
+        &::after
+            content: "\1F382"
+
+
+#notifications
+    border-radius: 4.5px
+    background: transparent
+    opacity: 0
+    pointer-events: none
+
+    &:popover-open
+        opacity: 1
+
+    & .toast
+        outline-color: var(--common-dark)
+        outline-style: double
+        outline-width: 2px
+        border-radius: 4.5px
+        background: var(--toast-pop)
+        pointer-events: auto
+
+        & .toast-close
+            cursor: pointer
+
+        & .toast-msg
+            user-select: none
+            pointer-events: none
+
+
+#icon-help
+    background-color: var(--card-base)
+    border-radius: 9px
+    outline-width: 0
+
+    &::backdrop
+        background-color: var(--turntable-dustcover)
+        backdrop-filter: blur(3px)
+
+    & button[command="close"]
+        color: var(--common-dark)
+        background-color: transparent
+        border-color: transparent
+        border-width: 0
+        cursor: pointer
+
+        &:focus-visible
+            border: none
+            outline: none
+
+
+/*
+    transitions & animations
+ */
+
+#ribbon [role="tooltip"]
+    /* property | duration */
+    transition: visibility 0.25s
+
+#pageload-curtain
+    /* property | duration | delay | behavior */
+    transition: opacity 0.2s 0.1s allow-discrete
+
+    &.loading-done
+        & .loading-indicator .loading-spinny,
+        & .loading-indicator .loading-dots span
+            animation-play-state: paused
+
+    & .loading-indicator .loading-spinny
+        /* duration | delay | iteration | timing | direction | name */
+        animation: 1.5s 0.4s 36 ease-in-out alternate yo-yo
+
+    & .loading-indicator .loading-dots span
+        /* duration | delay | iteration | timing | direction */
+        animation: 1.5s 0.4s 36 ease-out alternate
+
+        &:nth-child(1)
+            animation-name: dotdot-dot
+        &:nth-child(2)
+            animation-name: dotdot-dotdot
+        &:nth-child(3)
+            animation-name: dotdot-dotdotdot
+
+
+#tableau
+    & .playing-card
+        animation-name: card-drop
+        animation-duration: 0.25s
+        animation-timing-function: ease-out
+        animation-fill-mode: backwards
+        transition-delay: 0.15s
+        transition: /* property | duration */
+            rotate 0.2s,
+            box-shadow 0.25s
+
+    & svg[role="img"] use
+        pointer-events: none
+
+
+#turntable
+    /* property | duration | easing | behavior */
+    transition: all 0.7s ease-in-out allow-discrete
+
+    &::backdrop
+        /* property | duration | easing | behavior */
+        transition: all 0.7s ease-in-out allow-discrete
+
+
+#notifications
+    transition-timing-function: ease-out
+    transition-behavior: allow-discrete
+    transition: /* property | duration */
+        opacity 0.5s,
+        visibility 0.5s
+
+@starting-style
+    #pageload-curtain .loading-indicator
+        & .loading-spinny
+            rotate: 0deg
+
+        & .loading-dots span
+            opacity: 0
+
+    #tableau .playing-card
+        rotate: 0deg
+        opacity: 1
+        box-shadow: none
+
+    #turntable:popover-open
+        opacity: 0
+
+        &::backdrop
+            background-color: transparent
+            backdrop-filter: none
+
+
+    #toaster:popover-open
+        visibility: hidden
+        opacity: 0
+
+
+/*
+    device(top-level) responsive styles
+ */
+
+@media (hover: hover)
+    #repolink:hover
+        opacity: 0.4
+
+    #ribbon
+        &:has(#shuffle:hover) #shuffle-desc[role="tooltip"]
+            visibility: visible
+
+        &:has(#reset button:hover) #reset-desc[role="tooltip"]
+            visibility: visible
+
+        &:has(#claw .claw-txt:hover) #clawtxt-desc[role="tooltip"]
+            visibility: visible
+
+        &:has(#claw .claw-img:hover) #clawimg-desc[role="tooltip"]
+            visibility: visible
+
+
+    #tableau .playing-card:hover
+        rotate: -9deg
+        box-shadow: /* x|y|blur|spread|color */
+            3px 3px 5px 3px var(--card-shimmer),
+            0px 0px 2.5px 1.5px var(--card-shimmer)
+
+
+/*
+    container responsive styles
+ */
+
+@container shell (width < 800px)
+    #ribbon .ribbon-flourish
+        clip-path: polygon(0% 0%, 85% 0%, 100% 100%, 0% 100%)
+
+
+/*
+    scrolling
+ */
+
+#tableau::-webkit-scrollbar-track
+    background: transparent
+
+#tableau::-webkit-scrollbar-thumb
+    background: var(--card-shimmer)
+    border-radius: 9px
+
+@supports (scrollbar-color: var(--card-shimmer) transparent)
+    #tableau
+        scrollbar-color: var(--card-shimmer) transparent

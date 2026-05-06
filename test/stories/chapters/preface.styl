@@ -1,0 +1,47 @@
+html
+    height: 100%
+    width: 100%
+
+    & body
+        background-color: beige
+
+
+body
+    height: calc(100% - 16px)
+    width: calc(100% - 16px)
+    margin: 8px
+
+    &:has(#test-curtain.lift)
+        pointer-events: none
+
+    & > header
+        position: absolute
+        top: 1rem
+        left: 1rem
+
+        & h1
+            font-size: 1.5rem
+
+
+#test-curtain
+    display: none
+    height: 100%
+    width: 100%
+    position: absolute
+    justify-content: center
+    align-items: center
+    border-radius: 18px
+    background-color: rgba(50, 50, 50, 0.81)
+    pointer-events: none
+
+    &.lift
+        display: flex
+        z-index: 3
+
+    & h2
+        font-size: 1.25rem
+        color: rgb(205, 205, 205)
+
+footer
+    display: none
+

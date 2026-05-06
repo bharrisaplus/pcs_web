@@ -1,0 +1,67 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+# Tasks are expected to be called from the project root or via the main Taskfile
+
+version: '3'
+
+
+includes:
+  demo: ./demo/_tasks.yml
+  fhost: ./fhost_tasks.yml
+  lhost: ./lhost_tasks.yml
+
+
+tasks:
+  ensure_dirs:
+    desc: make directories
+    cmds:
+      - mkdir -p {{.DEV_DIR}}
+      - mkdir -p {{.DEV_DIR}}/img
+      - mkdir -p {{.DEV_DIR}}/styles
+      - mkdir -p {{.DEV_DIR}}/tp
+      - mkdir -p {{.DEV_DIR}}/scripts
+
+  rear-fhost:
+    desc: Build file://
+    cmds:
+      - task: ensure_dirs
+      - task: fhost:rear-content
+      - task: fhost:rear-presentation
+      - task: fhost:rear-behavior
+      - task: fhost:put-vendor
+      - task: fhost:put-meta
+      - echo "file:// host ready"
+
+  rear-lhost:
+    desc: Build localhost://
+    cmds:
+      - task: ensure_dirs
+      - task: lhost:rear-content
+      - task: lhost:rear-presentation
+      - task: lhost:rear-behavior
+      - task: fhost:put-vendor
+      - task: fhost:put-meta
+      - task: lhost:set-meta
+      - echo "localhost ready"
+
+  sweep-fhost:
+    desc: Remove files
+    cmds:
+      - task: ensure_dirs
+      - task: fhost:sweep-content
+      - task: fhost:sweep-presentation
+      - task: fhost:sweep-behavior
+      - task: fhost:sweep-vendor
+      - task: fhost:sweep-meta
+      - echo "demo file:// host cleared"
+
+  sweep-lhost:
+    desc: Remove files
+    cmds:
+      - task: ensure_dirs
+      - task: fhost:sweep-content
+      - task: fhost:sweep-presentation
+      - task: fhost:sweep-behavior
+      - task: fhost:sweep-vendor
+      - task: fhost:sweep-meta
+      - echo "localhost cleared"

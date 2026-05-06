@@ -1,0 +1,38 @@
+ol#tableau(style="display: none;").hide-before-load
+    - var card_titles = ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']
+    - var card_titles_rev = card_titles.toReversed()
+    - var card_svg_ref_prefix = CARD_SOT_URL
+
+    if ON_FILE_HOST
+        - card_svg_ref_prefix = ""
+
+    for _itm, cardIdx in Array(52)
+        - var card_common_name = ""
+        - var card_svg_ref_id = ""
+        - var orderPrefix = `Number ${cardIdx + 1}`
+
+        if cardIdx < 13
+            - card_common_name = `${card_titles[cardIdx]} of Spade`
+
+            if cardIdx < 10
+                - card_svg_ref_id = `s0${cardIdx}`
+            else
+                - card_svg_ref_id = `s${cardIdx}`
+        else if cardIdx < 26
+            - card_common_name = `${card_titles[cardIdx % 13]} of Diamond`
+            - card_svg_ref_id = `d${cardIdx}`
+        else if cardIdx < 39
+            - card_common_name = `${card_titles_rev[cardIdx % 13]} of Club`
+            - card_svg_ref_id = `c${cardIdx}`
+        else if cardIdx < 52
+            - card_common_name = `${card_titles_rev[cardIdx % 13]} of Heart`
+            - card_svg_ref_id = `h${cardIdx}`
+        else
+            - card_common_name = `Joker`
+            - card_svg_ref_id = `pcs-card`
+
+        li.playing-card(id=`card-${card_svg_ref_id}` data-oid=cardIdx aria-haspopup="dialog" aria-description=`${orderPrefix}: ${card_common_name}`)
+            svg(role="img" aria-labelledby="playing-card-title playing-card-description")
+                title(id="playing-card-title")=`${orderPrefix}: ${card_common_name}`
+                desc(id="playing-card-description")=`Card in position ${cardIdx + 1}`
+                use(href=`${card_svg_ref_prefix}#${card_svg_ref_id}`)

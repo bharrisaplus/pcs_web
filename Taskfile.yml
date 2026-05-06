@@ -11,8 +11,18 @@
 
 version: '3'
 
+vars:
+  PRESENTATION_REL:
+    sh: realpath --relative-to="{{.PROJECT_DIR}}" "{{.PRESENTATION_DIR}}"
+  DEV_REL:
+    sh: realpath --relative-to="{{.PROJECT_DIR}}" "{{.DEV_DIR}}"
+  BROWSER_DBG_MSG:
+    "Visit chrome://inspect/#remote-debugging to enable remote debugging"
+
 includes:
-  octocat: ./Build/octocat/_tasks.yml
+  soi: ./build/_tasks.yml
+  octocat: ./build/octocat/_tasks.yml
+  assess: ./test/_tasks.yml
 
 tasks:
   check_env:
@@ -22,34 +32,50 @@ tasks:
       - echo "Unix timestamp {{now | unixEpoch}}"
       - echo $VERSION_NUM
 
-  # Top level aliases for convenience
-
-  rear-octocat-demo-fhost:
-    aliases: [rear-demo-file]
+  start_browser:
+    silent: true
+    vars:
+      RUN_BROWSER_MSG: "To start browser run: 'chrometest --user-data-dir=$BRWUD_DIR'"
     cmds:
-      - task: octocat:demo:rear-fhost
+      - cmd: echo {{.RUN_BROWSER_MSG}}
+      - cmd: echo {{.BROWSER_DBG_MSG}}
 
-  rear-octocat-demo-lhost:
-    aliases: [rear-demo-local]
+  start_browser_dbg:
+    silent: true
+    vars:
+      RUN_BROWSER_MSG: "To start browser run: 'chrometest --remote-debugging-port=$BRW_DBG_PORT --user-data-dir=$BRWUD_DIR'"
     cmds:
-      - task: octocat:demo:rear-lhost
+      - cmd: echo {{.RUN_BROWSER_MSG}}
+      - cmd: echo {{.BROWSER_DBG_MSG}}
 
-  rear-octocat-demo-prod:
-    aliases: [rear-demo-prod]
+  start_browser_hdbg:
+    silent: true
+    vars:
+      RUN_BROWSER_MSG: "To start browser run: 'chrometest --headless --remote-debugging-port=$BRW_DBG_PORT --user-data-dir=$BRWUD_DIR'"
     cmds:
-      - task: octocat:demo:rear-prod
+      - cmd: echo {{.RUN_BROWSER_MSG}}
+      - cmd: echo {{.BROWSER_DBG_MSG}}
 
-  sweep-octocat-demo-fhost:
-    aliases: [sweep-demo-file]
+  clear_browser_userdir:
     cmds:
-      - task: octocat:demo:sweep-fhost
+      - rm -rf {{.BRWUD_DIR}}/**
 
-  sweep-octocat-demo-lhost:
-    aliases: [sweep-demo-local]
+  nitScript:
     cmds:
-      - task: octocat:demo:sweep-lhost
+      - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs {{.CLI_ARGS}}
 
-  sweep-octocat-demo-prod:
-    aliases: [sweep-demo-prod]
+  nitSheet:
     cmds:
-      - task: octocat:demo:sweep-prod
+      - pnpm stylelint -c {{.PROJECT_DIR}}/stylelint.config.mjs {{.CLI_ARGS}} --quiet-deprecation-warnings
+
+  sechkprjc:
+    silent: true
+    cmds:
+      - echo "To run a snyk test (be sure to setup/authenticate snyk first):"
+      - echo "snyk test --package-manager=pnpm --file=pnpm-lock.yaml --remote-repo-url="https://github.com/bharrisaplus/pcs_web.git" --prune-repeated-subdependencies --source-dir=./source/behavior --org="
+
+  sechksrc:
+    silent: true
+    cmds:
+      - echo "To run a snyk code test (be sure to setup/authenticate snyk first):"
+      - echo "snyk code test --report --project-name=pcs_web --target-reference=\"$(git branch --show-current)\" --remote-repo-url=\"https://github.com/bharrisaplus/pcs_web\" --org="

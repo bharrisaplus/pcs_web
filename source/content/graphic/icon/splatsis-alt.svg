@@ -1,0 +1,11 @@
+<svg id="splatsis-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<defs>
+		<symbol id="splatsis-trace">
+			<path fill="#333" d="M1.83689 8.66844L2.43476 10.4184H0.5L2.06525 11.5L0.500009 12.5816H2.43475L1.83688 14.3316L3.40213 13.25L4 15L4.59787 13.25L6.16311 14.3316L5.56524 12.5816L7.5 12.5816L5.93475 11.5L7.49999 10.4184H5.56525L6.16312 8.66844L4.59787 9.75L4 8L3.40213 9.75L1.83689 8.66844Z"/>
+		</symbol>
+	</defs>
+
+	<use href="#splatsis-trace" x="0.5"/>
+	<use href="#splatsis-trace" x="8.5"/>
+	<use href="#splatsis-trace" x="16.5"/>
+</svg>

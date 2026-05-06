@@ -1,0 +1,83 @@
+# For a guide to configuration, visit https://qlty.sh/d/config
+# Or for a full reference, visit https://qlty.sh/d/qlty-toml
+config_version = "0"
+
+exclude_patterns = [
+    "*_min.*",
+    "*-min.*",
+    "*.min.*",
+    "**/demo.main.js",
+    "**/trythis.example.mjs",
+    "**/*.config.mjs",
+    "**/*.d.ts",
+    "**/.brwud/**",
+    "**/assets/**",
+    "**/build/**",
+    "**/dist/**",
+    "**/coverage/**",
+    "**/source/content/**",
+    "**/source/presentation/**",
+    "**/distribution/**",
+    "**/node_modules/**",
+    "**/vendor/**"
+]
+
+test_patterns = [
+    "**/test/**",
+    "**/test/specs/**",
+    "**/test/stories/**",
+    "**/test/rehearsals/**",
+    "**/*.spec.mjs",
+    "**/appa.mjs",
+    "**/genga.mjs",
+]
+
+[coverage]
+ignores = [
+    "**/demo.main.js",
+    "**/trythis.example.mjs",
+]
+
+[smells]
+mode = "comment"
+
+[[source]]
+name = "default"
+default = true
+repository = "https://github.com/bharrisaplus/pcs_web.git"
+
+
+[[plugin]]
+name = "actionlint"
+
+[[plugin]]
+name = "editorconfig-checker"
+mode = "comment"
+
+[[plugin]]
+name = "osv-scanner"
+config_files = ["osv-scanner.toml"]
+
+[[plugin]]
+name = "ripgrep"
+mode = "comment"
+
+[[plugin]]
+name = "trufflehog"
+
+[[plugin]]
+name = "zizmor"
+
+[[plugin]]
+name = "shellcheck"
+config_files = [".shellcheckrc"]
+
+[[plugin]]
+name = "stylelint"
+package_file = "package.json"
+package_filters = ["stylelint"]
+config_files = ["stylelint.config.mjs"]
+
+[[plugin]]
+name = "oxc"
+config_files = [".oxlintrc.json"]

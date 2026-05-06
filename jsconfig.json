@@ -1,0 +1,59 @@
+{
+    "include": [
+        "source/behavior/_meta/*.mjs",
+        "source/behavior/_banks/*.bank.mjs",
+        "source/behavior/hands/*.hand.mjs",
+        "source/behavior/lattices/*.lattice.mjs",
+        "source/behavior/parts/*.part.mjs",
+        "source/behavior/shuttles/*.shuttle.mjs",
+        "source/behavior/index.main.mjs",
+        "test/specs/*_hand.spec.mjs",
+        "test/specs/*_bank.spec.mjs",
+        "test/specs/*_shuttle.spec.mjs",
+        "build/**/_rollup.config.mjs",
+        "build/**/_postcss.config.mjs"
+    ],
+    "files": [
+        "./rollup.config.mjs",
+        "./postcss.config.mjs",
+        "./eslint.config.mjs",
+        "./test/compass.mjs",
+        "./test/_rollup.config.mjs",
+        "./test/stories/tankoban.mjs",
+        "./test/stories/haishin.mjs",
+        "./build/manifest.mjs",
+        "./build/_rollup.config.mjs",
+        "./build/_postcss.config.mjs"
+    ],
+    "exclude": [
+        "./test/stories/chapters/_a.js",
+        "./test/stories/chapters/_td.mjs",
+        "./test/stories/chapters/_z.mjs",
+        "./test/stories/chapters/tanto.mjs",
+        "./test/stories/chapters/*_part/*.mjs",
+        "./test/stories/chapters/*_part/clones/*.clone.mjs"
+    ],
+    "compilerOptions": {
+        "noEmit": true,
+        "allowJs": true,
+        "checkJs": true,
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "strictNullChecks": false,
+        "esModuleInterop": true,
+        "lib": [
+            "DOM",
+            "ESNext",
+            "WebWorker"
+        ],
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "target": "esnext",
+        "types": [
+            "./source/behavior/_meta/_.d.ts"
+        ]
+    },
+    "typedocOptions": {
+        "jsDocCompatibility": true
+    }
+}

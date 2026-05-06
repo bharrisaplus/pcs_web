@@ -1,0 +1,37 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        title turntable:storey:desk
+        link(rel="stylesheet" href="/reset.css")
+        link(id="desk-styl" rel="stylesheet" href="/presentation/index.main.css")
+        style.
+            #container {
+                height: 100%;
+                width: 100%;
+                background-color: green;
+                border-radius: 18px;
+            }
+        script(type="text/javascript" src="/a.js")
+        script(type="importmap").
+            {
+                "imports": {
+                    "testdouble": "/td.mjs",
+                    "zora": "/z.mjs",
+                    "./clones/_glods.clone.mjs": "/turntable_part/clones/_glods.clone.mjs",
+                    "storey:fixtures": "/tanto.mjs",
+                    "./genga.mjs": "/turntable_part/genga.mjs",
+                    "/source/behavior/_meta/_glods.mjs": "/turntable_part/clones/_glods.clone.mjs",
+                    "/source/behavior/hands/scribe.hand.mjs": "/turntable_part/clones/scribe_hand.clone.mjs",
+                    "turntable_part": "/source/behavior/parts/turntable.part.mjs",
+                    "scribe_hand_clone": "/turntable_part/clones/scribe_hand.clone.mjs"
+                }
+            }
+    body#test-shell
+        #container
+            include ../../../../source/content/document/partials/turntable.pug
+        footer
+            #graphic-assets(style="display:none;")
+                include ../../../../source/content/graphic/misc/pcs-card.svg
+                include ../../../../source/content/graphic/misc/minipacket.svg
+            script(src="/turntable_part/appa.mjs" type="module" defer)

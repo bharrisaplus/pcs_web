@@ -1,0 +1,114 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+
+version: '3'
+
+
+tasks:
+
+  # unit(ish) tests
+
+  spec_of:
+    aliases: ["speco"]
+    vars:
+      SPEC_PATH: '{{.PROJECT_DIR}}/test/specs/{{.CLI_ARGS}}.spec.mjs'
+    cmds:
+      - pnpm tape {{.SPEC_PATH}} | pnpm tap-spec
+
+  spec_all:
+    aliases: ["specal"]
+    vars:
+      INCL_SPECS: '{dealer_hand,deck_bank,egress_hand,host_shuttle,boot_hand,scribe_hand}'
+      SPEC_GLOB: '{{.PROJECT_DIR}}/test/specs/{{.INCL_SPECS}}.spec.mjs'
+    cmds:
+      - pnpm tape {{.SPEC_GLOB}} | pnpm tap-spec
+
+
+  # integration(like) tests
+
+  rear-preface_td:
+    env:
+      BUILD_TARGET: storey_preface:testdouble
+    cmds:
+      - pnpm rollup -c {{.TEST_DIR}}/_rollup.config.mjs
+
+  rear-preface_z:
+    env:
+      BUILD_TARGET: storey_preface:zora
+    cmds:
+      - pnpm rollup -c {{.TEST_DIR}}/_rollup.config.mjs
+
+  rear-preface_axe:
+    vars:
+      AXE_NODE_NAME: "axe-core"
+    cmds:
+      - cp {{.PROJECT_DIR}}/node_modules/{{.AXE_NODE_NAME}}/axe.js {{.STOREY_DIR}}/chapters/_a.js
+
+  rear_preface:
+    cmds:
+      - task: rear-preface_td
+      - task: rear-preface_z
+      - task: rear-preface_axe
+
+  clear_preface:
+    cmds:
+      - rm -rf {{.STOREY_DIR}}/chapters/_a.js
+      - rm -rf {{.STOREY_DIR}}/chapters/_td.js
+      - rm -rf {{.STOREY_DIR}}/chapters/_z.js
+
+  play_storey:
+    aliases: ["storeo"]
+    cmds:
+      - node {{.STOREY_DIR}}/tankoban.mjs {{.CLI_ARGS}}
+
+  marathon_storey:
+    aliases: ["storeal"]
+    cmds:
+      - node {{.STOREY_DIR}}/omnibus.mjs {{.CLI_ARGS}}
+
+
+  # coverage
+
+  spec_of_cov:
+    aliases: ["specov"]
+    vars:
+      SPEC_PATH: '{{.PROJECT_DIR}}/test/specs/{{.CLI_ARGS}}.spec.mjs'
+      C8_CONFIG: '{{.PROJECT_DIR}}/c8rc.spec.json'
+    cmds:
+      - pnpm c8 -c {{.C8_CONFIG}} tape {{.SPEC_PATH}} | pnpm tap-spec
+
+  spec_all_cov:
+    aliases: ["specalov"]
+    vars:
+      INCL_SPECS: '{dealer_hand,deck_bank,egress_hand,host_shuttle,boot_hand,scribe_hand}'
+      SPEC_GLOB: '{{.PROJECT_DIR}}/test/specs/{{.INCL_SPECS}}.spec.mjs'
+      C8_CONFIG: '{{.PROJECT_DIR}}/test/c8rc.spec.json'
+    cmds:
+      - pnpm c8 -c {{.C8_CONFIG}} tape {{.SPEC_GLOB}} | pnpm tap-spec
+
+  spec_of_lcov:
+    aliases: ["speclcov"]
+    vars:
+      SPEC_PATH: '{{.PROJECT_DIR}}/test/specs/{{.CLI_ARGS}}.spec.mjs'
+      C8_CONFIG: '{{.PROJECT_DIR}}/c8rc.spec.json'
+      COV_PATH: '{{.COVERAGE_DIR}}/spec/oneoff/{{.CLI_ARGS}}'
+    cmds:
+      - pnpm c8 -c {{.C8_CONFIG}} -o {{.COV_PATH}} -r lcovonly tape {{.SPEC_PATH}} | pnpm tap-spec
+
+  spec_all_lcov:
+    aliases: ["specallcov"]
+    vars:
+      INCL_SPECS: '{dealer_hand,deck_bank,egress_hand,host_shuttle,boot_hand,scribe_hand}'
+      SPEC_GLOB: '{{.PROJECT_DIR}}/test/specs/{{.INCL_SPECS}}.spec.mjs'
+      C8_CONFIG: '{{.PROJECT_DIR}}/test/c8rc.spec.json'
+    cmds:
+      - pnpm c8 -c {{.C8_CONFIG}} -r lcovonly tape {{.SPEC_GLOB}} | pnpm tap-spec
+
+  storey_cov:
+    aliases: ["storealcov"]
+    cmds:
+      - node {{.STOREY_DIR}}/omnibus.mjs -to -kc
+
+  clear_cov:
+    cmds:
+      - rm -rf {{.PROJECT_DIR}}/coverage/spec

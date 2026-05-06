@@ -1,0 +1,13 @@
+#turntable(popover)
+    button.turntable-off
+        | ✘
+    svg.turntable-pickup(role="img" aria-labelledby="turntable-pickup-title turntable-pickup-description")
+        title(id="turntable-pickup-title") magnified view of card
+        desc(id="turntable-pickup-description") A single card up close and personal
+        use(href="#pcs-card")
+    .turntable-cue-lever
+        button.turntable-cue-lever-regression(disabled)
+            | ◄
+        .turntable-cue-lever-spacer
+        button.turntable-cue-lever-progression(disabled)
+            | ►

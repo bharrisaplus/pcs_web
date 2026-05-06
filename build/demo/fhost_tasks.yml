@@ -1,0 +1,142 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+# Tasks are expected to be called from the project root or via the main Taskfile
+
+version: '3'
+
+
+tasks:
+  # Building/Transpiling/etc
+  rear-presentation:
+    desc: Stylus to CSS
+    env:
+      BUILD_TARGET: soi
+      BUILD_OBJECTIVE: demo
+      BUILD_AREA: fhost
+      FHOST_URL: '{{.FHOST_URL_ROOT}}/demo/'
+    cmds:
+      - pnpm stylus {{.PRESENTATION_DIR}}/demo.main.styl -m --sourcemap-base {{.DEMO_DIR}} -o {{.DEMO_DIR}}
+      - pnpm postcss {{.DEMO_DIR}}/demo.main.css --config {{.PROJECT_DIR}} -o {{.DEMO_DIR}}/{{.CSS_MAIN_NAME}}
+
+  rear-content:
+    desc: Pug to HTML
+    vars:
+      CONTENT_DATA:
+        map:
+          MARKLOGO_URL: '{{.FHOST_URL}}{{.MARKLOGO_NAME}}'
+          APPLE_TOUCH_ICON_URL: '{{.FHOST_URL}}{{.APPLE_TOUCH_ICON_NAME}}'
+          FAVICON_32_URL: '{{.FHOST_URL}}{{.FAVICON_32_NAME}}'
+          FAVICON_32_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_32_ALT_NAME}}'
+          FAVICON_16_URL: '{{.FHOST_URL}}{{.FAVICON_16_NAME}}'
+          FAVICON_16_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_16_ALT_NAME}}'
+          FAVICON_ICO_URL: '{{.FHOST_URL}}{{.FAVICON_ICO_NAME}}'
+          FAVICON_ICO_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_ICO_ALT_NAME}}'
+          VENDOR_CSS_RESET_URL: '{{.FHOST_URL}}{{.VENDOR_CSS_RESET_NAME}}'
+          VENDOR_CHANCEJS_URL: '{{.FHOST_URL}}{{.VENDOR_CHANCEJS_NAME}}'
+          VENDOR_HTML2CANVAS_URL: '{{.FHOST_URL}}{{.VENDOR_HTML2CANVAS_NAME}}'
+          CSS_MAIN_URL: '{{.FHOST_URL}}{{.CSS_MAIN_NAME}}'
+          ES_MAIN_URL: '{{.FHOST_URL}}{{.ES_MAIN_NAME}}'
+          BROWSERCONFIG_URL: '{{.FHOST_URL}}{{.BROWSERCONFIG_NAME}}'
+          WEBMANIFEST_URL: '{{.FHOST_URL}}{{.WEBMANIFEST_NAME}}'
+    cmds:
+      - echo '{{.CONTENT_DATA | toJson}}' > {{.DEMO_DIR}}/content_data_options.json
+      - pnpm pug {{.CONTENT_DIR}}/demo.page.pug -o {{.DEMO_DIR}} -O {{.DEMO_DIR}}/content_data_options.json
+      - mv {{.DEMO_DIR}}/demo.page.html {{.DEMO_DIR}}/demo.html
+      - cp {{.CONTENT_DIR}}/graphic/icon/sqwiggle.svg {{.DEMO_DIR}}/{{.MARKLOGO_NAME}}
+
+  rear-behavior:
+    desc: JS
+    env:
+      BUILD_TARGET: soi
+      BUILD_OBJECTIVE: demo
+      BUILD_AREA: fhost
+      FHOST_URL: '{{.FHOST_URL_ROOT}}/demo/'
+    cmds:
+      -  pnpm rollup -c {{.PROJECT_DIR}}/rollup.config.mjs
+
+  nit-behavior:
+    desc: Keeping js/mjs consistent
+    cmds:
+      - pnpm eslint -c {{.PROJECT_DIR}}/eslint.config.mjs {{.BEHAVIOR_DIR}}/demo.main.js
+
+  nit-presentation:
+    desc: Keeping stylus/css consistent
+    cmds:
+      - pnpm stylelint -c {{.PROJECT_DIR}}/stylelint.config.mjs {{.PRESENTATION_DIR}}/demo.main.styl
+
+  # Moving things around
+  put-vendor:
+    desc: Copy 3rd party scripts/stylesheets/etc
+    cmds:
+      - cp {{.COMMON_DIR}}/vendor/meyerweb/reset.css {{.DEMO_DIR}}/{{.VENDOR_CSS_RESET_NAME}}
+      - cp {{.COMMON_DIR}}/vendor/html2canvas/html2canvas.js {{.DEMO_DIR}}/{{.VENDOR_HTML2CANVAS_NAME}}
+      - cp {{.COMMON_DIR}}/vendor/html2canvas/html2canvas.js.map {{.DEMO_DIR}}/{{.VENDOR_HTML2CANVAS_NAME}}.map
+      - cp {{.COMMON_DIR}}/vendor/chancejs/chance.js {{.DEMO_DIR}}/{{.VENDOR_CHANCEJS_NAME}}
+      - echo "MeyerWeb-CSSReset, HTML2Canvas and ChanceJS placed with demo files"
+
+  put-meta:
+    desc: Place files for offline (pwa)
+    cmds:
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle.ico {{.DEMO_DIR}}/{{.FAVICON_ICO_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle-alt.ico {{.DEMO_DIR}}/{{.FAVICON_ICO_ALT_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_16.png {{.DEMO_DIR}}/{{.FAVICON_16_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_16-alt.png {{.DEMO_DIR}}/{{.FAVICON_16_ALT_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_32.png {{.DEMO_DIR}}/{{.FAVICON_32_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_32-alt.png {{.DEMO_DIR}}/{{.FAVICON_32_ALT_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_180.png {{.DEMO_DIR}}/{{.APPLE_TOUCH_ICON_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_192.png {{.DEMO_DIR}}/{{.FAVICON_ANDROID_CHROME_192_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_512.png {{.DEMO_DIR}}/{{.FAVICON_ANDROID_CHROME_512_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_70.png {{.DEMO_DIR}}/{{.FAVICON_MSTILE_s70_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_144.png {{.DEMO_DIR}}/{{.FAVICON_MSTILE_s144_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_150.png {{.DEMO_DIR}}/{{.FAVICON_MSTILE_s150_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_310.png {{.DEMO_DIR}}/{{.FAVICON_MSTILE_s310_NAME}}
+      - cp {{.COMMON_DIR}}/favicons/sqwiggle_310x150.png {{.DEMO_DIR}}/{{.FAVICON_MSTILE_w310_NAME}}
+      - cp {{.CONTENT_DIR}}/webmanifest.source.json {{.DEMO_DIR}}/{{.WEBMANIFEST_NAME}}
+      - echo "Favicon and Offline files placed with demo files"
+
+  # Clean up/Tear down
+  sweep-content:
+    desc: Remove generated files
+    cmds:
+      - rm -f {{.DEMO_DIR}}/demo.html
+      - rm -f {{.DEMO_DIR}}/content_data_options.json
+      - rm -f {{.DEMO_DIR}}/markl.svg
+
+  sweep-presentation:
+    desc: Remove generated files
+    cmds:
+      - rm -f {{.DEMO_DIR}}/main.{css,css.map}
+      - rm -f {{.DEMO_DIR}}/demo.main.{css,css.map}
+
+  sweep-behavior:
+    desc: Remove generated files
+    cmds:
+      - rm -f {{.DEMO_DIR}}/main.{js,js.map,mjs}
+
+  sweep-vendor:
+    desc: Remove generated files
+    cmds:
+      - rm -f {{.DEMO_DIR}}/html2canvas.{js,js.map}
+      - rm -f {{.DEMO_DIR}}/chance.{js,min.js,min.js.map}
+      - rm -f {{.DEMO_DIR}}/reset.css
+
+  sweep-meta:
+    desc: Remove generated files
+    cmds:
+      - rm -f {{.DEMO_DIR}}/{{.FAVICON_ICO_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.FAVICON_ICO_ALT_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.FAVICON_16_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.FAVICON_16_ALT_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.FAVICON_32_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.FAVICON_32_ALT_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.APPLE_TOUCH_ICON_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.FAVICON_ANDROID_CHROME_192_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.FAVICON_ANDROID_CHROME_512_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.FAVICON_MSTILE_s70_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.FAVICON_MSTILE_s144_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.FAVICON_MSTILE_s150_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.FAVICON_MSTILE_s310_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.FAVICON_MSTILE_w310_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.BROWSERCONFIG_NAME}}
+      - rm -f {{.DEMO_DIR}}/{{.WEBMANIFEST_NAME}}
+      - rm -f {{.DEMO_DIR}}/meta_data_options.json

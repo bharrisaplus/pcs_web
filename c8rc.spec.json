@@ -1,0 +1,12 @@
+{   
+    "src": [
+        "./source/behavior/_meta",
+        "./source/behavior/banks",
+        "./source/behavior/hands",
+        "./source/behavior/shuttles"
+    ],
+    "extensions": [
+        ".spec.mjs"
+    ],
+    "report-dir": "./coverage/spec"
+}

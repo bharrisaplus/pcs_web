@@ -1,0 +1,37 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no")
+        block storeyboard_title
+            title Ekonte
+        link(rel="icon" type="image/x-icon" href="/favicon.ico")
+        link(rel="stylesheet" href="/reset.css")
+        style.
+            html { background-color: gray; }
+        block storeyboard_sheets
+        block storeyboard_importmap
+            script(type="importmap").
+                {
+                    "imports": {
+                        "storey:fixtures": "/tanto.mjs"
+                    }
+                }
+
+    body
+        header
+            block storeyboard_header
+                h1 Ekonte
+
+        main#e-panel
+            block storeyboard_entry
+
+            #ctrl-band.load-curtain
+                block storeyboard_actionbar
+
+        block storey_test_overlay
+            #test-curtain
+                h2 Test Running ⌛
+
+        footer
+            block storeyboard_scripts

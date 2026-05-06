@@ -6,39 +6,23 @@ version: '3'
 
 
 includes:
-  demo: ./demo/_tasks.yml
-  fhost: ./fhost_tasks.yml
-  lhost: ./lhost_tasks.yml
   prod: ./prod_tasks.yml
 
 
 tasks:
-  rear-fhost:
-    desc: Build demo for file:// host
+  ensure_dirs:
+    desc: make directories
     cmds:
-      - mkdir {{.DEV_DIR}}
-      - task: fhost:rear-content
-      - task: fhost:rear-presentation
-      - task: fhost:rear-behavior
-      - task: fhost:put-vendor
-      - task: fhost:put-meta
-      - echo "file:// host ready"
-
-  rear-lhost:
-    desc: Build demo for localhost://
-    deps: [fhost:put-vendor, fhost:put-meta]
-    cmds:
-      - mkdir {{.DEV_DIR}}
-      - task: lhost:rear-content
-      - task: lhost:rear-presentation
-      - task: lhost:rear-behavior
-      - task: lhost:set-meta
-      - echo "localhost ready"
+      - mkdir -p {{.OCTOCAT_HOST_DIR}}
+      - mkdir -p {{.OCTOCAT_HOST_DIR}}/img
+      - mkdir -p {{.OCTOCAT_HOST_DIR}}/styles
+      - mkdir -p {{.OCTOCAT_HOST_DIR}}/tp
+      - mkdir -p {{.OCTOCAT_HOST_DIR}}/scripts
 
   rear-prod:
-    desc: Build demo files
+    desc: Build octocat files
     cmds:
-      - mkdir {{.OCTOCAT_HOST_DIR}}
+      - task: ensure_dirs
       - task: prod:rear-content
       - task: prod:rear-presentation
       - task: prod:rear-behavior
@@ -47,32 +31,10 @@ tasks:
       - task: prod:set-meta
       - echo "octocat host ready"
 
-  sweep-fhost:
-    desc: Remove demo files
-    cmds:
-      - mkdir {{.DEV_DIR}}
-      - task: fhost:sweep-content
-      - task: fhost:sweep-presentation
-      - task: fhost:sweep-behavior
-      - task: fhost:sweep-vendor
-      - task: fhost:sweep-meta
-      - echo "demo file:// host cleared"
-
-  sweep-lhost:
-    desc: Remove generated files
-    cmds:
-      - mkdir {{.DEV_DIR}}
-      - task: fhost:sweep-content
-      - task: fhost:sweep-presentation
-      - task: fhost:sweep-behavior
-      - task: fhost:sweep-vendor
-      - task: fhost:sweep-meta
-      - echo "localhost cleared"
-
   sweep-prod:
-    desc: Remove generated files
+    desc: Remove built octocat files
     cmds:
-      - mkdir {{.OCTOCAT_HOST_DIR}}
+      - task: ensure_dirs
       - task: prod:sweep-content
       - task: prod:sweep-presentation
       - task: prod:sweep-behavior
