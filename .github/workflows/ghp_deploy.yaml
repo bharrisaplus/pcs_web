@@ -5,7 +5,7 @@ on:
   push:
     branches: ["gh-pages"]
     tags:
-      - '2026_*'
+      - 'v2026_*'
 
 permissions:
   contents: read
@@ -18,7 +18,8 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.ref_type == 'tag' && github.event.base_ref == 'refs/heads/gh-pages'
+    # Ensure the on.push rules are followed even when running manually
+    if: ${{ (github.ref_type == 'branch' && github.event.ref == 'refs/heads/gh-pages') || (github.ref_type == 'tag' && startsWith(github.event.ref, 'v2026_')) }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
