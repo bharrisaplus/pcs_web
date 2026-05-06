@@ -21,6 +21,7 @@ tasks:
   rear-content:
     desc: Pug to HTML
     vars:
+      FHOST_URL: '{{.FHOST_URL_ROOT}}/{{.DEV_VER}}/'
       CONTENT_DATA:
         map:
           APPLE_TOUCH_ICON_URL: '{{.FHOST_URL}}{{.APPLE_TOUCH_ICON_NAME}}'
@@ -31,9 +32,9 @@ tasks:
           FAVICON_ICO_URL: '{{.FHOST_URL}}{{.FAVICON_ICO_NAME}}'
           FAVICON_ICO_ALT_URL: '{{.FHOST_URL}}{{.FAVICON_ICO_ALT_NAME}}'
           FAVICON_MASK_URL: '{{.FHOST_URL}}{{.FAVICON_MASK_NAME}}'
-          VENDOR_CSS_RESET_URL: '{{.FHOST_URL}}/tp/{{.VENDOR_CSS_RESET_NAME}}'
-          CSS_MAIN_URL: '{{.FHOST_URL}}/styles/{{.CSS_MAIN_NAME}}'
-          ES_MAIN_URL: '{{.FHOST_URL}}/scripts/{{.ES_MAIN_NAME}}'
+          VENDOR_CSS_RESET_URL: '{{.FHOST_URL}}tp/{{.VENDOR_CSS_RESET_NAME}}'
+          CSS_MAIN_URL: '{{.FHOST_URL}}styles/{{.CSS_MAIN_NAME}}'
+          ES_MAIN_URL: '{{.FHOST_URL}}scripts/{{.ES_MAIN_NAME}}'
           BROWSERCONFIG_URL: '{{.FHOST_URL}}{{.BROWSERCONFIG_NAME}}'
           WEBMANIFEST_URL: '{{.FHOST_URL}}{{.WEBMANIFEST_NAME}}'
           ON_FILE_HOST: true
